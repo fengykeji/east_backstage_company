@@ -72,11 +72,6 @@
 <template>
     <div class='addPerson'>
         <div class='box'>
-             <div class='num_set'>选择 </div>
-             <div class="relative">
-                   <span class='selectDis'>
-                         <city-selector class='select' :province.sync="searchObj.province" :city.sync="searchObj.city" :district.sync="searchObj.district"/>
-                   </span>
                 <span>
                     <el-input class='query' v-model="searchObj.search"></el-input>
                     <el-button icon="el-icon-search" circle></el-button>
