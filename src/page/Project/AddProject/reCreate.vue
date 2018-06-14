@@ -1,0 +1,632 @@
+<style lang="less" scoped src="../index.less"></style>
+
+<style lang="less">
+.AddProject {
+  padding: 20px;
+  width: 1100px;
+  margin: 0 auto;
+
+  .el-form-item__label {
+    float: none;
+  }
+  .el-dialog__body {
+    padding-top: 0;
+  }
+  .el-dialog {
+    width: 63%;
+    top: -10%;
+  }
+  .el-table--border,
+  .el-table--group {
+    margin-top: 20px;
+  }
+  .property_type {
+    font-size: 14px;
+    color: #606266;
+    line-height: 40px;
+    padding: 0 12px 0 0;
+  }
+  .el-table th {
+    padding: 2px 5px;
+  }
+  .cell {
+    padding: 10px 0px;
+  }
+  .request {
+    display: inline-block;
+    text-align: right;
+  }
+}
+</style>
+
+<template>
+    <div class="AddProject">
+        <!-- <el-dialog title="申请项目信息" :visible.sync="dialogFormVisibleAdd" @close="cancel"> -->
+      <div class="title">申请项目信息</div>
+      <el-form :model="form" class='form'  >
+          <el-form-item label="项目名称" class='input'  >
+            <el-input v-model="form.project_name" auto-complete="off" :disabled="isDisable()"  placeholder="请输入项目名称" ></el-input>
+          </el-form-item>
+          <el-form-item label="项目地址" class='select' >
+              <!-- 下拉组建 -->
+             <city-selector  :disabled="isDisable()" :province.sync="form.province" :city.sync="form.city" :district.sync="form.district" @changeDistrict="changeDistrict"/>
+          </el-form-item>
+          <el-form-item label="" class='input'>
+            <el-input :disabled="isDisable()" v-model="form.absolute_address" auto-complete="off" class='input-1' placeholder="请输入具体地址" ></el-input>
+          </el-form-item>
+        <!-- 地图 -->
+        <el-button type="text" :disabled="isDisable()" @click='showMapDetails'>查看地图</el-button>
+
+        <div id="map" class='map'></div>
+
+        <!-- 物业类型 -->
+        <div class="property_type">物业类型</div>
+        <el-checkbox :disabled="operationType==2" v-model="form.property_type" v-for="item in typeOptions" :key="item.param_id" :label="item.param_id">{{item.param}}</el-checkbox>
+        <el-form-item label="开发商" class='input1'>
+        <el-input  :disabled="operationType==2" v-model="form.developer_name" auto-complete="off" placeholder="请输入开发商名称"></el-input>
+        </el-form-item>
+          <el-form-item label="与项目关系" class='select'> 
+           <el-radio-group :disabled="operationType==2" v-model="form.company_relation">
+              <el-radio label="开发商"></el-radio>
+              <el-radio label="代理"></el-radio>
+              <el-radio label="分销"></el-radio>
+              <el-radio label="渠道"></el-radio>
+              <el-radio label="其他"></el-radio>
+           </el-radio-group>
+        </el-form-item>
+          <el-form-item label="结佣单位" class='input'>
+          <el-input :disabled="operationType==2" v-model="form.statement_company" auto-complete="off" placeholder="请输入结佣单位名称"></el-input>
+        </el-form-item>
+          <el-form-item label="项目负责人" class='input'>
+          <el-input :disabled="operationType==2" v-model="form.project_hold_name" auto-complete="off" placeholder="请输入项目负责人姓名"></el-input>
+        </el-form-item>
+          <el-form-item label="联系电话" class='input'>
+          <el-input :disabled="operationType==2" v-model="form.project_hold_phone" auto-complete="off" placeholder="请输入联系电话"></el-input>
+        </el-form-item>
+         <el-form-item label="备注"  class='textarea'>
+             <el-input :disabled="operationType==2" v-model="form.remark" type="textarea" ></el-input>
+         </el-form-item>
+      </el-form>
+      <div class='tableIn-btn'>
+            <el-button type="primary" v-if="operationType==3" @click='showUser'>新增账号</el-button>
+      </div>
+      <!-- 用户显示 -->
+  <el-table :data="form.project_user" border>
+      <el-table-column property="account" label="帐号" align='center'></el-table-column>
+      <el-table-column property="name" label="对接人" align='center'></el-table-column>
+      <el-table-column property="phone" label="电话号码" align='center'></el-table-column>
+      <el-table-column property="operation" v-if="operationType == 1" label="操作" align='center'>
+        <template slot-scope="scope">
+          <el-button type="text"  @click='editUser(scope.row , scope.$index)'>修改</el-button>
+          <el-button type="text" v-if="operationType == 1" @click='removeUser(scope.$index)'>删除</el-button>
+        </template>
+      </el-table-column>
+  </el-table>
+    <!-- 附件上传 -->
+    <div>
+      <el-upload class="uploadFile"  :auto-upload="false" action="" :on-change="fileUpload">
+        <el-button class="uploadBtn" ref="uploadBtn" size="small" type="primary" :show-file-list="false">点击上传</el-button>
+      </el-upload>
+    </div>
+    <div class='tableIn-btn' v-if="operationType == 0">
+          <el-button type="primary" @click='showUploadFile'>文件上传确定</el-button>
+    </div>
+   <el-table :data="form.project_agreement" border>
+      <el-table-column property="file_name" label="文件名称" align='center'></el-table-column>
+      <el-table-column label="附件" align='center'>
+        <template slot-scope='scope'>
+            <a target="_blank" :href="'http://120.27.21.136:2798/' + scope.row.url">查看附件</a>
+        </template>
+      </el-table-column>
+      <el-table-column property="create_name" label="上传人员" align='center'></el-table-column>
+      <el-table-column property="create_time" label="上传时间" align='center'></el-table-column>
+  </el-table>
+  <div v-if="operationType!=0">
+        <div class='num_set'>审核项目信息</div>
+        <el-form :model="form"  class='form' :disabled="isDisable()" >
+              <el-form-item label="审核人员" class='inputAud'>
+                <el-input v-model="auditing_info.auditing_name" auto-complete="off"></el-input>
+              </el-form-item>
+                <el-form-item label="审核时间" class='inputAud'>
+                <el-input v-model="auditing_info.auditing_time" auto-complete="off"></el-input>
+              </el-form-item>
+                <el-form-item label="审核状态" class='inputAud state'>
+                  {{auditingState(auditing_info.auditing_state)}}
+              </el-form-item>
+              <el-form-item label="备注"  class='textarea'>
+                  <el-input type="textarea" v-model="auditing_info.auditing_remark"></el-input>
+              </el-form-item>
+        </el-form> 
+        <div class='num_set'>认证信息</div>
+        <el-form v-model="authentication_info"  class='form' >
+              <el-form-item label="保证金金额（￥）：" class='inputAud'>
+                <el-input v-model="authentication_info.deposit" auto-complete="off" :disabled="isDisable()" ></el-input>
+              </el-form-item>
+              <el-form-item label="未结佣金总额（￥）：" class='inputAud'>
+                <el-input v-model="authentication_info.no_price" auto-complete="off" :disabled="isDisable()" ></el-input>
+              </el-form-item>
+              <el-form-item label="可退金额（￥）：" class='inputAud'>
+                <el-input v-model="authentication_info.allow" auto-complete="off" :disabled="isDisable()" ></el-input>
+              </el-form-item>
+              <el-form-item label="项目状态" class='inputAud state'>
+                 {{projectState(authentication_info.authentication_state)}}
+              </el-form-item>
+              <el-form-item  class='request' >
+                    <el-button type="primary" @click="requestRefund()" v-if="operationType==1">申请退款</el-button>
+              </el-form-item>
+
+              <div class='num_details'>保证金详情</div>
+              <el-table :data='authentication_info.business_log' border >
+                  <el-table-column property="id" label="序号" align='center' width="70px"></el-table-column>
+                  <el-table-column property="drawee" label="付款户名" align='center' ></el-table-column>
+                  <el-table-column property="payee" label="收款户名" align='center' ></el-table-column>
+                  <el-table-column property="price" label="金额（￥）" align='center'></el-table-column>
+                  <el-table-column property="contact_name" label="联系人" align='center'></el-table-column>
+                  <el-table-column property="contact_phone" label="联系电话" align='center' width="120px"></el-table-column>  
+                  <el-table-column prop="type" label="类型" align='center'>
+                       <template slot-scope="scope">{{authenticationType(scope.row.type)}}</template>
+                  </el-table-column>
+                  <el-table-column prop="state" label="状态" align='center' >
+                       <template slot-scope="scope">{{auditingState(scope.row.state)}}</template>
+                  </el-table-column>
+                  <el-table-column property="create_name" label="交易人" align='center' ></el-table-column>
+                  <el-table-column property="create_time" label="交易时间" align='center'  width="150px"></el-table-column>
+                  <el-table-column property="operation" label="操作" align='center' width="80px" v-if="operationType==1">
+                  <template slot-scope="scope">
+                      <el-button type="text" @click="seeRefund(scope.row)">查看</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+        </el-form>
+        <div v-if="operationType==2">
+          <div class='num_set'>项目历史</div>
+          <el-table :data="project_history" border>
+              <el-table-column property="nub" label="序号" align='center' width="70px"></el-table-column>
+              <el-table-column property="company_name" label="公司名称" align='center'></el-table-column>
+              <el-table-column property="company_relation" label="与项目关系" align='center'></el-table-column>
+              <el-table-column property="s_time" label="开始时间" align='center'></el-table-column>
+              <el-table-column property="e_time" label="结束时间" align='center'></el-table-column>
+              <el-table-column property="project_hold_name" label="负责人" align='center'></el-table-column>
+              <el-table-column property="project_hold_phone" label="联系方式" align='center'></el-table-column>
+          </el-table>
+        </div>
+    </div>
+    <div style="margin-top: 30px;">
+        <el-button type="primary" @click="submit">保存</el-button>
+        <el-button @click="cancel">取消</el-button>
+    </div>
+    <!-- <div slot="footer" class="dialog-footer">
+      <el-button @click='cancel'>取 消</el-button>
+      <el-button type="primary" @click='submit'>提 交</el-button>
+    </div> -->
+
+     <!-- 帐号添加 -->
+     <el-dialog title="新建账号" :visible.sync="dialogFormVisibleAccounts"  class='tableUser' @close="cancelUser">
+      <el-form>
+        <el-form-item label="设定帐号" class='input'>
+          <el-input v-model="projectUserForm.account" auto-complete="off" placeholder="请输入帐号"></el-input>
+        </el-form-item>
+        <el-form-item label="设定密码" class='input' v-if="operationType == 0">
+          <el-input v-model="projectUserForm.password" auto-complete="off" type='password' placeholder="请输入密码"></el-input>
+        </el-form-item>
+        <el-form-item label="管理员" class='input'>
+          <el-input v-model="projectUserForm.name" auto-complete="off" placeholder="请输入管理员"></el-input>
+        </el-form-item>
+        <el-form-item label="联系电话" class='input'>
+          <el-input v-model="projectUserForm.phone" auto-complete="off" placeholder="请输入联系电话"></el-input>
+        </el-form-item>
+
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click='cancelUser'>关 闭</el-button>
+        <el-button type="primary" @click='submitUser'>确 定</el-button>
+      </div> 
+</el-dialog>
+   <!-- 暂时未使用 -->
+  <!-- <el-dialog  title="可退金额" :visible.sync="refundShow"  class='tableRefund' @close="">
+    <div>可退金额=保证金总额-为结佣金额-曾退款金额</div>
+    <div>9000=10000-1000-0</div>
+      <el-button type='text' class='text'>缴款记录</el-button>
+     <el-table :data="paymentRecord" border>
+              <el-table-column property="nub" label="序号" align='center'></el-table-column>
+              <el-table-column property="drawee" label="付款户名" align='center'></el-table-column>
+              <el-table-column property="payee" label="收款户名" align='center'></el-table-column>
+              <el-table-column property="price" label="金额（￥）" align='center'></el-table-column>
+              <el-table-column property="create_time" label="交易时间" align='center'></el-table-column>
+     </el-table>
+     <div>保证金总额：{{}}</div>
+  </el-dialog> -->
+
+    </div>
+</template>
+
+
+<script>
+import CitySelector from "../../../components/CitySelector";
+export default {
+  data() {
+    return {
+      form: {
+        district: "",
+        province: "",
+        city: "",
+        statement_company: "",
+        project_hold_phone: "",
+        latitude: "",
+        longitude: "",
+        project_name: "",
+        absolute_address: "",
+        property_type: [],
+        developer_name: "",
+        project_hold_name: "",
+        company_relation: "",
+        remark: "",
+        project_id: "",
+        project_agreement: [],
+        project_user: []
+      },
+      map: null,
+      sendata: {},
+      gridData: [],
+      historicalRecords: [],
+      UserShow: [],
+      Enclosure: [],
+      dialogFormVisibleAccounts: false,
+      showMap: false,
+      isUserEdit: false,
+      refundShow: false,
+      isEditProjectList: false,
+      paymentRecordTable: false,
+      auditOptions: [],
+      options: [
+        {
+          value: "选项1",
+          label: "区域"
+        }
+      ],
+      value: "",
+      projectUserForm: {
+        name: "",
+        account: "",
+        password: "",
+        phone: ""
+      },
+      auditing_info: {
+        auditing_name: "",
+        auditing_time: "",
+        auditing_remark: "",
+        auditing_state: ""
+      },
+      paymentRecord: [],
+      refund: [],
+      userObj: {},
+      fileObject: {},
+      operationType: 0, //0 新增  1 修改  2 查看
+      addEditDelete: 0, //0 无新增  1 无修改  2 无查看
+      project: [],
+      typeOptions: [],
+      project_history: [],
+      projectHistory: {
+        company_id: "",
+        s_time: "",
+        e_time: "",
+        project_hold_phone: "",
+        project_hold_name: "",
+        company_relation: "",
+        project_id: "",
+        company_name: ""
+      },
+      authentication_info: {
+        business_log: []
+      },
+      businessLogForm: {
+        deposit: "",
+        authentication_state: "",
+        no_price: "",
+        business_log: [
+          {
+            payee: "",
+            drawee: "",
+            contact_name: "",
+            contact_phone: "",
+            create_name: "",
+            create_time: "",
+            price: "",
+            type: ""
+          }
+        ]
+      },
+      projectAgreement: {
+        file_name: "",
+        url: "",
+        create_name: "",
+        create_time: ""
+      }
+    };
+  },
+  mounted() {
+    this.operationType = this.$route.params.operationType;
+    if (this.operationType === undefined) {
+      this.$router.push({ name: "project" });
+      return;
+    }
+    this.form.project_id = this.$route.params.project_id;
+    if (this.form.project_id) {
+      this.getProjectInfo();
+    } else {
+      this.$nextTick(() => {
+        this.initMap();
+      });
+    }
+    this.getType();
+  },
+  methods: {
+    async requestRefund() {
+      this.$router.push({
+        name: "requestRefund",
+        params: {
+          operationType: this.$route.params.operationType,
+          project_id: this.$route.params.project_id,
+          allow: this.authentication_info.allow
+        }
+      });
+    },
+    seeRefund(row) {
+      let name = "";
+      // type 1为缴纳 2为退款  缴纳金额 金额 +  退款 金额-
+      if (row.type == 1) {
+        name = "payRecord";
+      } else if (row.type == 2) {
+        name = "refundInfo";
+      }
+      this.$router.push({
+        name: name,
+        params: {
+          operationType: this.$route.params.operationType,
+          project_id: this.$route.params.project_id,
+          id: row.id
+        }
+      });
+    },
+    isDisable() {
+      if (this.operationType == 3) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    async getProjectInfo() {
+      let res = await this.api.getProjectInfo({
+        project_id: this.form.project_id
+      });
+      if (res.code == 200) {
+        let temp = { ...res.data.project };
+        temp.property_type = [];
+        temp.project_user = res.data.project_admin;
+        temp.project_agreement = res.data.project_agreement;
+        this.authentication_info = res.data.authentication_info;
+        this.auditing_info = res.data.auditing_info;
+        this.project_history = res.data.project_history;
+        for (let type of res.data.project.property_type) {
+          temp.property_type.push(type.property_tag_id);
+        }
+        Object.assign(this.form, temp);
+        this.$nextTick(() => {
+          this.initMap(temp);
+        });
+      }
+    },
+    async submit() {
+      if (this.operationType == 3) {
+        let temp = {};
+        temp.project_id = this.form.project_id;
+        temp.project_name = this.form.project_name;
+        temp.province = this.form.province;
+        temp.city = this.form.city;
+        temp.district = this.form.district;
+        temp.absolute_address = this.form.absolute_address;
+        temp.longitude = this.form.longitude;
+        temp.latitude = this.form.latitude;
+        temp.property_type = this.form.property_type;
+        temp.developer_name = this.form.developer_name;
+        temp.company_relation = this.form.company_relation;
+        temp.project_hold_name = this.form.project_hold_name;
+        temp.project_hold_phone = this.form.project_hold_phone;
+        temp.remark = this.form.remark;
+        temp.statement_company = this.form.statement_company;
+
+        let res = await this.api.reCreateProject(temp);
+        if (res.code == 200) {
+          this.$message({ type: "success", message: "保存成功" });
+          setTimeout(() => {
+            this.$router.push({ name: "project" });
+          }, 2000);
+        }
+      } else {
+        let res = await this.api.getCreateProject(this.form);
+        if (res.code == 200) {
+          this.$message({ type: "success", message: "保存成功" });
+          setTimeout(() => {
+            this.$router.push({ name: "project" });
+          }, 2000);
+        }
+      }
+    },
+
+    cancel() {
+      this.$router.push({ name: "project" });
+    },
+
+    async submitUser() {
+      if (this.operationType == 1) {
+        if (this.isUserEdit) {
+          this.projectUserForm.project_id = this.form.project_id;
+          let temp = Object.assign({}, this.projectUserForm);
+          temp.index = undefined;
+          temp.password = undefined;
+          await this.api.updateProjectAdmin(temp);
+        } else {
+          this.projectUserForm.project_id = this.form.project_id;
+          let temp = Object.assign({}, this.projectUserForm);
+          temp.index = undefined;
+          await this.api.addProjectAdmin(temp);
+        }
+      }
+      let temp = Object.assign({}, this.projectUserForm);
+      if (this.isUserEdit) {
+        Object.assign(this.form.project_user[temp.index], temp);
+      } else {
+        this.form.project_user.push(temp);
+      }
+      this.cancelUser();
+    },
+    removeUser(index) {
+      this.form.project_user.splice(index, 1);
+    },
+    cancelUser() {
+      this.dialogFormVisibleAccounts = false;
+      let originAccountsForm = this.$options.data()["projectUserForm"];
+      Object.assign(this.projectUserForm, originAccountsForm);
+    },
+    showUser() {
+      this.isUserEdit = false;
+      this.dialogFormVisibleAccounts = true;
+    },
+    editUser(row, index) {
+      this.isUserEdit = true;
+      this.dialogFormVisibleAccounts = true;
+      Object.assign(this.projectUserForm, row);
+      this.projectUserForm.index = index;
+    },
+    auditingState(row) {
+      if (row == 0) {
+        return "待审核";
+      } else if (row == 1) {
+        return "通过";
+      } else if (row == 2) {
+        return "未通过";
+      }
+    },
+    authenticationType(row) {
+      if (row == 1) {
+        return "缴纳";
+      } else if (row == 2) {
+        return "退款";
+      }
+    },
+    projectState(row) {
+      if (row == 0) {
+        return "禁用";
+      } else if (row == 1) {
+        return "管理中";
+      } else if (row == 2) {
+        return "已转新房";
+      } else if (row == 3) {
+        return "已转二手房";
+      }
+    },
+
+    showUploadFile() {
+      let btn = document.querySelector(".uploadBtn");
+      btn.click();
+    },
+
+    async fileUpload(fileObj) {
+      this.fileObject = fileObj;
+      let flag = false;
+      if (
+        this.fileObject.name.indexOf(".docx") > -1 ||
+        this.fileObject.name.indexOf(".doc") > -1
+      ) {
+        flag = true;
+      }
+      if (!flag) {
+        this.$message({
+          type: "error",
+          message: "文件上传格式有误，请上传docx或者doc格式"
+        });
+        return;
+      }
+      let file = this.fileObject.raw;
+      let formData = new FormData();
+      formData.append("url", file);
+      let res = await this.api.uploadProjectAgreement(formData);
+      if (res.code == 200) {
+        let projectAgreementTemp = {};
+        projectAgreementTemp.create_time = res.data.create_time;
+        projectAgreementTemp.create_name = res.data.create_name;
+        projectAgreementTemp.url = res.data.img_url;
+        projectAgreementTemp.file_name = fileObj.name;
+        this.form.project_agreement = [];
+        this.form.project_agreement.push(projectAgreementTemp);
+      }
+      this.getProjectList();
+    },
+
+    showMapDetails() {
+      let row = document.querySelector(".map");
+      row.classList.toggle("active");
+    },
+
+    auditStatus() {},
+    initMap(row) {
+      if (!this.map) {
+        this.map = new BMap.Map("map");
+      }
+      this.map.addControl(new BMap.NavigationControl());
+      this.map.enableScrollWheelZoom(true);
+      if (row) {
+        var point = new BMap.Point(row.longitude, row.latitude);
+        this.map.centerAndZoom(point, 15);
+        this.map.clearOverlays();
+        this.map.addOverlay(new BMap.Marker(point));
+      } else {
+        var point = new BMap.Point(116.404, 39.915);
+        this.map.centerAndZoom(point, 15);
+      }
+
+      this.map.addEventListener("click", e => {
+        //移除旧坐标
+        this.map.clearOverlays();
+        //获得新坐标
+        let lng = e.point.lng; //经度
+        let lat = e.point.lat; //纬度
+        this.form.longitude = lng;
+        this.form.latitude = lat;
+        var myGeo = new BMap.Geocoder();
+        myGeo.getLocation(new BMap.Point(lng, lat), result => {
+          if (result) {
+            this.form.absolute_address = result.address;
+            this.map.addOverlay(new BMap.Marker(new BMap.Point(lng, lat)));
+          }
+        });
+      });
+    },
+    changeDistrict(address) {
+      var myGeo = new BMap.Geocoder();
+      myGeo.getPoint(address, point => {
+        if (point) {
+          this.map.centerAndZoom(point, 16);
+        }
+      });
+    },
+    sumbitRefund() {
+      this.refundShow = true;
+    },
+    cancelRefund() {
+      this.refundShow = false;
+    },
+
+    async getType() {
+      let res = await this.api.getTags();
+      if (res.code == 200) {
+        this.typeOptions = res.data;
+      }
+    }
+  },
+  components: {
+    CitySelector: CitySelector
+  }
+};
+</script>
+

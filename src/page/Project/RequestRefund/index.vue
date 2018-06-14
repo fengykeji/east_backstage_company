@@ -1,0 +1,128 @@
+<style lang="less" scoped>
+    .requestRefund{
+        width: 800px;
+        margin:0 auto;
+        display: inline-block;
+        text-align: left;
+        .text{
+            margin-top: 6%;
+            font-size: 20px;
+            .btn{
+                margin-left: 550px;
+            }
+        }
+        .table{
+            margin-top: 15px;
+            border: 1px solid #eee;
+            padding:20px 30px;  
+            .input{
+            width: 200px;
+            display: inline-block;
+            padding-right: 40px;
+        }
+            .input1{
+                width: 400px;
+            }
+        }
+       
+    }
+</style>
+<template>
+    <div class='requestRefund'>
+        <!-- <button @click="go">查看退款</butston> -->
+    <div style="margin-bottom: 30px;">
+        
+    </div>
+     <div>
+            <div class='text'>
+              申请退款
+               <span class='btn'>
+                    <el-button type="primary" @click="submit">确定</el-button>
+                    <el-button @click="close">返回</el-button>
+               </span>
+            </div>
+      <el-form v-model="requestRefund" class='table'>
+        <el-form-item label="可退金额" class='input'>
+          <div>  {{allow}} </div>
+          <!-- <el-button type='text' class='text'>查看</el-button> -->
+        </el-form-item>
+          <el-form-item label="本次退款金额" class='input'>
+          <el-input v-model="requestRefund.price" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="退款原因" class='input1'>
+               <el-input v-model="requestRefund.refund_remarks" type="textarea" ></el-input>
+        </el-form-item>
+        <el-form-item label="收款银行" class='input'>
+        <el-select v-model="requestRefund.payee_bank" placeholder="请选择收款银行" class='select-1' @change="getBankOptions">
+            <el-option v-for="item in bankOptions" :key="item.param_id" :label="item.param" :value="item.param"></el-option>
+        </el-select>
+        </el-form-item>   
+        <el-form-item label="收款银行卡号" class='input'>
+             <el-input v-model="requestRefund.payee_account" class='input'></el-input>
+        </el-form-item>
+        <el-form-item label="收款人" class='input'>
+             <el-input v-model="requestRefund.payee" class='input'></el-input>
+        </el-form-item>
+        <el-form-item label="备注" class='input1'>
+               <el-input v-model="requestRefund.remark" type="textarea" ></el-input>
+        </el-form-item>
+        
+      </el-form>
+    </div>
+    </div>
+</template>
+
+<script>
+export default {
+    data(){
+        return{
+            requestRefund:{
+                project_id : '',
+                price:'',
+                refund_remarks:'',
+                payee:'',
+                payee_account:'',
+                remark:'',
+                payee_bank:'',
+                
+            },
+            allow: '',
+            bankOptions:[],
+        }
+    },
+    mounted() {
+        this.getBankOptions();
+
+        let params = this.$route.params;
+        if(params.project_id === undefined) {
+            this.$router.push({ name: "project" });
+        }
+        Object.assign( this.requestRefund , params.project_id);
+        this.requestRefund.project_id = params.project_id;
+        this.allow = params.allow;
+    },
+    methods: {
+        close() {
+            this.$router.push({name: 'addProject' , params : this.$route.params});
+        },
+        async submit() {
+            let res = await this.api.getRefund(this.requestRefund);
+            if(res.code==200){
+            
+            }
+        },
+        async  getBankOptions(param_id){
+            let param ='param_id='+param_id;
+              let res = await this.api.getBack(param);
+                if (res.code == 200) {
+                    this.bankOptions = res.data;
+             }
+        }
+        // go(row) {
+        //     this.$router.push({name: 'refundDetail' , params: { id: row,  operationType : this.$route.params.operationType , project_id: this.$route.params.project_id } });
+        // },
+    }
+    
+}
+</script>
+
