@@ -42,40 +42,6 @@
                  <el-button type="primary" @click='showAdd(0)'>新增</el-button>
             </span>
         </div>
-        <!-- <div class='search'>
-          <div>
-              <span class='block'>
-                  <div>
-                      <span class='row'>项目编号：</span>
-                      <el-input class='input'></el-input>
-                  </div>
-                  <div>
-                      <span class='row'>开发商名：</span>
-                      <el-input class='input'></el-input>
-                  </div>
-              </span>
-              <span class='block'>
-                 <div class='top'>
-                      <span class='row'>项目名称：</span>
-                      <el-input class='input'></el-input>
-                  </div>
-              </span>
-              <span class='block'>
-                 <div>
-                      <span class='row'>区域：</span>
-                      <el-select v-model="value" placeholder="请选择">
-                         <el-option v-for="item in options"  :key="item.value"  :label="item.label"  :value="item.value"></el-option>
-                      </el-select>
-                  </div>
-                  <div>
-                      <span class='row'>来源：</span>
-                      <el-select v-model="value" placeholder="请选择">
-                         <el-option v-for="item in options"  :key="item.value"  :label="item.label"  :value="item.value"></el-option>
-                      </el-select>
-                  </div>
-              </span>
-          </div>
-        </div> -->
         <template>
   <el-table :data="tableData"  border  style="width: 100%">
     <el-table-column  prop="project_id" label="序号"  align='center' width="70px"> </el-table-column>

@@ -14,6 +14,11 @@ import Distri_commission from '@/page/Distri_commission'
 import Distribution from '@/page/Distribution'
 import FastDistribution from '@/page/Distribution/FastDistribution'
 import AddPerson from '@/page/Distribution/AddPerson'
+import ChoicePeople from '@/page/Distribution/ChoicePeople'
+import StartApply from '@/page/Distribution/StartApply'
+import ProjectInfo from '@/page/Distribution/ProjectInfo'
+
+
 
 Vue.use(Router);
 
@@ -111,8 +116,24 @@ export default new Router({
           path:'/addPerson',
           name:'addPerson',
           component:AddPerson,
+        },
+        {
+          path:'/choicePeople',
+          name:'choicePeople',
+          component:ChoicePeople,
+        },
+        {
+          path:'/startApply',
+          name:'startApply',
+          component:StartApply,
+        },
+        {
+          path:'/projectInfo',
+          name:'projectInfo',
+          component:ProjectInfo,
         }
-       
+
+        
       ]
     },
   ]

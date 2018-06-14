@@ -461,7 +461,7 @@ export default {
         Object.assign(this.form.project_user[temp.index], temp);
       } else {
         this.form.project_user.push(temp);
-      }
+      } 
       this.cancelUser();
     },
     removeUser(index) {
