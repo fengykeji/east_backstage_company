@@ -1,28 +1,30 @@
 <style lang="less" scoped src="./index.less" ></style>
-<style>
-.el-form-item__label {
-  float: none;
-}
-.el-dialog__body {
-  padding-top: 0;
-}
-.el-dialog {
-  width: 63%;
-  top: -10%;
-}
-.el-table--border,
-.el-table--group {
-  margin-top: 20px;
-}
-.el-table th {
-  padding: 8px 5px;
-}
- .el-table td {
-   padding: 0;
+<style lang="less">
+.project {
+  .el-form-item__label {
+    float: none;
+  }
+  .el-dialog__body {
+    padding-top: 0;
+  }
+  .el-dialog {
+    width: 63%;
+    top: -10%;
+  }
+  .el-table--border,
+  .el-table--group {
+    margin-top: 20px;
+  }
+  .el-table th {
+    padding: 8px 5px;
+  }
+  .el-table td {
+    padding: 0;
+  }
 }
 </style>
 <template>
-    <div class='box'>
+    <div class='box project'>
         <div class='title'>
             <span></span>
             <span class='left'>
@@ -98,8 +100,8 @@ export default {
   },
   methods: {
     search(type) {
-       this.searchObj.tag_search = type;
-       this.getProjectList();
+      this.searchObj.tag_search = type;
+      this.getProjectList();
     },
     async getProjectList() {
       let res = await this.api.getProjectList(this.searchObj);
@@ -112,15 +114,14 @@ export default {
         return "弃用";
       } else if (row == 1) {
         return "正常";
-      }else if (row == 2) {
+      } else if (row == 2) {
         return "已转新房";
-      }else if (row == 3) {
+      } else if (row == 3) {
         return "已转二手房";
       }
-
     },
-    authenticationState(row){
-        if (row == 1) {
+    authenticationState(row) {
+      if (row == 1) {
         return "未认证";
       } else if (row == 2) {
         return "已认证";
@@ -140,21 +141,31 @@ export default {
         return "通过";
       } else if (row == 2) {
         return "未通过";
-        
       }
     },
 
     async showAdd(type, row) {
-     
       //新增 0 修改 1 查看 2
       if (type == 0) {
-         this.$router.push({ name: "addProject" , params: {operationType: type} });
+        this.$router.push({
+          name: "addProject",
+          params: { operationType: type }
+        });
       } else if (type == 1) {
-         this.$router.push({ name: "addProject" , params: {operationType: type , project_id: row.project_id} });
+        this.$router.push({
+          name: "addProject",
+          params: { operationType: type, project_id: row.project_id }
+        });
       } else if (type == 2) {
-        this.$router.push({ name: "addProject" , params: {operationType: type , project_id: row.project_id} });
+        this.$router.push({
+          name: "addProject",
+          params: { operationType: type, project_id: row.project_id }
+        });
       } else if (type == 3) {
-        this.$router.push({ name: "reCreateProject" , params: {operationType: type , project_id: row.project_id} });
+        this.$router.push({
+          name: "reCreateProject",
+          params: { operationType: type, project_id: row.project_id }
+        });
       }
     }
   }

@@ -103,16 +103,16 @@ let api = {
   exAgent:doPost('company/distribution/exAgent'),
 
   //添加到访确认人 - 获取经纪人列表
-  addAgent:doGet('company/distribution/addAgent'),
+  agentList:doGet('company/distribution/addAgent'),
 
   //添加到访确认人 - 提交
-  addAgent:doPost('company/distribution/addAgent'),
+  agentAdd:doPost('company/distribution/addAgent'),
 
   //申请分销 - 选择项目
-  changeProject:doGet('company/distribution/changeProject'),
+  changeProjectList:doGet('company/distribution/changeProject'),
 
   //申请分销 - 提交
-  changeProject:doPost('company/distribution/changeProject'),
+  changeProjectAdd:doPost('company/distribution/changeProject'),
 }
 
 export default api; 

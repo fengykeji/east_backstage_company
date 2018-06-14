@@ -11,7 +11,7 @@
   width: 200px;
   display: inline-block;
   padding-right: 30px;
-    vertical-align: middle;
+  vertical-align: middle;
 }
 .border {
   border: 1px solid #888;
@@ -31,27 +31,27 @@
   margin-top: 20px;
   text-align: right;
 }
-.button{
+.button {
   position: relative;
   top: 16px;
 }
-.btn{
- position: relative;
- left: 320px;
-  .btn-1{
+.btn {
+  position: relative;
+  left: 320px;
+  .btn-1 {
     margin-right: 120px;
   }
 }
-.box{
+.box {
   padding-left: 20px;
   padding-bottom: 30px;
 }
-.el-form-item{
+.el-form-item {
   margin: 2px 0;
 }
-.query{
-    width: 200px;
-    margin:12px 0;
+.query {
+  width: 200px;
+  margin: 12px 0;
 }
 </style>
 <template>
@@ -62,7 +62,7 @@
                  <el-input class='query'></el-input>
                  <el-button icon="el-icon-search" circle></el-button>
                  <span class='btn'>
-                    <el-button type="primary">确定</el-button>
+                    <el-button @click="submit" type="primary">确定</el-button>
                     <el-button class='btn-1' @click="close">返回</el-button>
                  </span>
              </div>
@@ -79,24 +79,30 @@
 export default {
   data() {
     return {
-        person:[],
+      person: []
     };
   },
-  mounted(){
-      this.addAgent();
+  mounted() {
+    // this.addAgent();
   },
-  methods:{
-      async addAgent(){
-          let res=await this.api.addAgent();
-          if(res.code==0){
-              this.person=res.data;
-          }
-      },
-    
-    close(){
-        this.$router.push({ name: "addPerson", params: this.$route.params });
+  methods: {
+    // async addAgent() {
+    //   let res = await this.api.addAgent();
+    //   if (res.code == 0) {
+    //     this.person = res.data;
+    //   }
+    // },
+    async getList() {
+
     },
 
+    submit(row) {
+      this.$router.push({ name: "addPerson", params: { submitForm : row} });
+    },
+
+    close() {
+      this.$router.push({ name: "addPerson", params: this.$route.params });
+    }
   }
 };
 </script>

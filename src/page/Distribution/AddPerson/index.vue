@@ -59,42 +59,42 @@
                   <el-button type="primary" >确定</el-button>
                   <el-button class='btn-1' @click="close">返回</el-button>
             </span>
-            <el-form v-model="addPerson">
+            <el-form v-model="submitForm">
                 <el-form-item label="到访确认人" class='input1'>
-                      <div class='border'>{{addPerson.price}}</div>
+                      <div class='border'>{{submitForm.price}}</div>
                 </el-form-item>
               <span>
                   <el-button type="primary" class='button' @click='choice'>选择</el-button>
               </span>
                   <div class='num_set'>员工信息</div>
                 <el-form-item label="姓名" class='input1'>
-                      <div class='border'>{{addPerson.price}}</div>
+                      <div class='border'>{{submitForm.price}}</div>
                 </el-form-item>
                 <el-form-item label="入职时间" class='input1'>
-                      <div class='border'>{{addPerson.price}}</div>
+                      <div class='border'>{{submitForm.price}}</div>
                 </el-form-item>
                 <el-form-item label="云算号" class='input1'>
-                      <div class='border'>{{addPerson.price}}</div>
+                      <div class='border'>{{submitForm.price}}</div>
                 </el-form-item>
                 <el-form-item label="所属部门" class='input1'>
-                      <div class='border'>{{addPerson.price}}</div>
+                      <div class='border'>{{submitForm.price}}</div>
                 </el-form-item>
                 <el-form-item label="职位" class='input1'>
-                      <div class='border'>{{addPerson.price}}</div>
+                      <div class='border'>{{submitForm.price}}</div>
                 </el-form-item>
                 <div>
                     <div class='num_set'>基础信息</div>
                     <el-form-item label="性别" class='input1'>
-                      <div class='border'>{{addPerson.price}}</div>
+                      <div class='border'>{{submitForm.price}}</div>
                     </el-form-item>
                     <el-form-item label="出生年月" class='input1'>
-                      <div class='border'>{{addPerson.price}}</div>
+                      <div class='border'>{{submitForm.price}}</div>
                     </el-form-item>
                     <el-form-item label="电话号码" class='input1'>
-                      <div class='border'>{{addPerson.price}}</div>
+                      <div class='border'>{{submitForm.price}}</div>
                     </el-form-item>
                     <el-form-item label="通讯住址" class='input1'>
-                      <div class='border'>{{addPerson.price}}</div>
+                      <div class='border'>{{submitForm.price}}</div>
                     </el-form-item>
                 </div>
             </el-form>
@@ -105,16 +105,19 @@
 export default {
   data() {
     return {
-        addPerson:[]
+        submitForm: {},
     };
   },
   mounted(){
-
+    if(this.$route.params.submitForm === undefined) {
+    }else {
+      this.submitForm = this.$route.params.submitForm 
+    }
   },
   methods:{
 
     choice(){
-        this.$router.push({ name: "choicePeople", params: this.$route.params });
+        this.$router.push({ name: "choicePeople", params: { submitForm: this.submitForm } });
     },
     close(){
         this.$router.push({ name: "fastDistribution", params: this.$route.params });

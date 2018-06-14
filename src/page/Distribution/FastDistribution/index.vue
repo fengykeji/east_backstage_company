@@ -1,9 +1,23 @@
-<style lang="less" scoped src='../index.less'>
+<style lang="less" scoped >
+.fastDistribution{
+    padding-top: 50px;
+    margin:0 auto;
+    width: 1200px;
+    .table{
+        margin-bottom: 50px;
+        text-align: right;
+        .el-button{
+            margin-bottom: 20px;
+         
+        }
+    }
+   
+}
 </style>
 <template>
-    <div class='FastDistribution'>
+    <div class='fastDistribution'>
        <div class='table'>
-            <title>到访确认人维护信息</title>
+            <div>到访确认人维护信息</div>
             <el-button type="primary" class='addBtn' @click='addShow'>新增</el-button>
             <el-button type="primary" class='addBtn' @click='cancel'>关闭</el-button>
             <el-table :data="maintain" border>
@@ -84,7 +98,7 @@ export default {
       }
     },
     addShow(){
-        this.$router.push({ name: "addPerson", params: this.$route.params });
+        this.$router.push({ name: "addPerson" });
     }
   }
 };

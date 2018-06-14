@@ -1,14 +1,16 @@
 <style lang="less" scoped src="./index.less" ></style>
-<style>
-.el-form-item__label {
-  float: none;
-}
-.el-dialog__body {
-  padding-top: 0;
+<style lang="less">
+.distribution {
+  .el-form-item__label {
+    float: none;
+  }
+  .el-dialog__body {
+    padding-top: 0;
+  }
 }
 </style>
 <template>
-    <div class='box'>
+    <div class='box distribution'>
         <div class='title'>
             <span></span>
             <span class='left'>
@@ -99,38 +101,38 @@
 export default {
   data() {
     return {
-        tableData:[],
-        project_id:'',
-        options:[],
-          value:'',
+      tableData: [],
+      project_id: "",
+      options: [],
+      value: ""
     };
   },
   mounted() {
     this.getList();
   },
   methods: {
-    async getList(){
-      let res=await this.api.getList();
-      if(res.code==200){
-        this.tableData=res.data;
+    async getList() {
+      let res = await this.api.getList();
+      if (res.code == 200) {
+        this.tableData = res.data;
       }
     },
-    startApply(){
-       this.$router.push({
-        name: "startApply",
+    startApply() {
+      this.$router.push({
+        name: "startApply"
       });
     },
-    fastDistribution(){
-      console.log( this.project_id);
+    fastDistribution() {
+      console.log(this.project_id);
       this.$router.push({
         name: "fastDistribution",
-        params: {project_id: this.project_id}
+        params: { project_id: this.project_id }
       });
     },
-    seeProject(){
-       this.$router.push({name: "projectInfo",});
+    seeProject() {
+      this.$router.push({ name: "projectInfo" });
     },
-     scopeState(row) {
+    scopeState(row) {
       if (row == 1) {
         return "自行申请";
       } else if (row == 2) {
@@ -144,16 +146,15 @@ export default {
         return "以终止";
       }
     },
-     auditingState(row) {
+    auditingState(row) {
       if (row == 0) {
         return "停用";
       } else if (row == 1) {
         return "通过";
       } else if (row == 2) {
         return "审核中";
-        
       }
-    },
+    }
   }
 };
 </script>
