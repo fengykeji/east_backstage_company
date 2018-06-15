@@ -86,10 +86,11 @@
            <template slot-scope="scope">{{auditingState(scope.row.state)}}</template>
     </el-table-column>
     <el-table-column  prop="is_distribution" label="分配状态" align='center'></el-table-column>
-    <el-table-column prop="operation" label="操作" align='center'>
+    <el-table-column prop="operation" label="操作" align='center'  width="210px">
         <template slot-scope="scope">
-          <el-button type="text" @click='seeProject'>查看</el-button>
-          <el-button type="text">修改</el-button>
+          <el-button type="text" @click='showProject(scope.row)'>查看</el-button>
+          <el-button type="text" @click='showProject(scope.row)'>修改</el-button>
+          <el-button type="text" @click='fastDistribution()'>分配到访确认人</el-button>
         </template>
       </el-table-column>
   </el-table>
@@ -104,7 +105,8 @@ export default {
       tableData: [],
       project_id: "",
       options: [],
-      value: ""
+      value: "",
+      operationType: 0, //0 查看  1 修改  
     };
   },
   mounted() {
@@ -123,14 +125,14 @@ export default {
       });
     },
     fastDistribution() {
-      console.log(this.project_id);
       this.$router.push({
         name: "fastDistribution",
         params: { project_id: this.project_id }
       });
     },
-    seeProject() {
-      this.$router.push({ name: "projectInfo" });
+    showProject(row) {
+       this.$router.push({ name: "projectInfo",params: {project_id: row.project_id }});
+      
     },
     scopeState(row) {
       if (row == 1) {

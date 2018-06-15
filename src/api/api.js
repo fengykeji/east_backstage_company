@@ -11,7 +11,7 @@ const doPost = function (url) {
 }
 const doGet = function (url) {
   return function (params) {
-    return params ? http.get(`${base}/${url}`,  {params: params }) : http.get(`${base}/${url}`);
+    return params ? http.get(`${base}/${url}`, { params: params }) : http.get(`${base}/${url}`);
   }
 }
 
@@ -24,12 +24,12 @@ http.interceptors.response.use(function (res) {
 
 // token拦截器
 http.interceptors.request.use(function (req) {
-let token =localStorage.getItem('token');
-if( token !='' ) {
-	req.headers["ACCESS-ROLE"]= 'company';
-	req.headers["ACCESS-TOKEN"] = token;
-}
-return req;
+  let token = localStorage.getItem('token');
+  if (token != '') {
+    req.headers["ACCESS-ROLE"] = 'company';
+    req.headers["ACCESS-TOKEN"] = token;
+  }
+  return req;
 
 });
 
@@ -54,65 +54,81 @@ let api = {
 
   //上传附件
   uploadProjectAgreement: (params) => { return fileUpload(`company/project/uploadProjectAgreement`, params) },
-  
+
   //修改管理员 - 获取信息
-  getUpdateProjectAdmin:doGet('company/project/updateProjectAdmin'),
+  getUpdateProjectAdmin: doGet('company/project/updateProjectAdmin'),
 
   //修改管理员 - 提交
-  updateProjectAdmin:doPost('company/project/updateProjectAdmin'),
+  updateProjectAdmin: doPost('company/project/updateProjectAdmin'),
 
   //添加项目管理员   
   addProjectAdmin: doPost('company/project/addProjectAdmin'),
-                                
+
   //查看项目
   getProjectInfo: doGet('company/project/getProjectInfo'),
 
   //获取物业类型
-  getTags:doGet('company/project/getProperty_tags'),
+  getTags: doGet('company/project/getProperty_tags'),
 
   //修改项目-提交
-  getUpdateProject:doPost('company/project/updateProject'),
+  getUpdateProject: doPost('company/project/updateProject'),
 
   //项目-重新申请
-  reCreateProject:doPost('company/project/reCreateProject'),
+  reCreateProject: doPost('company/project/reCreateProject'),
 
   //获取银行类型
-  getBack:doGet('company/project/getBack'),
+  getBack: doGet('company/project/getBack'),
 
   //获取缴纳详情
-  getBusinessInfo:doGet('company/project/getBusinessInfo'),
+  getBusinessInfo: doGet('company/project/getBusinessInfo'),
 
   //退款申请
-  getRefund:doPost('company/project/refund'),
+  getRefund: doPost('company/project/refund'),
 
-                             //项目分销   第二板块
+  //项目分销   第二板块
 
   //获取列表
-  getList:doGet('company/distribution/getList'),
+  getList: doGet('company/distribution/getList'),
 
   //到访确认人 列表
-  getAgent:doGet('company/distribution/getAgent'),
+  getAgent: doGet('company/distribution/getAgent'),
 
   //到访确认人 详情
-  getAgentInfo:doGet('company/distribution/getAgentInfo'),
+  getAgentInfo: doGet('company/distribution/getAgentInfo'),
 
   //结束到访确认人
-  endAgent:doGet('company/distribution/endAgent'),
+  endAgent: doGet('company/distribution/endAgent'),
 
   //审核到访确认人
-  exAgent:doPost('company/distribution/exAgent'),
+  exAgent: doPost('company/distribution/exAgent'),
 
   //添加到访确认人 - 获取经纪人列表
-  agentList:doGet('company/distribution/addAgent'),
+  agentList: doGet('company/distribution/addAgent'),
 
   //添加到访确认人 - 提交
-  agentAdd:doPost('company/distribution/addAgent'),
+  agentAdd: doPost('company/distribution/addAgent'),
 
   //申请分销 - 选择项目
-  changeProjectList:doGet('company/distribution/changeProject'),
+  changeProjectList: doGet('company/distribution/changeProject'),
 
   //申请分销 - 提交
-  changeProjectAdd:doPost('company/distribution/changeProject'),
+  changeProjectAdd: doPost('company/distribution/changeProject'),
+
+  //经纪人管理   第二板块
+  //审核经纪人
+  exPeople: doPost('company/CompanyAgent/ex'),
+
+  //离职经纪人
+  quitPeople: doPost('company/CompanyAgent/quit'),
+
+  //经纪人审核列表
+  getExList: doGet('company/CompanyAgent/getExList'),
+
+  //已离职经纪人列表
+  getQuitList: doGet('company/CompanyAgent/getQuitList'),
+
+  //在职经纪人列表
+  getPayrollList: doGet('company/CompanyAgent/getPayrollList'),
 }
 
 export default api; 

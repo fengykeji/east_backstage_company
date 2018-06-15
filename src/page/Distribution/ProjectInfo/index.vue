@@ -38,58 +38,50 @@
 <template>
     <div class='projectInfo'>
         <div class='title-text'>项目分销详情</div>
-        <el-form :model="form" class='form'>
+        <el-form :model="submitForm" class='form'>
             <div>
                 <el-form-item label="项目编号" class='input'>
-                <el-input v-model="form.project_code" auto-complete="off" placeholder="请输入项目名称"></el-input>
+                <el-input v-model="submitForm.project_code" auto-complete="off" placeholder="请输入项目编号"></el-input>
                 </el-form-item>
                 <el-form-item label="项目名称" class='input'>
-                <el-input v-model="form.project_name" auto-complete="off" placeholder="请输入项目名称"></el-input>
+                <el-input v-model="submitForm.project_name" auto-complete="off" placeholder="请输入项目名称"></el-input>
                 </el-form-item>
             </div>
-            <el-form-item label="物业类型" class='select'> 
-            <el-radio-group v-model="form.resource">
-                <el-radio label="住宅"></el-radio>
-                <el-radio label="公寓"></el-radio>
-                <el-radio label="别墅"></el-radio>
-                <el-radio label="商铺"></el-radio>
-                <el-radio label="写字楼"></el-radio>
-                <el-radio label="车位"></el-radio>
-            </el-radio-group>
-            </el-form-item>
+             <div class="property_type">物业类型</div>
+             <el-checkbox v-model="submitForm.property_type" v-for="item in typeOptions" :key="item.param_id" :label="item.param_id">{{item.param}}</el-checkbox>
             <div class='text'>现住地址</div>
             <el-form-item>
-                <city-selector  :province.sync="form.province" :city.sync="form.city" :district.sync="form.district"/>
-                <el-input class='input1'></el-input>
+                <city-selector  :province.sync="submitForm.province" :city.sync="submitForm.city" :district.sync="submitForm.district"/>
+                <el-input class='input1' v-model="submitForm.absolute_address"></el-input>
             </el-form-item>
             <el-form-item label="项目状态" class='input'>
-                <el-input v-model="form.end_state" auto-complete="off"></el-input>
+                <el-input v-model="submitForm.end_state" auto-complete="off"></el-input>
             </el-form-item><br/>
             <el-form-item label="项目负责人" class='input'>
-                 <el-input v-model="form.name" auto-complete="off"></el-input>
+                 <el-input v-model="submitForm.project_hold_name" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item label="联系电话" class='input'>
-                <el-input v-model="form.name" auto-complete="off"></el-input>
+                <el-input v-model="submitForm.project_hold_phone" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item label="开发商" class='input'>
-             <el-input v-model="form.developer_name" auto-complete="off"></el-input>
+             <el-input v-model="submitForm.developer_name" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item label="结佣单位" class='input'>
-             <el-input v-model="form.name" auto-complete="off"></el-input>
+             <el-input v-model="submitForm.name" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item label="所属单位" class='input'>
-              <el-input v-model="form.name" auto-complete="off"></el-input>
+              <el-input v-model="submitForm.name" auto-complete="off"></el-input>
             </el-form-item>
           <el-button type="text">查看</el-button>
            <span class='select-tip'>
                 <el-form-item label="与项目关系"> 
-                <el-radio-group v-model="form.resource">
+                <el-radio-group v-model="submitForm.resource">
                     <el-radio label="分销"></el-radio>
                 </el-radio-group>
             </el-form-item>
            </span>
         </el-form>
-        <div class='title-text'>结佣规则</div>
+        <!-- <div class='title-text'>结佣规则</div>
         <el-table :data="gridData" border>
             <el-table-column  type="selection"></el-table-column>
             <el-table-column prop="date" label="序号" align='center'></el-table-column>
@@ -104,26 +96,26 @@
                 <el-button>查看</el-button>
             </template>
             </el-table-column>
-        </el-table>
+        </el-table> -->
         <div class='title-text'>审核项目信息</div>
-        <el-form :model="form">
+        <el-form :model="submitForm.auditProject">
             <div>
                 <el-form-item label="审核人员" class='input'>
-                    <el-input v-model="form.project_code" auto-complete="off"></el-input>
+                    <el-input v-model="submitForm.project_code" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="审核时间" class='input'>
-                     <el-input v-model="form.project_name" auto-complete="off"></el-input>
+                     <el-input v-model="submitForm.project_name" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="审核状态" class='input'>
-                     <el-input v-model="form.project_name" auto-complete="off"></el-input>
+                     <el-input v-model="submitForm.project_name" auto-complete="off"></el-input>
                 </el-form-item>
                  <el-form-item label="备注" class='input'>
-                     <el-input v-model="form.project_name" auto-complete="off"></el-input>
+                     <el-input v-model="submitForm.project_name" auto-complete="off"></el-input>
                 </el-form-item>
             </div>
         </el-form>
         <div class='title-text'>到访确认人信息</div>
-         <el-table :data="project_history" border>
+         <el-table :data="peopleInfo" border>
               <el-table-column property="nub" label="序号" align='center' width="70px"></el-table-column>
               <el-table-column property="company_name" label="云算号" align='center'></el-table-column>
               <el-table-column property="company_relation" label="名称" align='center'></el-table-column>
@@ -147,11 +139,39 @@ import CitySelector from "../../../components/CitySelector";
 export default {
   data() {
     return {
-      form: {}
+      submitForm: {
+          province:'',
+          city:'',
+          district:'',
+          project_id:"",
+          auditProject:{},
+        
+      },
+        typeOptions:[],
+        peopleInfo:[],
+
     };
   },
-  mounted() {},
-  methods: {},
+  mounted() {
+      this.submitForm.project_id = this.$route.params.project_id;
+    if (this.submitForm.project_id) {
+        this.submit();
+    }
+  },
+  methods: {
+       async search() {
+      let res = await this.api.changeProjectList({ project_id: this.submitForm.project_id });
+      if (res.code == 200) {
+        this.sumbitForm = res.data;
+      }
+    },
+      submit(){
+           this.$router.push({ name: "distribution", params:{submitForm:this.$route.params.submitForm}});
+      },
+      cancel(){
+             this.$router.push({ name: "startApply", params: this.$route.params });
+      }
+  },
   components: {
     CitySelector: CitySelector
   }

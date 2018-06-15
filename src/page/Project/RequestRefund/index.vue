@@ -7,9 +7,9 @@
         .text{
             margin-top: 6%;
             font-size: 20px;
-            .btn{
-                margin-left: 550px;
-            }
+        }
+        .btn{
+            text-align: right;
         }
         .table{
             margin-top: 15px;
@@ -36,11 +36,11 @@
      <div>
             <div class='text'>
               申请退款
-               <span class='btn'>
+            </div>
+             <div class='btn'>
                     <el-button type="primary" @click="submit">确定</el-button>
                     <el-button @click="close">返回</el-button>
-               </span>
-            </div>
+               </div>
       <el-form v-model="requestRefund" class='table'>
         <el-form-item label="可退金额" class='input'>
           <div>  {{allow}} </div>
@@ -106,6 +106,7 @@ export default {
             this.$router.push({name: 'addProject' , params : this.$route.params});
         },
         async submit() {
+              this.$router.push({name: 'addProject' , params : this.$route.params});
             let res = await this.api.getRefund(this.requestRefund);
             if(res.code==200){
             

@@ -1,23 +1,30 @@
 <style lang="less" scoped >
-.fastDistribution{
-    padding-top: 50px;
-    margin:0 auto;
-    width: 1200px;
-    .table{
-        margin-bottom: 50px;
-        text-align: right;
-        .el-button{
-            margin-bottom: 20px;
-         
-        }
+.fastDistribution {
+  padding-top: 50px;
+  margin: 0 auto;
+  width: 1200px;
+  .table {
+    margin-bottom: 50px;
+    text-align: right;
+    .el-button {
+      margin-bottom: 20px;
     }
-   
+    .title {
+      text-align: right;
+      .text {
+        font-size: 18px;
+        width: 200px;
+      }
+    }
+  }
 }
 </style>
 <template>
     <div class='fastDistribution'>
        <div class='table'>
-            <div>到访确认人维护信息</div>
+           <div class='title'>
+                <div class='text'>到访确认人维护信息</div>
+           </div>
             <el-button type="primary" class='addBtn' @click='addShow'>新增</el-button>
             <el-button type="primary" class='addBtn' @click='cancel'>关闭</el-button>
             <el-table :data="maintain" border>
@@ -67,27 +74,26 @@ export default {
     return {
       project_id: "",
       maintain: [],
-      examine: [],
+      examine: []
     };
   },
   mounted() {
-        this.getAgent();
-    this.project_id= this.$route.params.project_id;
+  
+    this.project_id = this.$route.params.project_id;
     if (this.project_id) {
-    
+          this.getAgent();
     }
   },
   methods: {
     async getAgent() {
-      let res = await this.api.getAgent({project_id:this.project_id});
-      console.log(res)
+      let res = await this.api.getAgent({ project_id: this.project_id });
       if (res.code == 200) {
         this.maintain = res.data.y_info;
-        this.examine=res.data.n_info;
+        this.examine = res.data.n_info;
       }
     },
-    cancel(){
-         this.$router.push({ name: "distribution", params: this.$route.params });
+    cancel() {
+      this.$router.push({ name: "distribution", params: this.$route.params });
     },
     showAdd() {},
     authenticationState(row) {
@@ -97,8 +103,8 @@ export default {
         return "已认证";
       }
     },
-    addShow(){
-        this.$router.push({ name: "addPerson" });
+    addShow() {
+      this.$router.push({ name: "addPerson" });
     }
   }
 };

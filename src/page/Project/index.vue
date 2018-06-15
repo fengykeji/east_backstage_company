@@ -46,7 +46,7 @@
         </div>
         <template>
   <el-table :data="tableData"  border  style="width: 100%">
-    <el-table-column  prop="project_id" label="序号"  align='center' width="70px"> </el-table-column>
+    <el-table-column  prop="" label="序号"  align='center' width="70px"> </el-table-column>
     <el-table-column  prop="project_code"  label="项目编号"  align='center' width="100px"></el-table-column>
     <el-table-column  prop="project_name" label="项目名称" align='center' width="120px"></el-table-column>
        <!-- 项目状态函数 -->
@@ -54,8 +54,8 @@
         <template slot-scope="scope">{{projectState(scope.row.state)}}</template>
     </el-table-column>
     <el-table-column  prop="city" label="区域" align='center' width="90px"></el-table-column>
-    <el-table-column  prop="absolute_address" label="地址" align='center' width="220px"></el-table-column>
-    <el-table-column  prop="developer_name" label="开发商" align='center' width="160px"></el-table-column>
+    <!-- <el-table-column  prop="absolute_address" label="地址" align='center' width="220px"></el-table-column> -->
+    <el-table-column  prop="developer_name" label="开发商" align='center'></el-table-column>
     <el-table-column  prop="company_relation" label="与项目关系" align='center' width="110px"></el-table-column>
     <el-table-column  prop="subordinate_company" label="所属单位" align='center' width="120px"></el-table-column>
     <el-table-column prop="source" label="来源" align='center' width="80px">
@@ -64,13 +64,13 @@
     <el-table-column prop="authentication_state" label="认证状态" align='center' width="90px">
          <template slot-scope="scope">{{authenticationState (scope.row.authentication_state)}}</template>
     </el-table-column>
-    <el-table-column  prop="" label="申请人" align='center' width="120px"></el-table-column>
-    <el-table-column  prop="create_time" label="申请时间" align='center' width="120px"></el-table-column>
+    <!-- <el-table-column  prop="" label="申请人" align='center' width="120px"></el-table-column> -->
+    <!-- <el-table-column  prop="create_time" label="申请时间" align='center' width="120px"></el-table-column> -->
           <!-- 审核状态函数 -->
     <el-table-column prop="auditing_state" label="审核状态" align='center' width="90px">
            <template slot-scope="scope">{{auditingState(scope.row.auditing_state)}}</template>
     </el-table-column>
-    <el-table-column  prop="auditing_name" label="审核人" align='center' width="90px"></el-table-column>
+    <!-- <el-table-column  prop="auditing_name" label="审核人" align='center' width="90px"></el-table-column> -->
     <el-table-column  prop="auditing_time" label="审核时间" align='center' width="120px"></el-table-column>
     <el-table-column property="operation" label="操作" align='center' width="180px">
         <template slot-scope="scope">
@@ -92,7 +92,8 @@ export default {
         search: "",
         tag_search: ""
       },
-      tableData: []
+      tableData: [],
+      operationType: 0, //0 查看  1 修改  
     };
   },
   mounted() {

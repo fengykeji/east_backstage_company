@@ -71,31 +71,31 @@
 
 <template>
     <div class='addPerson'>
-        <div class='box'>
-                <span>
-                    <el-input class='query' v-model="searchObj.search"></el-input>
-                    <el-button icon="el-icon-search" circle></el-button>
-                 </span>
-                 <el-button type="primary"  class="pos-right" @click="close">返回</el-button>
-             </div>
-            <el-table :data="startApplyList" border>
-                <el-table-column property="id" label="序号" align='center'></el-table-column>
+            <div class='box'>
+                  <div class='relative'>
+                      <city-selector class='selectDis' :province.sync="searchObj.province" :city.sync="searchObj.city" :district.sync="searchObj.district"/>
+                      <el-input class='query' v-model="searchObj.search"></el-input>
+                      <el-button icon="el-icon-search" circle></el-button>
+                      <el-button type="primary"  class="pos-right" @click="close">返回</el-button>
+                  </div>
+            </div>
+            <el-table :data="sumbitForm" border>
+                <el-table-column property="id" label="序号" align='center' width="70px"></el-table-column>
                 <el-table-column property="project_name" label="项目名称" align='center'></el-table-column>
-                <el-table-column property="absolute_address" label="地址" align='center'>
-                  <!-- <template>
-                      <span>{{row.province_name + row.city_name + row.district_name}}</span>
-                  </template> -->
+                <el-table-column property="absolute_address" label="地址" align='center' width="320px">
+                  <template slot-scope="scope">
+                      <span>{{scope.row.province_name + scope.row.city_name + scope.row.district_name+scope.row.absolute_address}}</span>
+                  </template>
                 </el-table-column>
                 <el-table-column property="project_code" label="项目编号" align='center'></el-table-column>
-                <el-table-column property="project_hold_name" label="项目负责人" align='center'></el-table-column>
-                <el-table-column property="project_hold_phone" label="联系方式" align='center'></el-table-column>
-                <el-table-column property="project_hold_phone" label="操作" align='center'>
+                <el-table-column property="project_hold_name" label="项目负责人" align='center' ></el-table-column>
+                <el-table-column property="project_hold_phone" label="联系方式" align='center' width="120px"></el-table-column>
+                <el-table-column property="operation" label="操作" align='center'>
                     <template slot-scope="scope">
-                        <el-button>提交</el-button>
+                        <el-button @click='sumbit(scope.row)'>提交</el-button>
                     </template>
                 </el-table-column>
             </el-table>
-        </div>
     </div>
 </template>
 <script>
@@ -104,13 +104,13 @@ export default {
   data() {
     return {
       searchObj: {
-        search:'',
+        search: "",
         province: "",
         city: "",
         district: ""
       },
-      form: {},
-      startApplyList: []
+      sumbitForm: [],
+      project_id:"",
     };
   },
   mounted() {
@@ -118,12 +118,22 @@ export default {
   },
   methods: {
     async search() {
-      let result = await this.api.changeProjectList(this.searchObj);
-      if (result.code == 200) {
-        // this.startApplyList = result
+      let res = await this.api.changeProjectList(this.searchObj);
+      if (res.code == 200) {
+        this.sumbitForm = res.data;
       }
     },
+    sumbit(row) {
+       console.log(row)
+      this.$router.push({
+        name: "projectInfo",
+        params: {
+          sumbitForm: this.$route.params.sumbitForm,
+          project_id: this.$route.params.project_id,
+        }
+      });
 
+    },
     close() {
       this.$router.push({ name: "distribution", params: this.$route.params });
     }

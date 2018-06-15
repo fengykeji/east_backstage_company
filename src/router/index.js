@@ -17,7 +17,8 @@ import AddPerson from '@/page/Distribution/AddPerson'
 import ChoicePeople from '@/page/Distribution/ChoicePeople'
 import StartApply from '@/page/Distribution/StartApply'
 import ProjectInfo from '@/page/Distribution/ProjectInfo'
-
+import ExaminePeople from '@/page/Agent/ExaminePeople'
+import QuitPeople from '@/page/Agent/QuitPeople'
 
 
 Vue.use(Router);
@@ -73,7 +74,17 @@ export default new Router({
           path:'',
           name:'agent',
           component:Agent,
-        }
+        },
+        {
+          path:'/examinePeople',
+          name:'examinePeople',
+          component:ExaminePeople,
+        },
+        {
+          path:'/quitPeople',
+          name:'quitPeople',
+          component:QuitPeople,
+        },
       ]
     },
     {

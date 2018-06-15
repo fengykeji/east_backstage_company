@@ -1,12 +1,9 @@
-<style lang="less">
-</style>
-<style>
+<style lang="less" >
 .payRecord {
   width: 800px;
   margin: 0 auto;
   border: 1px solid #eee;
-}
-.title {
+  .title {
   font-size: 20px;
   padding-top: 10px;
 }
@@ -31,6 +28,9 @@
 .input2 {
   width: 400px;
 }
+.input3{
+  width: 240px;
+}
 .el-form-item {
   margin-bottom: 5px;
 }
@@ -42,7 +42,11 @@
   margin-top: 20px;
   text-align: right;
 }
+}
+
 </style>
+
+
 
 
 <template>
@@ -50,37 +54,48 @@
         <div class="title">缴纳记录</div>
         <div class='box'>
                 <el-form class='table' v-model="refund">
-                <el-form-item label="缴纳金额（￥）" class='input1'>
+                <el-form-item class='input1'>
+                  <div>缴纳金额（￥）</div>
                   <div class='border'>{{refund.price}}</div>
                 </el-form-item>
-                <el-form-item label="付款银行" class='input'>
+                <el-form-item  class='input'>
+                    <div>付款银行</div>
                   <div class='border'>{{refund.drawee_bank}}</div>
                 </el-form-item>
-                <el-form-item label="付款银行卡号" class='input'>
+                <el-form-item  class='input'>
+                    <div>付款银行卡号</div>
                     <div class='border'>{{refund.drawee_account}}</div>
                 </el-form-item>
-                <el-form-item label="付款户名" class='input'>
+                <el-form-item  class='input'>
+                    <div>付款户名</div>
                     <div class='border'>{{refund.drawee}}</div>
                 </el-form-item>
-                <el-form-item label="付款时间" class='input1'>
+                <el-form-item  class='input3'>
+                    <div>付款时间</div>
                     <div class='border'>{{refund.create_time}}</div>
                 </el-form-item>
-                <el-form-item label="收款银行" class='input'>
+                <el-form-item  class='input'>
+                    <div>收款银行</div>
                     <div class='border'>{{refund.payee_bank}}</div>
                 </el-form-item>
-                <el-form-item label="收款银行卡号" class='input'>
+                <el-form-item  class='input'>
+                    <div>收款银行卡号</div>
                     <div class='border'>{{refund.payee_account}}</div>
                 </el-form-item>
-                 <el-form-item label="收款户名" class='input'>
+                 <el-form-item  class='input'>
+                     <div>收款户名</div>
                     <div class='border'>{{refund.payee}}</div>
                 </el-form-item>
-                <el-form-item label="交易人" class='input'>
+                <el-form-item  class='input'>
+                    <div>交易人</div>
                     <div class='border'>{{refund.create_name}}</div>
                 </el-form-item>
-                <el-form-item label="联系电话" class='input'>
+                <el-form-item  class='input'>
+                    <div>联系电话</div>
                     <div class='border'>{{refund.contact_phone}}</div>
                 </el-form-item>
-                <el-form-item label="备注" class='input2'>
+                <el-form-item  class='input2'>
+                    <div>备注</div>
                     <div class='border'>{{refund.remark}}</div>
                 </el-form-item>
                     <div class='num_set'>附件</div>
@@ -121,10 +136,6 @@ export default {
     this.refund.id = this.$route.params.id;
     if (this.refund.id) {
       this.getBusinessInfo();
-    } else {
-      this.$nextTick(() => {
-        this.initMap();
-      });
     }
   },
   methods: {
