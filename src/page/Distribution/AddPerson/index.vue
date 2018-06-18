@@ -106,15 +106,20 @@ export default {
   data() {
     return {
         submitForm: {},
+        agent_id: ''
     };
   },
   mounted(){
-    if(this.$route.params.submitForm === undefined) {
+    if(this.$route.params.agentInfo === undefined) {
     }else {
-      this.submitForm = this.$route.params.submitForm 
+      this.agent_id = this.$route.params.agentInfo.id;
+      this.getAgentInfo();
     }
   },
   methods:{
+    async getAgentInfo() {
+      let result = await this.api.getAgentInfo({ agent_id: this.agent_id});
+    },
 
     choice(){
         this.$router.push({ name: "choicePeople", params: { submitForm: this.submitForm } });

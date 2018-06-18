@@ -32,19 +32,33 @@
   .cell {
     padding: 10px 0px;
   }
-  .request{
+  .request {
     display: inline-block;
     text-align: right;
-
+  }
+  .title-top {
+    padding: 30px 0;
+    text-align: left;
+    position: relative;
+    font-size: 20px;
+    .title-btn {
+      position: absolute;
+      right: 0;
+    }
   }
 }
 </style>
 
 <template>
     <div class="AddProject">
-        <!-- <el-dialog title="申请项目信息" :visible.sync="dialogFormVisibleAdd" @close="cancel"> -->
-      <div class="title">申请项目信息</div>
-      <el-form :model="form" class='form'>
+    <div class='title-top'>
+        <span>申请项目信息</span>
+        <span class="title-btn">
+            <el-button type="primary" @click="submit" v-if="operationType==0||operationType==1">保存</el-button>
+            <el-button @click="cancel">取消</el-button>
+        </span>
+    </div>
+      <el-form :model="form" :rules="rules" ref="ruleForm" class='form'>
           <el-form-item label="项目名称" class='input'>
             <el-input v-model="form.project_name" auto-complete="off" :disabled="isDisable()" placeholder="请输入项目名称"></el-input>
           </el-form-item>
@@ -122,7 +136,7 @@
       <el-table-column property="create_name" label="上传人员" align='center'></el-table-column>
       <el-table-column property="create_time" label="上传时间" align='center'></el-table-column>
   </el-table>
-  <div v-if="operationType!=0">
+  <div v-if="auditing_info.auditing_state==1||auditing_info.auditing_state==2">
         <div class='num_set'>审核项目信息</div>
         <el-form :model="form"  class='form'>
               <el-form-item label="审核人员" class='inputAud'>
@@ -153,7 +167,7 @@
                  {{projectState(authentication_info.authentication_state)}}
               </el-form-item>
               <el-form-item  class='request' >
-                    <el-button type="primary" @click="requestRefund()" :disabled="operationType===2">申请退款</el-button>
+                    <el-button type="primary" @click="requestRefund()" :disabled="operationType===2" v-if='authentication_info.deposit>0'>申请退款</el-button>
               </el-form-item>
               <div class='num_details'>保证金详情</div>
               <el-table :data='authentication_info.business_log' border >
@@ -191,15 +205,6 @@
           </el-table>
         </div>
     </div>
-    <div style="margin-top: 30px;">
-        <el-button type="primary" @click="submit">保存</el-button>
-        <el-button @click="cancel">取消</el-button>
-    </div>
-    <!-- <div slot="footer" class="dialog-footer">
-      <el-button @click='cancel'>取 消</el-button>
-      <el-button type="primary" @click='submit'>提 交</el-button>
-    </div> -->
-
      <!-- 帐号添加 -->
      <el-dialog title="新建账号" :visible.sync="dialogFormVisibleAccounts"  class='tableUser' @close="cancelUser">
       <el-form>
@@ -246,6 +251,11 @@ import CitySelector from "../../../components/CitySelector";
 export default {
   data() {
     return {
+      rules: {
+        district: [{ required: true, message: "请选择地区", trigger: true }],
+        province: [{ required: true, message: "请选择省份", trigger: true }],
+        city: [{ required: true, message: "请选择城市", trigger: true }]
+      },
       form: {
         district: "",
         province: "",
@@ -265,6 +275,7 @@ export default {
         project_agreement: [],
         project_user: []
       },
+
       map: null,
       sendata: {},
       gridData: [],
@@ -278,13 +289,6 @@ export default {
       isEditProjectList: false,
       paymentRecordTable: false,
       auditOptions: [],
-      options: [
-        {
-          value: "选项1",
-          label: "区域"
-        }
-      ],
-      value: "",
       projectUserForm: {
         name: "",
         account: "",
@@ -302,7 +306,6 @@ export default {
       userObj: {},
       fileObject: {},
       operationType: 0, //0 新增  1 修改  2 查看
-      addEditDelete: 0, //0 无新增  1 无修改  2 无查看
       project: [],
       typeOptions: [],
       project_history: [],
@@ -362,7 +365,8 @@ export default {
   },
   methods: {
     async requestRefund() {
-      this.$router.push({ name: "requestRefund",
+      this.$router.push({
+        name: "requestRefund",
         params: {
           operationType: this.$route.params.operationType,
           project_id: this.$route.params.project_id,
@@ -370,12 +374,13 @@ export default {
         }
       });
     },
-    seeRequestRefund(row){
-      this.$router.push({ name: "payRecord",
+    seeRequestRefund(row) {
+      this.$router.push({
+        name: "payRecord",
         params: {
           operationType: this.$route.params.operationType,
           project_id: this.$route.params.project_id,
-          id:row.id,
+          id: row.id,
           allow: this.authentication_info.allow
         }
       });
@@ -383,9 +388,9 @@ export default {
     isDisable() {
       if (this.operationType == 0) {
         return false;
-      } else  {
+      } else {
         return true;
-      } 
+      }
     },
     async getProjectInfo() {
       let res = await this.api.getProjectInfo({
@@ -408,34 +413,40 @@ export default {
         });
       }
     },
-    async submit() {
-      if (this.operationType == 1) {
-        let temp = {};
-        temp.project_id = this.form.project_id;
-        temp.property_type = this.form.property_type;
-        temp.developer_name = this.form.developer_name;
-        temp.company_relation = this.form.company_relation;
-        temp.project_hold_name = this.form.project_hold_name;
-        temp.project_hold_phone = this.form.project_hold_phone;
-        temp.statement_company = this.form.statement_company;
-        temp.remark = this.form.remark;
+    submit() {
+      this.$refs["ruleForm"].validate(async valid => {
+        if (valid) {
+          // if (this.operationType == 1) {
+          //   let temp = {};
+          //   temp.project_id = this.form.project_id;
+          //   temp.property_type = this.form.property_type;
+          //   temp.developer_name = this.form.developer_name;
+          //   temp.company_relation = this.form.company_relation;
+          //   temp.project_hold_name = this.form.project_hold_name;
+          //   temp.project_hold_phone = this.form.project_hold_phone;
+          //   temp.statement_company = this.form.statement_company;
+          //   temp.remark = this.form.remark;
 
-        let res = await this.api.getUpdateProject(temp);
-        if (res.code == 200) {
-          this.$message({ type: "success", message: "保存成功" });
-          setTimeout(() => {
-            this.$router.push({ name: "project" });
-          }, 2000);
+          //   let res = await this.api.getUpdateProject(temp);
+          //   if (res.code == 200) {
+          //     this.$message({ type: "success", message: "保存成功" });
+          //     setTimeout(() => {
+          //       this.$router.push({ name: "project" });
+          //     }, 2000);
+          //   }
+          // } else {
+          //   let res = await this.api.getCreateProject(this.form);
+          //   if (res.code == 200) {
+          //     this.$message({ type: "success", message: "保存成功" });
+          //     setTimeout(() => {
+          //       this.$router.push({ name: "project" });
+          //     }, 2000);
+          //   }
+          // }
+        } else {
+          return false;
         }
-      } else {
-        let res = await this.api.getCreateProject(this.form);
-        if (res.code == 200) {
-          this.$message({ type: "success", message: "保存成功" });
-          setTimeout(() => {
-            this.$router.push({ name: "project" });
-          }, 2000);
-        }
-      }
+      });
     },
 
     cancel() {
@@ -462,7 +473,7 @@ export default {
         Object.assign(this.form.project_user[temp.index], temp);
       } else {
         this.form.project_user.push(temp);
-      } 
+      }
       this.cancelUser();
     },
     removeUser(index) {

@@ -97,10 +97,10 @@ export default {
     },
     showAdd() {},
     authenticationState(row) {
-      if (row == 1) {
-        return "未认证";
+      if (row == 0) {
+        return "待审核";
       } else if (row == 2) {
-        return "已认证";
+        return "未通过 ";
       }
     },
     addShow() {

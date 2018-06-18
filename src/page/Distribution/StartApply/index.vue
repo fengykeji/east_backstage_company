@@ -75,7 +75,7 @@
                   <div class='relative'>
                       <city-selector class='selectDis' :province.sync="searchObj.province" :city.sync="searchObj.city" :district.sync="searchObj.district"/>
                       <el-input class='query' v-model="searchObj.search"></el-input>
-                      <el-button icon="el-icon-search" circle></el-button>
+                      <el-button @click="search" icon="el-icon-search" circle></el-button>
                       <el-button type="primary"  class="pos-right" @click="close">返回</el-button>
                   </div>
             </div>
@@ -124,12 +124,10 @@ export default {
       }
     },
     sumbit(row) {
-       console.log(row)
       this.$router.push({
         name: "projectInfo",
         params: {
-          sumbitForm: this.$route.params.sumbitForm,
-          project_id: this.$route.params.project_id,
+          project_id: row.project_id
         }
       });
 

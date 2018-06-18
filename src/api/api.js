@@ -129,6 +129,15 @@ let api = {
 
   //在职经纪人列表
   getPayrollList: doGet('company/CompanyAgent/getPayrollList'),
+
+  //待审核经纪人详情
+  getExInfo:doGet('company/CompanyAgent/getExInfo'),
+
+  //离职经纪人详情
+  getQuitInfo:doGet('company/CompanyAgent/getQuitInfo'),
+
+  //在职经纪人详情
+  getPayrollInfo:doGet('company/CompanyAgent/getPayrollInfo'),
 }
 
 export default api; 

@@ -59,10 +59,9 @@
         <div class='box'>
             <span class='num_set'>选择经纪人</span>
              <div>
-                 <el-input class='query'></el-input>
+                 <el-input class='query' @click='search'></el-input>
                  <el-button icon="el-icon-search" circle></el-button>
                  <span class='btn'>
-                    <el-button @click="submit" type="primary">确定</el-button>
                     <el-button class='btn-1' @click="close">返回</el-button>
                  </span>
              </div>
@@ -71,6 +70,11 @@
                 <el-table-column property="name" label="云算号" align='center'></el-table-column>
                 <el-table-column property="name" label="经纪人名称" align='center'></el-table-column>
                 <el-table-column property="phone" label="联系电话" align='center'></el-table-column>
+                <el-table-column prop="operation" label="操作" align='center' width="120px">
+                    <template slot-scope="scope">
+                        <el-button type="text" @click='submit(scope.row)'>选择</el-button>
+                    </template>
+                </el-table-column>
             </el-table>
         </div>
     </div>
@@ -83,23 +87,18 @@ export default {
     };
   },
   mounted() {
-    // this.addAgent();
+    this.search();
   },
   methods: {
-    // async addAgent() {
-    //   let res = await this.api.addAgent();
-    //   if (res.code == 0) {
-    //     this.person = res.data;
-    //   }
-    // },
-    async getList() {
-
+    async search() {
+        let res=await this.api.agentList();
+        if(res.code==200){
+          this.person=res.data;
+        }
     },
-
     submit(row) {
-      this.$router.push({ name: "addPerson", params: { submitForm : row} });
+      this.$router.push({ name: "addPerson", params: { agentInfo : row} });
     },
-
     close() {
       this.$router.push({ name: "addPerson", params: this.$route.params });
     }

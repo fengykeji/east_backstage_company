@@ -25,13 +25,13 @@
     line-height: 40px;
     padding: 0 12px 0 0;
   }
-  .title-text{
-      font-size: 18px;
-      padding: 15px 0;
+  .title-text {
+    font-size: 18px;
+    padding: 15px 0;
   }
-  .dialog-footer{
-      text-align: right;
-      padding-top: 20px;
+  .dialog-footer {
+    text-align: right;
+    padding-top: 20px;
   }
 }
 </style>
@@ -115,7 +115,7 @@
             </div>
         </el-form>
         <div class='title-text'>到访确认人信息</div>
-         <el-table :data="peopleInfo" border>
+         <el-table :data="submitForm.peopleInfo" border>
               <el-table-column property="nub" label="序号" align='center' width="70px"></el-table-column>
               <el-table-column property="company_name" label="云算号" align='center'></el-table-column>
               <el-table-column property="company_relation" label="名称" align='center'></el-table-column>
@@ -140,37 +140,59 @@ export default {
   data() {
     return {
       submitForm: {
-          province:'',
-          city:'',
-          district:'',
-          project_id:"",
-          auditProject:{},
-        
+        province: "",
+        city: "",
+        district: "",
+        project_id: "",
+        auditProject: {},
+        peopleInfo: []
       },
-        typeOptions:[],
-        peopleInfo:[],
-
+      project_id: '',
+      typeOptions: []
     };
   },
   mounted() {
-      this.submitForm.project_id = this.$route.params.project_id;
-    if (this.submitForm.project_id) {
-        this.submit();
+    if (this.$route.params.project_id) {
+        this.project_id = this.$route.params.project_id ;
+      this.getProjectDetail();
+      this.getType();
+    } else {
+      this.$router.push({ name: "startApply" });
     }
   },
   methods: {
-       async search() {
-      let res = await this.api.changeProjectList({ project_id: this.submitForm.project_id });
+    async getType() {
+      let res = await this.api.getTags();
+      if (res.code == 200) {
+        this.typeOptions = res.data;
+      }
+    },
+    async getProjectDetail() {
+    //   Object.assign(this.submitForm, this.$route.params.projectInfo);
+        // let res = await this.api.changeProjectDetail( { project_id : this.project_id } ) ;
+        // if(res.code == 200) {
+            // Object.assign( this.submitForm , res.data);
+        // }
+    },
+    async search() {
+      let res = await this.api.changeProjectList({
+        project_id: this.submitForm.project_id
+      });
       if (res.code == 200) {
         this.sumbitForm = res.data;
       }
     },
-      submit(){
-           this.$router.push({ name: "distribution", params:{submitForm:this.$route.params.submitForm}});
-      },
-      cancel(){
-             this.$router.push({ name: "startApply", params: this.$route.params });
+    async submit() {
+      let result = this.api.changeProjectAdd({
+        project_id: this.submitForm.project_id
+      });
+      if (reuslt.code == 200) {
+        this.$router.push({ name: "distribution" });
       }
+    },
+    cancel() {
+      this.$router.push({ name: "startApply" });
+    }
   },
   components: {
     CitySelector: CitySelector

@@ -2,13 +2,13 @@
 </style>
 <template>
     <div>
-        <el-select :value="province_id" placeholder="请选择省份" class='select-1' @change="changeProvince" :disabled="disabled">
+        <el-select clearable :value="province_id" placeholder="请选择省份" class='select-1' @change="changeProvince" :disabled="disabled">
             <el-option v-for="item in provinceOptions" :key="item.code" :label="item.name" :value="item.code"></el-option>
         </el-select>
-        <el-select :value="city_id" placeholder="请选择城市" class='select-1' @change="changeCity" :disabled="disabled">
+        <el-select clearable :value="city_id" placeholder="请选择城市" class='select-1' @change="changeCity" :disabled="disabled">
             <el-option v-for="item in cityOptions" :key="item.code" :label="item.name" :value="item.code"></el-option>
         </el-select>
-        <el-select :value="district_id" placeholder="请选择区/县" class='select-1' @change="changedistrict" :disabled="disabled">
+        <el-select clearable :value="district_id" placeholder="请选择区/县" class='select-1' @change="changedistrict" :disabled="disabled">
             <el-option v-for="item in districtOptions" :key="item.code" :label="item.name" :value="item.code"></el-option>
         </el-select>
     </div>

@@ -8,6 +8,12 @@
     padding-top: 0;
   }
 }
+.mt-30 {
+  margin-top: 30px;
+}
+.search-btn {
+  vertical-align: middle;
+}
 </style>
 <template>
     <div class='box distribution'>
@@ -19,55 +25,55 @@
                     <el-button class='tip' type="text" @click="search(0)">全部</el-button>
                     <el-button class='tip' type="text" @click="search(1)">待审核</el-button>
                     <el-button class='tip' type="text" @click="search(2)">已通过</el-button>
-                    <el-button class='tip' type="text" @click="search(3)">以终止</el-button>
+                    <el-button class='tip' type="text" @click="search(3)">已终止</el-button>
                  </div>
             </span>
-              <el-input class='query'></el-input>
-                <el-button icon="el-icon-search" circle></el-button>
-            <span class='right'>
-                 <el-button type="primary" @click='startApply'>发起申请</el-button>
-            </span>
+              <!-- <el-input v-model="searchObj.tag_search" class='query'></el-input> -->
         </div>
          <div class='search'>
           <div>
               <span class='block'>
                   <div>
                       <span class='row'>项目编号：</span>
-                      <el-input class='input'></el-input>
+                      <el-input v-model="searchObj.project_code" class='input'></el-input>
                   </div>
                   <div>
                       <span class='row'>开发商名：</span>
-                      <el-input class='input'></el-input>
+                      <el-input v-model="searchObj.developer_name" class='input'></el-input>
                   </div>
               </span>
               <span class='block'>
                  <div>
                       <span class='row'>项目名称：</span>
-                      <el-input class='input'></el-input>
-                  </div>
-                  <div>
-                      <span class='row'>所属单位：</span>
-                      <el-input class='input'></el-input>
-                  </div>
-              </span>
-              <span class='block'>
-                 <div>
-                      <span class='row'>区域：</span>
-                      <el-select v-model="value" placeholder="请选择">
-                         <el-option v-for="item in options"  :key="item.value"  :label="item.label"  :value="item.value"></el-option>
-                      </el-select>
+                      <el-input v-model="searchObj.project_name" class='input'></el-input>
                   </div>
                   <div>
                        <span class='row'>来源：</span>
-                       <el-select v-model="value" placeholder="请选择">
-                         <el-option v-for="item in options"  :key="item.value"  :label="item.label"  :value="item.value"></el-option>
+                       <el-select v-model="searchObj.source" placeholder="请选择">
+                         <el-option label="自行申请" value="1"></el-option>
+                         <el-option label="项目方选择" value="2"></el-option>
                        </el-select>
+                  </div>
+              </span>
+              <span class='block'>
+                 <!-- <div>
+                      <span class='row'>区域：</span>
+                      <el-select v-model="" placeholder="请选择">
+                         <el-option v-for="item in options"  :key="item.value"  :label="item.label"  :value="item.value"></el-option>
+                      </el-select>
+                  </div> -->
+                
+              </span>
+              <span class='block'>
+                  <div>
+                    <el-button class="search-btn" type="primary" @click="getList">查询</el-button>
+                     <el-button class="ml-30" type="primary" @click='startApply'>发起申请</el-button>
                   </div>
               </span>
           </div>
         </div>
         <template>
-  <el-table :data="tableData"  border  style="width: 100%">
+  <el-table :data="tableData"  border  style="width: 100%" class="mt-30">
     <el-table-column  prop="" label="序号"  align='center' width="70px"> </el-table-column>
     <el-table-column  prop="project_code"  label="项目编号"  align='center'></el-table-column>
     <el-table-column  prop="project_name" label="项目名称" align='center'></el-table-column>
@@ -88,9 +94,9 @@
     <el-table-column  prop="is_distribution" label="分配状态" align='center'></el-table-column>
     <el-table-column prop="operation" label="操作" align='center'  width="210px">
         <template slot-scope="scope">
-          <el-button type="text" @click='showProject(scope.row)'>查看</el-button>
-          <el-button type="text" @click='showProject(scope.row)'>修改</el-button>
-          <el-button type="text" @click='fastDistribution()'>分配到访确认人</el-button>
+          <el-button type="text" @click='showProject(scope.row,"see")'>查看</el-button>
+          <el-button type="text" @click='showProject(scope.row,"edit")'>修改</el-button>
+          <el-button type="text" @click='fastDistribution(scope.row)'>分配到访确认人</el-button>
         </template>
       </el-table-column>
   </el-table>
@@ -102,19 +108,30 @@
 export default {
   data() {
     return {
+      searchObj: {
+        tag_search: 0,
+        project_code: "",
+        project_name: "",
+        developer_name: "",
+        source: ""
+      },
       tableData: [],
       project_id: "",
       options: [],
       value: "",
-      operationType: 0, //0 查看  1 修改  
+      operationType: 0 //0 查看  1 修改
     };
   },
   mounted() {
     this.getList();
   },
   methods: {
+    search(tag_search) {
+      this.searchObj.tag_search = tag_search;
+      this.getList();
+    },
     async getList() {
-      let res = await this.api.getList();
+      let res = await this.api.getList(this.searchObj);
       if (res.code == 200) {
         this.tableData = res.data;
       }
@@ -124,15 +141,17 @@ export default {
         name: "startApply"
       });
     },
-    fastDistribution() {
+    fastDistribution(row) {
       this.$router.push({
         name: "fastDistribution",
-        params: { project_id: this.project_id }
+        params: { project_id: row.project_id }
       });
     },
-    showProject(row) {
-       this.$router.push({ name: "projectInfo",params: {project_id: row.project_id }});
-      
+    showProject(row,type) {
+      this.$router.push({
+        name: "projectInfo",
+        params: { project_id: row.project_id , type: type }
+      });
     },
     scopeState(row) {
       if (row == 1) {
