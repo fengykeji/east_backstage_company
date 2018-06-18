@@ -23,11 +23,11 @@
       }
     }
   }
-  .showImg{
-      width: 800px;
-      position: fixed;
-      top: 20%;
-      left: 30%;
+  .showImg {
+    width: 800px;
+    position: fixed;
+    top: 20%;
+    left: 30%;
   }
 }
 </style>
@@ -65,8 +65,8 @@
             </el-table>
         </template>
         <el-dialog title="离职申请" :visible.sync="dialogFormVisible" class='dialog' @close="cancel">
-            <el-form :model="form">
-                <el-form-item label="离职原因">
+            <el-form :model="form" :rules="rules" ref="form">
+                <el-form-item label="离职原因" prop="remark">
                     <el-input v-model="form.remark" class='textarea' type="textarea"/>
                 </el-form-item>
             </el-form>
@@ -176,6 +176,11 @@
 export default {
   data() {
     return {
+      rules: {
+        remark: [
+          { required: true, message: "请输入离职原因", change: "change" }
+        ]
+      },
       searchObj: {
         name: ""
       },
@@ -201,8 +206,8 @@ export default {
         head_img: "",
         id_card: ""
       },
-      showImg:false,
-      showIdCard:false,
+      showImg: false,
+      showIdCard: false,
       form: {
         id: null,
         remark: ""
@@ -221,16 +226,22 @@ export default {
       }
     },
     async sumbit() {
-      let res = await this.api.quitPeople(this.form);
-      if (res.code == 200) {
-        this.$message({ type: "success", message: "离职成功" });
-        this.search();
-        this.cancel();
-      }
+      this.$refs["form"].validate(async valid => {
+        if (valid) {
+          let res = await this.api.quitPeople(this.form);
+          if (res.code == 200) {
+            this.$message({ type: "success", message: "离职成功" });
+            this.search();
+            this.cancel();
+          }
+        } else {
+          return false;
+        }
+      });
     },
     async showSee(row) {
       this.showInfo = true;
-      Object.assign(this.examinePeople,row);
+      Object.assign(this.examinePeople, row);
       this.examinePeople.agent_id = row.agent_id;
       let res = await this.api.getPayrollInfo(this.examinePeople);
       if (res.code == 200) {
@@ -238,10 +249,10 @@ export default {
       }
     },
     showImgUrl() {
-        this.showImg=true;
+      this.showImg = true;
     },
-    showIdCardUrl(){
-        this.showIdCard=true;
+    showIdCardUrl() {
+      this.showIdCard = true;
     },
     role(row) {
       if (row == 1) {

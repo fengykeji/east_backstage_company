@@ -39,6 +39,14 @@ export default {
         this.$message({type:'error' , message : '请输入密码'});
         return;
       }
+      if(this.submitForm.password.length>20) {
+        this.$message({type:'error' , message : '密码长度必须小于20个字符'});
+        return;
+      }
+      if(this.submitForm.account.length>20) {
+        this.$message({type:'error' , message : '账号长度必须小于20个字符'});
+        return;
+      }
       localStorage.setItem("token", '');
 
       let res = await this.api.gitCode(this.submitForm);

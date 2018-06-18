@@ -6,6 +6,10 @@
   width: 1100px;
   margin: 0 auto;
 
+  .el-form-item.is-error {
+    padding-bottom: 20px;
+  }
+
   .el-form-item__label {
     float: none;
   }
@@ -44,14 +48,14 @@
         <!-- <el-dialog title="申请项目信息" :visible.sync="dialogFormVisibleAdd" @close="cancel"> -->
       <div class="title">申请项目信息</div>
       <el-form :model="form" class='form'  >
-          <el-form-item label="项目名称" class='input'  >
+          <el-form-item label="项目名称" prop="project_name" class='input'  >
             <el-input v-model="form.project_name" auto-complete="off" :disabled="isDisable()"  placeholder="请输入项目名称" ></el-input>
           </el-form-item>
-          <el-form-item label="项目地址" class='select' >
+          <el-form-item label="项目地址" prop="province" class='select' >
               <!-- 下拉组建 -->
              <city-selector  :disabled="isDisable()" :province.sync="form.province" :city.sync="form.city" :district.sync="form.district" @changeDistrict="changeDistrict"/>
           </el-form-item>
-          <el-form-item label="" class='input'>
+          <el-form-item label=""  prop="absolute_address" class='input'>
             <el-input :disabled="isDisable()" v-model="form.absolute_address" auto-complete="off" class='input-1' placeholder="请输入具体地址" ></el-input>
           </el-form-item>
         <!-- 地图 -->
@@ -61,11 +65,14 @@
 
         <!-- 物业类型 -->
         <div class="property_type">物业类型</div>
-        <el-checkbox :disabled="operationType==2" v-model="form.property_type" v-for="item in typeOptions" :key="item.param_id" :label="item.param_id">{{item.param}}</el-checkbox>
-        <el-form-item label="开发商" class='input1'>
+        <el-form-item prop="property_type">
+              <el-checkbox :disabled="operationType===2" v-model="form.property_type" v-for="item in typeOptions" :key="item.param_id" :label="item.param_id">{{item.param}}</el-checkbox>
+        </el-form-item>
+
+        <el-form-item label="开发商" prop="developer_name" class='input1'>
         <el-input  :disabled="operationType==2" v-model="form.developer_name" auto-complete="off" placeholder="请输入开发商名称"></el-input>
         </el-form-item>
-          <el-form-item label="与项目关系" class='select'> 
+          <el-form-item label="与项目关系" prop="company_relation" class='select'> 
            <el-radio-group :disabled="operationType==2" v-model="form.company_relation">
               <el-radio label="开发商"></el-radio>
               <el-radio label="代理"></el-radio>
@@ -74,16 +81,16 @@
               <el-radio label="其他"></el-radio>
            </el-radio-group>
         </el-form-item>
-          <el-form-item label="结佣单位" class='input'>
+          <el-form-item label="结佣单位" prop="statement_company" class='input'>
           <el-input :disabled="operationType==2" v-model="form.statement_company" auto-complete="off" placeholder="请输入结佣单位名称"></el-input>
         </el-form-item>
-          <el-form-item label="项目负责人" class='input'>
+          <el-form-item label="项目负责人" prop="project_hold_name" class='input'>
           <el-input :disabled="operationType==2" v-model="form.project_hold_name" auto-complete="off" placeholder="请输入项目负责人姓名"></el-input>
         </el-form-item>
-          <el-form-item label="联系电话" class='input'>
+          <el-form-item label="联系电话" prop="project_hold_phone" class='input'>
           <el-input :disabled="operationType==2" v-model="form.project_hold_phone" auto-complete="off" placeholder="请输入联系电话"></el-input>
         </el-form-item>
-         <el-form-item label="备注"  class='textarea'>
+         <el-form-item label="备注" prop="remark"  class='textarea'>
              <el-input :disabled="operationType==2" v-model="form.remark" type="textarea" ></el-input>
          </el-form-item>
       </el-form>
@@ -202,17 +209,17 @@
 
      <!-- 帐号添加 -->
      <el-dialog title="新建账号" :visible.sync="dialogFormVisibleAccounts"  class='tableUser' @close="cancelUser">
-      <el-form>
-        <el-form-item label="设定帐号" class='input'>
+      <el-form :model="projectUserForm" :rules="userFormRules" ref="projectUserForm">
+        <el-form-item label="设定帐号" prop="account" class='input'>
           <el-input v-model="projectUserForm.account" auto-complete="off" placeholder="请输入帐号"></el-input>
         </el-form-item>
-        <el-form-item label="设定密码" class='input' v-if="operationType == 0">
+        <el-form-item label="设定密码" prop="password" class='input' v-if="operationType == 0">
           <el-input v-model="projectUserForm.password" auto-complete="off" type='password' placeholder="请输入密码"></el-input>
         </el-form-item>
-        <el-form-item label="管理员" class='input'>
+        <el-form-item label="管理员" prop="name" class='input'>
           <el-input v-model="projectUserForm.name" auto-complete="off" placeholder="请输入管理员"></el-input>
         </el-form-item>
-        <el-form-item label="联系电话" class='input'>
+        <el-form-item label="联系电话" prop="phone" class='input'>
           <el-input v-model="projectUserForm.phone" auto-complete="off" placeholder="请输入联系电话"></el-input>
         </el-form-item>
 
@@ -246,6 +253,107 @@ import CitySelector from "../../../components/CitySelector";
 export default {
   data() {
     return {
+      rules: {
+        project_name: [
+          { required: true, message: "请输入项目名称", change: "change" },
+          {
+            max: 20,
+            message: "最大长度为20个字符",
+            trigger: "change"
+          }
+        ],
+        property_type: [
+          {
+            type: "array",
+            required: true,
+            message: "请选择物业类型",
+            change: "change"
+          }
+        ],
+        statement_company: [
+          { required: true, message: "请输入结佣单位", change: "change" },
+          {
+            max: 20,
+            message: "最大长度为20个字符",
+            trigger: "change"
+          }
+        ],
+        province: [
+          { required: true, message: "请选择具体地址", change: "change" }
+        ],
+        absolute_address: [
+          { required: true, message: "请选择具体地址", change: "change" }
+        ],
+        developer_name: [
+          { required: true, message: "请输入开发商名字", change: "change" },
+          {
+            max: 20,
+            message: "最大长度为20个字符",
+            trigger: "change"
+          }
+        ],
+        project_hold_name: [
+          {
+            max: 4,
+            message: "最大长度为4个字符",
+            trigger: "change"
+          },
+          { required: true, message: "请输入项目负责人", change: "change" }
+        ],
+        project_hold_phone: [
+          {
+            type: "number",
+            required: true,
+            message: "请输入负责人电话",
+            change: "change"
+          },
+          {
+            pattern: /^1[34578]\d{9}$/,
+            message: "请输入正确的电话号码",
+            change: "change"
+          }
+        ],
+        company_relation: [
+          { required: true, message: "请输入公司与项目关系", change: "change" }
+        ],
+        remark: [{ required: true, message: "请输入备注", change: "change" }]
+      },
+      userFormRules: {
+        name: [
+          { required: true, message: "请输入管理员", change: "change" },
+          {
+            max: 4,
+            message: "最大长度为4个字符",
+            trigger: "change"
+          }
+        ],
+        account: [
+          { required: true, message: "请输入账号", change: "change" },
+          {
+            min: 4,
+            max: 16,
+            message: "长度在 4 到 16 个字符",
+            trigger: "change"
+          }
+        ],
+        password: [
+          { required: true, message: "请输入密码", change: "change" },
+          {
+            min: 6,
+            max: 16,
+            message: "长度在 6 到 16 个字符",
+            trigger: "change"
+          }
+        ],
+        phone: [
+          { required: true, message: "电话号码必须填写", change: "change" },
+          {
+            pattern: /^1[34578]\d{9}$/,
+            message: "请输入正确的电话号码",
+            change: "change"
+          }
+        ]
+      },
       form: {
         district: "",
         province: "",
