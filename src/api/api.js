@@ -138,6 +138,14 @@ let api = {
 
   //在职经纪人详情
   getPayrollInfo:doGet('company/CompanyAgent/getPayrollInfo'),
+
+  //已拒绝经纪人详情
+  getRefuseInfo:doGet('company/CompanyAgent/getRefuseInfo'),
+
+
+  //第三板块   项目佣金管理
+  //获取列表
+  getProjectCommissionList:doGet('company/projectCommission/getList'),
 }
 
 export default api; 

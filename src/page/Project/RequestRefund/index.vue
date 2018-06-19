@@ -98,7 +98,7 @@ export default {
         refund_remarks: [
           { required: true, message: "请输入退款原因", change: "change" },
           {
-            max: 20,
+            max: 255,
             message: "最大长度为20个字符",
             trigger: "change"
           }
@@ -106,29 +106,29 @@ export default {
         payee: [
           { required: true, message: "请输入收款人姓名", change: "change" },
           {
-            max: 20,
-            message: "最大长度为20个字符",
+            pattern:/[\u4E00-\u9FA5]{2,5}(?:·[\u4E00-\u9FA5]{2,5})*/,
+            message: "最大长度为6个字符",
             trigger: "change"
-          }
+          }   
         ],
         payee_account: [
           { required: true, message: "请输入收款人账号", change: "change" },
           {
-            max: 20,
-            message: "最大长度为20个字符",
-            trigger: "change"
+            pattern: /^([1-9]{1})(\d{14}|\d{18})$/,
+            message: "请输入正确的银行卡号",
+            change: "change",
           }
         ],
         remark: [
           { required: true, message: "请输入备注", change: "change" },
           {
-            max: 20,
-            message: "最大长度为20个字符",
+            max: 255,
+            message: "最大长度为225个字符",
             trigger: "change"
           }
         ],
         payee_bank: [
-          { required: true, message: "请输入收款银行", change: "change" },
+          { required: true, message: "请选择收款银行", change: "change" },
           {
             max: 20,
             message: "最大长度为20个字符",
@@ -162,6 +162,8 @@ export default {
               name: "addProject",
               params: this.$route.params
             });
+          } else {
+            this.$message({ type: "error", message: res.msg });
           }
         } else {
           return false;

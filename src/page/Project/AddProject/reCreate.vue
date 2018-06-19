@@ -41,13 +41,13 @@
     text-align: right;
   }
     .title-top {
-    padding: 30px 0;
+    padding-top: 30px;
     text-align: left;
     position: relative;
     font-size: 20px;
     .title-btn {
       position: absolute;
-      top:50px;
+      top:40px;
       right: 0;
     }
   }
@@ -175,7 +175,7 @@
                  {{projectState(authentication_info.authentication_state)}}
               </el-form-item>
               <el-form-item  class='request' >
-                    <el-button type="primary" @click="requestRefund()" v-if="operationType==1">申请退款</el-button>
+                    <el-button type="primary" @click="requestRefund()" :disabled="operationType===2" v-if='authentication_info.deposit>0'>申请退款</el-button>
               </el-form-item>
 
               <div class='num_details'>保证金详情</div>

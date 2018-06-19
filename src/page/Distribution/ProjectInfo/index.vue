@@ -26,8 +26,8 @@
     padding: 0 12px 0 0;
   }
   .title-text {
-    font-size: 18px;
-    padding: 15px 0;
+    font-size: 16px;
+    padding: 5px 0;
   }
   .dialog-footer {
     text-align: right;
@@ -47,7 +47,7 @@
                 <el-input v-model="submitForm.project_name" auto-complete="off" placeholder="请输入项目名称"></el-input>
                 </el-form-item>
             </div>
-             <div class="property_type">物业类型</div>
+             <div class="text">物业类型</div>
              <el-checkbox v-model="submitForm.property_type" v-for="item in typeOptions" :key="item.param_id" :label="item.param_id">{{item.param}}</el-checkbox>
             <div class='text'>现住地址</div>
             <el-form-item>
@@ -168,11 +168,11 @@ export default {
       }
     },
     async getProjectDetail() {
-    //   Object.assign(this.submitForm, this.$route.params.projectInfo);
-        // let res = await this.api.changeProjectDetail( { project_id : this.project_id } ) ;
-        // if(res.code == 200) {
-            // Object.assign( this.submitForm , res.data);
-        // }
+      Object.assign(this.submitForm, this.$route.params.projectInfo);
+        let res = await this.api.changeProjectDetail( { project_id : this.project_id } ) ;
+        if(res.code == 200) {
+            Object.assign( this.submitForm , res.data);
+        }
     },
     async search() {
       let res = await this.api.changeProjectList({
