@@ -2,29 +2,29 @@
 <style lang="less">
 .examinePeople {
   .dialog {
-      text-align: left;
-      position: fixed; 
-      top: 0;
-      left:0;
-      .el-dialog__title{
-        font-size: 26px;
-      }
-      .el-dialog__body{
-        padding:10px 20px;
-      }
-      .el-form-item{
-        margin:0;
-      }
-      .btn{
-        position: absolute;
-        right: 0;
-        top: 15px;
-        margin-right: 20px;
-      }
-      .num_set{
-        font-size: 18px;
-        padding: 15px 0;
-      }
+    text-align: left;
+    position: fixed;
+    top: 0;
+    left: 0;
+    .el-dialog__title {
+      font-size: 26px;
+    }
+    .el-dialog__body {
+      padding: 10px 20px;
+    }
+    .el-form-item {
+      margin: 0;
+    }
+    .btn {
+      position: absolute;
+      right: 0;
+      top: 15px;
+      margin-right: 20px;
+    }
+    .num_set {
+      font-size: 18px;
+      padding: 15px 0;
+    }
     .border {
       width: 200px;
       height: 35px;
@@ -32,16 +32,16 @@
       border-radius: 6px;
       padding-left: 10px;
     }
-      .border.img{
-        border: none;
-      }
-    .el-form-item__content{
+    .border.img {
+      border: none;
+    }
+    .el-form-item__content {
       text-align: left;
     }
-    .border.img{
+    .border.img {
       width: 240px;
       border: none;
-      .text{
+      .text {
         padding-right: 20px;
         font-size: 14px;
       }
@@ -52,16 +52,16 @@
       text-align: left;
       vertical-align: top;
     }
-    .img-text{
+    .img-text {
       display: inline-block;
       vertical-align: top;
     }
-      .showImg{
+    .showImg {
       width: 800px;
       position: fixed;
       top: 20%;
       left: 30%;
-  }
+    }
   }
 }
 </style>
@@ -223,29 +223,29 @@ export default {
         tag_search: ""
       },
       dialogFormVisible: false,
-      showImg:false,
-      refuseInfo:false,
+      showImg: false,
+      refuseInfo: false,
       examinePeople: {
-        name:'',
-        role:'',
-        account:'',
-        department:'',
-        position:'',
-        img_url:'',
-        entry_time:'',
-        project_name:'',
-        sex:'',
-        tel:'',
-        birth:'',
-        tabsolute_addressel:'',
+        name: "",
+        role: "",
+        account: "",
+        department: "",
+        position: "",
+        img_url: "",
+        entry_time: "",
+        project_name: "",
+        sex: "",
+        tel: "",
+        birth: "",
+        tabsolute_addressel: ""
       },
       submitForm: {
-        agent_id:null,
+        agent_id: null,
         project_id: null,
-        id:null,
+        id: null
       },
       remark: "",
-      operationType: 0, //0审核  1 查看
+      operationType: 0 //0审核  1 查看
     };
   },
 
@@ -254,41 +254,38 @@ export default {
   },
   methods: {
     showCheck(type) {
-        this.refuseInfo=true;
-    },
-    sumbitInfo(){
-
+      this.refuseInfo = true;
     },
     async check(type) {
       this.submitForm.type = type;
-      let temp = Object.assign({} , this.submitForm);
-      if(type==0) {
+      let temp = Object.assign({}, this.submitForm);
+      if (type == 0) {
         temp.remark = this.remark;
       }
-      console.log( temp );
+      console.log(temp);
       this.cancel();
       let res = await this.api.exPeople(temp);
-      if(res.code==200){
-         this.getExList();
+      if (res.code == 200) {
+        this.getExList();
       }
-     
     },
     async examine(row) {
-      this.operationType=0;
+      this.operationType = 0;
       this.dialogFormVisible = true;
-      this.examinePeople.agent_id=row.agent_id;
-      let res=await this.api.getExInfo(  this.examinePeople );
-      if(res.code==200){
+      this.examinePeople.agent_id = row.agent_id;
+      Object.assign(this.examinePeople,row);
+      let res = await this.api.getExInfo(this.examinePeople);
+      if (res.code == 200) {
         this.examinePeople = res.data;
         this.submitForm.agent_id = row.agent_id;
         this.submitForm.project_id = res.data.project_id;
         this.submitForm.id = row.id;
       }
     },
-   async  showSee(row) {
-      this.operationType=1;
+    async showSee(row) {
+      this.operationType = 1;
       this.dialogFormVisible = true;
-      Object.assign((this.examinePeople = row));
+      Object.assign(this.examinePeople,row);
       this.examinePeople.agent_id = row.agent_id;
       let res = await this.api.getExInfo(this.examinePeople);
       if (res.code == 200) {
@@ -296,7 +293,7 @@ export default {
       }
     },
     showImgUrl() {
-        this.showImg=true;
+      this.showImg = true;
     },
     getRole(row) {
       if (row == 1) {
@@ -312,7 +309,7 @@ export default {
         return "待审核";
       }
     },
-     role(row) {
+    role(row) {
       if (row == 1) {
         return "新房经纪人";
       } else if (row == 2) {
@@ -328,11 +325,11 @@ export default {
         return "未设置";
       }
     },
-    cancel(){
-      this.dialogFormVisible=false;
+    cancel() {
+      this.dialogFormVisible = false;
     },
-    cancelRefuseInfo(){
-      this.refuseInfo=false;
+    cancelRefuseInfo() {
+      this.refuseInfo = false;
       this.remark = "";
     },
     async getExList() {
