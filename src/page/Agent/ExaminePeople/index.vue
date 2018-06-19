@@ -242,6 +242,7 @@ export default {
       submitForm: {
         agent_id:null,
         project_id: null,
+        id:null,
       },
       remark: "",
       operationType: 0, //0审核  1 查看
@@ -266,10 +267,11 @@ export default {
       }
       console.log( temp );
       this.cancel();
-      // let result = await this.api.exPeople(temp);
-      // if(res.code==200){
-      // }
-      this.getExList();
+      let res = await this.api.exPeople(temp);
+      if(res.code==200){
+         this.getExList();
+      }
+     
     },
     async examine(row) {
       this.operationType=0;
@@ -280,6 +282,7 @@ export default {
         this.examinePeople = res.data;
         this.submitForm.agent_id = row.agent_id;
         this.submitForm.project_id = res.data.project_id;
+        this.submitForm.id = row.id;
       }
     },
    async  showSee(row) {

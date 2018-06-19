@@ -37,8 +37,8 @@ export default {
     };
   },
   mounted() {
-    console.log(this);
     this.getProvinceList();
+
   },
   methods: {
     async getProvinceList() {
@@ -60,6 +60,7 @@ export default {
       }
     },
     changeProvince(value) {
+      console.log(value)
       this.$emit("update:province", value);
       this.$emit("update:city", "");
       this.$emit("update:district", "");

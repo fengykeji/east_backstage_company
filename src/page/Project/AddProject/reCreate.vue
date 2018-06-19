@@ -40,14 +40,30 @@
     display: inline-block;
     text-align: right;
   }
+    .title-top {
+    padding: 30px 0;
+    text-align: left;
+    position: relative;
+    font-size: 20px;
+    .title-btn {
+      position: absolute;
+      top:50px;
+      right: 0;
+    }
+  }
 }
 </style>
 
 <template>
     <div class="AddProject">
-        <!-- <el-dialog title="申请项目信息" :visible.sync="dialogFormVisibleAdd" @close="cancel"> -->
-      <div class="title">申请项目信息</div>
-      <el-form :model="form" class='form'  >
+      <div class='title-top'>
+      <div class="title">从新申请项目信息</div>
+       <span class="title-btn">
+            <el-button type="primary" @click="submit">保存</el-button>
+            <el-button @click="cancel">取消</el-button>
+        </span>
+      </div>
+      <el-form :model="form" class='form' :rules="rules" ref="ruleForm" >
           <el-form-item label="项目名称" prop="project_name" class='input'  >
             <el-input v-model="form.project_name" auto-complete="off" :disabled="isDisable()"  placeholder="请输入项目名称" ></el-input>
           </el-form-item>
@@ -198,15 +214,6 @@
           </el-table>
         </div>
     </div>
-    <div style="margin-top: 30px;">
-        <el-button type="primary" @click="submit">保存</el-button>
-        <el-button @click="cancel">取消</el-button>
-    </div>
-    <!-- <div slot="footer" class="dialog-footer">
-      <el-button @click='cancel'>取 消</el-button>
-      <el-button type="primary" @click='submit'>提 交</el-button>
-    </div> -->
-
      <!-- 帐号添加 -->
      <el-dialog title="新建账号" :visible.sync="dialogFormVisibleAccounts"  class='tableUser' @close="cancelUser">
       <el-form :model="projectUserForm" :rules="userFormRules" ref="projectUserForm">
@@ -300,13 +307,8 @@ export default {
           },
           { required: true, message: "请输入项目负责人", change: "change" }
         ],
-        project_hold_phone: [
-          {
-            type: "number",
-            required: true,
-            message: "请输入负责人电话",
-            change: "change"
-          },
+       project_hold_phone: [
+          { required: true, message: "电话号码必须填写", change: "change" },
           {
             pattern: /^1[34578]\d{9}$/,
             message: "请输入正确的电话号码",
@@ -525,7 +527,9 @@ export default {
       }
     },
     async submit() {
-      if (this.operationType == 3) {
+        this.$refs["ruleForm"].validate(async valid => {
+        if (valid) {
+          if (this.operationType == 3) {
         let temp = {};
         temp.project_id = this.form.project_id;
         temp.project_name = this.form.project_name;
@@ -559,6 +563,10 @@ export default {
           }, 2000);
         }
       }
+        } else {
+          return false;
+        }
+      });
     },
 
     cancel() {
