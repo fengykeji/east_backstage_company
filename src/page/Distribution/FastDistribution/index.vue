@@ -98,9 +98,10 @@ export default {
   },
   mounted() {
     this.project_id = this.$route.params.project_id;
-    this.id = this.$route.params.id;
     if (this.project_id) {
       this.getAgent();
+    }else{
+      this.$router.push({name:"distribution"});
     }
   },
   methods: {
@@ -112,7 +113,7 @@ export default {
       }
     },
     cancel() {
-      this.$router.push({ name: "distribution", params: this.$route.params });
+      this.$router.push({ name: "distribution"});
     },
     showAdd() {},
     authenticationState(row) {
