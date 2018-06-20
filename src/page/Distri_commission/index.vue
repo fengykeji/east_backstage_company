@@ -12,10 +12,10 @@
         <template>
   <el-table :data="tableData"  border  style="width: 100%">
     <el-table-column  prop="address" label="序号"  align='center'> </el-table-column>
-    <el-table-column  prop="address" label="项目名称" align='center'></el-table-column>
+    <el-table-column  prop="project_name" label="项目名称" align='center'></el-table-column>
     <el-table-column  prop="address" label="开始执行时间" align='center'></el-table-column>
     <el-table-column  prop="address" label="截至执行时间" align='center'></el-table-column>
-    <el-table-column  prop="address" label="房产商" align='center'></el-table-column>
+    <el-table-column  prop="developer_name" label="房产商" align='center'></el-table-column>
     <el-table-column  prop="address" label="区域" align='center'></el-table-column>
     <el-table-column  prop="address" label="项目负责人" align='center'></el-table-column>
     <el-table-column  prop="address" label="联系方式" align='center'></el-table-column>
@@ -40,6 +40,17 @@ export default {
         tableData:[],
     };
   },
+  mounted(){
+    this.getDistributionList();
+  },
+  methods:{
+    async getDistributionList(){
+      let res=await this.api.getDistributionList();
+      if(res.code==200){
+        this.tableData=res.data;
+      }
+    }
+  }
   
 };
 </script>

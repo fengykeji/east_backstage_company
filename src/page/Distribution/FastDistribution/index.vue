@@ -9,10 +9,10 @@
   .el-table td {
     padding: 0;
   }
-  .search{
+  .search {
     position: absolute;
-    top: 6%;
-    right: 240px;
+    top: -10px;
+    right: 0;
   }
   .table {
     margin-bottom: 20px;
@@ -22,6 +22,7 @@
     }
     .title {
       text-align: left;
+      position: relative;
       .text {
         font-size: 18px;
         width: 200px;
@@ -36,11 +37,11 @@
     <div class='table'>
       <div class='title'>
         <div class='text'>到访确认人维护信息</div>
+        <span class='search'>
+          <el-button type="primary" class='addBtn' @click='addShow'>新增</el-button>
+          <el-button type="primary" class='addBtn' @click='cancel'>关闭</el-button>
+        </span>
       </div>
-      <span class='search'>
-        <el-button type="primary" class='addBtn' @click='addShow'>新增</el-button>
-        <el-button type="primary" class='addBtn' @click='cancel'>关闭</el-button>
-      </span>
       <el-table :data="maintain" border>
         <el-table-column prop="nub" label="序号" align='center' width="70px"></el-table-column>
         <el-table-column prop="account" label="云算号" align='center'></el-table-column>
@@ -49,8 +50,7 @@
         <el-table-column prop="department" label="所属部门" align='center'></el-table-column>
         <el-table-column prop="position" label="职位" align='center'></el-table-column>
         <el-table-column prop="entry_time" label="入职时间" align='center'></el-table-column>
-        <el-table-column prop="create_time" label="分配时间" align='center'></el-table-column>
-        <el-table-column prop="state" label="工作状态" align='center'></el-table-column>
+        <el-table-column prop="create_time" label="分配时间" align='center' width="160px"></el-table-column>
         <el-table-column prop="operation" label="操作" align='center' width="120px">
           <template slot-scope="scope">
             <el-button type="text" @click='showAdd(2, scope.row)'>查看</el-button>
@@ -88,13 +88,17 @@
 export default {
   data() {
     return {
-      project_id: "",
       maintain: [],
-      examine: []
+      examine: [],
+      sumbitForm: {
+        project_id: "",
+        id: ""
+      }
     };
   },
   mounted() {
     this.project_id = this.$route.params.project_id;
+    this.id = this.$route.params.id;
     if (this.project_id) {
       this.getAgent();
     }
@@ -119,7 +123,7 @@ export default {
       }
     },
     addShow() {
-      this.$router.push({ name: "addPerson" });
+      this.$router.push({ name: "addPerson"});
     }
   }
 };

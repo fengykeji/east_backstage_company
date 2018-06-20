@@ -130,7 +130,7 @@
         </el-form-item>
         <el-form-item class='input1'>
           <div>出生年月</div>
-          <div class='border'>{{examinePeople.birth ? examinePeople.birth: " "}}</div>
+          <div class='border'>{{examinePeople.birth}}</div>
         </el-form-item>
         <el-form-item class='input1'>
           <div>通讯地址</div>
