@@ -1,7 +1,7 @@
 <style lang="less" scoped src="../index.less" ></style>
 <style lang="less">
 .examinePeople {
-   .el-table th {
+  .el-table th {
     padding: 8px 5px;
   }
   .el-table td {
@@ -56,7 +56,7 @@
       height: 70px;
       width: 400px;
     }
-    .border.width{
+    .border.width {
       width: 340px;
     }
     .input1 {
@@ -245,8 +245,8 @@ export default {
         tel: "",
         birth: "",
         absolute_address: "",
-        city_name:'',
-        district_name:'',
+        city_name: "",
+        district_name: "",
         agent_id: null,
         project_id: null,
         id: null
@@ -264,37 +264,42 @@ export default {
     showCheck(type) {
       this.refuseInfo = true;
     },
-    check(type) {
-      this.$confirm("此操作将审核成功, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(async () => {
-          this.$message({
-            type: "success",
-            message: "审核成功!"
-          });
-          this.submitForm.type = type;
-          let temp = Object.assign({}, this.submitForm);
-          if (type == 0) {
-            temp.remark = this.remark;
-            this.getExList();
-            this.cancel();
-          }
-          let res = await this.api.exPeople(temp);
-          if (res.code == 200) {
-            this.getExList();
-            this.cancel();
-          }
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消审核"
-          });
+    async check(type) {
+      this.submitForm.type = type;
+      let temp = Object.assign({}, this.submitForm);
+      if (type == 0) {
+        temp.remark = this.remark;
+        let res = await this.api.exPeople(temp);
+        if (res.code == 200) {
+          this.getExList();
+          this.cancelRefuseInfo();
           this.cancel();
-        });
+        }
+      } else {
+        this.$confirm("此操作将审核成功, 是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(async () => {
+            this.$message({
+              type: "success",
+              message: "审核成功!"
+            });
+            let res = await this.api.exPeople(temp);
+            if (res.code == 200) {
+              this.getExList();
+              this.cancelRefuseInfo();
+              this.cancel();
+            }
+          })
+          .catch(() => {
+            this.$message({
+              type: "info",
+              message: "已取消审核"
+            });
+          });
+      }
     },
     async examine(row) {
       this.operationType = 0;
@@ -313,6 +318,7 @@ export default {
       Object.assign(this.examinePeople, row);
       let res = await this.api.getRefuseInfo(this.examinePeople);
       if (res.code == 200) {
+        this.examinePeople=res.data;
       }
     },
     getRole(row) {
