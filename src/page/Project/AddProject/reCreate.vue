@@ -223,7 +223,7 @@
         <el-form-item label="设定帐号" prop="account" class='input'>
           <el-input v-model="projectUserForm.account" auto-complete="off" placeholder="请输入帐号"></el-input>
         </el-form-item>
-        <el-form-item label="设定密码" prop="password" class='input' v-if="operationType == 0">
+        <el-form-item label="设定密码" prop="password" class='input'>
           <el-input v-model="projectUserForm.password" auto-complete="off" type='password' placeholder="请输入密码"></el-input>
         </el-form-item>
         <el-form-item label="管理员" prop="name" class='input'>

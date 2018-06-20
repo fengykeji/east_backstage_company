@@ -160,7 +160,7 @@
           <el-input type="textarea" v-model="auditing_info.auditing_remark" :disabled="isDisable()"></el-input>
         </el-form-item>
       </el-form>
-      <div v-if="operationType == 0">
+      <div v-if="auditing_info.auditing_state==1">
         <div class='num_set'>认证信息</div>
         <el-form v-model="authentication_info" class='form'>
           <el-form-item label="保证金金额（￥）：" class='inputAud'>
@@ -202,7 +202,7 @@
           </el-table>
         </el-form>
       </div>
-      <div v-if="operationType==0">
+      <div v-if="auditing_info.auditing_state==1">
         <div class='num_set'>项目历史</div>
         <el-table :data="project_history" border>
           <el-table-column property="nub" label="序号" align='center' width="70px"></el-table-column>
