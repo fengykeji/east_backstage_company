@@ -55,7 +55,7 @@
           </el-form-item>
           <el-form-item class='input1'>
             <div>通讯地址</div>
-            <div class='border'>{{submitForm.tabsolute_addressel}}</div>
+            <div class='border width'>{{submitForm.tabsolute_addressel}}</div>
           </el-form-item>
         </el-form>
       </el-form>
@@ -83,17 +83,19 @@ export default {
     };
   },
   mounted() {
-   
+    this.project_id = this.$route.params.project_id;
+    this.id = this.$route.params.id;
     if (this.$route.params.agentInfo === undefined) {
-      
     } else {
-       this.agent_id=this.$route.params.agentInfo.id;
+      this.agent_id = this.$route.params.agentInfo.id;
       this.submitForm = this.$route.params.agentInfo;
       this.getAgentInfo();
     }
   },
   methods: {
     async sumbit() {
+      this.submitForm.project_id = this.project_id;
+      this.submitForm.id = this.id;
       let res = await this.api.agentAdd(this.submitForm);
       if (res.code == 200) {
         this.$router.push({
@@ -120,7 +122,7 @@ export default {
     choice() {
       this.$router.push({
         name: "choicePeople",
-        params: { submitForm: this.submitForm }
+        params: { project_id: this.project_id }
       });
     },
     close() {

@@ -42,8 +42,6 @@
 .query {
   width: 200px;
 }
-.select {
-}
 .selectDis {
   display: inline-block;
 }
@@ -70,33 +68,35 @@
 
 
 <template>
-    <div class='addPerson'>
-            <div class='box'>
-                  <div class='relative'>
-                      <city-selector class='selectDis' :province.sync="searchObj.province" :city.sync="searchObj.city" :district.sync="searchObj.district"/>
-                      <el-input class='query' v-model="searchObj.search"></el-input>
-                      <el-button @click="search" icon="el-icon-search" circle></el-button>
-                      <el-button type="primary"  class="pos-right" @click="close">返回</el-button>
-                  </div>
-            </div>
-            <el-table :data="sumbitForm" border>
-                <el-table-column property="id" label="序号" align='center' width="70px"></el-table-column>
-                <el-table-column property="project_name" label="项目名称" align='center'></el-table-column>
-                <el-table-column property="absolute_address" label="地址" align='center' width="320px">
-                  <template slot-scope="scope">
-                      <span>{{scope.row.province_name + scope.row.city_name + scope.row.district_name+scope.row.absolute_address}}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column property="project_code" label="项目编号" align='center'></el-table-column>
-                <el-table-column property="project_hold_name" label="项目负责人" align='center' ></el-table-column>
-                <el-table-column property="project_hold_phone" label="联系方式" align='center' width="120px"></el-table-column>
-                <el-table-column property="operation" label="操作" align='center'>
-                    <template slot-scope="scope">
-                        <el-button @click='sumbit(scope.row)'>提交</el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
+  <div class='addPerson'>
+    <div class='box'>
+      <div class='relative'>
+        <city-selector class='selectDis' :province.sync="searchObj.province" :city.sync="searchObj.city" :district.sync="searchObj.district" />
+        <el-input class='query' v-model="searchObj.search"></el-input>
+        <span class='pos-abs'>
+          <el-button @click="search" icon="el-icon-search" circle></el-button>
+          <el-button type="primary" class="pos-right" @click="close">返回</el-button>
+        </span>
+      </div>
     </div>
+    <el-table :data="sumbitForm" border>
+      <el-table-column property="id" label="序号" align='center' width="70px"></el-table-column>
+      <el-table-column property="project_name" label="项目名称" align='center'></el-table-column>
+      <el-table-column property="absolute_address" label="地址" align='center' width="320px">
+        <template slot-scope="scope">
+          <span>{{scope.row.province_name + scope.row.city_name + scope.row.district_name+scope.row.absolute_address}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column property="project_code" label="项目编号" align='center'></el-table-column>
+      <el-table-column property="project_hold_name" label="项目负责人" align='center'></el-table-column>
+      <el-table-column property="project_hold_phone" label="联系方式" align='center' width="120px"></el-table-column>
+      <el-table-column property="operation" label="操作" align='center'>
+        <template slot-scope="scope">
+          <el-button @click='sumbit(scope.row)'>提交</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+  </div>
 </template>
 <script>
 import CitySelector from "../../../components/CitySelector";
@@ -110,7 +110,7 @@ export default {
         district: ""
       },
       sumbitForm: [],
-      project_id:"",
+      project_id: ""
     };
   },
   mounted() {
@@ -124,13 +124,13 @@ export default {
       }
     },
     sumbit(row) {
+      console.log(row);
       this.$router.push({
         name: "projectInfo",
         params: {
           project_id: row.project_id
         }
       });
-
     },
     close() {
       this.$router.push({ name: "distribution", params: this.$route.params });

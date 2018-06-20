@@ -11,7 +11,7 @@
         </div>
         <template>
   <el-table :data="tableData"  border  style="width: 100%">
-    <el-table-column  prop="x" label="序号"  align='center'> </el-table-column>
+    <el-table-column  prop="" label="序号"  align='center'> </el-table-column>
     <el-table-column  prop="project_name" label="项目名称" align='center'></el-table-column>
     <el-table-column  prop="address" label="开始执行时间" align='center'></el-table-column>
     <el-table-column  prop="address" label="截至执行时间" align='center'></el-table-column>
@@ -52,7 +52,7 @@ export default {
     async getProjectCommissionList(){
       let res=await this.api.getProjectCommissionList();
       if(res.code==200){
-        this.tableData=res.data;
+        this.tableData=res.data.data;
       }
     },
   }

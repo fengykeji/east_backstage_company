@@ -55,166 +55,168 @@
 </style>
 
 <template>
-    <div class="AddProject">
+  <div class="AddProject">
     <div class='title-top'>
-        <span>申请项目信息</span>
-        <span class="title-btn">
-            <el-button type="primary" @click="submit" v-if="operationType==0||operationType==1">保存</el-button>
-            <el-button @click="cancel">取消</el-button>
-        </span>
+      <span>申请项目信息</span>
+      <span class="title-btn">
+        <el-button type="primary" @click="submit" v-if="operationType==0||operationType==1">保存</el-button>
+        <el-button @click="cancel">取消</el-button>
+      </span>
     </div>
-      <el-form :model="form" :rules="rules" ref="ruleForm" class='form'>
-          <el-form-item label="项目名称" class='input' prop="project_name">
-            <el-input v-model="form.project_name" auto-complete="off" :disabled="isDisable()" placeholder="请输入项目名称"></el-input>
-          </el-form-item>
-          <el-form-item label="项目地址" class='select' prop="province">
-              <!-- 下拉组建 -->
-             <city-selector :disabled="isDisable()" :province.sync="form.province" :city.sync="form.city" :district.sync="form.district" @changeDistrict="changeDistrict"/>
-          </el-form-item>
-          <el-form-item label="" class='input' prop="absolute_address">
-            <el-input v-model="form.absolute_address" auto-complete="off" class='input-1' :disabled="isDisable()" placeholder="请输入具体地址"></el-input>
-          </el-form-item>
-        <!-- 地图 -->
-        <el-button type="text" @click='showMapDetails' :disabled="isDisable()">查看地图</el-button>
+    <el-form :model="form" :rules="rules" ref="ruleForm" class='form'>
+      <el-form-item label="项目名称" class='input' prop="project_name">
+        <el-input v-model="form.project_name" auto-complete="off" :disabled="isDisable()" placeholder="请输入项目名称"></el-input>
+      </el-form-item>
+      <el-form-item label="项目地址" class='select' prop="province">
+        <!-- 下拉组建 -->
+        <city-selector :disabled="isDisable()" :province.sync="form.province" :city.sync="form.city" :district.sync="form.district" @changeDistrict="changeDistrict" />
+      </el-form-item>
+      <el-form-item label="" class='input' prop="absolute_address">
+        <el-input v-model="form.absolute_address" auto-complete="off" class='input-1' :disabled="isDisable()" placeholder="请输入具体地址"></el-input>
+      </el-form-item>
+      <!-- 地图 -->
+      <el-button type="text" @click='showMapDetails' :disabled="isDisable()">查看地图</el-button>
 
-        <div id="map" class='map'></div>
+      <div id="map" class='map'></div>
 
-        <!-- 物业类型 -->
-        <div class="property_type">物业类型</div>
-        <el-form-item prop="property_type">
-              <el-checkbox :disabled="operationType===2" v-model="form.property_type" v-for="item in typeOptions" :key="item.param_id" :label="item.param_id">{{item.param}}</el-checkbox>
-        </el-form-item>
-    
-        <el-form-item label="开发商" prop="developer_name" class='input1'>
+      <!-- 物业类型 -->
+      <div class="property_type">物业类型</div>
+      <el-form-item prop="property_type">
+        <el-checkbox :disabled="operationType===2" v-model="form.property_type" v-for="item in typeOptions" :key="item.param_id" :label="item.param_id">{{item.param}}</el-checkbox>
+      </el-form-item>
+
+      <el-form-item label="开发商" prop="developer_name" class='input1'>
         <el-input v-model="form.developer_name" auto-complete="off" placeholder="请输入开发商名称" :disabled="operationType===2"></el-input>
-        </el-form-item>
-          <el-form-item label="与项目关系" prop="company_relation" class='select'> 
-           <el-radio-group v-model="form.company_relation"  :disabled="operationType===2">
-              <el-radio label="开发商"></el-radio>
-              <el-radio label="代理"></el-radio>
-              <el-radio label="分销"></el-radio>
-              <el-radio label="渠道"></el-radio>
-              <el-radio label="其他"></el-radio>
-           </el-radio-group>
-        </el-form-item>
-          <el-form-item label="结佣单位" prop="statement_company" class='input'>
-          <el-input :disabled="operationType===2" v-model="form.statement_company" auto-complete="off" placeholder="请输入结佣单位名称"></el-input>
-        </el-form-item>
-          <el-form-item label="项目负责人" prop="project_hold_name" class='input'>
-          <el-input :disabled="operationType===2" v-model="form.project_hold_name" auto-complete="off" placeholder="请输入项目负责人姓名"></el-input>
-        </el-form-item>
-          <el-form-item label="联系电话" prop="project_hold_phone" class='input'>
-          <el-input :disabled="operationType===2" v-model="form.project_hold_phone" auto-complete="off" placeholder="请输入联系电话" ></el-input>
-        </el-form-item>
-         <el-form-item label="备注" prop="remark"  class='textarea'>
-             <el-input :disabled="operationType===2" v-model="form.remark" type="textarea"></el-input>
-         </el-form-item>
-      </el-form>
-      <div class='tableIn-btn'>
-            <el-button type="primary" v-if="operationType==0" @click='showUser'>新增账号</el-button>
-      </div>
-      <!-- 用户显示 -->
-  <el-table :data="form.project_user" border>
+      </el-form-item>
+      <el-form-item label="与项目关系" prop="company_relation" class='select'>
+        <el-radio-group v-model="form.company_relation" :disabled="operationType===2">
+          <el-radio label="开发商"></el-radio>
+          <el-radio label="代理"></el-radio>
+          <el-radio label="分销"></el-radio>
+          <el-radio label="渠道"></el-radio>
+          <el-radio label="其他"></el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="结佣单位" prop="statement_company" class='input'>
+        <el-input :disabled="operationType===2" v-model="form.statement_company" auto-complete="off" placeholder="请输入结佣单位名称"></el-input>
+      </el-form-item>
+      <el-form-item label="项目负责人" prop="project_hold_name" class='input'>
+        <el-input :disabled="operationType===2" v-model="form.project_hold_name" auto-complete="off" placeholder="请输入项目负责人姓名"></el-input>
+      </el-form-item>
+      <el-form-item label="联系电话" prop="project_hold_phone" class='input'>
+        <el-input :disabled="operationType===2" v-model="form.project_hold_phone" auto-complete="off" placeholder="请输入联系电话"></el-input>
+      </el-form-item>
+      <el-form-item label="备注" prop="remark" class='textarea'>
+        <el-input :disabled="operationType===2" v-model="form.remark" type="textarea"></el-input>
+      </el-form-item>
+    </el-form>
+    <div class='tableIn-btn'>
+      <el-button type="primary" v-if="operationType==0" @click='showUser'>新增账号</el-button>
+    </div>
+    <!-- 用户显示 -->
+    <el-table :data="form.project_user" border>
       <el-table-column property="account" label="帐号" align='center'></el-table-column>
       <el-table-column property="name" label="对接人" align='center'></el-table-column>
       <el-table-column property="phone" label="电话号码" align='center'></el-table-column>
       <el-table-column property="operation" v-if="operationType == 0 || operationType == 1" label="操作" align='center'>
         <template slot-scope="scope">
-          <el-button type="text"  @click='editUser(scope.row , scope.$index)'>修改</el-button>
+          <el-button type="text" @click='editUser(scope.row , scope.$index)'>修改</el-button>
           <el-button type="text" v-if="operationType == 0" @click='removeUser(scope.$index)'>删除</el-button>
         </template>
       </el-table-column>
-  </el-table>
+    </el-table>
     <!-- 附件上传 -->
     <div>
-      <el-upload class="uploadFile"  :auto-upload="false" action="" :on-change="fileUpload">
+      <el-upload class="uploadFile" :auto-upload="false" action="" :on-change="fileUpload">
         <el-button class="uploadBtn" ref="uploadBtn" size="small" type="primary" :show-file-list="false">点击上传</el-button>
       </el-upload>
     </div>
     <div class='tableIn-btn' v-if="operationType == 0">
-          <el-button type="primary" @click='showUploadFile'>文件上传确定</el-button>
+      <el-button type="primary" @click='showUploadFile'>文件上传确定</el-button>
     </div>
-   <el-table :data="form.project_agreement" border>
+    <el-table :data="form.project_agreement" border>
       <el-table-column property="file_name" label="文件名称" align='center'></el-table-column>
       <el-table-column label="附件" align='center'>
         <template slot-scope='scope'>
-            <a target="_blank" :href="'http://120.27.21.136:2798/' + scope.row.url">查看附件</a>
+          <a target="_blank" :href="'http://120.27.21.136:2798/' + scope.row.url">查看附件</a>
         </template>
       </el-table-column>
       <el-table-column property="create_name" label="上传人员" align='center'></el-table-column>
       <el-table-column property="create_time" label="上传时间" align='center'></el-table-column>
-  </el-table>
-  <div v-if="auditing_info.auditing_state==1||auditing_info.auditing_state==2">
-        <div class='num_set'>审核项目信息</div>
-        <el-form :model="form"  class='form'>
-              <el-form-item label="审核人员" class='inputAud'>
-                <el-input v-model="auditing_info.auditing_name" auto-complete="off" :disabled="isDisable()"></el-input>
-              </el-form-item>
-                <el-form-item label="审核时间" class='inputAud'>
-                <el-input v-model="auditing_info.auditing_time" auto-complete="off" :disabled="isDisable()"></el-input>
-              </el-form-item>
-                <el-form-item label="审核状态" class='inputAud state'>
-                  {{auditingState(auditing_info.auditing_state)}}
-              </el-form-item>
-              <el-form-item label="备注"  class='textarea'>
-                  <el-input type="textarea" v-model="auditing_info.auditing_remark" :disabled="isDisable()"></el-input>
-              </el-form-item>
-        </el-form> 
+    </el-table>
+    <div v-if="auditing_info.auditing_state==1||auditing_info.auditing_state==2">
+      <div class='num_set'>审核项目信息</div>
+      <el-form :model="form" class='form'>
+        <el-form-item label="审核人员" class='inputAud'>
+          <el-input v-model="auditing_info.auditing_name" auto-complete="off" :disabled="isDisable()"></el-input>
+        </el-form-item>
+        <el-form-item label="审核时间" class='inputAud'>
+          <el-input v-model="auditing_info.auditing_time" auto-complete="off" :disabled="isDisable()"></el-input>
+        </el-form-item>
+        <el-form-item label="审核状态" class='inputAud state'>
+          {{auditingState(auditing_info.auditing_state)}}
+        </el-form-item>
+        <el-form-item label="备注" class='textarea'>
+          <el-input type="textarea" v-model="auditing_info.auditing_remark" :disabled="isDisable()"></el-input>
+        </el-form-item>
+      </el-form>
+      <div v-if="operationType == 0">
         <div class='num_set'>认证信息</div>
-        <el-form v-model="authentication_info"  class='form'>
-              <el-form-item label="保证金金额（￥）：" class='inputAud'>
-                <el-input v-model="authentication_info.deposit" auto-complete="off" :disabled="isDisable()"></el-input>
-              </el-form-item>
-              <el-form-item label="未结佣金总额（￥）：" class='inputAud'>
-                <el-input v-model="authentication_info.no_price" auto-complete="off" :disabled="isDisable()"></el-input>
-              </el-form-item>
-              <el-form-item label="可退金额（￥）：" class='inputAud'>
-                <el-input v-model="authentication_info.allow" auto-complete="off" :disabled="isDisable()"></el-input>
-              </el-form-item>
-              <el-form-item label="项目状态" class='inputAud state'>
-                 {{projectState(authentication_info.authentication_state)}}
-              </el-form-item>
-              <el-form-item  class='request' >
-                    <el-button type="primary" @click="requestRefund()" :disabled="operationType===2" v-if='authentication_info.deposit>0'>申请退款</el-button>
-              </el-form-item>
-              <div class='num_details'>保证金详情</div>
-              <el-table :data='authentication_info.business_log' border >
-                  <el-table-column property="id" label="序号" align='center' width="70px"></el-table-column>
-                  <el-table-column property="drawee" label="付款户名" align='center' ></el-table-column>
-                  <el-table-column property="payee" label="收款户名" align='center' ></el-table-column>
-                  <el-table-column property="price" label="金额（￥）" align='center'></el-table-column>
-                  <el-table-column property="contact_name" label="联系人" align='center'></el-table-column>
-                  <el-table-column property="contact_phone" label="联系电话" align='center' width="120px"></el-table-column>  
-                  <el-table-column prop="type" label="类型" align='center'>
-                       <template slot-scope="scope">{{authenticationType(scope.row.type)}}</template>
-                  </el-table-column>
-                  <el-table-column prop="state" label="状态" align='center' >
-                       <template slot-scope="scope">{{auditingState(scope.row.state)}}</template>
-                  </el-table-column>
-                  <el-table-column property="create_name" label="交易人" align='center' ></el-table-column>
-                  <el-table-column property="create_time" label="交易时间" align='center'  width="150px"></el-table-column>
-                  <el-table-column property="operation" label="操作" align='center' width="80px">
-                  <template slot-scope="scope">
-                      <el-button type="text" @click="seeRequestRefund(scope.row)">查看</el-button>
-                  </template>
-                </el-table-column>
-              </el-table>
-        </el-form>
-        <div v-if="operationType==2">
-          <div class='num_set'>项目历史</div>
-          <el-table :data="project_history" border>
-              <el-table-column property="nub" label="序号" align='center' width="70px"></el-table-column>
-              <el-table-column property="company_name" label="公司名称" align='center'></el-table-column>
-              <el-table-column property="company_relation" label="与项目关系" align='center'></el-table-column>
-              <el-table-column property="s_time" label="开始时间" align='center'></el-table-column>
-              <el-table-column property="e_time" label="结束时间" align='center'></el-table-column>
-              <el-table-column property="project_hold_name" label="负责人" align='center'></el-table-column>
-              <el-table-column property="project_hold_phone" label="联系方式" align='center'></el-table-column>
+        <el-form v-model="authentication_info" class='form'>
+          <el-form-item label="保证金金额（￥）：" class='inputAud'>
+            <el-input v-model="authentication_info.deposit" auto-complete="off" :disabled="isDisable()"></el-input>
+          </el-form-item>
+          <el-form-item label="未结佣金总额（￥）：" class='inputAud'>
+            <el-input v-model="authentication_info.no_price" auto-complete="off" :disabled="isDisable()"></el-input>
+          </el-form-item>
+          <el-form-item label="可退金额（￥）：" class='inputAud'>
+            <el-input v-model="authentication_info.allow" auto-complete="off" :disabled="isDisable()"></el-input>
+          </el-form-item>
+          <el-form-item label="项目状态" class='inputAud state'>
+            {{projectState(authentication_info.authentication_state)}}
+          </el-form-item>
+          <el-form-item class='request'>
+            <el-button type="primary" @click="requestRefund()" :disabled="operationType===2" v-if='authentication_info.deposit>0'>申请退款</el-button>
+          </el-form-item>
+          <div class='num_details'>保证金详情</div>
+          <el-table :data='authentication_info.business_log' border>
+            <el-table-column property="id" label="序号" align='center' width="70px"></el-table-column>
+            <el-table-column property="drawee" label="付款户名" align='center'></el-table-column>
+            <el-table-column property="payee" label="收款户名" align='center'></el-table-column>
+            <el-table-column property="price" label="金额（￥）" align='center'></el-table-column>
+            <el-table-column property="contact_name" label="联系人" align='center'></el-table-column>
+            <el-table-column property="contact_phone" label="联系电话" align='center' width="120px"></el-table-column>
+            <el-table-column prop="type" label="类型" align='center'>
+              <template slot-scope="scope">{{authenticationType(scope.row.type)}}</template>
+            </el-table-column>
+            <el-table-column prop="state" label="状态" align='center'>
+              <template slot-scope="scope">{{auditingState(scope.row.state)}}</template>
+            </el-table-column>
+            <el-table-column property="create_name" label="交易人" align='center'></el-table-column>
+            <el-table-column property="create_time" label="交易时间" align='center' width="150px"></el-table-column>
+            <el-table-column property="operation" label="操作" align='center' width="80px">
+              <template slot-scope="scope">
+                <el-button type="text" @click="seeRequestRefund(scope.row)">查看</el-button>
+              </template>
+            </el-table-column>
           </el-table>
-        </div>
+        </el-form>
+      </div>
+      <div v-if="operationType==0">
+        <div class='num_set'>项目历史</div>
+        <el-table :data="project_history" border>
+          <el-table-column property="nub" label="序号" align='center' width="70px"></el-table-column>
+          <el-table-column property="company_name" label="公司名称" align='center'></el-table-column>
+          <el-table-column property="company_relation" label="与项目关系" align='center'></el-table-column>
+          <el-table-column property="s_time" label="开始时间" align='center'></el-table-column>
+          <el-table-column property="e_time" label="结束时间" align='center'></el-table-column>
+          <el-table-column property="project_hold_name" label="负责人" align='center'></el-table-column>
+          <el-table-column property="project_hold_phone" label="联系方式" align='center'></el-table-column>
+        </el-table>
+      </div>
     </div>
-     <!-- 帐号添加 -->
-     <el-dialog title="新建账号" :visible.sync="dialogFormVisibleAccounts"  class='tableUser' @close="cancelUser">
+    <!-- 帐号添加 -->
+    <el-dialog title="新建账号" :visible.sync="dialogFormVisibleAccounts" class='tableUser' @close="cancelUser">
       <el-form :model="projectUserForm" :rules="userFormRules" ref="projectUserForm">
         <el-form-item label="设定帐号" prop="account" class='input'>
           <el-input v-model="projectUserForm.account" auto-complete="off" placeholder="请输入帐号"></el-input>
@@ -233,10 +235,10 @@
       <div slot="footer" class="dialog-footer">
         <el-button @click='cancelUser'>关 闭</el-button>
         <el-button type="primary" @click='submitUser'>确 定</el-button>
-      </div> 
-</el-dialog>
-   <!-- 暂时未使用 -->
-  <!-- <el-dialog  title="可退金额" :visible.sync="refundShow"  class='tableRefund' @close="">
+      </div>
+    </el-dialog>
+    <!-- 暂时未使用 -->
+    <!-- <el-dialog  title="可退金额" :visible.sync="refundShow"  class='tableRefund' @close="">
     <div>可退金额=保证金总额-为结佣金额-曾退款金额</div>
     <div>9000=10000-1000-0</div>
       <el-button type='text' class='text'>缴款记录</el-button>
@@ -250,7 +252,7 @@
      <div>保证金总额：{{}}</div>
   </el-dialog> -->
 
-    </div>
+  </div>
 </template>
 
 

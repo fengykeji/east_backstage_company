@@ -1,6 +1,12 @@
 <style lang="less" scoped src="../index.less" ></style>
 <style lang="less">
 .examinePeople {
+   .el-table th {
+    padding: 8px 5px;
+  }
+  .el-table td {
+    padding: 0;
+  }
   .dialog {
     text-align: left;
     position: fixed;
@@ -46,10 +52,13 @@
         font-size: 14px;
       }
     }
-     .border.height{
-          height: 70px;
-          width: 400px;
-      }
+    .border.height {
+      height: 70px;
+      width: 400px;
+    }
+    .border.width{
+      width: 340px;
+    }
     .input1 {
       display: inline-block;
       padding-right: 30px;
@@ -86,8 +95,8 @@
     </div>
     <template>
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column prop="" label="序号" align='center'> </el-table-column>
-        <el-table-column prop="account" label="云算号" align='center'></el-table-column>
+        <el-table-column prop="" label="序号" align='center' width="80px"> </el-table-column>
+        <el-table-column prop="account" label="云算号" align='center' width="110px"></el-table-column>
         <el-table-column prop="name" label="名称" align='center'></el-table-column>
         <el-table-column prop="project_name" label="申请项目" align='center'></el-table-column>
         <el-table-column prop="role" label="角色" align='center'>
@@ -144,8 +153,8 @@
           <el-form-item class='input1'>
             <div>工牌照片</div>
             <div class='border  img'>
-                 <img src="../../../assets/images/head.png" />
-                <!-- <img :src="'http://120.27.21.136:2798/' + examinePeople.img_url" /> -->
+              <img src="../../../assets/images/head.png" />
+              <!-- <img :src="'http://120.27.21.136:2798/' + examinePeople.img_url" /> -->
             </div>
           </el-form-item>
           <el-form-item class='input1'>
@@ -173,11 +182,10 @@
           </el-form-item>
           <el-form-item class='input1'>
             <div>通讯地址</div>
-            <div class='border'>{{examinePeople.tabsolute_addressel}}</div>
+            <div class='border width'>{{examinePeople.city_name+examinePeople.district_name+examinePeople.absolute_address}}</div>
           </el-form-item>
           <div class='num_set'>审核信息</div>
 
-          
           <el-form-item class='input1'>
             <div>审核状态</div>
             <div class='border'>{{auditingState(examinePeople.state)}}</div>
@@ -236,7 +244,9 @@ export default {
         sex: "",
         tel: "",
         birth: "",
-        tabsolute_addressel: "",
+        absolute_address: "",
+        city_name:'',
+        district_name:'',
         agent_id: null,
         project_id: null,
         id: null
@@ -269,9 +279,9 @@ export default {
           let temp = Object.assign({}, this.submitForm);
           if (type == 0) {
             temp.remark = this.remark;
+            this.getExList();
+            this.cancel();
           }
-          this.getExList();
-          this.cancel();
           let res = await this.api.exPeople(temp);
           if (res.code == 200) {
             this.getExList();
@@ -283,7 +293,7 @@ export default {
             type: "info",
             message: "已取消审核"
           });
-            this.cancel();
+          this.cancel();
         });
     },
     async examine(row) {
@@ -301,8 +311,8 @@ export default {
       this.operationType = 1;
       this.dialogFormVisible = true;
       Object.assign(this.examinePeople, row);
-      let res=await this.api.getRefuseInfo(this.examinePeople);
-      if(res.code==200){
+      let res = await this.api.getRefuseInfo(this.examinePeople);
+      if (res.code == 200) {
       }
     },
     getRole(row) {

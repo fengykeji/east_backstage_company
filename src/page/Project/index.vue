@@ -75,7 +75,7 @@
     <el-table-column property="operation" label="操作" align='center' width="180px">
         <template slot-scope="scope">
           <el-button type="text" @click='showAdd(2, scope.row)'>查看</el-button>
-          <el-button type="text" @click='showAdd(1, scope.row)'>修改</el-button>
+          <el-button type="text" @click='showAdd(1, scope.row)' v-if="scope.row.auditing_state==0">修改</el-button>
           <el-button type="text" @click='showAdd(3, scope.row)' v-if="scope.row.auditing_state==2">重新申请</el-button>
         </template>
     </el-table-column>

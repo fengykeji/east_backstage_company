@@ -7,25 +7,16 @@
   .el-dialog__body {
     padding-top: 0;
   }
-  .search{
-  position: relative;
+    .btn {
+      position: absolute;
+      right:220px;
+      top: 75px;
+  }
 }
-.search-btn {
-  position: fixed;
-  top: 11%;
-  right: 160px;
-}
-.search-btn.right{
-   right: 40px;
-}
-}
-
-
 </style>
 <template>
   <div class='box distribution'>
     <div class='title'>
-      <span></span>
       <span class='left'>
         <div class='text1'>当前位置：项目分销</div>
         <div>
@@ -33,15 +24,14 @@
           <el-button class='tip' type="text" @click="search(1)">待审核</el-button>
           <el-button class='tip' type="text" @click="search(2)">已通过</el-button>
           <el-button class='tip' type="text" @click="search(3)">已终止</el-button>
-          <span class='search'>
-            <div>
-              <el-button class="search-btn" type="primary" @click="getList">高级查询</el-button>
-              <el-button class="search-btn right" type="primary" @click='startApply'>发起申请</el-button>
-            </div>
+          <span class='btn'>
+            <el-button type="primary" @click="getList">高级查询</el-button>
+            <el-button type="primary" @click='startApply'>发起申请</el-button>
           </span>
         </div>
       </span>
       <!-- <el-input v-model="searchObj.tag_search" class='query'></el-input> -->
+
     </div>
     <div class='search'>
       <!-- <div>
@@ -150,7 +140,7 @@ export default {
     },
     fastDistribution(row) {
       this.$router.push({
-        name: "fastDistribution", 
+        name: "fastDistribution",
         params: { project_id: row.project_id }
       });
     },

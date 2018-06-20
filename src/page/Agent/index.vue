@@ -3,6 +3,12 @@
 .agent {
   margin-left: 180px;
   margin-top: 150px;
+   .el-table th {
+    padding: 8px 5px;
+  }
+  .el-table td {
+    padding: 0;
+  }
   .title {
     background-color: #fafafc;
     text-align: left;
@@ -23,8 +29,8 @@
       }
     }
   }
-    .el-dialog__body{
-    padding:0px 20px 20px 20px;
+  .el-dialog__body {
+    padding: 0px 20px 20px 20px;
   }
   .showImg {
     width: 800px;
@@ -46,18 +52,18 @@
     </div>
     <template>
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column prop="" label="序号" align='center'> </el-table-column>
-        <el-table-column prop="account" label="云算号" align='center'></el-table-column>
+        <el-table-column prop="" label="序号" align='center' width="80px"> </el-table-column>
+        <el-table-column prop="account" label="云算号" align='center' width="110px"></el-table-column>
         <el-table-column prop="name" label="名称" align='center'></el-table-column>
         <el-table-column prop="tel" label="联系方式" align='center'></el-table-column>
         <el-table-column prop="project_name" label="申请项目" align='center'></el-table-column>
-        <el-table-column prop="role" label="角色" align='center'>
+        <el-table-column prop="role" label="角色" align='center' width="100px">
           <template slot-scope="scope">{{getRole(scope.row.role)}}</template>
         </el-table-column>
-        <el-table-column prop="department" label="所属部门" align='center'></el-table-column>
+        <el-table-column prop="department" label="所属部门" align='center' width="100px"></el-table-column>
         <el-table-column prop="position" label="职位" align='center'></el-table-column>
-        <el-table-column prop="city_name" label="城市" align='center'></el-table-column>
-        <el-table-column prop="district_name" label="区域" align='center'></el-table-column>
+        <el-table-column prop="city_name" label="城市" align='center' width="100px"></el-table-column>
+        <el-table-column prop="district_name" label="区域" align='center' width="100px"></el-table-column>
         <el-table-column prop="entry_time" label="入职时间" align='center'></el-table-column>
         <el-table-column label="操作" align='center'>
           <template slot-scope="scope">
@@ -109,7 +115,7 @@
         <el-form-item class='input1'>
           <div>工牌照片</div>
           <div class='border  img'>
-               <img src="../../assets/images/head.png" />
+            <img src="../../assets/images/head.png" />
             <!-- <img :src="'http://120.27.21.136:2798/' + examinePeople.img_url" /> -->
           </div>
         </el-form-item>
@@ -134,7 +140,7 @@
         </el-form-item>
         <el-form-item class='input1'>
           <div>通讯地址</div>
-          <div class='border'>{{examinePeople.absolute_address}}</div>
+          <div class='border'>{{examinePeople.city_name+examinePeople.district_name+examinePeople.absolute_address}}</div>
         </el-form-item>
         <el-form-item class='input1'>
           <div>身份证</div>
@@ -143,7 +149,7 @@
         <el-form-item class='input1'>
           <div>证件照片</div>
           <div class='border  img'>
-               <img src="../../assets/images/idCard.png" />
+            <img src="../../assets/images/idCard.png" />
             <!-- <img :src="'http://120.27.21.136:2798/' + examinePeople.card_url" /> -->
           </div>
         </el-form-item>
@@ -224,6 +230,7 @@ export default {
             this.cancel();
           }
         } else {
+          this.cancel();
           return false;
         }
       });

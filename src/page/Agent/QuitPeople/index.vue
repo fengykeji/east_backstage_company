@@ -2,6 +2,12 @@
 </style>
 <style lang="less">
 .quitPeople {
+   .el-table th {
+    padding: 8px 5px;
+  }
+  .el-table td {
+    padding: 0;
+  }
   .el-dialog__body{
     padding:0 20px 20px 20px;
     margin:0;
@@ -20,8 +26,8 @@
     </div>
     <template>
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column prop="" label="序号" align='center'> </el-table-column>
-        <el-table-column prop="account" label="云算号" align='center' width="120px"></el-table-column>
+        <el-table-column prop="" label="序号" align='center' width="80px"> </el-table-column>
+        <el-table-column prop="account" label="云算号" align='center' width="110px"></el-table-column>
         <el-table-column prop="name" label="名称" align='center'></el-table-column>
         <el-table-column prop="tel" label="联系方式" align='center' width="120px"></el-table-column>
         <el-table-column prop="project_name" label="申请项目" align='center'></el-table-column>
@@ -32,9 +38,6 @@
         <el-table-column prop="position" label="职位" align='center'></el-table-column>
         <el-table-column prop="city" label="城市" align='center'></el-table-column>
         <el-table-column prop="district" label="区域" align='center'></el-table-column>
-        <el-table-column prop="state" label="审核状态" align='center'>
-          <template slot-scope="scope">{{auditingState(scope.row.state)}}</template>
-        </el-table-column>
         <el-table-column prop="entry_time" label="入职时间" align='center' width="100px"></el-table-column>
         <el-table-column prop="create_time" label="离职时间" align='center' width="100px"></el-table-column>
         <el-table-column prop="remark" label="离职原因" align='center' width="200px"></el-table-column>
@@ -100,7 +103,7 @@
           </el-form-item>
           <el-form-item class='input1'>
             <div>通讯地址</div>
-            <div class='border'>{{examinePeople.tabsolute_addressel}}</div>
+            <div class='border'>{{examinePeople.city_name+examinePeople.district_name+examinePeople.absolute_address}}</div>
           </el-form-item>
           <el-form-item class='input1'>
             <div>身份证</div>
@@ -124,10 +127,6 @@
           <el-form-item class='input2'>
             <div>个人介绍</div>
             <div class='border height'>{{examinePeople.slef_desc}}</div>
-          </el-form-item>
-          <el-form-item class='input2'>
-            <div>申请时间</div>
-            <div class='border'>{{examinePeople.slef_desc}}</div>
           </el-form-item>
           <div class='num_set'>离职信息</div>
           <el-form-item class='input1'>
@@ -165,7 +164,7 @@ export default {
         sex: "",
         tel: "",
         birth: "",
-        tabsolute_addressel: "",
+        absolute_address: "",
         slef_desc: "",
         bank_card: "",
         bank_name: "",

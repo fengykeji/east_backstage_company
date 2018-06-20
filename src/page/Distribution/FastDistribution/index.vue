@@ -51,7 +51,7 @@
         <el-table-column prop="position" label="职位" align='center'></el-table-column>
         <el-table-column prop="entry_time" label="入职时间" align='center'></el-table-column>
         <el-table-column prop="create_time" label="分配时间" align='center' width="160px"></el-table-column>
-        <el-table-column prop="operation" label="操作" align='center' width="120px">
+        <el-table-column prop="operation" label="操作" align='center' width="140px">
           <template slot-scope="scope">
             <el-button type="text" @click='showAdd(2, scope.row)'>查看</el-button>
             <el-button type="text" @click='showAdd(1, scope.row)'>修改</el-button>
@@ -90,18 +90,16 @@ export default {
     return {
       maintain: [],
       examine: [],
-      sumbitForm: {
-        project_id: "",
-        id: ""
-      }
+      project_id: "",
+      id: ""
     };
   },
   mounted() {
     this.project_id = this.$route.params.project_id;
     if (this.project_id) {
       this.getAgent();
-    }else{
-      this.$router.push({name:"distribution"});
+    } else {
+      this.$router.push({ name: "distribution" });
     }
   },
   methods: {
@@ -113,7 +111,7 @@ export default {
       }
     },
     cancel() {
-      this.$router.push({ name: "distribution"});
+      this.$router.push({ name: "distribution" });
     },
     showAdd() {},
     authenticationState(row) {
@@ -124,7 +122,7 @@ export default {
       }
     },
     addShow() {
-      this.$router.push({ name: "addPerson"});
+      this.$router.push({ name: "addPerson", params: { project_id: this.project_id } });
     }
   }
 };
