@@ -1,6 +1,6 @@
-<style scoped <style lang="less">
+<style scoped lang="less">
 .sidebar-menu {
-  position: fixed;
+  position: fixed !important;
   left: 0;
   top: 0;
   height: 100%;

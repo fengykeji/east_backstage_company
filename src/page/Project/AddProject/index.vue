@@ -111,12 +111,12 @@
       </el-form-item>
     </el-form>
     <div class='tableIn-btn'>
-      <el-button type="primary" v-if="operationType==0" @click='showUser'>新增账号</el-button>
+      <el-button type="primary" v-if="operationType==0||operationType==1" @click='showUser'>新增账号</el-button>
     </div>
     <!-- 用户显示 -->
     <el-table :data="form.project_user" border>
       <el-table-column property="account" label="帐号" align='center'></el-table-column>
-      <el-table-column property="name" label="对接人" align='center'></el-table-column>
+      <el-table-column property="name" label="管理员" align='center'></el-table-column>
       <el-table-column property="phone" label="电话号码" align='center'></el-table-column>
       <el-table-column property="operation" v-if="operationType == 0 || operationType == 1" label="操作" align='center'>
         <template slot-scope="scope">
@@ -221,11 +221,14 @@
         <el-form-item label="设定帐号" prop="account" class='input'>
           <el-input v-model="projectUserForm.account" auto-complete="off" placeholder="请输入帐号"></el-input>
         </el-form-item>
-        <el-form-item label="设定密码" prop="password" class='input' v-if="operationType == 0">
+        <el-form-item v-show="isAccountValid" label="设定密码" prop="password" class='input'>
           <el-input v-model="projectUserForm.password" auto-complete="off" type='password' placeholder="请输入密码"></el-input>
         </el-form-item>
-        <el-form-item label="管理员" prop="name" class='input'>
-          <el-input v-model="projectUserForm.name" auto-complete="off" placeholder="请输入管理员"></el-input>
+        <el-form-item v-show="!isAccountValid" label="设定密码"  class='input'>
+          <el-input v-model="projectUserForm.password" auto-complete="off" type='password' placeholder="不设置为之前密码"></el-input>
+        </el-form-item>
+        <el-form-item label="管理员姓名" prop="name" class='input'>
+          <el-input v-model="projectUserForm.name" auto-complete="off" placeholder="请输入管理员姓名"></el-input>
         </el-form-item>
         <el-form-item label="联系电话" prop="phone" class='input'>
           <el-input v-model="projectUserForm.phone" auto-complete="off" placeholder="请输入联系电话"></el-input>
@@ -321,7 +324,7 @@ export default {
         ],
         remark: [{ required: true, message: "请输入备注", change: "change" }]
       },
-      userFormRules: {
+      userFormRulesOrigin: {
         name: [
           { required: true, message: "请输入管理员", change: "change" },
           {
@@ -448,6 +451,20 @@ export default {
       }
     };
   },
+  computed : {
+    userFormRules() {
+      if(this.projectUserForm.password == '' && this.operationType == 1 && this.isUserEdit == true) {
+        let temp = Object.assign({} , this.userFormRulesOrigin);
+        this.isAccountValid = false;
+        temp.password = undefined;
+        return temp;
+      }else if(this.isUserEdit == true ||  this.isUserEdit == false){
+        let temp = Object.assign({} , this.userFormRulesOrigin);
+        this.isAccountValid = true;
+        return temp;
+      }
+    }
+  },
   mounted() {
     this.operationType = this.$route.params.operationType;
     if (this.operationType === undefined) {
@@ -561,7 +578,6 @@ export default {
               this.projectUserForm.project_id = this.form.project_id;
               let temp = Object.assign({}, this.projectUserForm);
               temp.index = undefined;
-              temp.password = undefined;
               await this.api.updateProjectAdmin(temp);
             } else {
               this.projectUserForm.project_id = this.form.project_id;
@@ -595,6 +611,7 @@ export default {
       this.dialogFormVisibleAccounts = true;
     },
     editUser(row, index) {
+      console.log(row)
       this.isUserEdit = true;
       this.dialogFormVisibleAccounts = true;
       Object.assign(this.projectUserForm, row);

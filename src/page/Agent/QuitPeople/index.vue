@@ -131,15 +131,15 @@
           <div class='num_set'>离职信息</div>
           <el-form-item class='input1'>
             <div>离职时间</div>
-            <div class='border'>{{examinePeople.quit.create_time}}</div>
+            <div class='border'>{{examinePeople.quit ? examinePeople.quit.create_time : ''}}</div>
           </el-form-item>
           <el-form-item class='input1'>
             <div>离职类型</div>
-            <div class='border'>{{examinePeople.quit.type}}</div>
+            <div class='border'>{{examinePeople.quit ? examinePeople.quit.type : ''}}</div>
           </el-form-item>
           <el-form-item class='input1'>
             <div>备注</div>
-            <div class='border height'>{{examinePeople.quit.remark}}</div>
+            <div class='border height'>{{examinePeople.quit ? examinePeople.quit.remark : ''}}</div>
           </el-form-item>
         </el-form>
       </el-dialog>
