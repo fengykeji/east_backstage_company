@@ -53,7 +53,7 @@
         <el-table-column prop="create_time" label="分配时间" align='center' width="160px"></el-table-column>
         <el-table-column prop="operation" label="操作" align='center' width="140px">
           <template slot-scope="scope">
-            <el-button type="text" @click='showAdd(2, scope.row)'>查看</el-button>
+            <el-button type="text" @click='showAdd(0, scope.row)'>查看</el-button>
             <el-button type="text" @click='showAdd(1, scope.row)'>修改</el-button>
           </template>
         </el-table-column>
@@ -91,7 +91,9 @@ export default {
       maintain: [],
       examine: [],
       project_id: "",
-      id: ""
+      id: "",
+      agent_id: "",
+      operationType: 0 //0 查看  1 修改
     };
   },
   mounted() {
@@ -113,7 +115,18 @@ export default {
     cancel() {
       this.$router.push({ name: "distribution" });
     },
-    showAdd() {},
+    async showAdd(type, row) {
+      console.log(row);
+      if (type == 0) {
+        //查看
+        this.$router.push({
+          name: "addPerson",
+          params: { operationType: type ,agent_id:row.agent_id}
+        });
+      } else if (type == 1) {
+        //修改
+      }
+    },
     authenticationState(row) {
       if (row == 0) {
         return "待审核";
@@ -122,7 +135,10 @@ export default {
       }
     },
     addShow() {
-      this.$router.push({ name: "addPerson", params: { project_id: this.project_id } });
+      this.$router.push({
+        name: "addPerson",
+        params: { project_id: this.project_id }
+      });
     }
   }
 };

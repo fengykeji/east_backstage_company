@@ -249,7 +249,8 @@ export default {
         district_name: "",
         agent_id: null,
         project_id: null,
-        id: null
+        id: null,
+        remark: ""
       },
       submitForm: {},
       remark: "",
@@ -318,7 +319,7 @@ export default {
       Object.assign(this.examinePeople, row);
       let res = await this.api.getRefuseInfo(this.examinePeople);
       if (res.code == 200) {
-        this.examinePeople=res.data;
+        this.examinePeople = res.data;
       }
     },
     getRole(row) {

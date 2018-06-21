@@ -37,6 +37,9 @@ let api = {
   // 登陆
   gitCode: doPost('company/user/login'),
 
+  //禁用丶启用管理员
+  updateAdminState: doGet('company/project/updateAdminState'),
+
   //获取省份
   getProvinceList: doGet('getProvinceList'),
 
@@ -131,25 +134,25 @@ let api = {
   getPayrollList: doGet('company/CompanyAgent/getPayrollList'),
 
   //待审核经纪人详情
-  getExInfo:doGet('company/CompanyAgent/getExInfo'),
+  getExInfo: doGet('company/CompanyAgent/getExInfo'),
 
   //离职经纪人详情
-  getQuitInfo:doGet('company/CompanyAgent/getQuitInfo'),
+  getQuitInfo: doGet('company/CompanyAgent/getQuitInfo'),
 
   //在职经纪人详情
-  getPayrollInfo:doGet('company/CompanyAgent/getPayrollInfo'),
+  getPayrollInfo: doGet('company/CompanyAgent/getPayrollInfo'),
 
   //已拒绝经纪人详情
-  getRefuseInfo:doGet('company/CompanyAgent/getRefuseInfo'),
+  getRefuseInfo: doGet('company/CompanyAgent/getRefuseInfo'),
 
 
   //第三板块   项目佣金管理
   //获取列表
-  getProjectCommissionList:doGet('company/projectCommission/getList'),
+  getProjectCommissionList: doGet('company/projectCommission/getList'),
 
 
-    //第四板块   分销佣金管理
-    getDistributionList:doGet('company/distribution/getList'),
+  //第四板块   分销佣金管理
+  getDistributionList: doGet('company/distribution/getList'),
 }
 
 export default api; 

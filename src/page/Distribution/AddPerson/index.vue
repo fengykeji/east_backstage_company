@@ -57,6 +57,21 @@
             <div>通讯地址</div>
             <div class='border width'>{{submitForm.tabsolute_addressel}}</div>
           </el-form-item>
+            <div class='num_set'>分配信息</div>
+          <el-form-item class='input1'>
+            <div>分配人</div>
+            <div class='border'>
+              {{sex(submitForm.fp_name)}}
+            </div>
+          </el-form-item>
+          <el-form-item class='input1'>
+            <div>分配时间</div>
+            <div class='border'>{{submitForm.fp_time}}</div>
+          </el-form-item>
+          <el-form-item class='input1'>
+            <div>备注</div>
+            <div class='border'>{{submitForm.remark}}</div>
+          </el-form-item>
         </el-form>
       </el-form>
     </div>
@@ -78,14 +93,19 @@ export default {
         name: "",
         project_id: "",
         id: "",
-        agent_id: ""
+        agent_id: "",
+        fp_name:'',
+        fp_time:'',
+        remark:'',
       }
     };
   },
   mounted() {
     this.project_id = this.$route.params.project_id;
     this.id = this.$route.params.id;
+      this.agent_id = this.$route.params.agent_id;
     if (this.$route.params.agentInfo === undefined) {
+        this.getAgentInfo();
     } else {
       this.agent_id = this.$route.params.agentInfo.id;
       this.submitForm = this.$route.params.agentInfo;
@@ -104,6 +124,8 @@ export default {
         });
       }
     },
+
+
     async getAgentInfo() {
       let res = await this.api.getAgentInfo({ agent_id: this.agent_id });
       if (res.code == 200) {

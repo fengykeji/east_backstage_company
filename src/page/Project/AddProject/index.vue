@@ -106,7 +106,7 @@
       <el-form-item label="联系电话" prop="project_hold_phone" class='input'>
         <el-input :disabled="operationType===2" v-model="form.project_hold_phone" auto-complete="off" placeholder="请输入联系电话"></el-input>
       </el-form-item>
-      <el-form-item label="备注" prop="remark" class='textarea'>
+      <el-form-item label="备注" class='textarea'>
         <el-input :disabled="operationType===2" v-model="form.remark" type="textarea"></el-input>
       </el-form-item>
     </el-form>
@@ -115,6 +115,11 @@
     </div>
     <!-- 用户显示 -->
     <el-table :data="form.project_user" border>
+      <el-table-column property="state" label="当前状态" align='center'>
+        <template slot-scope="scope">
+          {{showState(scope.row.state)}}
+        </template>
+      </el-table-column>
       <el-table-column property="account" label="帐号" align='center'></el-table-column>
       <el-table-column property="name" label="管理员" align='center'></el-table-column>
       <el-table-column property="phone" label="电话号码" align='center'></el-table-column>
@@ -122,6 +127,7 @@
         <template slot-scope="scope">
           <el-button type="text" @click='editUser(scope.row , scope.$index)'>修改</el-button>
           <el-button type="text" v-if="operationType == 0" @click='removeUser(scope.$index)'>删除</el-button>
+          <el-button type="text" @click='enabledDisable(scope.row)'>{{StateBtn(scope.row.state)}}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -189,9 +195,6 @@
             <el-table-column prop="type" label="类型" align='center'>
               <template slot-scope="scope">{{authenticationType(scope.row.type)}}</template>
             </el-table-column>
-            <el-table-column prop="state" label="状态" align='center'>
-              <template slot-scope="scope">{{auditingState(scope.row.state)}}</template>
-            </el-table-column>
             <el-table-column property="create_name" label="交易人" align='center'></el-table-column>
             <el-table-column property="create_time" label="交易时间" align='center' width="150px"></el-table-column>
             <el-table-column property="operation" label="操作" align='center' width="80px">
@@ -224,7 +227,7 @@
         <el-form-item v-show="isAccountValid" label="设定密码" prop="password" class='input'>
           <el-input v-model="projectUserForm.password" auto-complete="off" type='password' placeholder="请输入密码"></el-input>
         </el-form-item>
-        <el-form-item v-show="!isAccountValid" label="设定密码"  class='input'>
+        <el-form-item v-show="!isAccountValid" label="设定密码" class='input'>
           <el-input v-model="projectUserForm.password" auto-complete="off" type='password' placeholder="不设置为之前密码"></el-input>
         </el-form-item>
         <el-form-item label="管理员姓名" prop="name" class='input'>
@@ -321,8 +324,7 @@ export default {
         ],
         company_relation: [
           { required: true, message: "请输入公司与项目关系", change: "change" }
-        ],
-        remark: [{ required: true, message: "请输入备注", change: "change" }]
+        ]
       },
       userFormRulesOrigin: {
         name: [
@@ -448,18 +450,26 @@ export default {
         url: "",
         create_name: "",
         create_time: ""
+      },
+      isEnabledDisable: {
+        id: "",
+        state: ""
       }
     };
   },
-  computed : {
+  computed: {
     userFormRules() {
-      if(this.projectUserForm.password == '' && this.operationType == 1 && this.isUserEdit == true) {
-        let temp = Object.assign({} , this.userFormRulesOrigin);
+      if (
+        this.projectUserForm.password == "" &&
+        this.operationType == 1 &&
+        this.isUserEdit == true
+      ) {
+        let temp = Object.assign({}, this.userFormRulesOrigin);
         this.isAccountValid = false;
         temp.password = undefined;
         return temp;
-      }else if(this.isUserEdit == true ||  this.isUserEdit == false){
-        let temp = Object.assign({} , this.userFormRulesOrigin);
+      } else if (this.isUserEdit == true || this.isUserEdit == false) {
+        let temp = Object.assign({}, this.userFormRulesOrigin);
         this.isAccountValid = true;
         return temp;
       }
@@ -611,11 +621,31 @@ export default {
       this.dialogFormVisibleAccounts = true;
     },
     editUser(row, index) {
-      console.log(row)
       this.isUserEdit = true;
       this.dialogFormVisibleAccounts = true;
       Object.assign(this.projectUserForm, row);
       this.projectUserForm.index = index;
+    },
+    async enabledDisable(row) {
+      this.isEnabledDisable = row;
+      let res = await this.api.updateAdminState(this.isEnabledDisable);
+      if (res.code == 200) {
+        this.getProjectInfo();
+      }
+    },
+    showState(row) {
+      if (row == 0) {
+        return "禁用";
+      } else if (row == 1) {
+        return "启用";
+      }
+    },
+    StateBtn(row) {
+      if (row == 1) {
+        return "禁用";
+      } else if (row == 0) {
+        return "启用";
+      }
     },
     auditingState(row) {
       if (row == 0) {
