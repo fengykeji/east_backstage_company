@@ -115,7 +115,7 @@
     </div>
     <!-- 用户显示 -->
     <el-table :data="form.project_user" border>
-      <el-table-column property="state" label="当前状态" align='center'>
+      <el-table-column property="state" label="当前状态" align='center' v-if="operationType==1">
         <template slot-scope="scope">
           {{showState(scope.row.state)}}
         </template>
@@ -399,7 +399,8 @@ export default {
         name: "",
         account: "",
         password: "",
-        phone: null
+        phone: "",
+        state: ""
       },
       auditing_info: {
         auditing_name: "",
@@ -450,10 +451,6 @@ export default {
         url: "",
         create_name: "",
         create_time: ""
-      },
-      isEnabledDisable: {
-        id: "",
-        state: ""
       }
     };
   },
@@ -627,23 +624,29 @@ export default {
       this.projectUserForm.index = index;
     },
     async enabledDisable(row) {
-      this.isEnabledDisable = row;
-      let res = await this.api.updateAdminState(this.isEnabledDisable);
+      let temp = {};
+      temp.id = row.id;
+      if (row.state == 1) {
+        temp.state = 0;
+      } else if (row.state == 0) {
+        temp.state = 1;
+      }
+      let res = await this.api.updateAdminState(temp);
       if (res.code == 200) {
         this.getProjectInfo();
       }
     },
     showState(row) {
-      if (row == 0) {
+      if (row == 1) {
         return "禁用";
-      } else if (row == 1) {
+      } else if (row == 0) {
         return "启用";
       }
     },
     StateBtn(row) {
-      if (row == 1) {
+      if (row == 0) {
         return "禁用";
-      } else if (row == 0) {
+      } else if (row == 1) {
         return "启用";
       }
     },

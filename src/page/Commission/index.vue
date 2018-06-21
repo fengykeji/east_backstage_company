@@ -21,10 +21,10 @@
     <el-table-column  prop="project_hold_phone" label="联系方式" align='center' width="110px"></el-table-column>
     <el-table-column  prop="all_all_price" label="全部累计金额" align='center'></el-table-column>
     <el-table-column  prop="all_y_price" label="全部已结金额" align='center'></el-table-column>
-    <el-table-column  prop="company_n_price" label="全部未结金额" align='center'></el-table-column>
+    <el-table-column  prop="all_n_price" label="全部未结金额" align='center'></el-table-column>
     <el-table-column  prop="company_all_price" label="公司累计金额" align='center'></el-table-column>
     <el-table-column  prop="company_y_price" label="公司已结金额" align='center'></el-table-column>
-    <el-table-column  prop="all_n_price" label="公司未结金额" align='center'></el-table-column>
+    <el-table-column  prop="company_n_price" label="公司未结金额" align='center'></el-table-column>
     <el-table-column  prop="person_all_price" label="全民经纪人累计金额" align='center'></el-table-column>
     <el-table-column  prop="person_y_price" label="全民经纪人已结金额" align='center'></el-table-column>
     <el-table-column  prop="person_n_price" label="全民经纪人未结金额" align='center'></el-table-column>

@@ -141,7 +141,7 @@ export default {
     fastDistribution(row) {
       this.$router.push({
         name: "fastDistribution",
-        params: { project_id: row.project_id }
+        params: { project_id: row.project_id}
       });
     },
     showProject(row, type) {

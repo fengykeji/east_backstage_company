@@ -123,7 +123,7 @@ export default {
         this.sumbitForm = res.data;
       }
     },
-    sumbit(row) {
+    async sumbit(row) {
       console.log(row);
       this.$router.push({
         name: "projectInfo",

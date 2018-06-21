@@ -93,6 +93,9 @@ let api = {
   //获取列表
   getList: doGet('company/distribution/getList'),
 
+  //申请分销 - 项目详情
+  applyProject: doGet('company/distribution/applyProject'),
+
   //到访确认人 列表
   getAgent: doGet('company/distribution/getAgent'),
 

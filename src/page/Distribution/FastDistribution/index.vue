@@ -51,10 +51,12 @@
         <el-table-column prop="position" label="职位" align='center'></el-table-column>
         <el-table-column prop="entry_time" label="入职时间" align='center'></el-table-column>
         <el-table-column prop="create_time" label="分配时间" align='center' width="160px"></el-table-column>
+        <el-table-column prop="state" label="状态" align='center'>
+          <template slot-scope="scope">{{state(scope.row.state)}}</template>
+        </el-table-column>
         <el-table-column prop="operation" label="操作" align='center' width="140px">
           <template slot-scope="scope">
             <el-button type="text" @click='showAdd(0, scope.row)'>查看</el-button>
-            <el-button type="text" @click='showAdd(1, scope.row)'>修改</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -121,10 +123,17 @@ export default {
         //查看
         this.$router.push({
           name: "addPerson",
-          params: { operationType: type ,agent_id:row.agent_id}
+          params: { operationType: type, agent_id: row.agent_id }
         });
       } else if (type == 1) {
-        //修改
+        
+      }
+    },
+    state(row) {
+      if (row == 0) {
+        return "禁用";
+      } else if(row==1){
+        return "正常";
       }
     },
     authenticationState(row) {
@@ -135,6 +144,7 @@ export default {
       }
     },
     addShow() {
+      //新增
       this.$router.push({
         name: "addPerson",
         params: { project_id: this.project_id }

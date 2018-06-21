@@ -11,7 +11,7 @@
       <el-form v-model="submitForm">
         <el-form-item class='input1'>
           <div>到访确认人</div>
-          <div class='border'>{{submitForm.name}}</div>
+          <div class='border'>{{submitForm ? submitForm.name : ''}}</div>
         </el-form-item>
         <span>
           <el-button type="primary" class='button' @click='choice'>选择</el-button>
@@ -20,57 +20,57 @@
         <el-form v-model="submitForm">
           <el-form-item class='input1'>
             <div>姓名</div>
-            <div class='border'>{{submitForm.name}}</div>
+            <div class='border'>{{submitForm ? submitForm.name : ''}}</div>
           </el-form-item>
           <el-form-item class='input1'>
             <div>入职时间</div>
-            <div class='border'>{{submitForm.entry_time}}</div>
+            <div class='border'>{{submitForm ?submitForm.entry_time: ''}}</div>
           </el-form-item>
           <el-form-item class='input1'>
             <div>云算号</div>
-            <div class='border'>{{submitForm.account}}</div>
+            <div class='border'>{{submitForm ?submitForm.account: ''}}</div>
           </el-form-item>
           <el-form-item class='input1'>
             <div>所属部门</div>
-            <div class='border'>{{submitForm.department}}</div>
+            <div class='border'>{{submitForm ?submitForm.department: ''}}</div>
           </el-form-item>
           <el-form-item class='input1'>
             <div>职位</div>
-            <div class='border'>{{submitForm.position}}</div>
+            <div class='border'>{{submitForm ?submitForm.position: ''}}</div>
           </el-form-item>
           <div class='num_set'>基础信息</div>
           <el-form-item class='input1'>
             <div>性别</div>
             <div class='border'>
-              {{sex(submitForm.sex)}}
+              {{sex(submitForm ?submitForm.sex: '')}}
             </div>
           </el-form-item>
           <el-form-item class='input1'>
             <div>电话号码</div>
-            <div class='border'>{{submitForm.tel}}</div>
+            <div class='border'>{{submitForm ?submitForm.tel: ''}}</div>
           </el-form-item>
           <el-form-item class='input1'>
             <div>出生年月</div>
-            <div class='border'>{{submitForm.birth}}</div>
+            <div class='border'>{{submitForm ?submitForm.birth: ''}}</div>
           </el-form-item>
           <el-form-item class='input1'>
             <div>通讯地址</div>
-            <div class='border width'>{{submitForm.tabsolute_addressel}}</div>
+            <div class='border width'>{{submitForm ?submitForm.tabsolute_addressel: ''}}</div>
           </el-form-item>
-            <div class='num_set'>分配信息</div>
+          <div class='num_set'>分配信息</div>
           <el-form-item class='input1'>
             <div>分配人</div>
             <div class='border'>
-              {{sex(submitForm.fp_name)}}
+              {{sex(submitForm ?submitForm.fp_name: '')}}
             </div>
           </el-form-item>
           <el-form-item class='input1'>
             <div>分配时间</div>
-            <div class='border'>{{submitForm.fp_time}}</div>
+            <div class='border'>{{submitForm ?submitForm.fp_time: ''}}</div>
           </el-form-item>
-          <el-form-item class='input1'>
+          <el-form-item class='input1-br'>
             <div>备注</div>
-            <div class='border'>{{submitForm.remark}}</div>
+            <div class='border width-1'>{{submitForm ?submitForm.remark: ''}}</div>
           </el-form-item>
         </el-form>
       </el-form>
@@ -94,18 +94,18 @@ export default {
         project_id: "",
         id: "",
         agent_id: "",
-        fp_name:'',
-        fp_time:'',
-        remark:'',
+        fp_name: "",
+        fp_time: "",
+        remark: ""
       }
     };
   },
   mounted() {
     this.project_id = this.$route.params.project_id;
     this.id = this.$route.params.id;
-      this.agent_id = this.$route.params.agent_id;
+    this.agent_id = this.$route.params.agent_id;
     if (this.$route.params.agentInfo === undefined) {
-        this.getAgentInfo();
+      this.getAgentInfo();
     } else {
       this.agent_id = this.$route.params.agentInfo.id;
       this.submitForm = this.$route.params.agentInfo;
@@ -116,7 +116,9 @@ export default {
     async sumbit() {
       this.submitForm.project_id = this.project_id;
       this.submitForm.id = this.id;
+      this.submitForm.agent_id = this.agent_id;
       let res = await this.api.agentAdd(this.submitForm);
+      console.log(this.submitForm);
       if (res.code == 200) {
         this.$router.push({
           name: "fastDistribution",
@@ -124,7 +126,6 @@ export default {
         });
       }
     },
-
 
     async getAgentInfo() {
       let res = await this.api.getAgentInfo({ agent_id: this.agent_id });

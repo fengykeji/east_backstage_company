@@ -11,6 +11,7 @@ import RefundInfo from '@/page/Project/RefundInfo'
 import Agent from '@/page/Agent'
 import Commission from '@/page/Commission'
 import Distri_commission from '@/page/Distri_commission'
+import MaidInfo from '@/page/Distri_commission/MaidInfo'
 import Distribution from '@/page/Distribution'
 import FastDistribution from '@/page/Distribution/FastDistribution'
 import AddPerson from '@/page/Distribution/AddPerson'
@@ -107,7 +108,12 @@ export default new Router({
           path:'',
           name:'distri_commission',
           component:Distri_commission,
-        }
+        },
+        {
+          path:'maidInfo',
+          name:'maidInfo',
+          component:MaidInfo,
+        },
       ]
     },
     {
