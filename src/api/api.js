@@ -152,10 +152,16 @@ let api = {
   //第三板块   项目佣金管理
   //获取列表
   getProjectCommissionList: doGet('company/projectCommission/getList'),
-
+  //公司已结列表
+  getCompanyY: doGet('company/projectCommission/getCompanyY'),
+  //公司累计详情
+  getCompanyAllInfo: doGet('company/projectCommission/getCompanyAllInfo'),
+  //公司累计列表
+  getCompanyAll: doGet('company/projectCommission/getCompanyAll'),
 
   //第四板块   分销佣金管理
-  getDistributionList: doGet('company/distribution/getList'),
+  //获取列表
+  getDistributionList: doGet('company/DistributionCommission/getList'),
 }
 
 export default api; 

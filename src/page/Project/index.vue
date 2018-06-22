@@ -16,7 +16,7 @@
     margin-top: 20px;
   }
   .el-table th {
-    padding: 8px 5px;
+    padding: 8px 0px;
   }
   .el-table td {
     padding: 0;
@@ -26,7 +26,6 @@
 <template>
     <div class='box project'>
         <div class='title'>
-            <span></span>
             <span class='left'>
                 <div class='text1'>当前位置：项目管理</div>
                  <div>
@@ -72,7 +71,7 @@
     </el-table-column>
     <!-- <el-table-column  prop="auditing_name" label="审核人" align='center' width="90px"></el-table-column> -->
     <el-table-column  prop="auditing_time" label="审核时间" align='center' width="120px"></el-table-column>
-    <el-table-column property="operation" label="操作" align='center' width="180px">
+    <el-table-column  label="操作" align='center' width="180px">
         <template slot-scope="scope">
           <el-button type="text" @click='showAdd(2, scope.row)'>查看</el-button>
           <el-button type="text" @click='showAdd(1, scope.row)' v-if="scope.row.auditing_state==1">修改</el-button>

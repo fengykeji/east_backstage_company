@@ -10,8 +10,14 @@ import PayRecord from '@/page/Project/PayRecord'
 import RefundInfo from '@/page/Project/RefundInfo'
 import Agent from '@/page/Agent'
 import Commission from '@/page/Commission'
+import CompanyPrice from '@/page/Commission/CompanyPrice'
+import PersonPrice from '@/page/Commission/PersonPrice'
+import CompanyPriceInfo from '@/page/Commission/CompanyPriceInfo'
 import Distri_commission from '@/page/Distri_commission'
 import MaidInfo from '@/page/Distri_commission/MaidInfo'
+import CommissionApply from '@/page/Distri_commission/CommissionApply'
+import UpdateCommission from '@/page/Distri_commission/UpdateCommission'
+
 import Distribution from '@/page/Distribution'
 import FastDistribution from '@/page/Distribution/FastDistribution'
 import AddPerson from '@/page/Distribution/AddPerson'
@@ -97,7 +103,21 @@ export default new Router({
           path:'',
           name:'commission',
           component:Commission,
-        }
+        },
+        {
+          path:'companyPrice',
+          name:'companyPrice',
+          component:CompanyPrice,
+        },
+        {
+          path:'personPrice',
+          name:'personPrice',
+          component:PersonPrice,
+        },{
+          path:'companyPriceInfo',
+          name:'companyPriceInfo',
+          component:CompanyPriceInfo,
+        },
       ]
     },
     {
@@ -113,6 +133,16 @@ export default new Router({
           path:'maidInfo',
           name:'maidInfo',
           component:MaidInfo,
+        },
+        {
+          path:'commissionApply',
+          name:'commissionApply',
+          component:CommissionApply,
+        },
+        {
+          path:'updateCommission',
+          name:'updateCommission',
+          component:UpdateCommission,
         },
       ]
     },
