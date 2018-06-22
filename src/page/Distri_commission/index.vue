@@ -57,7 +57,8 @@
 export default {
   data() {
     return {
-      tableData: []
+      tableData: [],
+      project_id: ""
     };
   },
   mounted() {
@@ -71,7 +72,11 @@ export default {
     },
     commissionApply(row) {
       this.$router.push({
-        name: "commissionApply"
+        name: "commissionApply",
+        params: {
+          project_id: row.project_id,
+          rule_id: row.rule_id
+        }
       });
     },
 

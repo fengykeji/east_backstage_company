@@ -162,6 +162,13 @@ let api = {
   //第四板块   分销佣金管理
   //获取列表
   getDistributionList: doGet('company/DistributionCommission/getList'),
+
+  //申请佣金 - 获取佣金条目
+  getBrokerApply: doGet('company/DistributionCommission/brokerApply'),
+  //申请佣金 - 提交
+  brokerApply: doPost('company/DistributionCommission/brokerApply'),
+  //查看佣金记录
+  seeCommissionList: doGet('company/DistributionCommission/getList'),
 }
 
 export default api; 
