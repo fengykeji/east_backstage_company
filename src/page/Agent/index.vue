@@ -3,7 +3,7 @@
 .agent {
   margin-left: 180px;
   margin-top: 150px;
-   .el-table th {
+  .el-table th {
     padding: 8px 5px;
   }
   .el-table td {
@@ -22,7 +22,6 @@
 
     .left {
       text-align: left;
-      display: inline-block;
       .text1 {
         padding-top: 10px;
         margin: 10px 0 12px 20px;
@@ -44,11 +43,13 @@
 <template>
   <div class='agent'>
     <div class='title'>
-      <span class='left'>
+      <div class='left'>
         <div class='text1'>当前位置：在职经纪人</div>
-      </span>
-      <el-input v-model="searchObj.name" class='query'></el-input>
-      <el-button @click="search" icon="el-icon-search" circle></el-button>
+        <div class="search-block">
+          <el-input v-model="searchObj.name" class='query'></el-input>
+          <el-button @click="search" icon="el-icon-search" circle></el-button>
+        </div>
+      </div>
     </div>
     <template>
       <el-table :data="tableData" border style="width: 100%">

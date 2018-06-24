@@ -18,11 +18,14 @@
 <template>
   <div class='quitPeople'>
     <div class='title'>
-      <span class='left'>
+      <div class='left'>
         <div class='text1'>当前位置：离职经纪人</div>
-      </span>
-      <el-input class='query'></el-input>
-      <el-button icon="el-icon-search" circle></el-button>
+        <div class="search-block">
+          <el-input class='query'></el-input>
+          <el-button icon="el-icon-search" circle></el-button>
+        </div>
+      </div>
+
     </div>
     <template>
       <el-table :data="tableData" border style="width: 100%">

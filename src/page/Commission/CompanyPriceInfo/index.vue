@@ -32,7 +32,7 @@
 }
 </style>
 <style lang="less">
-.companyPriceInfo{
+.companyPriceInfo {
   .el-table--border,
   .el-table--group {
     margin-top: 20px;
@@ -101,6 +101,10 @@ export default {
   },
   mounted() {
     this.project_id = this.$route.params.project_id;
+    if (!this.project_id) {
+      this.$router.push({ name: "companyPrice" });
+      return;
+    }
     this.company_rule_id = this.$route.params.company_rule_id;
     this.getCompanyAllInfo();
   },
@@ -119,7 +123,8 @@ export default {
     },
     cancel() {
       this.$router.push({
-        name: "companyPrice"
+        name: "companyPrice",
+        params:this.$route.params,
       });
     },
     brokerType(row) {

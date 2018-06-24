@@ -14,8 +14,8 @@
         <div class='table'>
             <div class='title'>
                 <div class='title-text'>申请信息</div>
-                <el-button class='pos-btn-1' type="primary" v-if='sumbitForm.state' @click='sumbit()'>提交</el-button>
-                <el-button class='pos-btn-2' type="primary" @click='sumbit()'>保存</el-button>
+                <el-button class='pos-btn-1' type="primary" v-if='sumbitForm.state' @click='sumbit(2)'>提交</el-button>
+                <el-button class='pos-btn-2' type="primary" @click='sumbit(3)'>保存</el-button>
                 <el-button class='pos-btn' @click='cancel' type="primary">关闭</el-button>
             </div>
             <el-form v-model="sumbitForm" class='form'>
@@ -26,7 +26,7 @@
                     <el-input v-model="sumbitForm.count_num" auto-complete="off" class='input'></el-input>
                 </el-form-item>
                 <el-form-item label="佣金金额（￥）：" class='row'>
-                    <el-input v-model="sumbitForm.no_price" auto-complete="off" class='input'></el-input>
+                    <el-input v-model="no_price" auto-complete="off" class='input'></el-input>
                 </el-form-item>
                 <!-- <el-form-item label="扣款金额（￥）：" class='row'>
                     <el-input v-model="sumbitForm.allow" auto-complete="off" class='input'></el-input>
@@ -34,9 +34,6 @@
                 <!-- <el-form-item label="审核金额（￥）：" class='row'>
                     <el-input v-model="sumbitForm.allow" auto-complete="off" class='input'></el-input>
                 </el-form-item> -->
-                <el-form-item label="佣金条数" class='row'>
-                    <el-input v-model="sumbitForm.broker_id" auto-complete="off" class='input'></el-input>
-                </el-form-item>
                 <el-form-item label="甲方联系人" class='row'>
                     <el-input v-model="sumbitForm.nail_name" auto-complete="off" class='input'></el-input>
                 </el-form-item>
@@ -61,7 +58,7 @@
             </el-form>
 
             <div class='title-text'>申请结佣列表</div>
-            <el-table :data="tableData" border style="width: 100%">
+            <el-table :data="tableData" border style="width: 100%" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55" align='center'></el-table-column>
                 <el-table-column prop="client_id" label="推荐编号" align='center' width="120px"></el-table-column>
                 <el-table-column prop="name" label="经纪人名称" align='center' width="180px"></el-table-column>
@@ -89,25 +86,32 @@ export default {
         nail_tel: "",
         second_name: "",
         second_tel: "",
-        broker_id: "",
-        state: 2,
-        count_num: "",
+        broker_id: [],
+        state: 3,
+        count_num: ""
       },
+      no_price: 0,
       rule_id: "",
       project_id: ""
     };
   },
   mounted() {
     this.project_id = this.$route.params.project_id;
+    if(!this.project_id) {
+       this.$router.push({ name: "distri_commission" });
+      return;
+    }
     this.rule_id = this.$route.params.rule_id;
     this.getBrokerApply();
   },
   methods: {
-    async sumbit() {
-        
-      let res = await this.api.brokerApply({project_id:this.project_id});
+    async sumbit(state) {
+      let temp = Object.assign({}, this.sumbitForm);
+      temp.project_id = this.project_id;
+      temp.state = state;
+      console.log(temp);
+      let res = await this.api.brokerApply(temp);
       if (res.code == 200) {
-
       }
     },
     async getBrokerApply() {
@@ -132,6 +136,17 @@ export default {
       this.$router.push({
         name: "distri_commission"
       });
+    },
+    handleSelectionChange(val) {
+      let arr = [];
+      let count = 0;
+      for (let v of val) {
+        count += v.broker_num;
+        arr.push(v.broker_id);
+      }
+      this.sumbitForm.broker_id = arr.join(',');
+      this.sumbitForm.count_num = arr.length;
+      this.no_price = count;
     }
   }
 };

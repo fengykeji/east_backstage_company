@@ -24,62 +24,64 @@
 }
 </style>
 <template>
-    <div class='box project'>
-        <div class='title'>
-            <span class='left'>
-                <div class='text1'>当前位置：项目管理</div>
-                 <div>
-                    <el-button class='tip' type="text" @click="search(0)">全部</el-button>
-                    <el-button class='tip' type="text" @click="search(1)">待审核</el-button>
-                    <el-button class='tip' type="text" @click="search(2)">审核不通过</el-button>
-                    <el-button class='tip' type="text" @click="search(3)">未认证</el-button>
-                    <el-button class='tip' type="text" @click="search(4)">已认证</el-button>
-                    <el-button class='tip' type="text" @click="search(5)">已转出</el-button>
-                 </div>
-            </span>
-             <el-input v-model="searchObj.search" class='query'></el-input>
-              <el-button @click="getProjectList" icon="el-icon-search" circle></el-button>
-            <span class='right'>
-                 <el-button type="primary" @click='showAdd(0)'>新增</el-button>
-            </span>
+  <div class='box project'>
+    <div class='title'>
+      <div class='left'>
+        <div class='text1'>当前位置：项目管理</div>
+        <div class="tab-block">
+          <el-button class='tip' type="text" @click="search(0)">全部</el-button>
+          <el-button class='tip' type="text" @click="search(1)">待审核</el-button>
+          <el-button class='tip' type="text" @click="search(2)">审核不通过</el-button>
+          <el-button class='tip' type="text" @click="search(3)">未认证</el-button>
+          <el-button class='tip' type="text" @click="search(4)">已认证</el-button>
+          <el-button class='tip' type="text" @click="search(5)">已转出</el-button>
+          <div class="tab-block-inner">
+            <el-input v-model="searchObj.search" class='query'></el-input>
+            <el-button @click="getProjectList" icon="el-icon-search" circle></el-button>
+               <el-button type="primary" @click='showAdd(0)'>新增</el-button>
+          </div>
         </div>
-        <template>
-  <el-table :data="tableData"  border  style="width: 100%">
-    <el-table-column  prop="" label="序号"  align='center' width="70px"> </el-table-column>
-    <el-table-column  prop="project_code"  label="项目编号"  align='center' width="100px"></el-table-column>
-    <el-table-column  prop="project_name" label="项目名称" align='center' width="120px"></el-table-column>
-       <!-- 项目状态函数 -->
-     <el-table-column prop="state" label="项目状态" align='center' width="90px">
-        <template slot-scope="scope">{{projectState(scope.row.state)}}</template>
-    </el-table-column>
-    <el-table-column  prop="city" label="区域" align='center' width="90px"></el-table-column>
-    <!-- <el-table-column  prop="absolute_address" label="地址" align='center' width="220px"></el-table-column> -->
-    <el-table-column  prop="developer_name" label="开发商" align='center'></el-table-column>
-    <el-table-column  prop="company_relation" label="与项目关系" align='center' width="110px"></el-table-column>
-    <el-table-column  prop="subordinate_company" label="所属单位" align='center' width="120px"></el-table-column>
-    <el-table-column prop="source" label="来源" align='center' width="80px">
-         <template slot-scope="scope">{{scopeState (scope.row.source)}}</template>
-    </el-table-column>
-    <el-table-column prop="authentication_state" label="认证状态" align='center' width="90px">
-         <template slot-scope="scope">{{authenticationState (scope.row.authentication_state)}}</template>
-    </el-table-column>
-    <!-- <el-table-column  prop="" label="申请人" align='center' width="120px"></el-table-column> -->
-    <!-- <el-table-column  prop="create_time" label="申请时间" align='center' width="120px"></el-table-column> -->
-          <!-- 审核状态函数 -->
-    <el-table-column prop="auditing_state" label="审核状态" align='center' width="90px">
-           <template slot-scope="scope">{{auditingState(scope.row.auditing_state)}}</template>
-    </el-table-column>
-    <!-- <el-table-column  prop="auditing_name" label="审核人" align='center' width="90px"></el-table-column> -->
-    <el-table-column  prop="auditing_time" label="审核时间" align='center' width="120px"></el-table-column>
-    <el-table-column  label="操作" align='center' width="180px">
-        <template slot-scope="scope">
-          <el-button type="text" @click='showAdd(2, scope.row)'>查看</el-button>
-          <el-button type="text" @click='showAdd(1, scope.row)' v-if="scope.row.auditing_state==1">修改</el-button>
-          <el-button type="text" @click='showAdd(3, scope.row)' v-if="scope.row.auditing_state==2">重新申请</el-button>
-        </template>
-    </el-table-column>
-  </el-table>
-</template>
+      </div>
+      <span class='right'>
+      </span>
+    </div>
+    <template>
+      <el-table :data="tableData" border style="width: 100%">
+        <el-table-column prop="" label="序号" align='center' width="70px"> </el-table-column>
+        <el-table-column prop="project_code" label="项目编号" align='center' width="100px"></el-table-column>
+        <el-table-column prop="project_name" label="项目名称" align='center' width="120px"></el-table-column>
+        <!-- 项目状态函数 -->
+        <el-table-column prop="state" label="项目状态" align='center' width="90px">
+          <template slot-scope="scope">{{projectState(scope.row.state)}}</template>
+        </el-table-column>
+        <el-table-column prop="city" label="区域" align='center' width="90px"></el-table-column>
+        <!-- <el-table-column  prop="absolute_address" label="地址" align='center' width="220px"></el-table-column> -->
+        <el-table-column prop="developer_name" label="开发商" align='center'></el-table-column>
+        <el-table-column prop="company_relation" label="与项目关系" align='center' width="110px"></el-table-column>
+        <el-table-column prop="subordinate_company" label="所属单位" align='center' width="120px"></el-table-column>
+        <el-table-column prop="source" label="来源" align='center' width="80px">
+          <template slot-scope="scope">{{scopeState (scope.row.source)}}</template>
+        </el-table-column>
+        <el-table-column prop="authentication_state" label="认证状态" align='center' width="90px">
+          <template slot-scope="scope">{{authenticationState (scope.row.authentication_state)}}</template>
+        </el-table-column>
+        <!-- <el-table-column  prop="" label="申请人" align='center' width="120px"></el-table-column> -->
+        <!-- <el-table-column  prop="create_time" label="申请时间" align='center' width="120px"></el-table-column> -->
+        <!-- 审核状态函数 -->
+        <el-table-column prop="auditing_state" label="审核状态" align='center' width="90px">
+          <template slot-scope="scope">{{auditingState(scope.row.auditing_state)}}</template>
+        </el-table-column>
+        <!-- <el-table-column  prop="auditing_name" label="审核人" align='center' width="90px"></el-table-column> -->
+        <el-table-column prop="auditing_time" label="审核时间" align='center' width="120px"></el-table-column>
+        <el-table-column label="操作" align='center' width="180px">
+          <template slot-scope="scope">
+            <el-button type="text" @click='showAdd(2, scope.row)'>查看</el-button>
+            <el-button type="text" @click='showAdd(1, scope.row)' v-if="scope.row.auditing_state==1">修改</el-button>
+            <el-button type="text" @click='showAdd(3, scope.row)' v-if="scope.row.auditing_state==2">重新申请</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </template>
   </div>
 </template>
 
@@ -92,7 +94,7 @@ export default {
         tag_search: ""
       },
       tableData: [],
-      operationType: 0, //0 查看  1 修改  
+      operationType: 0 //0 查看  1 修改
     };
   },
   mounted() {

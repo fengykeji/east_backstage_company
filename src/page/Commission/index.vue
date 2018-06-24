@@ -1,6 +1,6 @@
 <style lang="less" scoped src="./index.less" ></style>
 <style lang="less">
-.commission{
+.commission {
   .el-table--border,
   .el-table--group {
     margin-top: 20px;
@@ -24,17 +24,19 @@
       <span class='left'>
         <div class='text1'>当前位置：佣金管理</div>
       </span>
-      <el-input class='query'></el-input>
-      <el-button icon="el-icon-search" circle></el-button>
+      <div>
+        <el-input class='query'></el-input>
+        <el-button icon="el-icon-search" circle></el-button>
+      </div>
     </div>
     <template>
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column prop="" label="序号" align='center' width="70px"></el-table-column>
         <el-table-column prop="project_name" label="项目名称" align='center' width="130px"></el-table-column>
         <el-table-column prop="company_name" label="所属单位" align='center' width="110px"></el-table-column>
-        <el-table-column prop="city_name" label="区域" align='center'  width="80px"></el-table-column>
-        <el-table-column prop="project_hold_name" label="项目负责人" align='center' ></el-table-column>
-        <el-table-column prop="project_hold_phone" label="联系方式" align='center'   width="110px"></el-table-column>
+        <el-table-column prop="city_name" label="区域" align='center' width="80px"></el-table-column>
+        <el-table-column prop="project_hold_name" label="项目负责人" align='center'></el-table-column>
+        <el-table-column prop="project_hold_phone" label="联系方式" align='center' width="110px"></el-table-column>
         <el-table-column prop="all_all_price" label="全部累计金额" align='center'></el-table-column>
         <el-table-column prop="all_y_price" label="全部已结金额" align='center'></el-table-column>
         <el-table-column prop="all_n_price" label="全部未结金额" align='center'></el-table-column>

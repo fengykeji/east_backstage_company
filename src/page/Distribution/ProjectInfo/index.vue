@@ -48,7 +48,7 @@
         </el-form-item>
       </div>
       <div class="text">物业类型</div>
-      <el-checkbox v-model="submitForm.property_type" v-for="item in typeOptions" :key="item.param_id" :label="item.param_id">{{item.param}}</el-checkbox>
+      <el-checkbox v-model="submitForm.property_tag_id" v-for="item in typeOptions" :key="item.param_id" :label="item.param_id">{{item.param}}</el-checkbox>
       <div class='text'>现住地址</div>
       <el-form-item>
         <city-selector :province.sync="submitForm.province_name" :city.sync="submitForm.city_name" :district.sync="submitForm.district_name" />
@@ -74,7 +74,7 @@
         <el-input v-model="submitForm.subordinate_company" auto-complete="off"></el-input>
       </el-form-item>
       <el-form-item label="与项目关系" class='input'>
-        <el-input v-model="submitForm.company_relations" auto-complete="off"></el-input>
+        <el-input v-model="submitForm.company_relation" auto-complete="off"></el-input>
       </el-form-item>
     </el-form>
     <!-- <div class='title-text'>结佣规则</div>
@@ -103,7 +103,7 @@
           <el-input v-model="submitForm.fp_time" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="审核状态" class='input'>
-          <el-input v-model="submitForm.project_name" auto-complete="off"></el-input>
+          <el-input v-model="submitForm.state" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="备注" class='input'>
           <el-input v-model="submitForm.remark" auto-complete="off"></el-input>

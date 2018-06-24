@@ -1,4 +1,4 @@
-<style lang="less" scoped src="../index.less" ></style>
+<style lang="less" scoped src="./index.less" ></style>
 <style lang="less">
 .examinePeople {
   .el-table th {
@@ -80,18 +80,20 @@
 </style>
 
 <template>
-  <div class='box examinePeople'>
+  <div class='examinePeople'>
     <div class='title'>
-      <span class='left'>
+      <div class='left'>
         <div class='text1'>当前位置：审核经纪人</div>
-        <div>
+        <div class="left">
           <el-button class='tip' type="text" @click="search(1)">全部</el-button>
           <el-button class='tip' type="text" @click="search(2)">待审核</el-button>
           <el-button class='tip' type="text" @click="search(0)">审核未通过</el-button>
+          <div class="search-block">
+            <el-input class='query'></el-input>
+            <el-button icon="el-icon-search" circle></el-button>
+          </div>
         </div>
-      </span>
-      <el-input class='query'></el-input>
-      <el-button icon="el-icon-search" circle></el-button>
+      </div>
     </div>
     <template>
       <el-table :data="tableData" border style="width: 100%">

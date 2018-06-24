@@ -66,10 +66,13 @@ export default {
     this.project_id = this.$route.params.project_id;
     if (this.project_id) {
       this.getCompanyAll();
+    }else{
+      this.$router.push({name:'commission'});
     }
   },
   methods: {
     async getCompanyAll() {
+      console.log(this.companyType)
       if (this.companyType == 0) {
         let res = await this.api.getCompanyAll({
           project_id: this.project_id,
@@ -96,6 +99,7 @@ export default {
         params: {
           project_id: row.project_id,
           company_rule_id:row.company_rule_id,
+          companyType:this.companyType,
         }
       });
     }
