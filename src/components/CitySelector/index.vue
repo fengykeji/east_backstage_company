@@ -95,7 +95,14 @@ export default {
           district = option.name;
         }
       }
-      let address = province + city + district;
+      let address = ""
+      if(province.indexOf("市") > -1) {
+        address = province + district;
+      }else {
+        address = province + city + district;
+      }
+      console.log(address);
+
       this.$emit("changeDistrict", address);
     }
   }
