@@ -48,7 +48,7 @@
         <el-table-column prop="name" label="名称" align='center'></el-table-column>
         <el-table-column prop="tel" label="联系方式" align='center'></el-table-column>
         <el-table-column prop="department" label="所属部门" align='center'></el-table-column>
-        <el-table-column prop="position" label="职位" align='center'></el-table-column>
+        <el-table-column prop="position" label="职位" align='center' width="120px"></el-table-column>
         <el-table-column prop="entry_time" label="入职时间" align='center'></el-table-column>
         <el-table-column prop="create_time" label="分配时间" align='center' width="160px"></el-table-column>
         <el-table-column prop="state" label="状态" align='center'>
@@ -71,8 +71,8 @@
         <el-table-column prop="name" label="名称" align='center'></el-table-column>
         <el-table-column prop="tel" label="联系方式" align='center'></el-table-column>
         <el-table-column prop="department" label="所属部门" align='center'></el-table-column>
-        <el-table-column prop="position" label="职位" align='center'></el-table-column>
-        <el-table-column prop="entry_time" label="入职时间" align='center'></el-table-column>
+        <el-table-column prop="position" label="职位" align='center' width="120px"></el-table-column>
+        <el-table-column prop="entry_time" label="申请时间" align='center'></el-table-column>
         <el-table-column prop="state" label="审核状态" align='center' width="90px">
           <template slot-scope="scope">{{authenticationState(scope.row.state)}}</template>
         </el-table-column>
@@ -126,28 +126,48 @@ export default {
           params: { operationType: type, agent_id: row.agent_id }
         });
       } else if (type == 1) {
-        
+        //审核
+        this.$router.push({
+          name: "addPerson",
+          params: {
+            agent_id: row.agent_id,
+            operationType: type,
+            project_id: row.project_id,
+            ex_id: row.ex_id
+          }
+        });
+      } else if (type == 2) {
+        //审核的查看
+        this.$router.push({
+          name: "addPerson",
+          params: {
+            agent_id: row.agent_id,
+            operationType: type
+          }
+        });
       }
     },
     state(row) {
       if (row == 0) {
         return "禁用";
-      } else if(row==1){
+      } else if (row == 1) {
         return "正常";
       }
     },
     authenticationState(row) {
-      if (row == 0) {
+      if (row == 2) {
         return "待审核";
-      } else if (row == 2) {
+      } else if (row == 0) {
         return "未通过 ";
+      } else if (row == 1) {
+        return "审核通过 ";
       }
     },
     addShow() {
       //新增
       this.$router.push({
         name: "addPerson",
-        params: { project_id: this.project_id}
+        params: { project_id: this.project_id }
       });
     }
   }

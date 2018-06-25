@@ -267,6 +267,7 @@ export default {
     showCheck(type) {
       this.refuseInfo = true;
     },
+    
     async check(type) {
       this.submitForm.type = type;
       let temp = Object.assign({}, this.submitForm);

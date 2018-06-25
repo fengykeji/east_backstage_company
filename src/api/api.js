@@ -168,7 +168,16 @@ let api = {
   //申请佣金 - 提交
   brokerApply: doPost('company/DistributionCommission/brokerApply'),
   //查看佣金记录
-  seeCommissionList: doGet('company/DistributionCommission/getList'),
+  seeCommissionList: doGet('company/DistributionCommission/brokerList'),
+  //修改佣金 - 获取信息
+  updateBroker: doGet('company/DistributionCommission/updateBroker'),
+  //修改佣金 - 提交
+  updateBrokerSumbit: doPost('company/DistributionCommission/updateBroker'),
+  //付款申请 - 获取条目
+  priceApply: doGet('company/DistributionCommission/priceApply'),
+  //付款申请 - 提交
+  priceApplySumbit: doPost('company/DistributionCommission/priceApply'),
+
 }
 
 export default api; 

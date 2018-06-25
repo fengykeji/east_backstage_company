@@ -38,7 +38,7 @@
 <template>
   <div class='projectInfo'>
     <div class='title-text'>项目分销详情</div>
-    <el-form :model="submitForm" class='form'>
+    <el-form :model="submitForm" class='form' :disabled="isDisable()">
       <div>
         <el-form-item label="项目编号" class='input'>
           <el-input v-model="submitForm.project_code" auto-complete="off" placeholder="请输入项目编号"></el-input>
@@ -51,7 +51,7 @@
       <!-- 物业类型 -->
       <div class="text">物业类型</div>
       <el-form-item prop="property_tags">
-        <el-checkbox v-model="submitForm.property_tags.property_tag_id" v-for="item in typeOptions" :key="item.param_id" :label="item.param_id">{{item.param}}</el-checkbox>
+        <el-checkbox v-model="submitForm.property_tags" v-for="item in typeOptions" :key="item.param_id" :label="item.param_id">{{item.param}}</el-checkbox>
       </el-form-item>
       <div class='text'>现住地址</div>
       <el-form-item>
@@ -191,8 +191,13 @@ export default {
       Object.assign(this.submitForm, this.$route.params.projectInfo);
       let res = await this.api.applyProject({ project_id: this.project_id });
       if (res.code == 200) {
-        Object.assign(this.submitForm, res.data);
-        console.log(this.submitForm);
+          Object.assign(this.submitForm, res.data);
+          let property_tags = res.data.property_tags;
+          let arr = [];
+          for (let type of property_tags) {
+            arr.push(type.property_tag_id);
+          }
+          this.submitForm.property_tags = arr;
       }
     },
     async search() {
@@ -204,19 +209,19 @@ export default {
       }
     },
     async submit() {
-      let result = this.api.changeProjectAdd({
+      let res = this.api.changeProjectAdd({
         project_id: this.submitForm.project_id
       });
-      if (reuslt.code == 200) {
+      if (res.code == 200) {
         this.$router.push({ name: "distribution" });
       }
     },
     cancel() {
-      // if ( ) {
-        this.$router.push({ name: "startApply" });
-      // } else {
+      if (this.$route.params.operationType != undefined) {
         this.$router.push({ name: "distribution" });
-      // }
+      } else {
+        this.$router.push({ name: "startApply" });
+      }
     }
   },
   components: {

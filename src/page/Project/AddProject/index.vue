@@ -297,7 +297,7 @@ export default {
           { required: true, message: "请选择具体地址", change: "change" }
         ],
         absolute_address: [
-          { required: true, message: "请选择具体地址", change: "change" }
+          { required: true, message: "请输入具体地址", change: "change" }
         ],
         developer_name: [
           { required: true, message: "请输入开发商名字", change: "change" },
@@ -324,7 +324,7 @@ export default {
           }
         ],
         company_relation: [
-          { required: true, message: "请输入公司与项目关系", change: "change" }
+          { required: true, message: "请选择公司与项目关系", change: "change" }
         ]
       },
       userFormRulesOrigin: {
