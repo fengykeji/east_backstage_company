@@ -17,6 +17,8 @@ import Distri_commission from '@/page/Distri_commission'
 import MaidInfo from '@/page/Distri_commission/MaidInfo'
 import CommissionApply from '@/page/Distri_commission/CommissionApply'
 import UpdateCommission from '@/page/Distri_commission/UpdateCommission'
+import RequestPayment from '@/page/Distri_commission/RequestPayment'
+
 
 import Distribution from '@/page/Distribution'
 import FastDistribution from '@/page/Distribution/FastDistribution'
@@ -144,6 +146,14 @@ export default new Router({
           name:'updateCommission',
           component:UpdateCommission,
         },
+        {
+          path:'requestPayment',
+          name:'requestPayment',
+          component:RequestPayment,
+        },
+
+
+        
       ]
     },
     {

@@ -22,10 +22,10 @@
         </el-table-column>
         <el-table-column label="操作" align='center' width="220px">
           <template slot-scope="scope">
-            <el-button type='text'>付款申请</el-button>
+            <el-button type='text' v-if="scope.row.state == 1" @click='requestPayment(scope.row)'>付款申请</el-button>
             <el-button type='text' @click='see(scope.row,0)'>查看</el-button>
-            <el-button type='text' @click='see(scope.row,1)'>修改</el-button>
-            <el-button type='text'>删除</el-button>
+            <el-button type='text' v-if="scope.row.state == 3" @click='see(scope.row,1)'>修改</el-button>
+            <el-button type='text' v-if="scope.row.state == 0 || scope.row.state == 3" @click="remove(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -74,11 +74,21 @@ export default {
     this.seeCommissionList();
   },
   methods: {
+    async requestPayment(row) {
+      console.log(row)
+      this.$router.push({
+        name: "requestPayment",
+        params: {
+          project_id: this.project_id,
+          batch_id: row.batch_id,
+          state: row.state
+        }
+      });
+    },
     async seeCommissionList(type) {
       let res = await this.api.seeCommissionList({
         project_id: this.project_id
       });
-      console.log(res);
       if (res.code == 200) {
         this.tableData = res.data.broker.data;
       }
@@ -88,12 +98,46 @@ export default {
         this.$router.push({
           name: "updateCommission",
           params: {
+            project_id: this.project_id,
             batch_id: row.batch_id,
-            state: row.state
+            state: row.state,
+            operationType: type
           }
         });
       } else if (type == 0) {
+        this.$router.push({
+          name: "updateCommission",
+          params: {
+            project_id: this.project_id,
+            batch_id: row.batch_id,
+            state: row.state,
+            operationType: type
+          }
+        });
       }
+    },
+    remove(item) {
+      this.$confirm("此操作将删除结佣申请, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(async () => {
+          let res = await this.api.delBroker(temp);
+          if (res.code == 200) {
+            this.$message({
+              type: "success",
+              message: "删除成功!"
+            });
+            this.seeCommissionList();
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除结佣申请"
+          });
+        });
     },
     state(row) {
       if (row == 0) {

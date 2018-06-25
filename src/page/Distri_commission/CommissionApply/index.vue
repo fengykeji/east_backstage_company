@@ -25,10 +25,10 @@
         <el-form-item label="申请笔数" class='row'>
           <el-input v-model="sumbitForm.count_num" auto-complete="off" class='input'></el-input>
         </el-form-item>
-        <!-- <el-form-item label="佣金金额（￥）：" class='row'>
+        <el-form-item label="佣金金额（￥）：" class='row'>
           <el-input v-model="no_price" auto-complete="off" class='input'></el-input>
         </el-form-item>
-        <el-form-item label="扣款金额（￥）：" class='row' v-if='operationType==1'>
+        <!-- <el-form-item label="扣款金额（￥）：" class='row' v-if='operationType==1'>
           <el-input v-model="sumbitForm.allow" auto-complete="off" class='input'></el-input>
         </el-form-item>
         <el-form-item label="审核金额（￥）：" class='row' v-if='operationType==1'>
@@ -114,6 +114,7 @@ export default {
       console.log(temp);
       let res = await this.api.brokerApply(temp);
       if (res.code == 200) {
+         this.$router.push({ name: "distri_commission" });
       }
     },
     async getBrokerApply() {
