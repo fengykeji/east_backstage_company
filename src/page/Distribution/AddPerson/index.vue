@@ -5,7 +5,7 @@
     <div class='box'>
       <span class='num_set'>到访确认人信息</span>
       <span class='btn'>
-        <el-button type="primary" @click='sumbit'>确定</el-button>
+        <el-button type="primary" @click='sumbit' :disabled="isDisable()">确定</el-button>
         <el-button class='btn-1' @click="close">返回</el-button>
       </span>
       <el-form v-model="submitForm">
@@ -14,7 +14,7 @@
           <div class='border'>{{submitForm ? submitForm.name : ''}}</div>
         </el-form-item>
         <span>
-          <el-button type="primary" class='button' @click='choice'>选择</el-button>
+          <el-button type="primary" class='button' @click='choice' :disabled="isDisable()">选择</el-button>
         </span>
         <div class='num_set'>员工信息</div>
         <el-form v-model="submitForm">
@@ -97,10 +97,12 @@ export default {
         fp_name: "",
         fp_time: "",
         remark: ""
-      }
+      },
+      operationType: 0 //0 查看  1 审核  2 审核的查看
     };
   },
   mounted() {
+    this.operationType = this.$route.params.operationType;
     this.project_id = this.$route.params.project_id;
     this.id = this.$route.params.id;
     this.agent_id = this.$route.params.agent_id;
@@ -126,7 +128,13 @@ export default {
         });
       }
     },
-
+  isDisable() {
+      if (this.operationType == 0) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     async getAgentInfo() {
       let res = await this.api.getAgentInfo({ agent_id: this.agent_id });
       if (res.code == 200) {

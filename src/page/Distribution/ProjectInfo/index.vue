@@ -47,8 +47,12 @@
           <el-input v-model="submitForm.project_name" auto-complete="off" placeholder="请输入项目名称"></el-input>
         </el-form-item>
       </div>
+
+      <!-- 物业类型 -->
       <div class="text">物业类型</div>
-      <el-checkbox v-model="submitForm.property_tag_id" v-for="item in typeOptions" :key="item.param_id" :label="item.param_id">{{item.param}}</el-checkbox>
+      <el-form-item prop="property_tags">
+        <el-checkbox v-model="submitForm.property_tags.property_tag_id" v-for="item in typeOptions" :key="item.param_id" :label="item.param_id">{{item.param}}</el-checkbox>
+      </el-form-item>
       <div class='text'>现住地址</div>
       <el-form-item>
         <city-selector :province.sync="submitForm.province_name" :city.sync="submitForm.city_name" :district.sync="submitForm.district_name" />
@@ -126,7 +130,7 @@
     </el-table>
     <div slot="footer" class="dialog-footer">
       <el-button @click='cancel'>关 闭</el-button>
-      <el-button type="primary" @click='submit'>确 定</el-button>
+      <el-button type="primary" @click='submit' :disabled="isDisable()">提 交</el-button>
     </div>
   </div>
 </template>
@@ -141,7 +145,8 @@ export default {
         district: "",
         project_id: "",
         auditProject: {},
-        peopleInfo: []
+        peopleInfo: [],
+        property_tags: []
       },
       project_id: "",
       typeOptions: []
@@ -149,6 +154,7 @@ export default {
   },
   mounted() {
     if (this.$route.params.project_id) {
+      this.operationType = this.$route.params.operationType;
       this.project_id = this.$route.params.project_id;
       this.getProjectDetail();
       this.getType();
@@ -168,10 +174,17 @@ export default {
         return "正常";
       } else if (row == 0) {
         return "弃用";
-      }else if (row == 2) {
+      } else if (row == 2) {
         return "已转新房";
-      }else if (row == 3) {
+      } else if (row == 3) {
         return "已转二手房";
+      }
+    },
+    isDisable() {
+      if (this.operationType == 0) {
+        return true;
+      } else {
+        return false;
       }
     },
     async getProjectDetail() {
@@ -179,6 +192,7 @@ export default {
       let res = await this.api.applyProject({ project_id: this.project_id });
       if (res.code == 200) {
         Object.assign(this.submitForm, res.data);
+        console.log(this.submitForm);
       }
     },
     async search() {
@@ -198,7 +212,11 @@ export default {
       }
     },
     cancel() {
-      this.$router.push({ name: "startApply" });
+      // if ( ) {
+        this.$router.push({ name: "startApply" });
+      // } else {
+        this.$router.push({ name: "distribution" });
+      // }
     }
   },
   components: {

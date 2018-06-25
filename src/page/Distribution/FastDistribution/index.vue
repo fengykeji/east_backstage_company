@@ -95,7 +95,7 @@ export default {
       project_id: "",
       id: "",
       agent_id: "",
-      operationType: 0 //0 查看  1 修改
+      operationType: 0 //0 查看  1 审核  2 审核的查看
     };
   },
   mounted() {
@@ -147,7 +147,7 @@ export default {
       //新增
       this.$router.push({
         name: "addPerson",
-        params: { project_id: this.project_id }
+        params: { project_id: this.project_id}
       });
     }
   }

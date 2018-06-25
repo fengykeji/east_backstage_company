@@ -7,10 +7,10 @@
   .el-dialog__body {
     padding-top: 0;
   }
-    .btn {
-      position: absolute;
-      right:220px;
-      top: 75px;
+  .btn {
+    position: absolute;
+    right: 220px;
+    top: 75px;
   }
   .el-table--border,
   .el-table--group {
@@ -151,14 +151,16 @@ export default {
     fastDistribution(row) {
       this.$router.push({
         name: "fastDistribution",
-        params: { project_id: row.project_id}
+        params: { project_id: row.project_id }
       });
     },
     showProject(row, type) {
-      // this.$router.push({
-      //   name: "projectInfo",
-      //   params: { project_id: row.project_id, type: type }
-      // });
+      if (type == 0) {
+        this.$router.push({
+          name: "projectInfo",
+          params: { operationType: type, project_id: row.project_id }
+        });
+      }
     },
     scopeState(row) {
       if (row == 1) {
