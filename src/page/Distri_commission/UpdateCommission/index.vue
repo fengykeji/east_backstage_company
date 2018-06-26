@@ -77,7 +77,7 @@
           <el-form-item label="申请名称" class='row'>
             <el-input v-model="submitForm.batch_name" auto-complete="off" class='input'></el-input>
           </el-form-item>
-          <el-form-item label="申请笔数" class='row'>
+          <el-form-item label="申请笔数" class='row'  :disabled="operationType==1">
             <el-input v-model="submitForm.count_num" auto-complete="off" class='input'></el-input>
           </el-form-item>
           <el-form-item label="申请人员" class='row'>
@@ -86,7 +86,7 @@
           <el-form-item label="申请时间" class='row'>
             <el-input v-model="submitForm.create_time" auto-complete="off" class='input'></el-input>
           </el-form-item>
-          <el-form-item label="佣金金额（￥）：" class='row'>
+          <el-form-item label="佣金金额（￥）：" class='row' :disabled="operationType==1">
             <el-input v-model="no_price" auto-complete="off" class='input'></el-input>
           </el-form-item>
           <el-form-item label="甲方联系人" class='row'>
