@@ -22,7 +22,7 @@
         <div class='text1'>当前位置：离职经纪人</div>
         <div class="search-block">
           <el-input class='query'></el-input>
-          <el-button icon="el-icon-search" circle></el-button>
+          <el-button @click="search" icon="el-icon-search" circle></el-button>
         </div>
       </div>
 
@@ -50,6 +50,8 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-pagination background layout="prev, pager, next" :page-size="limit" :current-page="searchObj.page" :total="total" @current-change="pageChange">
+      </el-pagination>
       <el-dialog title="查看" :visible.sync="dialogFormVisible" class='dialog' @close="cancel">
         <div class='btn'>
           <el-button type='primary' @click='cancel'>关闭</el-button>
@@ -155,6 +157,12 @@ export default {
     return {
       tableData: [],
       dialogFormVisible: false,
+      searchObj: {
+        name: "",
+        page: 1
+      },
+      limit: 10,
+      total: 0,
       examinePeople: {
         name: "",
         role: "",
@@ -229,11 +237,19 @@ export default {
     cancel() {
       this.dialogFormVisible = false;
     },
+    search() {
+      this.searchObj.page = 1;
+      this.getQuitList();
+    },
+    pageChange(page) {
+      this.searchObj.page = page;
+      this.getQuitList();
+    },
     async getQuitList() {
-      let res = await this.api.getQuitList();
-
+      let res = await this.api.getQuitList(this.searchObj);
       if ((res.code = 200)) {
         this.tableData = res.data.data;
+        this.total = res.data.total;
       }
     }
   }

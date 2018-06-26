@@ -54,7 +54,7 @@
         <el-table-column label="操作" align='center' width="140px">
           <template slot-scope="scope">
             <el-button type='text' @click='seePayment(scope.row,2)'>查看</el-button>
-            <el-button type='text' v-if="scope.row.examine_state == 0">重新申请</el-button>
+            <el-button type='text' v-if="scope.row.examine_state == 0" @click='seePayment(scope.row,3)'>重新申请</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -83,13 +83,13 @@ export default {
     this.seeCommissionList();
   },
   methods: {
-    async requestPayment(row) {
+    requestPayment(row) {
       this.$router.push({
         name: "requestPayment",
         params: {
           project_id: this.project_id,
           batch_id: row.batch_id,
-          state: row.state,
+          state: row.state ? row.state : row.examine_state,
           batch_name: row.batch_name
         }
       });
@@ -127,16 +127,14 @@ export default {
       }
     },
     async seePayment(row, type) {
-      if (type == 2) {
-        console.log(row);
-        this.$router.push({
-          name: "updateCommission",
-          params: {
-            apply_id: row.apply_id,
-            operationType: type
-          }
-        });
-      }
+      this.$router.push({
+        name: "updateCommission",
+        params: {
+          apply_id: row.apply_id,
+          examine_state : row.examine_state,
+          operationType: type
+        }
+      });
     },
     remove(item) {
       this.$confirm("此操作将删除结佣申请, 是否继续?", "提示", {

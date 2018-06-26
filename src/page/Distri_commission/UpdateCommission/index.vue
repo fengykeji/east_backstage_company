@@ -20,10 +20,10 @@
   <div class='updateCommission'>
     <div class='table'>
       <div class='title'>
-        <el-button class='pos-btn-1' v-if="operationType==1" type="primary" @click='sumbit(2)'>提交</el-button>
+        <el-button class='pos-btn-1' v-if="operationType==1||operationType==3" type="primary" @click='sumbit(2)'>提交</el-button>
         <el-button class='pos-btn' @click='cancel' type="primary">关闭</el-button>
       </div>
-      <div v-if='operationType==2'>
+      <div v-if='operationType==2||operationType==3'>
         <div class='title-text'>付款申请信息</div>
         <el-form v-model="form" class='form' :disabled="operationType==2">
           <el-form-item label="单据号" class='row'>
@@ -150,6 +150,7 @@ export default {
       second_tel: "",
       no_price: 0,
       apply_id: "",
+      examine_state: "",
       searchObj: {
         search: ""
       }
@@ -160,6 +161,7 @@ export default {
     this.operationType = this.$route.params.operationType;
     this.state = this.$route.params.state;
     this.batch_id = this.$route.params.batch_id;
+    this.examine_state = this.$route.params.examine_state;
     if (this.operationType === undefined) {
       this.$router.push({ name: "distri_commission" });
       return;
@@ -169,24 +171,54 @@ export default {
   methods: {
     showAdd(row) {},
     async sumbit(state) {
-      let temp = {};
-      temp.state = state;
-      temp.batch_id = this.submitForm.batch_id;
-      temp.batch_name = this.submitForm.batch_name;
-      temp.nail_name = this.submitForm.nail_name;
-      temp.nail_tel = this.submitForm.nail_tel;
-      temp.second_name = this.submitForm.second_name;
-      temp.second_tel = this.submitForm.second_tel;
-      let res = await this.api.updateBrokerSumbit(temp);
-      if (res.code == 200) {
+      if (this.operationType == 1) {
+        let temp = {};
+        temp.state = state;
+        temp.batch_id = this.submitForm.batch_id;
+        temp.batch_name = this.submitForm.batch_name;
+        temp.nail_name = this.submitForm.nail_name;
+        temp.nail_tel = this.submitForm.nail_tel;
+        temp.second_name = this.submitForm.second_name;
+        temp.second_tel = this.submitForm.second_tel;
+        let res = await this.api.updateBrokerSumbit(temp);
+        if (res.code == 200) {
+          this.$router.push({ name: "distri_commission" });
+        }
+      } else if (this.operationType == 3) {
+        this.$confirm("此操作将再次提交成功, 是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(async () => {
+            let temp = {};
+            temp.apply_id = this.apply_id;
+            temp.recive_bank = this.form.recive_bank;
+            temp.recive_name = this.form.recive_name;
+            temp.recive_bank_card = this.form.recive_bank_card;
+            let res = await this.api.rePriceApplySumbit(temp);
+            if (res.code == 200) {
+              this.$message({
+                type: "success",
+                message: "提交成功！"
+              });
+              this.$router.push({ name: "distri_commission" });
+            }
+          })
+          .catch(() => {
+            this.$message({
+              type: "error",
+              message: "已取消提交申请"
+            });
+          });
       }
-      this.$router.push({ name: "distri_commission" });
     },
     async updateBroker() {
       let temp = Object.assign({}, this.submitForm);
       temp.batch_id = this.batch_id;
       temp.state = this.state;
       temp.apply_id = this.apply_id;
+      temp.examine_state = this.examine_state;
       let res = {};
       if (this.operationType == 1) {
         res = await this.api.updateBroker(temp);
@@ -194,6 +226,8 @@ export default {
         res = await this.api.getBrokerInfo(temp);
       } else if (this.operationType == 2) {
         res = await this.api.getApplyInfo(temp);
+      } else if (this.operationType == 3) {
+        res = await this.api.getRePriceApply(temp);
       }
       if (res.code == 200) {
         this.tableData = res.data.brokerList;

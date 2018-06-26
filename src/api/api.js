@@ -179,10 +179,15 @@ let api = {
   getPriceApply: doGet('company/DistributionCommission/priceApply'),
   //付款申请 - 提交
   priceApplySumbit: doPost('company/DistributionCommission/priceApply'),
+  //付款重新申请 - 提交
+  rePriceApplySumbit: doPost('company/DistributionCommission/rePriceApply'),
+
   //删除佣金
   delBroker: doGet('company/DistributionCommission/delBroker'),
   //付款申请详情
   getApplyInfo: doGet('company/DistributionCommission/getApplyInfo'),
+  //佣金重新申请 - 获取
+  getRePriceApply: doGet('company/DistributionCommission/rePriceApply'),
 }
 
 export default api; 
