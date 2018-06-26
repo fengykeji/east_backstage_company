@@ -25,8 +25,6 @@
         <el-table-column prop="count_num" label="申请笔数" align='center'></el-table-column>
         <el-table-column prop="create_name" label="申请人员" align='center'></el-table-column>
         <el-table-column prop="create_time" label="申请时间" align='center' width="160px"></el-table-column>
-        <!-- <el-table-column prop="auditing_name" label="审核人员" align='center'></el-table-column>
-        <el-table-column prop="auditing_time" label="审核时间" align='center' width="160px"></el-table-column> -->
         <el-table-column prop="state" label="申请状态" align='center'>
           <template slot-scope="scope">{{state(scope.row.state)}}</template>
         </el-table-column>
@@ -50,7 +48,6 @@
         <el-table-column prop="count_num" label="申请笔数" align='center'></el-table-column>
         <el-table-column prop="create_name" label="申请人员" align='center'></el-table-column>
         <el-table-column prop="create_time" label="申请时间" align='center' width="160px"></el-table-column>
-        <!-- <el-table-column prop="check_name" label="审核人员" align='center'></el-table-column> -->
         <el-table-column prop="examine_state" label="审核状态" align='center'>
           <template slot-scope="scope">{{examineState(scope.row.examine_state)}}</template>
         </el-table-column>
@@ -107,7 +104,6 @@ export default {
       }
     },
     async see(row, type) {
-      console.log(row);
       if (type == 1) {
         this.$router.push({
           name: "updateCommission",
