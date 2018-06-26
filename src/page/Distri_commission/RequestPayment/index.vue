@@ -55,7 +55,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="收款银行卡号：" class='row'>
-          <el-input v-model="submitForm.recive_bank_card_id" auto-complete="off" class='input' placeholder="请输入收款银行卡号"></el-input>
+          <el-input v-model="submitForm.recive_bank_card" auto-complete="off" class='input' placeholder="请输入收款银行卡号"></el-input>
         </el-form-item>
         <el-form-item label="收款户名：" class='row'>
           <el-input v-model="submitForm.recive_name" auto-complete="off" class='input' placeholder="请输入收款户名"></el-input>
@@ -81,7 +81,14 @@ export default {
   data() {
     return {
       submitForm: {
-        batch_name: ""
+        batch_name: "",
+        recive_bank: "",
+        recive_bank_card: "",
+        recive_name: "",
+        broker_num: "",
+        name: "",
+        create_time: "",
+        broker_type: ""
       },
       batch_id: "",
       state: "",
@@ -103,8 +110,7 @@ export default {
   },
   methods: {
     async getBankOptions(param_id) {
-      let param = "param_id=" + param_id;
-      let res = await this.api.getBack(param);
+      let res = await this.api.getBack({param_id:param_id});
       if (res.code == 200) {
         this.bankOptions = res.data;
       }
@@ -112,9 +118,9 @@ export default {
     async sumbit() {
       let temp = {};
       temp.project_id = this.project_id;
-      temp.batch_id = this.submitForm.batch_id;
+      temp.batch_id = this.batch_id;
       temp.recive_bank = this.submitForm.recive_bank;
-      temp.recive_bank_card_id = this.submitForm.recive_bank_card_id;
+      temp.recive_bank_card = this.submitForm.recive_bank_card;
       temp.recive_name = this.submitForm.recive_name;
       let res = await this.api.priceApplySumbit(temp);
       if (res.code == 200) {
@@ -127,8 +133,7 @@ export default {
         state: this.state
       });
       if (res.code == 200) {
-        let temp = Object.assign(this.submitForm, res.data[0]);
-        temp.batch_name = this.submitForm.batch_name;
+        Object.assign(this.submitForm, res.data[0]);
       }
     },
     type(row) {

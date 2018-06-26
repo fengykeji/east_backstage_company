@@ -27,48 +27,48 @@
 }
 </style>
 <template>
-    <div class='requestRefund'>
-        <!-- <button @click="go">查看退款</butston> -->
+  <div class='requestRefund'>
+    <!-- <button @click="go">查看退款</butston> -->
     <div style="margin-bottom: 30px;">
-        
+
     </div>
-     <div>
-            <div class='text'>
-              申请退款
-            </div>
-             <div class='btn'>
-                    <el-button type="primary" @click="submit">确定</el-button>
-                    <el-button @click="close">返回</el-button>
-               </div>
+    <div>
+      <div class='text'>
+        申请退款
+      </div>
+      <div class='btn'>
+        <el-button type="primary" @click="submit">确定</el-button>
+        <el-button @click="close">返回</el-button>
+      </div>
       <el-form :model="requestRefund" class='table' :rules="rules" ref="requestRefund">
         <el-form-item label="可退金额" class='input'>
-          <div>  {{allow}} </div>
+          <div> {{allow}} </div>
           <!-- <el-button type='text' class='text'>查看</el-button> -->
         </el-form-item>
-          <el-form-item label="本次退款金额" class='input' prop="price">
+        <el-form-item label="本次退款金额" class='input' prop="price">
           <el-input v-model="requestRefund.price" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="退款原因" class='input1'  prop="refund_remarks">
-               <el-input v-model="requestRefund.refund_remarks" type="textarea"></el-input>
+        <el-form-item label="退款原因" class='input1' prop="refund_remarks">
+          <el-input v-model="requestRefund.refund_remarks" type="textarea"></el-input>
         </el-form-item>
         <el-form-item label="收款银行" class='input' prop="payee_bank">
-        <el-select v-model="requestRefund.payee_bank" placeholder="请选择收款银行" class='select-1' @change="getBankOptions">
+          <el-select v-model="requestRefund.payee_bank" placeholder="请选择收款银行" class='select-1' @change="getBankOptions">
             <el-option v-for="item in bankOptions" :key="item.param_id" :label="item.param" :value="item.param"></el-option>
-        </el-select>
-        </el-form-item>   
+          </el-select>
+        </el-form-item>
         <el-form-item label="收款银行卡号" class='input' prop="payee_account">
-             <el-input v-model="requestRefund.payee_account" class='input'></el-input>
+          <el-input v-model="requestRefund.payee_account" class='input'></el-input>
         </el-form-item>
         <el-form-item label="收款人" class='input' prop="payee">
-             <el-input v-model="requestRefund.payee" class='input'></el-input>
+          <el-input v-model="requestRefund.payee" class='input'></el-input>
         </el-form-item>
         <el-form-item label="备注" class='input1' prop="remark">
-               <el-input v-model="requestRefund.remark" type="textarea" ></el-input>
+          <el-input v-model="requestRefund.remark" type="textarea"></el-input>
         </el-form-item>
-        
+
       </el-form>
     </div>
-    </div>
+  </div>
 </template>
 
 <script>
@@ -106,17 +106,17 @@ export default {
         payee: [
           { required: true, message: "请输入收款人姓名", change: "change" },
           {
-            pattern:/[\u4E00-\u9FA5]{2,5}(?:·[\u4E00-\u9FA5]{2,5})*/,
+            pattern: /[\u4E00-\u9FA5]{2,5}(?:·[\u4E00-\u9FA5]{2,5})*/,
             message: "最大长度为6个字符",
             trigger: "change"
-          }   
+          }
         ],
         payee_account: [
           { required: true, message: "请输入收款人账号", change: "change" },
           {
             pattern: /^([1-9]{1})(\d{14}|\d{18})$/,
             message: "请输入正确的银行卡号",
-            change: "change",
+            change: "change"
           }
         ],
         remark: [
@@ -170,8 +170,7 @@ export default {
       });
     },
     async getBankOptions(param_id) {
-      let param = "param_id=" + param_id;
-      let res = await this.api.getBack(param);
+      let res = await this.api.getBack({ param_id: param_id });
       if (res.code == 200) {
         this.bankOptions = res.data;
       }
