@@ -140,7 +140,6 @@ export default {
   },
   mounted() {
     this.getBankOptions();
-
     let params = this.$route.params;
     if (params.project_id === undefined) {
       this.$router.push({ name: "project" });

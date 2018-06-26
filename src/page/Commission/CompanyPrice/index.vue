@@ -72,7 +72,6 @@ export default {
   },
   methods: {
     async getCompanyAll() {
-      console.log(this.companyType)
       if (this.companyType == 0) {
         let res = await this.api.getCompanyAll({
           project_id: this.project_id,

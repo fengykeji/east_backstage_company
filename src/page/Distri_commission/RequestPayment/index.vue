@@ -40,8 +40,8 @@
         <el-button @click="cancel" type='primary'>关闭</el-button>
       </div>
       <el-form v-model="submitForm" class='form'>
-        <el-form-item label="申请付款批次" class='row'>
-          <el-input v-model="submitForm.batch_id" auto-complete="off" placeholder="请输入申请付款批次" class='input'></el-input>
+        <el-form-item label="申请付款批次名称" class='row'>
+          <el-input v-model="submitForm.batch_name" auto-complete="off" placeholder="请输入申请付款批次名称" class='input'></el-input>
         </el-form-item>
         <!-- <el-form-item label="审核金额(￥)：" class='row'>
                     <el-input v-model="submitForm.count_num" auto-complete="off" class='input'></el-input>
@@ -49,9 +49,10 @@
                 <el-form-item label="未结金额(￥)：" class='row'>
                     <el-input v-model="submitForm.create_time" auto-complete="off" class='input'></el-input>
                 </el-form-item> -->
-
-        <el-form-item label="收款银行：" class='row'>
-          <el-input v-model="submitForm.recive_bank" auto-complete="off" class='input' placeholder="请输入收款银行"></el-input>
+        <el-form-item label="收款银行" class='row' prop="payee_bank">
+          <el-select v-model="submitForm.recive_bank" placeholder="请选择收款银行" @change="getBankOptions">
+            <el-option v-for="item in bankOptions" :key="item.param_id" :label="item.param" :value="item.param"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="收款银行卡号：" class='row'>
           <el-input v-model="submitForm.recive_bank_card_id" auto-complete="off" class='input' placeholder="请输入收款银行卡号"></el-input>
@@ -69,7 +70,6 @@
           <el-input v-model="submitForm.create_time" auto-complete="off" class='input'></el-input>
         </el-form-item>
         <el-form-item label="佣金类型" class='row'>
-          <!-- <el-input auto-complete="off" class='input' >{{type(submitForm.broker_type)}}</el-input> -->
           <span>{{type(submitForm.broker_type)}}</span>
         </el-form-item>
       </el-form>
@@ -80,19 +80,35 @@
 export default {
   data() {
     return {
-      submitForm: {},
+      submitForm: {
+        batch_name: ""
+      },
       batch_id: "",
       state: "",
-      project_id:'',
+      project_id: "",
+      bankOptions: []
     };
   },
   mounted() {
+    this.submitForm.batch_name = this.$route.params.batch_name;
     this.batch_id = this.$route.params.batch_id;
     this.project_id = this.$route.params.project_id;
     this.state = this.$route.params.state;
+    if (this.batch_id === undefined) {
+      this.$router.push({ name: "distri_commission" });
+      return;
+    }
     this.getPriceApply();
+    this.getBankOptions();
   },
   methods: {
+    async getBankOptions(param_id) {
+      let param = "param_id=" + param_id;
+      let res = await this.api.getBack(param);
+      if (res.code == 200) {
+        this.bankOptions = res.data;
+      }
+    },
     async sumbit() {
       let temp = {};
       temp.project_id = this.project_id;
@@ -111,7 +127,8 @@ export default {
         state: this.state
       });
       if (res.code == 200) {
-        this.submitForm = res.data[0];
+        let temp = Object.assign(this.submitForm, res.data[0]);
+        temp.batch_name = this.submitForm.batch_name;
       }
     },
     type(row) {

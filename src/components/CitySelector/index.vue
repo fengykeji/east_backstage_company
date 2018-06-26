@@ -101,8 +101,6 @@ export default {
       }else {
         address = province + city + district;
       }
-      console.log(address);
-
       this.$emit("changeDistrict", address);
     }
   }

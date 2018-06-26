@@ -71,17 +71,21 @@ export default {
   mounted() {
     this.project_id = this.$route.params.project_id;
     this.operationType = this.$route.params.operationType;
+    if (this.project_id === undefined) {
+      this.$router.push({ name: "distri_commission" });
+      return;
+    }
     this.seeCommissionList();
   },
   methods: {
     async requestPayment(row) {
-      console.log(row)
       this.$router.push({
         name: "requestPayment",
         params: {
           project_id: this.project_id,
           batch_id: row.batch_id,
-          state: row.state
+          state: row.state,
+          batch_name:row.batch_name,
         }
       });
     },
@@ -123,6 +127,9 @@ export default {
         type: "warning"
       })
         .then(async () => {
+          let temp = {};
+          temp.batch_id = item.batch_id;
+          temp.state = item.state;
           let res = await this.api.delBroker(temp);
           if (res.code == 200) {
             this.$message({

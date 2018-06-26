@@ -118,7 +118,6 @@ export default {
       this.$router.push({ name: "distribution" });
     },
     async showAdd(type, row) {
-      console.log(row);
       if (type == 0) {
         //查看
         this.$router.push({

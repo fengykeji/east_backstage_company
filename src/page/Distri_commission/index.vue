@@ -22,8 +22,8 @@
       <span class='left'>
         <div class='text1'>当前位置：分销佣金管理</div>
       </span>
-      <el-input class='query'></el-input>
-      <el-button icon="el-icon-search" circle></el-button>
+      <el-input class='query' v-model="searchObj.search" ></el-input>
+      <el-button icon="el-icon-search" @click='getDistributionList' circle></el-button>
     </div>
     <template>
       <el-table :data="tableData" border style="width: 100%">
@@ -53,7 +53,10 @@ export default {
   data() {
     return {
       tableData: [],
-      project_id: ""
+      project_id: "",
+      searchObj:{
+        serach:'',
+      }
     };
   },
   mounted() {
@@ -79,7 +82,7 @@ export default {
     },
 
     async getDistributionList() {
-      let res = await this.api.getDistributionList();
+      let res = await this.api.getDistributionList(this.searchObj);
       if (res.code == 200) {
         this.tableData = res.data.data;
       }

@@ -124,7 +124,6 @@ export default {
       }
     },
     async sumbit(row) {
-      console.log(row);
       this.$router.push({
         name: "projectInfo",
         params: {

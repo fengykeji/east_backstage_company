@@ -17,7 +17,7 @@
       </div>
       <el-form v-model="submitForm" class='form' :disabled="operationType==0">
         <el-form-item label="申请名称" class='row'>
-          <el-input  v-model="submitForm.batch_name" auto-complete="off" class='input'></el-input>
+          <el-input v-model="submitForm.batch_name" auto-complete="off" class='input'></el-input>
         </el-form-item>
         <el-form-item label="申请笔数" class='row'>
           <el-input v-model="submitForm.count_num" auto-complete="off" class='input'></el-input>
@@ -98,6 +98,10 @@ export default {
     this.operationType = this.$route.params.operationType;
     this.state = this.$route.params.state;
     this.batch_id = this.$route.params.batch_id;
+    if (this.batch_id === undefined) {
+      this.$router.push({ name: "distri_commission" });
+      return;
+    }
     this.updateBroker();
   },
   methods: {
@@ -121,9 +125,9 @@ export default {
       temp.batch_id = this.batch_id;
       temp.state = this.state;
       let res = {};
-      if(this.operationType==1) {
-         res = await this.api.updateBroker(temp);
-      }else {
+      if (this.operationType == 1) {
+        res = await this.api.updateBroker(temp);
+      } else {
         res = await this.api.getBrokerInfo(temp);
       }
       if (res.code == 200) {
@@ -159,7 +163,8 @@ export default {
     },
     cancel() {
       this.$router.push({
-        name: "maidInfo" , params : this.$route.params
+        name: "maidInfo",
+        params: this.$route.params
       });
     }
   }

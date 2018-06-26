@@ -111,7 +111,6 @@ export default {
       let temp = Object.assign({}, this.sumbitForm);
       temp.project_id = this.project_id;
       temp.state = state;
-      console.log(temp);
       let res = await this.api.brokerApply(temp);
       if (res.code == 200) {
          this.$router.push({ name: "distri_commission" });

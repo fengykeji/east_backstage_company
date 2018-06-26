@@ -774,7 +774,6 @@ export default {
 
       ac.addEventListener("onconfirm", e => {
         //鼠标点击下拉列表后的事件
-        console.log(e, e.item.value);
         let address = e.item.value;
         let addressStr = address.city + address.district + address.business;
         this.form.absolute_address = addressStr;

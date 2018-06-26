@@ -172,7 +172,7 @@ let api = {
   //修改佣金 - 获取信息
   updateBroker: doGet('company/DistributionCommission/updateBroker'),
   //查看佣金详情
-  getBrokerInfo : doGet('company/DistributionCommission/getBrokerInfo'),
+  getBrokerInfo: doGet('company/DistributionCommission/getBrokerInfo'),
   //修改佣金 - 提交
   updateBrokerSumbit: doPost('company/DistributionCommission/updateBroker'),
   //付款申请 - 获取条目
@@ -180,7 +180,7 @@ let api = {
   //付款申请 - 提交
   priceApplySumbit: doPost('company/DistributionCommission/priceApply'),
   //删除佣金
-  delBroker:doGet('company/DistributionCommission/delBroker'),
+  delBroker: doGet('company/DistributionCommission/delBroker'),
 
 }
 
