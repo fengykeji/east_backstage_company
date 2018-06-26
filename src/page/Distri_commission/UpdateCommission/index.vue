@@ -77,7 +77,7 @@
           <el-form-item label="申请名称" class='row'>
             <el-input v-model="submitForm.batch_name" auto-complete="off" class='input'></el-input>
           </el-form-item>
-          <el-form-item label="申请笔数" class='row'  :disabled="operationType==1">
+          <el-form-item label="申请笔数" class='row' :disabled="operationType==1">
             <el-input v-model="submitForm.count_num" auto-complete="off" class='input'></el-input>
           </el-form-item>
           <el-form-item label="申请人员" class='row'>
@@ -237,7 +237,7 @@ export default {
       }
     },
     cancel() {
-      console.log(1)
+      console.log(1);
       this.$router.push({
         name: "maidInfo",
         params: this.$route.params

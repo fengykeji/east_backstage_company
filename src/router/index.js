@@ -32,7 +32,7 @@ import QuitPeople from '@/page/Agent/QuitPeople'
 Vue.use(Router);
 
 export default new Router({
-  base: '/admin/conpany/admin_conpany_show',
+  base: '/admin/company',
   routes: [
     {
       path: '/',
