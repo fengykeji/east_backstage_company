@@ -110,30 +110,49 @@ export default {
   },
   methods: {
     async getBankOptions(param_id) {
-      let res = await this.api.getBack({param_id:param_id});
+      let res = await this.api.getBack({ param_id: param_id });
       if (res.code == 200) {
         this.bankOptions = res.data;
       }
     },
-    async sumbit() {
-      let temp = {};
-      temp.project_id = this.project_id;
-      temp.batch_id = this.batch_id;
-      temp.recive_bank = this.submitForm.recive_bank;
-      temp.recive_bank_card = this.submitForm.recive_bank_card;
-      temp.recive_name = this.submitForm.recive_name;
-      let res = await this.api.priceApplySumbit(temp);
-      if (res.code == 200) {
-        this.$router.push({ name: "distri_commission" });
-      }
+
+    sumbit(item) {
+      this.$confirm("此操作将提交付款申请, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(async () => {
+          let temp = {};
+          temp.project_id = this.project_id;
+          temp.batch_id = this.batch_id;
+          temp.recive_bank = this.submitForm.recive_bank;
+          temp.recive_bank_card = this.submitForm.recive_bank_card;
+          temp.recive_name = this.submitForm.recive_name;
+          let res = await this.api.priceApplySumbit(temp);
+          if (res.code == 200) {
+            this.$message({
+              type: "success",
+              message: "提交成功!"
+            });
+            this.$router.push({ name: "distri_commission" });
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消提交申请付款"
+          });
+        });
     },
+
     async getPriceApply() {
       let res = await this.api.getPriceApply({
         batch_id: this.batch_id,
         state: this.state
       });
       if (res.code == 200) {
-        Object.assign(this.submitForm, res.data[0]);
+        Object.assign(this.submitForm, res.data);
       }
     },
     type(row) {

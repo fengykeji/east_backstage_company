@@ -6,10 +6,10 @@
     margin-top: 20px;
   }
   .el-table th {
-    padding: 8px 0px;
+    padding: 5px 0px;
   }
   .el-table td {
-    padding: 0;
+    padding: 2px 0;
   }
   .el-dialog__body {
     padding-top: 0;
@@ -29,7 +29,7 @@
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column label="序号" align='center' width="70px"></el-table-column>
         <el-table-column prop="project_name" label="项目名称" align='center'></el-table-column>
-        <el-table-column prop="developer_name" label="房产商" align='center' width="140px"></el-table-column>
+        <el-table-column prop="developer_name" label="房产商" align='center' width="220px"></el-table-column>
         <el-table-column prop="city" label="区域" align='center' width="80px"></el-table-column>
         <el-table-column prop="project_hold_name" label="项目负责人" align='center' width="100px"></el-table-column>
         <el-table-column prop="project_hold_phone" label="联系方式" align='center' width="110px"></el-table-column>

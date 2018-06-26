@@ -19,7 +19,6 @@ import CommissionApply from '@/page/Distri_commission/CommissionApply'
 import UpdateCommission from '@/page/Distri_commission/UpdateCommission'
 import RequestPayment from '@/page/Distri_commission/RequestPayment'
 
-
 import Distribution from '@/page/Distribution'
 import FastDistribution from '@/page/Distribution/FastDistribution'
 import AddPerson from '@/page/Distribution/AddPerson'
@@ -151,8 +150,7 @@ export default new Router({
           name:'requestPayment',
           component:RequestPayment,
         },
-
-
+       
         
       ]
     },

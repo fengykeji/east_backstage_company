@@ -181,7 +181,8 @@ let api = {
   priceApplySumbit: doPost('company/DistributionCommission/priceApply'),
   //删除佣金
   delBroker: doGet('company/DistributionCommission/delBroker'),
-
+  //付款申请详情
+  getApplyInfo: doGet('company/DistributionCommission/getApplyInfo'),
 }
 
 export default api; 

@@ -5,6 +5,16 @@
   .el-form-item {
     margin: 0;
   }
+   .el-table th {
+    padding: 5px 0px;
+  }
+    .el-table td {
+    padding: 5px 0px;
+  }
+  .el-input__inner{
+    height: 35px;
+  }
+ 
 }
 </style>
 
@@ -13,7 +23,7 @@
   <div class='maidInfo'>
     <div class='table'>
       <div class='title'>
-        <div class='title-text'>申请信息</div>
+        <div class='title-text'>佣金申请信息</div>
         <el-button class='pos-btn-1' type="primary" @click='sumbit(2)'>提交</el-button>
         <el-button class='pos-btn-2' type="primary" @click='sumbit(3)'>保存</el-button>
         <el-button class='pos-btn' @click='cancel' type="primary">关闭</el-button>
@@ -61,13 +71,13 @@
       <el-table :data="tableData" border style="width: 100%" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align='center'></el-table-column>
         <el-table-column prop="client_id" label="推荐编号" align='center' width="120px"></el-table-column>
-        <el-table-column prop="name" label="经纪人名称" align='center' width="180px"></el-table-column>
-        <el-table-column prop="tel" label="联系电话" align='center' width="180px"></el-table-column>
+        <el-table-column prop="name" label="经纪人名称" align='center'></el-table-column>
+        <el-table-column prop="tel" label="联系电话" align='center' ></el-table-column>
         <el-table-column prop="broker_type" label="佣金类型" align='center' width="180px">
           <template slot-scope="scope">{{type(scope.row.broker_type)}}</template>
         </el-table-column>
         <el-table-column prop="create_time" label="时间" align='center'></el-table-column>
-        <el-table-column prop="broker_num" label="佣金金额" align='center' width="160px"></el-table-column>
+        <el-table-column prop="broker_num" label="佣金金额" align='center'></el-table-column>
         <!-- <el-table-column prop="project_hold_phone" label="扣款金额" align='center' v-if='operationType==1'></el-table-column>
         <el-table-column prop="all_price" label="审核金额" align='center' v-if='operationType==1'></el-table-column> -->
       </el-table>

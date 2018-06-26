@@ -5,71 +5,129 @@
   .el-form-item {
     margin: 0;
   }
+  .el-table th {
+    padding: 5px 0px;
+  }
+  .el-table td {
+    padding: 4px 0px;
+  }
+  .el-input__inner {
+    height: 35px;
+  }
 }
 </style>
 <template>
   <div class='updateCommission'>
     <div class='table'>
       <div class='title'>
-        <div class='title-text'>申请信息</div>
         <el-button class='pos-btn-1' v-if="operationType==1" type="primary" @click='sumbit(2)'>提交</el-button>
         <el-button class='pos-btn' @click='cancel' type="primary">关闭</el-button>
       </div>
-      <el-form v-model="submitForm" class='form' :disabled="operationType==0">
-        <el-form-item label="申请名称" class='row'>
-          <el-input v-model="submitForm.batch_name" auto-complete="off" class='input'></el-input>
-        </el-form-item>
-        <el-form-item label="申请笔数" class='row'>
-          <el-input v-model="submitForm.count_num" auto-complete="off" class='input'></el-input>
-        </el-form-item>
-        <el-form-item label="申请时间" class='row'>
-          <el-input v-model="submitForm.create_time" auto-complete="off" class='input'></el-input>
-        </el-form-item>
-        <el-form-item label="佣金金额（￥）：" class='row'>
-          <el-input v-model="no_price" auto-complete="off" class='input'></el-input>
-        </el-form-item>
-        <!-- <el-form-item label="扣款金额（￥）：" class='row' v-if='operationType==1'>
-          <el-input v-model="submitForm.allow" auto-complete="off" class='input'></el-input>
-        </el-form-item>
-        <el-form-item label="审核金额（￥）：" class='row' v-if='operationType==1'>
-          <el-input v-model="submitForm.allow" auto-complete="off" class='input'></el-input>
-        </el-form-item> -->
-        <el-form-item label="甲方联系人" class='row'>
-          <el-input v-model="submitForm.nail_name" auto-complete="off" class='input'></el-input>
-        </el-form-item>
-        <el-form-item label="甲方联系电话" class='row'>
-          <el-input v-model="submitForm.nail_tel" auto-complete="off" class='input'></el-input>
-        </el-form-item>
-        <el-form-item label="乙方联系人" class='row'>
-          <el-input v-model="submitForm.second_name" auto-complete="off" class='input'></el-input>
-        </el-form-item>
-        <el-form-item label="乙方联系电话" class='row'>
-          <el-input v-model="submitForm.second_tel" auto-complete="off" class='input'></el-input>
-        </el-form-item>
-        <!-- <el-form-item label="申请类型" class='row' v-if='operationType==1'>
-          <el-input v-model="submitForm.allow" auto-complete="off" class='input'></el-input>
-        </el-form-item>
-        <el-form-item label="申请人员" class='row' v-if='operationType==1'>
-          <el-input v-model="submitForm.allow" auto-complete="off" class='input'></el-input>
-        </el-form-item>
-        <el-form-item label="申请时间" class='row' v-if='operationType==1'>
-          <el-input v-model="submitForm.allow" auto-complete="off" class='input'></el-input>
-        </el-form-item> -->
-      </el-form>
-      <div class='title-text'>申请结佣列表
-        <el-button type="primary" v-if="operationType==1" @click='showAdd(scope.row)' class='add'>添加</el-button>
+      <div v-if='operationType==2'>
+        <div class='title-text'>付款申请信息</div>
+        <el-form v-model="form" class='form' :disabled="operationType==2">
+          <el-form-item label="单据号" class='row'>
+            <el-input v-model="form.document_num" auto-complete="off" class='input'></el-input>
+          </el-form-item>
+          <el-form-item label="付款银行" class='row'>
+            <el-input v-model="form.send_bank" auto-complete="off" class='input'></el-input>
+          </el-form-item>
+          <el-form-item label="付款银行卡号" class='row'>
+            <el-input v-model="form.send_bank_card" auto-complete="off" class='input'></el-input>
+          </el-form-item>
+          <el-form-item label="收款银行" class='row'>
+            <el-input v-model="form.recive_bank_card" auto-complete="off" class='input'></el-input>
+          </el-form-item>
+          <el-form-item label="收款人" class='row'>
+            <el-input v-model="form.recive_name" auto-complete="off" class='input'></el-input>
+          </el-form-item>
+          <el-form-item label="审核人" class='row'>
+            <el-input v-model="form.check_name" auto-complete="off" class='input'></el-input>
+          </el-form-item>
+          <el-form-item label="审核时间" class='row'>
+            <el-input v-model="form.create_time" auto-complete="off" class='input'></el-input>
+          </el-form-item>
+          <el-form-item label="支付人" class='row'>
+            <el-input v-model="form.apply_name" auto-complete="off" class='input'></el-input>
+          </el-form-item>
+          <el-form-item prop="examine_state" label="审核状态" align='center' class='row'>
+            <span class='input'>{{examineState(form.examine_state)}}</span>
+          </el-form-item>
+          <el-form-item label="支付备注" class='row'>
+            <el-input v-model="form.send_desc" type="textarea" auto-complete="off" class='input withd'></el-input>
+          </el-form-item>
+        </el-form>
       </div>
-      <el-table :data="tableData" border style="width: 100%" ref="multipleTable" @selection-change="handleSelectionChange">
-        <el-table-column v-if="operationType==1" type="selection" width="55" align='center'></el-table-column>
-        <el-table-column prop="client_id" label="推荐编号" align='center' width="120px"></el-table-column>
-        <el-table-column prop="name" label="经纪人名称" align='center' width="180px"></el-table-column>
-        <el-table-column prop="tel" label="联系电话" align='center' width="180px"></el-table-column>
-        <el-table-column prop="broker_type" label="佣金类型" align='center' width="180px">
-          <template slot-scope="scope">{{type(scope.row.broker_type)}}</template>
-        </el-table-column>
-        <el-table-column prop="create_time" label="时间" align='center'></el-table-column>
-        <el-table-column prop="broker_num" label="佣金金额" align='center' width="160px"></el-table-column>
-      </el-table>
+      <div v-if='operationType==2'>
+        <div class='title-text'>附件信息</div>
+        <el-table :data="applyFile" border>
+          <el-table-column label="文件名称" prop="file_name" align='center'></el-table-column>
+          <el-table-column label="附件" align='center'>
+            <template slot-scope='scope'>
+              <a target="_blank" :href="'http://120.27.21.136:2798/' + scope.row.file_url">查看附件</a>
+            </template>
+          </el-table-column>
+          <el-table-column property="create_name" label="上传人员" align='center'></el-table-column>
+          <el-table-column property="create_time" label="上传时间" align='center'></el-table-column>
+        </el-table>
+      </div>
+      <div>
+        <div class='title-text'>佣金申请信息</div>
+        <el-form v-model="submitForm" class='form' :disabled="operationType==0||operationType==2">
+          <el-form-item label="申请名称" class='row'>
+            <el-input v-model="submitForm.batch_name" auto-complete="off" class='input'></el-input>
+          </el-form-item>
+          <el-form-item label="申请笔数" class='row'>
+            <el-input v-model="submitForm.count_num" auto-complete="off" class='input'></el-input>
+          </el-form-item>
+          <el-form-item label="申请人员" class='row'>
+            <el-input v-model="submitForm.create_name" auto-complete="off" class='input'></el-input>
+          </el-form-item>
+          <el-form-item label="申请时间" class='row'>
+            <el-input v-model="submitForm.create_time" auto-complete="off" class='input'></el-input>
+          </el-form-item>
+          <el-form-item label="佣金金额（￥）：" class='row'>
+            <el-input v-model="no_price" auto-complete="off" class='input'></el-input>
+          </el-form-item>
+          <el-form-item label="甲方联系人" class='row'>
+            <el-input v-model="submitForm.nail_name" auto-complete="off" class='input'></el-input>
+          </el-form-item>
+          <el-form-item label="甲方联系电话" class='row'>
+            <el-input v-model="submitForm.nail_tel" auto-complete="off" class='input'></el-input>
+          </el-form-item>
+          <el-form-item label="乙方联系人" class='row'>
+            <el-input v-model="submitForm.second_name" auto-complete="off" class='input'></el-input>
+          </el-form-item>
+          <el-form-item label="乙方联系电话" class='row'>
+            <el-input v-model="submitForm.second_tel" auto-complete="off" class='input'></el-input>
+          </el-form-item>
+          <el-form-item label="审核人员" class='row' v-if='operationType==2'>
+            <el-input v-model="submitForm.auditing_name" auto-complete="off" class='input'></el-input>
+          </el-form-item>
+          <el-form-item label="审核时间" class='row' v-if='operationType==2'>
+            <el-input v-model="submitForm.auditing_time" auto-complete="off" class='input'></el-input>
+          </el-form-item>
+          <el-form-item label="备注" class='row' v-if='operationType==0||operationType==2'>
+            <el-input v-model="submitForm.remark" type="textarea" auto-complete="off" class='input withd'></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
+      <div>
+        <div class='title-text'>申请结佣列表
+          <el-button type="primary" v-if="operationType==1" @click='showAdd(scope.row)' class='add'>添加</el-button>
+        </div>
+        <el-table :data="tableData" border style="width: 100%" ref="multipleTable" @selection-change="handleSelectionChange">
+          <el-table-column v-if="operationType==1" type="selection" width="55" align='center'></el-table-column>
+          <el-table-column prop="client_id" label="推荐编号" align='center' width="120px"></el-table-column>
+          <el-table-column prop="name" label="经纪人名称" align='center' width="180px"></el-table-column>
+          <el-table-column prop="tel" label="联系电话" align='center' width="180px"></el-table-column>
+          <el-table-column prop="broker_type" label="佣金类型" align='center' width="180px">
+            <template slot-scope="scope">{{type(scope.row.broker_type)}}</template>
+          </el-table-column>
+          <el-table-column prop="create_time" label="时间" align='center'></el-table-column>
+          <el-table-column prop="broker_num" label="佣金金额" align='center' width="160px"></el-table-column>
+        </el-table>
+      </div>
     </div>
   </div>
 </template>
@@ -79,8 +137,10 @@ export default {
   data() {
     return {
       tableData: [],
+      applyFile: [],
       operationType: 0,
       submitForm: {},
+      form: {},
       batch_id: "",
       state: "", //2为提交  3为只是保存
       batch_name: "",
@@ -89,16 +149,18 @@ export default {
       second_name: "",
       second_tel: "",
       no_price: 0,
+      apply_id: "",
       searchObj: {
         search: ""
       }
     };
   },
   mounted() {
+    this.apply_id = this.$route.params.apply_id;
     this.operationType = this.$route.params.operationType;
     this.state = this.$route.params.state;
     this.batch_id = this.$route.params.batch_id;
-    if (this.batch_id === undefined) {
+    if (this.operationType === undefined) {
       this.$router.push({ name: "distri_commission" });
       return;
     }
@@ -124,11 +186,14 @@ export default {
       let temp = Object.assign({}, this.submitForm);
       temp.batch_id = this.batch_id;
       temp.state = this.state;
+      temp.apply_id = this.apply_id;
       let res = {};
       if (this.operationType == 1) {
         res = await this.api.updateBroker(temp);
-      } else {
+      } else if (this.operationType == 0) {
         res = await this.api.getBrokerInfo(temp);
+      } else if (this.operationType == 2) {
+        res = await this.api.getApplyInfo(temp);
       }
       if (res.code == 200) {
         this.tableData = res.data.brokerList;
@@ -137,8 +202,18 @@ export default {
             this.$refs.multipleTable.toggleRowSelection(data);
           }
         });
-
-        this.submitForm = res.data.brokerInfo[0];
+        this.submitForm = res.data.brokerInfo;
+        this.form = res.data.applyInfo;
+        this.applyFile = res.data.applyFile;
+      }
+    },
+    examineState(row) {
+      if (row == 0) {
+        return "拒绝";
+      } else if (row == 1) {
+        return "通过";
+      } else if (row == 2) {
+        return "待审核";
       }
     },
     handleSelectionChange(val) {
@@ -162,6 +237,7 @@ export default {
       }
     },
     cancel() {
+      console.log(1)
       this.$router.push({
         name: "maidInfo",
         params: this.$route.params
