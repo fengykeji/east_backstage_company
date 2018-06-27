@@ -29,7 +29,9 @@
     </div>
     <template>
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column prop="" label="序号" align='center' width="80px"> </el-table-column>
+        <el-table-column  label="序号" align='center' width="80px">
+          <template slot-scope="scope">{{getIndex(scope)}}</template>
+        </el-table-column>
         <el-table-column prop="account" label="云算号" align='center' width="110px"></el-table-column>
         <el-table-column prop="name" label="名称" align='center'></el-table-column>
         <el-table-column prop="tel" label="联系方式" align='center' width="120px"></el-table-column>
@@ -195,6 +197,10 @@ export default {
     this.getQuitList();
   },
   methods: {
+    getIndex(row) {
+      let index = ( row.$index + 1 ) + (this.searchObj.page - 1) * 10;
+      return index;
+    },
     getRole(row) {
       if (row == 1) {
         return "经纪人";

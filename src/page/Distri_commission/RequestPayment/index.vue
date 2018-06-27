@@ -41,7 +41,7 @@
       </div>
       <el-form v-model="submitForm" class='form'>
         <el-form-item label="申请付款批次名称" class='row'>
-          <el-input v-model="submitForm.batch_name" auto-complete="off" placeholder="请输入申请付款批次名称" class='input'></el-input>
+          <el-input :disabled="true" v-model="submitForm.batch_name" auto-complete="off" placeholder="请输入申请付款批次名称" class='input'></el-input>
         </el-form-item>
         <el-form-item label="收款银行" class='row' prop="payee_bank">
           <el-select v-model="submitForm.recive_bank" placeholder="请选择收款银行" @change="getBankOptions">
@@ -55,13 +55,13 @@
           <el-input v-model="submitForm.recive_name" auto-complete="off" class='input' placeholder="请输入收款户名"></el-input>
         </el-form-item>
         <el-form-item label="申请付款金额(￥)：" class='row'>
-          <el-input v-model="submitForm.broker_num" auto-complete="off" class='input'></el-input>
+          <el-input  :disabled="true" v-model="submitForm.broker_num" auto-complete="off" class='input'></el-input>
         </el-form-item>
         <el-form-item label="申请人员：" class='row'>
-          <el-input v-model="submitForm.name" auto-complete="off" class='input'></el-input>
+          <el-input  :disabled="true" v-model="submitForm.name" auto-complete="off" class='input'></el-input>
         </el-form-item>
         <el-form-item label="申请时间：" class='row'>
-          <el-input v-model="submitForm.create_time" auto-complete="off" class='input'></el-input>
+          <el-input  :disabled="true" v-model="submitForm.create_time" auto-complete="off" class='input'></el-input>
         </el-form-item>
       </el-form>
     </div>
