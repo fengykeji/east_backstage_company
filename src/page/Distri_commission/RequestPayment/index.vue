@@ -1,6 +1,6 @@
 <style lang="less" scoped>
 .paymentRequest {
-  margin-top: 50px;
+  margin-top: 90px;
   margin-left: 180px;
   .table {
     margin: 0 auto;
@@ -43,12 +43,6 @@
         <el-form-item label="申请付款批次名称" class='row'>
           <el-input v-model="submitForm.batch_name" auto-complete="off" placeholder="请输入申请付款批次名称" class='input'></el-input>
         </el-form-item>
-        <!-- <el-form-item label="审核金额(￥)：" class='row'>
-                    <el-input v-model="submitForm.count_num" auto-complete="off" class='input'></el-input>
-                </el-form-item>
-                <el-form-item label="未结金额(￥)：" class='row'>
-                    <el-input v-model="submitForm.create_time" auto-complete="off" class='input'></el-input>
-                </el-form-item> -->
         <el-form-item label="收款银行" class='row' prop="payee_bank">
           <el-select v-model="submitForm.recive_bank" placeholder="请选择收款银行" @change="getBankOptions">
             <el-option v-for="item in bankOptions" :key="item.param_id" :label="item.param" :value="item.param"></el-option>
@@ -68,9 +62,6 @@
         </el-form-item>
         <el-form-item label="申请时间：" class='row'>
           <el-input v-model="submitForm.create_time" auto-complete="off" class='input'></el-input>
-        </el-form-item>
-        <el-form-item label="佣金类型" class='row'>
-          <span>{{type(submitForm.broker_type)}}</span>
         </el-form-item>
       </el-form>
     </div>
@@ -93,7 +84,8 @@ export default {
       batch_id: "",
       state: "",
       project_id: "",
-      bankOptions: []
+      bankOptions: [],
+      operationType: 0
     };
   },
   mounted() {
@@ -147,10 +139,10 @@ export default {
     },
 
     async getPriceApply() {
-      console.log(this.state)
+      console.log(this.state);
       let res = await this.api.getPriceApply({
         batch_id: this.batch_id,
-        state: this.state
+        state: this.state,
       });
       if (res.code == 200) {
         Object.assign(this.submitForm, res.data[0]);

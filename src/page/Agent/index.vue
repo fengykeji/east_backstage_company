@@ -2,7 +2,7 @@
 <style lang="less">
 .agent {
   margin-left: 180px;
-  margin-top: 150px;
+  margin-top: 195px;
   .el-table th {
     padding: 8px 5px;
   }
@@ -16,10 +16,8 @@
     position: fixed;
     top: 0;
     left: 0;
-    height: 100px;
     width: 100%;
     z-index: 99;
-
     .left {
       text-align: left;
       .text1 {
@@ -72,7 +70,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination background layout="prev, pager, next" :current-page="searchObj.page" :total="total">
+    <el-pagination background class='page' layout="prev, pager, next" :current-page="searchObj.page" :total="total">
     </el-pagination>
     <el-dialog title="离职申请" :visible.sync="dialogFormVisible" class='dialog' @close="cancel">
       <el-form :model="form" :rules="rules" ref="form">

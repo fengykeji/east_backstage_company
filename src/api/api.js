@@ -158,6 +158,18 @@ let api = {
   getCompanyAllInfo: doGet('company/projectCommission/getCompanyAllInfo'),
   //公司累计列表
   getCompanyAll: doGet('company/projectCommission/getCompanyAll'),
+  //公司已结详情
+  getCompanyYInfo: doGet('company/projectCommission/getCompanyYInfo'),
+//公司未结详情
+getCompanyNInfo: doGet('company/projectCommission/getCompanyNInfo'),
+//公司未结列表
+getCompanyNList: doGet('company/projectCommission/getCompanyN'),
+//个人累计列表
+getPersonInfoList: doGet('company/projectCommission/getPersonAllInfo'),
+//个人未结列表
+getPersonNInfo: doGet('company/projectCommission/getPersonNInfo'),
+
+
 
   //第四板块   分销佣金管理
   //获取列表

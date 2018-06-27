@@ -1,7 +1,7 @@
 <style lang="less" scoped>
 .companyPriceInfo {
   .table {
-    margin: 50px 100px 50px 200px;
+    margin: 90px 100px 50px 200px;
     .text {
       font-size: 15px;
       text-align: left;
@@ -49,45 +49,104 @@
 }
 </style>
 <template>
-    <div class='companyPriceInfo'>
-        <div class='table'>
-            <div class='title'>
-                <span class='title-text'>链家公司累计列表</span>
-                <el-input v-model="searchObj.search" class='query' placeholder="可查询推荐编号/经纪人名称"></el-input>
-                <el-button @click="getCompanyAllInfo" icon="el-icon-search" circle></el-button>
-                <el-button class='pos-btn' type="primary" @click='cancel'>关闭</el-button>
-            </div>
-            <div class='text'>
-                <span class='price'>累计金额:{{sumbitForm.total_price}}</span>
-                <span class='price'>累计笔数:{{sumbitForm.count}}笔</span>
-            </div>
-            <el-table :data="tableData" border style="width: 100%">
-                <el-table-column prop="" label="序号" align='center' width="70px"></el-table-column>
-                <el-table-column prop="client_id" label="推荐编号" align='center'></el-table-column>
-                <el-table-column prop="project_name" label="项目名称" align='center'></el-table-column>
-                <el-table-column prop="house_info" label="房间号" align='center'></el-table-column>
-                <el-table-column prop="name" label="经纪人名称" align='center' width="110px"></el-table-column>
-                <el-table-column prop="tel" label="联系电话" align='center'></el-table-column>
-                <el-table-column prop="broker_type" label="佣金类型" align='center'>
-                    <template slot-scope="scope">{{brokerType(scope.row.broker_type)}}</template>
-                </el-table-column>
-                <el-table-column prop="create_time" label="时间" align='center' width="160px"></el-table-column>
-                <el-table-column prop="broker_num" label="佣金金额" align='center'></el-table-column>
-                <el-table-column prop="commission_way" label="计算规则" align='center'></el-table-column>
-                <el-table-column prop="pay_state" label="状态" align='center'>
-                    <template slot-scope="scope">{{state(scope.row.pay_state)}}</template>
-                </el-table-column>
-            </el-table>
-
-        </div>
-
+  <div class='companyPriceInfo'>
+    <div class='table' v-if='companyType==0'>
+      <div class='title'>
+        <span class='title-text'>链家公司累计列表</span>
+        <el-input v-model="searchObj.search" class='query' placeholder="可查询推荐编号/经纪人名称"></el-input>
+        <el-button @click="getCompanyAllInfo" icon="el-icon-search" circle></el-button>
+        <el-button class='pos-btn' type="primary" @click='cancel'>关闭</el-button>
+      </div>
+      <div class='text'>
+        <span class='price'>累计金额:{{sumbitForm.total_price}}</span>
+        <span class='price'>累计笔数:{{sumbitForm.count}}笔</span>
+      </div>
+      <el-table :data="tableData" border style="width: 100%">
+        <el-table-column prop="" label="序号" align='center' width="70px"></el-table-column>
+        <el-table-column prop="client_id" label="推荐编号" align='center'></el-table-column>
+        <el-table-column prop="project_name" label="项目名称" align='center'></el-table-column>
+        <el-table-column prop="house_info" label="房间号" align='center'></el-table-column>
+        <el-table-column prop="name" label="经纪人名称" align='center' width="110px"></el-table-column>
+        <el-table-column prop="tel" label="联系电话" align='center'></el-table-column>
+        <el-table-column prop="broker_type" label="佣金类型" align='center'>
+          <template slot-scope="scope">{{brokerType(scope.row.broker_type)}}</template>
+        </el-table-column>
+        <el-table-column prop="create_time" label="时间" align='center' width="160px"></el-table-column>
+        <el-table-column prop="broker_num" label="佣金金额" align='center'></el-table-column>
+        <el-table-column prop="commission_way" label="计算规则" align='center'></el-table-column>
+        <el-table-column prop="pay_state" label="状态" align='center'>
+          <template slot-scope="scope">{{state(scope.row.pay_state)}}</template>
+        </el-table-column>
+      </el-table>
     </div>
+    <div class='table'  v-if='companyType==1'>
+      <div class='title'>
+        <span class='title-text'>链家公司已结列表</span>
+        <el-input v-model="searchObj.search" class='query' placeholder="可查询付款单据号"></el-input>
+        <el-button @click="getCompanyAllInfo" icon="el-icon-search" circle></el-button>
+        <el-button class='pos-btn' type="primary" @click='cancel'>关闭</el-button>
+      </div>
+      <div class='text'>
+        <span class='price'>已结金额:{{sumbitForm.total_price}}</span>
+        <span class='price'>已结笔数:{{sumbitForm.count}}笔</span>
+      </div>
+      <el-table :data="tableDataS" border style="width: 100%">
+        <el-table-column prop="" label="序号" align='center' width="70px"></el-table-column>
+        <el-table-column prop="batch_name" label="批次名称" align='center'></el-table-column>
+        <el-table-column prop="apply_name" label="申请人员" align='center'></el-table-column>
+        <el-table-column prop="create_time" label="申请时间" align='center'></el-table-column>
+        <el-table-column prop="broker_num" label="申请金额" align='center' width="80px"></el-table-column>
+        <el-table-column prop="chargebacks_price" label="扣款金额" align='center' width="80px"></el-table-column>
+        <el-table-column  label="审核金额" align='center'>
+          <template slot-scope="scope">{{scope.row.broker_num-scope.row.chargebacks_price}}</template>
+        </el-table-column>
+        <el-table-column prop="check_name" label="审核人员" align='center'></el-table-column>
+        <el-table-column prop="check_time" label="审核时间" align='center' ></el-table-column>
+        <el-table-column prop="document_num" label="付款单据号" align='center' width="110px"></el-table-column>
+        <el-table-column prop="recive_bank" label="收款银行" align='center'></el-table-column>
+        <el-table-column prop="recive_bank_card" label="收款银行卡号" align='center' width="120px"></el-table-column>
+        <el-table-column prop="recive_name" label="收款户名" align='center'></el-table-column>
+        <el-table-column prop="update_time" label="结佣时间" align='center' ></el-table-column>
+      </el-table>
+    </div>
+ <div class='table' v-if='companyType==2'>
+      <div class='title'>
+        <span class='title-text'>链家公司未结列表</span>
+        <el-input v-model="searchObj.search" class='query' placeholder="可查询推荐编号/经纪人名称"></el-input>
+        <el-button @click="getCompanyAllInfo" icon="el-icon-search" circle></el-button>
+        <el-button class='pos-btn' type="primary" @click='cancel'>关闭</el-button>
+      </div>
+      <div class='text'>
+        <span class='price'>未结金额:{{sumbitForm.total_price}}</span>
+        <span class='price'>未结笔数:{{sumbitForm.count}}笔</span>
+      </div>
+      <el-table :data="tableDataSa" border style="width: 100%">
+        <el-table-column prop="" label="序号" align='center' width="70px"></el-table-column>
+        <el-table-column prop="client_id" label="推荐编号" align='center'></el-table-column>
+        <el-table-column prop="project_name" label="项目名称" align='center'></el-table-column>
+        <el-table-column prop="house_info" label="房间号" align='center'></el-table-column>
+        <el-table-column prop="name" label="经纪人名称" align='center' width="110px"></el-table-column>
+        <el-table-column prop="tel" label="联系电话" align='center'></el-table-column>
+        <el-table-column prop="broker_type" label="佣金类型" align='center'>
+          <template slot-scope="scope">{{brokerType(scope.row.broker_type)}}</template>
+        </el-table-column>
+        <el-table-column prop="create_time" label="时间" align='center' width="160px"></el-table-column>
+        <el-table-column prop="broker_num" label="佣金金额" align='center'></el-table-column>
+        <el-table-column prop="commission_way" label="计算规则" align='center'></el-table-column>
+        <el-table-column prop="pay_state" label="状态" align='center'>
+          <template slot-scope="scope">{{state(scope.row.pay_state)}}</template>
+        </el-table-column>
+      </el-table>
+    </div>
+  </div>
 </template>
 <script>
 export default {
   data() {
     return {
       tableData: [],
+      tableDataS: [],
+      tableDataSa:[],
       project_id: "",
       company_rule_id: "",
       searchObj: {
@@ -96,10 +155,13 @@ export default {
       sumbitForm: {
         total_price: "",
         count: ""
-      }
+      },
+      companyType: 0 //0公司累计金额   1  公司已结金额  2 公司未结金额
     };
   },
   mounted() {
+    this.company_id = this.$route.params.company_id;
+    this.companyType = this.$route.params.companyType;
     this.project_id = this.$route.params.project_id;
     if (!this.project_id) {
       this.$router.push({ name: "companyPrice" });
@@ -110,21 +172,46 @@ export default {
   },
   methods: {
     async getCompanyAllInfo() {
-      let res = await this.api.getCompanyAllInfo({
-        project_id: this.project_id,
-        company_rule_id: this.company_rule_id,
-        search: this.searchObj.search
-      });
-      if (res.code == 200) {
-        this.tableData = res.data.data;
-        this.sumbitForm.total_price = res.data.data.total_price;
-        this.sumbitForm.count = res.data.data.count;
+      if (this.companyType == 0) {
+        let res = await this.api.getCompanyAllInfo({
+          project_id: this.project_id,
+          company_rule_id: this.company_rule_id,
+          search: this.searchObj.search
+        });
+        if (res.code == 200) {
+          this.tableData = res.data.broker_info.data;
+          this.sumbitForm.total_price = res.data.total_price;
+          this.sumbitForm.count = res.data.count;
+        }
+      } else if (this.companyType == 1) {
+        let res = await this.api.getCompanyYInfo({
+          project_id: this.project_id,
+          company_id: this.company_id,
+          search: this.searchObj.search
+        });
+        if (res.code == 200) {
+          this.tableDataS = res.data.batch_list.data;
+          this.sumbitForm.total_price = res.data.total_price;
+          this.sumbitForm.count = res.data.count;
+        }
+      }
+      else if (this.companyType == 2) {
+        let res = await this.api.getCompanyNInfo({
+          project_id: this.project_id,
+          company_rule_id: this.company_rule_id,
+          search: this.searchObj.search
+        });
+        if (res.code == 200) {
+          this.tableDataSa = res.data.broker_info.data;
+          this.sumbitForm.total_price = res.data.total_price;
+          this.sumbitForm.count = res.data.count;
+        }
       }
     },
     cancel() {
       this.$router.push({
         name: "companyPrice",
-        params:this.$route.params,
+        params: this.$route.params
       });
     },
     brokerType(row) {

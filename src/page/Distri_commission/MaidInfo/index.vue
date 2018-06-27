@@ -30,7 +30,7 @@
         </el-table-column>
         <el-table-column label="操作" align='center' width="180px">
           <template slot-scope="scope">
-            <el-button type='text' v-if="scope.row.state == 1" @click='requestPayment(scope.row)'>付款申请</el-button>
+            <el-button type='text' v-if="scope.row.state == 1" @click='requestPayment(scope.row,4)'>付款申请</el-button>
             <el-button type='text' @click='see(scope.row,0)'>查看</el-button>
             <el-button type='text' v-if="scope.row.state == 3" @click='see(scope.row,1)'>修改</el-button>
             <el-button type='text' v-if="scope.row.state == 0 || scope.row.state == 3" @click="remove(scope.row)">删除</el-button>
@@ -83,14 +83,15 @@ export default {
     this.seeCommissionList();
   },
   methods: {
-    requestPayment(row) {
+    requestPayment(row, type) {
       this.$router.push({
         name: "requestPayment",
         params: {
           project_id: this.project_id,
           batch_id: row.batch_id,
           state: row.state ? row.state : row.examine_state,
-          batch_name: row.batch_name
+          batch_name: row.batch_name,
+          operationType: type
         }
       });
     },
@@ -104,34 +105,22 @@ export default {
       }
     },
     async see(row, type) {
-      if (type == 1) {
-        this.$router.push({
-          name: "updateCommission",
-          params: {
-            project_id: this.project_id,
-            batch_id: row.batch_id,
-            state: row.state,
-            operationType: type
-          }
-        });
-      } else {
-        this.$router.push({
-          name: "updateCommission",
-          params: {
-            project_id: this.project_id,
-            batch_id: row.batch_id,
-            state: row.state,
-            operationType: type
-          }
-        });
-      }
+      this.$router.push({
+        name: "updateCommission",
+        params: {
+          project_id: this.project_id,
+          batch_id: row.batch_id,
+          state: row.state,
+          operationType: type
+        }
+      });
     },
     async seePayment(row, type) {
       this.$router.push({
         name: "updateCommission",
         params: {
           apply_id: row.apply_id,
-          examine_state : row.examine_state,
+          batch_id: row.batch_id,
           operationType: type
         }
       });

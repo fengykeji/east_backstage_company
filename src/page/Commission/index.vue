@@ -119,7 +119,36 @@ export default {
         });
       }
     },
-    personPrice(row, type) {},
+    personPrice(row, type) {
+       if (type == 0) {
+        this.$router.push({
+          name: "personPrice",
+          params: {
+            personType: type,
+            project_id: row.project_id
+          }
+        });
+      } 
+      // else if (type == 1) {
+      //   this.$router.push({
+      //     name: "companyPrice",
+      //     params: {
+      //       personType: type,
+      //       project_id: row.project_id
+      //     }
+      //   });
+      // } 
+      else if (type == 2) {
+        this.$router.push({
+          name: "personPrice",
+          params: {
+            personType: type,
+            project_id: row.project_id
+          }
+        });
+      }
+
+    },
 
     async getProjectCommissionList() {
       let res = await this.api.getProjectCommissionList();

@@ -50,7 +50,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination background layout="prev, pager, next" :page-size="limit" :current-page="searchObj.page" :total="total" @current-change="pageChange">
+      <el-pagination background class='page' layout="prev, pager, next" :page-size="limit" :current-page="searchObj.page" :total="total" @current-change="pageChange">
       </el-pagination>
       <el-dialog title="查看" :visible.sync="dialogFormVisible" class='dialog' @close="cancel">
         <div class='btn'>

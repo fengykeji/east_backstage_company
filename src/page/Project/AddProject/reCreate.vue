@@ -5,7 +5,7 @@
   padding: 20px;
   width: 1100px;
   margin: 0 auto;
-
+  padding-top: 90px;
   .el-form-item.is-error {
     padding-bottom: 20px;
   }

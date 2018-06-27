@@ -157,12 +157,12 @@ export default {
           type: "warning"
         })
           .then(async () => {
-            this.$message({
-              type: "success",
-              message: "审核成功!"
-            });
             let res = await this.api.exAgent(temp);
             if (res.code == 200) {
+              this.$message({
+                type: "success",
+                message: "审核成功!"
+              });
               this.close();
               this.cancelRefuseInfo();
               this.getAgentInfo();
@@ -185,7 +185,7 @@ export default {
       this.submitForm.id = this.id;
       this.submitForm.agent_id = this.agent_id;
       let res = await this.api.agentAdd(this.submitForm);
-    
+
       if (res.code == 200) {
         this.$router.push({
           name: "fastDistribution",
@@ -207,7 +207,7 @@ export default {
     async getAgentInfo() {
       let res = await this.api.getAgentInfo({ agent_id: this.agent_id });
       if (res.code == 200) {
-         Object.assign( this.submitForm, res.data);
+        Object.assign(this.submitForm, res.data);
       }
     },
     sex(row) {

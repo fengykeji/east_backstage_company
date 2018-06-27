@@ -1,6 +1,6 @@
 <style lang="less">
 .fastDistribution {
-  padding-top: 50px;
+  padding-top: 90px;
   margin: 0 auto;
   width: 1200px;
   .el-table th {

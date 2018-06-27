@@ -267,7 +267,7 @@ export default {
     showCheck(type) {
       this.refuseInfo = true;
     },
-    
+
     async check(type) {
       this.submitForm.type = type;
       let temp = Object.assign({}, this.submitForm);
@@ -286,12 +286,12 @@ export default {
           type: "warning"
         })
           .then(async () => {
-            this.$message({
-              type: "success",
-              message: "审核成功!"
-            });
             let res = await this.api.exPeople(temp);
             if (res.code == 200) {
+              this.$message({
+                type: "success",
+                message: "审核成功!"
+              });
               this.getExList();
               this.cancelRefuseInfo();
               this.cancel();
