@@ -78,9 +78,9 @@
       <span class='tou'>
         <img class='img' src='../assets/images/logo.png' />
       </span>
-      <span class='top-name'>公司名称 {{company_name}}
+      <span class='top-name'>公司名称:  {{company_name}}
       </span>
-      <span class='top-one'>个人名称 {{name}}
+      <span class='top-one'>个人名称:   {{name}}
       </span>
       <el-button type='text' class='top-text' @click='cancel'>退出</el-button>
     </div>
@@ -112,14 +112,11 @@ export default {
   created() {
     this.activeIndex = this.$route.name;
   },
-  mounted() {},
+  mounted() {
+     this.name = localStorage.getItem("name");
+      this.company_name = localStorage.getItem("company_name");
+  },
   methods: {
-    getName() {
-      let name = localStorage.getItem("name");
-      let company_name = localStorage.getItem("company_name");
-      this.name=name;
-      this.company_name=company_name;
-    },
     cancel() {
       this.$router.push({
         name: "login"

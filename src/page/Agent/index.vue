@@ -114,8 +114,8 @@
         <el-form-item class='input1'>
           <div>工牌照片</div>
           <div class='border  img'>
-            <img src="../../assets/images/head.png" />
-            <!-- <img :src="'http://120.27.21.136:2798/' + examinePeople.img_url" /> -->
+            <!-- <img src="../../assets/images/head.png" /> -->
+            <img :src="'http://120.27.21.136:2798/' + examinePeople.img_url" />
           </div>
         </el-form-item>
         <el-form-item class='input1'>
@@ -148,8 +148,8 @@
         <el-form-item class='input1'>
           <div>证件照片</div>
           <div class='border  img'>
-            <img src="../../assets/images/idCard.png" />
-            <!-- <img :src="'http://120.27.21.136:2798/' + examinePeople.card_url" /> -->
+            <!-- <img src="../../assets/images/idCard.png" /> -->
+            <img :src="'http://120.27.21.136:2798/' + examinePeople.card_url" />
           </div>
         </el-form-item>
         <el-form-item class='input1'>
