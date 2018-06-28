@@ -40,12 +40,6 @@
         <el-form-item label="佣金金额（￥）：" class='row'>
           <el-input v-model="no_price" auto-complete="off" class='input'></el-input>
         </el-form-item>
-        <!-- <el-form-item label="扣款金额（￥）：" class='row' v-if='operationType==1'>
-          <el-input v-model="submitForm.allow" auto-complete="off" class='input'></el-input>
-        </el-form-item>
-        <el-form-item label="审核金额（￥）：" class='row' v-if='operationType==1'>
-          <el-input v-model="submitForm.allow" auto-complete="off" class='input'></el-input>
-        </el-form-item> -->
         <el-form-item label="甲方联系人" class='row'>
           <el-input v-model="submitForm.nail_name" auto-complete="off" class='input'></el-input>
         </el-form-item>

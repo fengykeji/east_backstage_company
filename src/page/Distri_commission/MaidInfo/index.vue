@@ -3,7 +3,7 @@
 <style lang="less">
 .maidInfo {
   .el-table th {
-    padding: 5px 0px;
+    padding: 3px 0px;
   }
   .el-table td {
     padding: 0px 0px;

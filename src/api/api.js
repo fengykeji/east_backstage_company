@@ -1,5 +1,6 @@
 import http from 'axios'
 import qs from 'qs'
+import Vue from 'vue'
 //请求带上cookie
 // http.defaults.withCredentials = true;
 let base = 'http://120.27.21.136:2798';
@@ -19,6 +20,10 @@ const fileUpload = (url, params) => { return http.post(`${base}/${url}`, params,
 
 //返回拦截器
 http.interceptors.response.use(function (res) {
+  if (res.data.code == 201) {
+    Vue.prototype.$message({ type: 'error', message: '当前登录已过期，请重新登录' });
+    location.href = '/';
+  }
   return res.data;
 });
 
@@ -160,14 +165,14 @@ let api = {
   getCompanyAll: doGet('company/projectCommission/getCompanyAll'),
   //公司已结详情
   getCompanyYInfo: doGet('company/projectCommission/getCompanyYInfo'),
-//公司未结详情
-getCompanyNInfo: doGet('company/projectCommission/getCompanyNInfo'),
-//公司未结列表
-getCompanyNList: doGet('company/projectCommission/getCompanyN'),
-//个人累计列表
-getPersonInfoList: doGet('company/projectCommission/getPersonAllInfo'),
-//个人未结列表
-getPersonNInfo: doGet('company/projectCommission/getPersonNInfo'),
+  //公司未结详情
+  getCompanyNInfo: doGet('company/projectCommission/getCompanyNInfo'),
+  //公司未结列表
+  getCompanyNList: doGet('company/projectCommission/getCompanyN'),
+  //个人累计列表
+  getPersonInfoList: doGet('company/projectCommission/getPersonAllInfo'),
+  //个人未结列表
+  getPersonNInfo: doGet('company/projectCommission/getPersonNInfo'),
 
 
 

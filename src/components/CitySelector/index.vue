@@ -1,4 +1,9 @@
 <style lang="less" scoped>
+.select-1{
+  width: 204px;
+  margin-right: 10px;
+  
+}
 </style>
 <template>
   <div>

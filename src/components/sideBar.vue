@@ -7,7 +7,7 @@
   z-index: 100;
   width: 160px;
   border-right: 1px solid #aaaaaa;
-  padding-top: 90px;
+  margin-top: 81px;
 }
 .text {
   font-size: 16px;
@@ -33,20 +33,26 @@
   left: 0;
   width: 100%;
   height: 80px;
-  background: #fff;
+  background: rgb(236, 245, 255);
   z-index: 110;
   text-align: left;
 }
 .top-name {
   position: absolute;
   top: 28px;
-  right: 200px;
-   font-size: 15px;
+  right: 400px;
+  font-size: 15px;
 }
 .top-text {
   position: absolute;
   top: 20px;
   right: 50px;
+  font-size: 15px;
+}
+.top-one {
+  position: absolute;
+  top: 28px;
+  right: 200px;
   font-size: 15px;
 }
 .tou {
@@ -72,8 +78,11 @@
       <span class='tou'>
         <img class='img' src='../assets/images/logo.png' />
       </span>
-      <span class='top-name'>公司名称</span>
-      <el-button type='text' class='top-text'>退出</el-button>
+      <span class='top-name'>公司名称 {{company_name}}
+      </span>
+      <span class='top-one'>个人名称 {{name}}
+      </span>
+      <el-button type='text' class='top-text' @click='cancel'>退出</el-button>
     </div>
     <el-menu :default-active="activeIndex" class="sidebar-menu" @open="menuOpen" @close="menuOpen">
       <el-menu-item index="project" class='text' @click="handleSelect('project')">项目管理</el-menu-item>
@@ -95,13 +104,27 @@
 export default {
   data() {
     return {
-      activeIndex: ""
+      activeIndex: "",
+      company_name: "",
+      name: ""
     };
   },
   created() {
     this.activeIndex = this.$route.name;
   },
+  mounted() {},
   methods: {
+    getName() {
+      let name = localStorage.getItem("name");
+      let company_name = localStorage.getItem("company_name");
+      this.name=name;
+      this.company_name=company_name;
+    },
+    cancel() {
+      this.$router.push({
+        name: "login"
+      });
+    },
     handleSelect(param) {
       this.$router.push({ name: param });
     },

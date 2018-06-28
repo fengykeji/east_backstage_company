@@ -1,15 +1,22 @@
-<style lang="less" scoped>
+<style lang="less" >
 .requestRefund {
-  width: 800px;
-  margin: 0 auto;
+  width: 960px;
+  margin: 50px auto 0;
   display: inline-block;
   text-align: left;
+  .el-form-item{
+    margin-bottom: 5px;
+  }
   .text {
     margin-top: 6%;
-    font-size: 20px;
+    font-size: 18px;
+    position: relative;
+    padding-bottom: 10px;
   }
   .btn {
-    text-align: right;
+    position: absolute;
+    top: 0;
+    right: 0;
   }
   .table {
     margin-top: 15px;
@@ -18,10 +25,10 @@
     .input {
       width: 200px;
       display: inline-block;
-      padding-right: 40px;
+      padding-right: 20px;
     }
     .input1 {
-      width: 400px;
+      width: 300px;
     }
   }
 }
@@ -29,27 +36,22 @@
 <template>
   <div class='requestRefund'>
     <!-- <button @click="go">查看退款</butston> -->
-    <div style="margin-bottom: 30px;">
-
-    </div>
     <div>
       <div class='text'>
         申请退款
+        <span class='btn'>
+          <el-button type="primary" @click="submit">确定</el-button>
+          <el-button @click="close">返回</el-button>
+        </span>
       </div>
-      <div class='btn'>
-        <el-button type="primary" @click="submit">确定</el-button>
-        <el-button @click="close">返回</el-button>
-      </div>
+
       <el-form :model="requestRefund" class='table' :rules="rules" ref="requestRefund">
-        <el-form-item label="可退金额" class='input'>
+        <el-form-item label="可退金额" class='input1'>
           <div> {{allow}} </div>
           <!-- <el-button type='text' class='text'>查看</el-button> -->
         </el-form-item>
         <el-form-item label="本次退款金额" class='input' prop="price">
           <el-input v-model="requestRefund.price" auto-complete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="退款原因" class='input1' prop="refund_remarks">
-          <el-input v-model="requestRefund.refund_remarks" type="textarea"></el-input>
         </el-form-item>
         <el-form-item label="收款银行" class='input' prop="payee_bank">
           <el-select v-model="requestRefund.payee_bank" placeholder="请选择收款银行" class='select-1' @change="getBankOptions">
@@ -62,7 +64,10 @@
         <el-form-item label="收款人" class='input' prop="payee">
           <el-input v-model="requestRefund.payee" class='input'></el-input>
         </el-form-item>
-        <el-form-item label="备注" class='input1' prop="remark">
+        <el-form-item label="退款原因" class='input1' >
+          <el-input v-model="requestRefund.refund_remarks" type="textarea"></el-input>
+        </el-form-item>
+        <el-form-item label="备注" class='input1'>
           <el-input v-model="requestRefund.remark" type="textarea"></el-input>
         </el-form-item>
 
@@ -95,14 +100,6 @@ export default {
             change: "change"
           }
         ],
-        refund_remarks: [
-          { required: true, message: "请输入退款原因", change: "change" },
-          {
-            max: 255,
-            message: "最大长度为20个字符",
-            trigger: "change"
-          }
-        ],
         payee: [
           { required: true, message: "请输入收款人姓名", change: "change" },
           {
@@ -117,14 +114,6 @@ export default {
             pattern: /^([1-9]{1})(\d{14}|\d{18})$/,
             message: "请输入正确的银行卡号",
             change: "change"
-          }
-        ],
-        remark: [
-          { required: true, message: "请输入备注", change: "change" },
-          {
-            max: 255,
-            message: "最大长度为225个字符",
-            trigger: "change"
           }
         ],
         payee_bank: [

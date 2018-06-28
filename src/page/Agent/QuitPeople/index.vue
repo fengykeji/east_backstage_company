@@ -29,7 +29,7 @@
     </div>
     <template>
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column  label="序号" align='center' width="80px">
+        <el-table-column  label="序号" align='center' width="70px">
           <template slot-scope="scope">{{getIndex(scope)}}</template>
         </el-table-column>
         <el-table-column prop="account" label="云算号" align='center' width="110px"></el-table-column>

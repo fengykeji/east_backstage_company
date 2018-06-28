@@ -5,7 +5,7 @@
   padding: 20px;
   width: 1100px;
   margin: 0 auto;
-  padding-top: 90px;
+  padding-top: 55px;
   .el-form-item.is-error {
     padding-bottom: 20px;
   }
@@ -59,7 +59,7 @@
     <div class='title-top'>
       <div class="title">重新申请项目信息</div>
       <span class="title-btn">
-        <el-button type="primary" @click="submit">保存</el-button>
+        <el-button type="primary" @click="submit">提交</el-button>
         <el-button @click="cancel">取消</el-button>
       </span>
     </div>
@@ -156,7 +156,7 @@
             <el-input v-model="auditing_info.auditing_time" auto-complete="off"></el-input>
           </el-form-item>
           <el-form-item label="审核状态" class='inputAud state'>
-            {{auditingState(auditing_info.auditing_state)}}
+            {{auditingState(auditing_info.check_state)}}
           </el-form-item>
           <el-form-item label="备注" class='textarea'>
             <el-input type="textarea" v-model="auditing_info.auditing_remark"></el-input>
@@ -322,7 +322,6 @@ export default {
         company_relation: [
           { required: true, message: "请选择公司与项目关系", change: "change" }
         ],
-        remark: [{ required: true, message: "请输入备注", change: "change" }]
       },
       userFormRules: {
         name: [
@@ -409,7 +408,7 @@ export default {
         auditing_name: "",
         auditing_time: "",
         auditing_remark: "",
-        auditing_state: ""
+        check_state: ""
       },
       paymentRecord: [],
       refund: [],
@@ -620,11 +619,11 @@ export default {
     },
     auditingState(row) {
       if (row == 0) {
-        return "待审核";
+        return "拒绝";
       } else if (row == 1) {
         return "通过";
       } else if (row == 2) {
-        return "未通过";
+        return "待审核";
       }
     },
     authenticationType(row) {
@@ -721,7 +720,7 @@ export default {
       //     }
       //   });
       // });
-      if(this.operationType == 1 || this.operationType == 2) {
+      if (this.operationType == 1 || this.operationType == 2) {
         return;
       }
 

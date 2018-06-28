@@ -22,30 +22,32 @@
       <span class='left'>
         <div class='text1'>当前位置：分销佣金管理</div>
       </span>
-      <el-input class='query' v-model="searchObj.search" ></el-input>
+      <el-input class='query' v-model="searchObj.search"></el-input>
       <el-button icon="el-icon-search" @click='getDistributionList' circle></el-button>
     </div>
-    <template>
-      <el-table :data="tableData" border style="width: 100%">
-        <el-table-column label="序号" align='center' width="70px"></el-table-column>
-        <el-table-column prop="project_name" label="项目名称" align='center'></el-table-column>
-        <el-table-column prop="developer_name" label="房产商" align='center' width="220px"></el-table-column>
-        <el-table-column prop="city" label="区域" align='center' width="80px"></el-table-column>
-        <el-table-column prop="project_hold_name" label="项目负责人" align='center' width="100px"></el-table-column>
-        <el-table-column prop="project_hold_phone" label="联系方式" align='center' width="110px"></el-table-column>
-        <el-table-column prop="all_price" label="累计金额" align='center'></el-table-column>
-        <el-table-column prop="y_price" label="已结金额" align='center'></el-table-column>
-        <el-table-column prop="chargebacks_price" label="扣款金额" align='center'></el-table-column>
-        <el-table-column prop="n_price" label="未结金额" align='center'></el-table-column>
-        <el-table-column prop="notice" label="是否可申请退款" align='center' width="140px"></el-table-column>
-        <el-table-column label="操作" align='center' width="180px">
-          <template slot-scope="scope">
-            <el-button type="text" @click='commissionApply(scope.row)'>佣金申请</el-button>
-            <el-button type="text" @click='see(scope.row)'>查看佣金记录</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </template>
+    <el-table :data="tableData" border style="width: 100%">
+      <el-table-column label="序号" align='center' width="70px">
+        <template slot-scope="scope">{{getIndex(scope)}}</template>
+      </el-table-column>
+      <el-table-column prop="project_name" label="项目名称" align='center'></el-table-column>
+      <el-table-column prop="developer_name" label="房产商" align='center' width="220px"></el-table-column>
+      <el-table-column prop="city" label="区域" align='center' width="80px"></el-table-column>
+      <el-table-column prop="project_hold_name" label="项目负责人" align='center' width="100px"></el-table-column>
+      <el-table-column prop="project_hold_phone" label="联系方式" align='center' width="110px"></el-table-column>
+      <el-table-column prop="all_price" label="累计金额" align='center'></el-table-column>
+      <el-table-column prop="y_price" label="已结金额" align='center'></el-table-column>
+      <el-table-column prop="chargebacks_price" label="扣款金额" align='center'></el-table-column>
+      <el-table-column prop="n_price" label="未结金额" align='center'></el-table-column>
+      <el-table-column prop="notice" label="是否可申请退款" align='center' width="140px"></el-table-column>
+      <el-table-column label="操作" align='center' width="180px">
+        <template slot-scope="scope">
+          <el-button type="text" @click='commissionApply(scope.row)'>佣金申请</el-button>
+          <el-button type="text" @click='see(scope.row)'>查看佣金记录</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-pagination background class='page' layout="prev, pager, next" :page-size="limit" :current-page="searchObj.page" :total="total" @current-change="pageChange">
+    </el-pagination>
   </div>
 </template>
 <script>
@@ -54,20 +56,27 @@ export default {
     return {
       tableData: [],
       project_id: "",
-      searchObj:{
-        serach:'',
-      }
+      searchObj: {
+        serach: "",
+        page: 1
+      },
+      limit: 10,
+      total: 0
     };
   },
   mounted() {
     this.getDistributionList();
   },
   methods: {
+    getIndex(row) {
+      let index = row.$index + 1 + (this.searchObj.page - 1) * 10;
+      return index;
+    },
     see(row) {
       this.$router.push({
         name: "maidInfo",
         params: {
-          project_id: row.project_id,
+          project_id: row.project_id
         }
       });
     },
@@ -81,10 +90,20 @@ export default {
       });
     },
 
+    search() {
+      this.searchObj.page = 1;
+      this.getDistributionList();
+    },
+    pageChange(page) {
+      this.searchObj.page = page;
+      this.getDistributionList();
+    },
+
     async getDistributionList() {
       let res = await this.api.getDistributionList(this.searchObj);
       if (res.code == 200) {
         this.tableData = res.data.data;
+        this.total = res.data.total;
       }
     },
     state(row) {

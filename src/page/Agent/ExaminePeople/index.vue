@@ -334,8 +334,10 @@ export default {
     },
     auditingState(row) {
       if (row == 0) {
-        return "未通过";
-      } else if (row == 2) {
+        return "拒绝";
+      } else if (row == 1) {
+        return "通过";
+      }else if (row == 2) {
         return "待审核";
       }
     },

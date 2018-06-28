@@ -9,7 +9,9 @@
   .el-form-item.is-error {
     padding-bottom: 20px;
   }
-
+  .el-input__inner {
+    line-height: 0px;
+  }
   .el-form-item__label {
     float: none;
   }
@@ -28,13 +30,13 @@
     font-size: 14px;
     color: #606266;
     line-height: 40px;
-    padding: 0 12px 0 0;
+    padding: 0 10px 0 0;
   }
   .el-table th {
     padding: 2px 5px;
   }
   .cell {
-    padding: 10px 0px;
+    padding: 2px 0px;
   }
   .request {
     display: inline-block;
@@ -44,10 +46,11 @@
     padding: 30px 0;
     text-align: left;
     position: relative;
-    font-size: 20px;
+    top: 10px;
+    font-size: 18px;
     .title-btn {
       position: absolute;
-      top: 30px;
+      top: 22px;
       right: 0;
     }
   }
@@ -59,7 +62,7 @@
     <div class='title-top'>
       <span>申请项目信息</span>
       <span class="title-btn">
-        <el-button type="primary" @click="submit" v-if="operationType==0||operationType==1">保存</el-button>
+        <el-button type="primary" @click="submit" v-if="operationType==0||operationType==1">提交</el-button>
         <el-button @click="cancel">取消</el-button>
       </span>
     </div>
@@ -67,17 +70,16 @@
       <el-form-item label="项目名称" class='input' prop="project_name">
         <el-input v-model="form.project_name" auto-complete="off" :disabled="isDisable()" placeholder="请输入项目名称"></el-input>
       </el-form-item>
-      <el-form-item label="项目地址" class='select' prop="province">
+      <el-form-item label="项目地址" prop="province">
         <!-- 下拉组建 -->
         <city-selector :disabled="isDisable()" :province.sync="form.province" :city.sync="form.city" :district.sync="form.district" @changeDistrict="changeDistrict" />
       </el-form-item>
-      <el-form-item label="" class='input' prop="absolute_address">
+      <el-form-item class='input' prop="absolute_address">
         <el-input id="suggestId" v-model="form.absolute_address" auto-complete="off" class='input-1' :disabled="isDisable()" placeholder="请输入具体地址"></el-input>
         <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
       </el-form-item>
       <!-- 地图 -->
       <!-- <el-button type="text" @click='showMapDetails' :disabled="isDisable()">关闭地图</el-button> -->
-
       <div id="map" class='map'></div>
 
       <!-- 物业类型 -->
@@ -151,7 +153,7 @@
       <el-table-column property="create_name" label="上传人员" align='center'></el-table-column>
       <el-table-column property="create_time" label="上传时间" align='center'></el-table-column>
     </el-table>
-    <div v-if="auditing_info.auditing_state==1||auditing_info.auditing_state==2">
+    <div v-if="auditing_info.auditing_state==1">
       <div class='num_set'>审核项目信息</div>
       <el-form :model="form" class='form'>
         <el-form-item label="审核人员" class='inputAud'>
@@ -167,57 +169,57 @@
           <el-input type="textarea" v-model="auditing_info.auditing_remark" :disabled="isDisable()"></el-input>
         </el-form-item>
       </el-form>
-      <div v-if="auditing_info.auditing_state==1">
-        <div class='num_set'>认证信息</div>
-        <el-form v-model="authentication_info" class='form'>
-          <el-form-item label="保证金金额（￥）：" class='inputAud'>
-            <el-input v-model="authentication_info.deposit" auto-complete="off" :disabled="isDisable()"></el-input>
-          </el-form-item>
-          <el-form-item label="未结佣金总额（￥）：" class='inputAud'>
-            <el-input v-model="authentication_info.no_price" auto-complete="off" :disabled="isDisable()"></el-input>
-          </el-form-item>
-          <el-form-item label="可退金额（￥）：" class='inputAud'>
-            <el-input v-model="authentication_info.allow" auto-complete="off" :disabled="isDisable()"></el-input>
-          </el-form-item>
-          <el-form-item label="项目状态" class='inputAud state'>
-            {{projectState(authentication_info.authentication_state)}}
-          </el-form-item>
-          <el-form-item class='request'>
-            <el-button type="primary" @click="requestRefund()" :disabled="operationType===2" v-if='authentication_info.deposit>0'>申请退款</el-button>
-          </el-form-item>
-          <div class='num_details'>保证金详情</div>
-          <el-table :data='authentication_info.business_log' border>
-            <el-table-column property="id" label="序号" align='center' width="70px"></el-table-column>
-            <el-table-column property="drawee" label="付款户名" align='center'></el-table-column>
-            <el-table-column property="payee" label="收款户名" align='center'></el-table-column>
-            <el-table-column property="price" label="金额（￥）" align='center'></el-table-column>
-            <el-table-column property="contact_name" label="联系人" align='center'></el-table-column>
-            <el-table-column property="contact_phone" label="联系电话" align='center' width="120px"></el-table-column>
-            <el-table-column prop="type" label="类型" align='center'>
-              <template slot-scope="scope">{{authenticationType(scope.row.type)}}</template>
-            </el-table-column>
-            <el-table-column property="create_name" label="交易人" align='center'></el-table-column>
-            <el-table-column property="create_time" label="交易时间" align='center' width="150px"></el-table-column>
-            <el-table-column property="operation" label="操作" align='center' width="80px">
-              <template slot-scope="scope">
-                <el-button type="text" @click="seeRequestRefund(scope.row)">查看</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-form>
-      </div>
-      <div v-if="auditing_info.auditing_state==1">
-        <div class='num_set'>项目历史</div>
-        <el-table :data="project_history" border>
-          <el-table-column property="nub" label="序号" align='center' width="70px"></el-table-column>
-          <el-table-column property="company_name" label="公司名称" align='center'></el-table-column>
-          <el-table-column property="company_relation" label="与项目关系" align='center'></el-table-column>
-          <el-table-column property="s_time" label="开始时间" align='center'></el-table-column>
-          <el-table-column property="e_time" label="结束时间" align='center'></el-table-column>
-          <el-table-column property="project_hold_name" label="负责人" align='center'></el-table-column>
-          <el-table-column property="project_hold_phone" label="联系方式" align='center'></el-table-column>
+    </div>
+    <div v-if="auditing_info.auditing_state==1">
+      <div class='num_set'>认证信息</div>
+      <el-form v-model="authentication_info" class='form'>
+        <el-form-item label="保证金金额（￥）：" class='inputAud'>
+          <el-input v-model="authentication_info.deposit" auto-complete="off" :disabled="isDisable()"></el-input>
+        </el-form-item>
+        <el-form-item label="未结佣金总额（￥）：" class='inputAud'>
+          <el-input v-model="authentication_info.no_price" auto-complete="off" :disabled="isDisable()"></el-input>
+        </el-form-item>
+        <el-form-item label="可退金额（￥）：" class='inputAud'>
+          <el-input v-model="authentication_info.allow" auto-complete="off" :disabled="isDisable()"></el-input>
+        </el-form-item>
+        <el-form-item label="项目状态" class='inputAud state'>
+          {{projectState(authentication_info.auth_state)}}
+        </el-form-item>
+        <el-form-item class='request'>
+          <el-button type="primary" @click="requestRefund()" :disabled="operationType===2" v-if='authentication_info.deposit>0'>申请退款</el-button>
+        </el-form-item>
+        <div class='num_details'>保证金详情</div>
+        <el-table :data='authentication_info.business_log' border>
+          <el-table-column property="id" label="序号" align='center' width="70px"></el-table-column>
+          <el-table-column property="drawee" label="付款户名" align='center'></el-table-column>
+          <el-table-column property="payee" label="收款户名" align='center'></el-table-column>
+          <el-table-column property="price" label="金额（￥）" align='center'></el-table-column>
+          <el-table-column property="contact_name" label="联系人" align='center'></el-table-column>
+          <el-table-column property="contact_phone" label="联系电话" align='center' width="120px"></el-table-column>
+          <el-table-column prop="type" label="类型" align='center'>
+            <template slot-scope="scope">{{authenticationType(scope.row.type)}}</template>
+          </el-table-column>
+          <el-table-column property="create_name" label="交易人" align='center'></el-table-column>
+          <el-table-column property="create_time" label="交易时间" align='center' width="150px"></el-table-column>
+          <el-table-column property="operation" label="操作" align='center' width="80px">
+            <template slot-scope="scope">
+              <el-button type="text" @click="seeRequestRefund(scope.row)">查看</el-button>
+            </template>
+          </el-table-column>
         </el-table>
-      </div>
+      </el-form>
+    </div>
+    <div v-if="auditing_info.auditing_state==1">
+      <div class='num_set'>项目历史</div>
+      <el-table :data="project_history" border>
+        <el-table-column property="nub" label="序号" align='center' width="70px"></el-table-column>
+        <el-table-column property="company_name" label="公司名称" align='center'></el-table-column>
+        <el-table-column property="company_relation" label="与项目关系" align='center'></el-table-column>
+        <el-table-column property="s_time" label="开始时间" align='center'></el-table-column>
+        <el-table-column property="e_time" label="结束时间" align='center'></el-table-column>
+        <el-table-column property="project_hold_name" label="负责人" align='center'></el-table-column>
+        <el-table-column property="project_hold_phone" label="联系方式" align='center'></el-table-column>
+      </el-table>
     </div>
     <!-- 帐号添加 -->
     <el-dialog title="新建账号" :visible.sync="dialogFormVisibleAccounts" class='tableUser' @close="cancelUser">
@@ -551,7 +553,6 @@ export default {
             temp.project_hold_name = this.form.project_hold_name;
             temp.project_hold_phone = this.form.project_hold_phone;
             temp.statement_company = this.form.statement_company;
-            temp.remark = this.form.remark;
             let res = await this.api.getUpdateProject(temp);
             if (res.code == 200) {
               this.$message({ type: "success", message: "保存成功" });
@@ -653,11 +654,11 @@ export default {
     },
     auditingState(row) {
       if (row == 0) {
-        return "待审核";
+        return "拒绝";
       } else if (row == 1) {
         return "通过";
       } else if (row == 2) {
-        return "未通过";
+        return "待审核";
       }
     },
     authenticationType(row) {
@@ -754,7 +755,7 @@ export default {
       //     }
       //   });
       // });
-      if(this.operationType == 1 || this.operationType == 2) {
+      if (this.operationType == 1 || this.operationType == 2) {
         return;
       }
 

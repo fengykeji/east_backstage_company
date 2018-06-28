@@ -31,45 +31,52 @@
       </div>
       <div v-if='operationType==2||operationType==3'>
         <div class='title-text'>付款申请信息</div>
-        <el-form v-model="form" class='form' :disabled="operationType==2">
-          <el-form-item label="单据号" class='row' v-if='!operationType==3'>
+        <el-form :model="form" class='form' :disabled="operationType==2" :rules="rules" ref="form">
+          <el-form-item label="单据号" class='row' v-if='!operationType==3||form&&form.examine_state==1'>
             <el-input v-model="form.document_num" auto-complete="off" class='input' :disabled="operationType==3"></el-input>
           </el-form-item>
-          <el-form-item label="付款银行" class='row' v-if='!operationType==3'>
+          <el-form-item label="付款银行" class='row' v-if='!operationType==3||form&&form.examine_state==1'>
             <el-input v-model="form.send_bank" auto-complete="off" class='input'></el-input>
           </el-form-item>
-          <el-form-item label="付款人" class='row' v-if='!operationType==3'>
+          <el-form-item label="付款人" class='row' v-if='!operationType==3||form&&form.examine_state==1'>
             <el-input v-model="form.apply_name" auto-complete="off" class='input'></el-input>
           </el-form-item>
-          <el-form-item label="付款银行卡号" class='row' v-if='!operationType==3'>
+          <el-form-item label="付款银行卡号" class='row' v-if='!operationType==3||form&&form.examine_state==1'>
             <el-input v-model="form.send_bank_card" auto-complete="off" class='input'></el-input>
           </el-form-item>
-          <el-form-item label="收款银行" class='row' prop="payee_bank" v-if='operationType==3'>
+          <el-form-item label="申请付款批次名称" class='row'>
+            <el-input :disabled="true" v-model="submitForm.batch_name" auto-complete="off" class='input'></el-input>
+          </el-form-item>
+          <el-form-item label="收款银行" class='row' prop="recive_bank">
             <el-select v-model="form.recive_bank" placeholder="请选择收款银行" @change="getBankOptions">
               <el-option v-for="item in bankOptions" :key="item.param_id" :label="item.param" :value="item.param"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="收款银行卡号" class='row' v-if='operationType==3'>
+          <el-form-item label="收款银行卡号" class='row' prop="recive_bank_card">
             <el-input v-model="form.recive_bank_card" auto-complete="off" class='input'></el-input>
           </el-form-item>
-          <el-form-item label="收款户名：" class='row' v-if='operationType==3'>
+          <el-form-item label="收款户名：" class='row' prop="recive_name">
             <el-input v-model="form.recive_name" auto-complete="off" class='input'></el-input>
+          </el-form-item>
+          <el-form-item label="申请付款金额(￥)：" class='row'>
+            <el-input :disabled="true" v-model="submitForm.broker_num" auto-complete="off" class='input'></el-input>
           </el-form-item>
           <el-form-item label="申请人员：" class='row'>
             <el-input v-model="form.apply_name" auto-complete="off" class='input' :disabled="operationType==3"></el-input>
           </el-form-item>
-          <el-form-item label="申请时间：" class='row' :disabled="operationType==3">
-            <el-input v-model="form.create_time" auto-complete="off" class='input'></el-input>
+          <el-form-item label="申请时间：" class='row'>
+            <el-input v-model="form.create_time" auto-complete="off" class='input' :disabled="operationType==3"></el-input>
           </el-form-item>
-          <el-form-item label="审核人" class='row' v-if='!operationType==3'>
-            <el-input v-model="form.check_name" auto-complete="off" class='input'></el-input>
+          <el-form-item label="审核人" class='row' v-if="form&&form.examine_state==1||form&&form.examine_state==0" :disabled="operationType==3">
+            <el-input v-model="form.check_name" auto-complete="off" class='input' :disabled="operationType==3"></el-input>
           </el-form-item>
-          <el-form-item label="支付备注" class='row1' v-if='!operationType==3'>
-            <el-input v-model="form.send_desc" type="textarea" auto-complete="off" class='input withd'></el-input>
+          <el-form-item label="审核时间" class='row' v-if="form&&form.examine_state==1||form&&form.examine_state==0" :disabled="operationType==3">
+            <el-input v-model="form.create_time" auto-complete="off" class='input' :disabled="operationType==3"></el-input>
           </el-form-item>
-          <el-form-item label="审核时间" class='row' v-if='!operationType==3'>
-            <el-input v-model="form.create_time" auto-complete="off" class='input'></el-input>
+          <el-form-item label="审核备注" class='row1' v-if="form&&form.examine_state==1||form&&form.examine_state==0" :disabled="operationType==3">
+            <el-input v-model="form.send_desc" type="textarea" auto-complete="off" class='input withd' :disabled="operationType==3"></el-input>
           </el-form-item>
+
         </el-form>
       </div>
       <div v-if="form&&form.examine_state==1" class='file'>
@@ -115,15 +122,15 @@
           <el-form-item label="乙方联系电话" class='row'>
             <el-input v-model="submitForm.second_tel" auto-complete="off" class='input'></el-input>
           </el-form-item>
-          <el-form-item label="审核人员" class='row' v-if='operationType==2'>
+          <el-form-item label="审核人员" class='row' v-if='operationType==2||operationType==0'>
             <el-input v-model="submitForm.auditing_name" auto-complete="off" class='input'></el-input>
           </el-form-item>
-          <el-form-item label="审核时间" class='row' v-if='operationType==2'>
+          <el-form-item label="审核时间" class='row' v-if='operationType==2||operationType==0'>
             <el-input v-model="submitForm.auditing_time" auto-complete="off" class='input'></el-input>
           </el-form-item>
-          <el-form-item label="备注" class='row' v-if='operationType==0||operationType==2'>
+          <!-- <el-form-item label="备注" class='row' v-if='operationType==0||operationType==2'>
             <el-input v-model="submitForm.remark" type="textarea" auto-complete="off" class='input withd'></el-input>
-          </el-form-item>
+          </el-form-item> -->
         </el-form>
       </div>
       <div>
@@ -148,6 +155,32 @@
 export default {
   data() {
     return {
+      rules: {
+        recive_bank: [
+          { required: true, message: "请选择收款银行", change: "change" },
+          {
+            max: 20,
+            message: "最大长度为20个字符",
+            trigger: "change"
+          }
+        ],
+        recive_name: [
+          { required: true, message: "请输入收款户名", change: "change" },
+          {
+            pattern: /[\u4E00-\u9FA5]{2,5}(?:·[\u4E00-\u9FA5]{2,5})*/,
+            message: "最大长度为5个字符",
+            trigger: "change"
+          }
+        ],
+        recive_bank_card: [
+          { required: true, message: "请输入收款银行卡号", change: "change" },
+          {
+            pattern: /^([1-9]{1})(\d{14}|\d{18})$/,
+            message: "请输入正确的银行卡号",
+            change: "change"
+          }
+        ]
+      },
       tableData: [],
       applyFile: [],
       bankOptions: [],
@@ -188,48 +221,54 @@ export default {
       }
     },
 
-    async sumbit(state) {
-      if (this.operationType == 1) {
-        let temp = {};
-        temp.state = state;
-        temp.batch_id = this.submitForm.batch_id;
-        temp.batch_name = this.submitForm.batch_name;
-        temp.nail_name = this.submitForm.nail_name;
-        temp.nail_tel = this.submitForm.nail_tel;
-        temp.second_name = this.submitForm.second_name;
-        temp.second_tel = this.submitForm.second_tel;
-        let res = await this.api.updateBrokerSumbit(temp);
-        if (res.code == 200) {
-          this.$router.push({ name: "distri_commission" });
-        }
-      } else if (this.operationType == 3) {
-        this.$confirm("此操作将提交付重新款申请, 是否继续?", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        })
-          .then(async () => {
+    sumbit(state) {
+      this.$refs["form"].validate(async valid => {
+        if (valid) {
+          if (this.operationType == 1) {
             let temp = {};
-            temp.apply_id = this.apply_id;
-            temp.recive_bank = this.form.recive_bank;
-            temp.recive_bank_card = this.form.recive_bank_card;
-            temp.recive_name = this.form.recive_name;
-            let res = await this.api.rePriceApplySumbit(temp);
+            temp.state = state;
+            temp.batch_id = this.submitForm.batch_id;
+            temp.batch_name = this.submitForm.batch_name;
+            temp.nail_name = this.submitForm.nail_name;
+            temp.nail_tel = this.submitForm.nail_tel;
+            temp.second_name = this.submitForm.second_name;
+            temp.second_tel = this.submitForm.second_tel;
+            let res = await this.api.updateBrokerSumbit(temp);
             if (res.code == 200) {
-              this.$router.push({ name: "maidInfo" });
-              this.$message({
-                type: "success",
-                message: "提交成功!"
-              });
+              this.$router.push({ name: "distri_commission" });
             }
-          })
-          .catch(() => {
-            this.$message({
-              type: "info",
-              message: "已取消提交重新申请付款"
-            });
-          });
-      }
+          } else if (this.operationType == 3) {
+            this.$confirm("此操作将提交付重新款申请, 是否继续?", "提示", {
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              type: "warning"
+            })
+              .then(async () => {
+                let temp = {};
+                temp.apply_id = this.apply_id;
+                temp.recive_bank = this.form.recive_bank;
+                temp.recive_bank_card = this.form.recive_bank_card;
+                temp.recive_name = this.form.recive_name;
+                let res = await this.api.rePriceApplySumbit(temp);
+                if (res.code == 200) {
+                  this.$router.push({ name: "maidInfo" });
+                  this.$message({
+                    type: "success",
+                    message: "提交成功!"
+                  });
+                }
+              })
+              .catch(() => {
+                this.$message({
+                  type: "info",
+                  message: "已取消提交重新申请付款"
+                });
+              });
+          }
+        } else {
+          return false;
+        }
+      });
     },
     async updateBroker() {
       let temp = Object.assign({}, this.submitForm);
@@ -254,15 +293,6 @@ export default {
         this.submitForm = res.data.brokerInfo;
         this.form = res.data.applyInfo;
         this.applyFile = res.data.applyFile;
-      }
-    },
-    examineState(row) {
-      if (row == 0) {
-        return "拒绝";
-      } else if (row == 1) {
-        return "通过";
-      } else if (row == 2) {
-        return "待审核";
       }
     },
     handleSelectionChange(val) {
