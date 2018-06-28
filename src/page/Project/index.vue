@@ -82,7 +82,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination background class='page' layout="prev, pager, next" :page-size="per_page" :current-page="searchObj.page" :total="total" @current-change="pageChange">
+     <el-pagination background class='page' layout="prev, pager, next" :page-size="per_page" :current-page="searchObj.page" :total="total" @current-change="pageChange">
       </el-pagination>
     </template>
   </div>
@@ -99,7 +99,7 @@ export default {
       },
       name: "",
       company_name: "",
-      per_page: 1,
+      per_page: 10,
       total: 0,
       tableData: [],
       operationType: 0 //0 查看  1 修改
