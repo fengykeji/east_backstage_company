@@ -153,7 +153,7 @@
       <el-table-column property="create_name" label="上传人员" align='center'></el-table-column>
       <el-table-column property="create_time" label="上传时间" align='center'></el-table-column>
     </el-table>
-    <div v-if="auditing_info.auditing_state==1">
+    <div v-if="form.source == 1 && ( auditing_info.auditing_state==0 || auditing_info.auditing_state==1)">
       <div class='num_set'>审核项目信息</div>
       <el-form :model="form" class='form'>
         <el-form-item label="审核人员" class='inputAud'>

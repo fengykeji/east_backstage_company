@@ -109,6 +109,7 @@ export default {
         name: "updateCommission",
         params: {
           project_id: this.project_id,
+          operationType : this.operationType,
           batch_id: row.batch_id,
           state: row.state,
           operationType: type
@@ -119,6 +120,8 @@ export default {
       this.$router.push({
         name: "updateCommission",
         params: {
+          project_id: this.project_id,
+          operationType : this.operationType,
           apply_id: row.apply_id,
           batch_id: row.batch_id,
           operationType: type

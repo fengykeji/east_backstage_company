@@ -206,7 +206,7 @@ export default {
     this.operationType = this.$route.params.operationType;
     this.state = this.$route.params.state;
     this.batch_id = this.$route.params.batch_id;
-    if (this.operationType === undefined) {
+    if (this.batch_id === undefined) {
       this.$router.push({ name: "distri_commission" });
       return;
     }

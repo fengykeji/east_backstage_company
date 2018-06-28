@@ -50,7 +50,9 @@
       </div>
     </div>
     <el-table :data="tableData" border style="width: 100%">
-      <el-table-column prop="" label="序号" align='center' width="80px"> </el-table-column>
+      <el-table-column prop="" label="序号" align='center' width="80px">
+        <template slot-scope="scope">{{getIndex(scope)}}</template>
+      </el-table-column>
       <el-table-column prop="account" label="云算号" align='center' width="110px"></el-table-column>
       <el-table-column prop="name" label="经纪人姓名" align='center'></el-table-column>
       <el-table-column prop="tel" label="联系方式" align='center'></el-table-column>
@@ -70,7 +72,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination background class='page' layout="prev, pager, next" :current-page="searchObj.page" :total="total">
+    <el-pagination background class='page' layout="prev, pager, next" :page-size="pageSize" :current-page="searchObj.page" :total="total" @current-change="pageChange">
     </el-pagination>
     <el-dialog title="离职申请" :visible.sync="dialogFormVisible" class='dialog' @close="cancel">
       <el-form :model="form" :rules="rules" ref="form">
@@ -181,6 +183,7 @@ export default {
         name: "",
         page: 1
       },
+      pageSize: 0,
       total: 0,
       tableData: [],
       dialogFormVisible: false,
@@ -272,8 +275,15 @@ export default {
       Object.assign(this.form, this.$options.data()["form"]);
       this.dialogFormVisible = false;
     },
+    pageChange(page) {
+      this.search(page);
+    },
+    getIndex(row) {
+      let index = row.$index + 1 + (this.searchObj.page - 1) * this.pageSize;
+      return index;
+    },
     async search(page) {
-      if(page) {
+      if (page) {
         this.searchObj.page = page;
       } else {
         this.searchObj.page = 1;
@@ -282,6 +292,7 @@ export default {
       if ((res.code = 200)) {
         this.tableData = res.data.data;
         this.total = res.data.total;
+        this.pageSize = res.data.per_page;
       }
     }
   }

@@ -142,6 +142,8 @@ export default {
       this.$router.push({ name: "distri_commission" });
       return;
     }
+    let d = new Date();
+    this.sumbitForm.batch_name = d.getFullYear() + "年" + ( d.getMonth() + 1 ) +"月" +d.getDate() + "日";
     this.rule_id = this.$route.params.rule_id;
     this.getBrokerApply();
   },

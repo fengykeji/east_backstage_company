@@ -31,8 +31,8 @@
     <template>
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column prop="" label="序号" align='center' width="70px"></el-table-column>
-        <el-table-column prop="project_name" label="项目名称" align='center' width="130px"></el-table-column>
-        <el-table-column prop="company_name" label="所属单位" align='center' width="110px"></el-table-column>
+        <el-table-column prop="project_name" label="项目名称" align='center' width="110px"></el-table-column>
+        <el-table-column prop="company_name" label="所属单位" align='center' width="250px"></el-table-column>
         <el-table-column prop="city_name" label="区域" align='center' width="80px"></el-table-column>
         <el-table-column prop="project_hold_name" label="项目负责人" align='center'></el-table-column>
         <el-table-column prop="project_hold_phone" label="联系方式" align='center' width="110px"></el-table-column>

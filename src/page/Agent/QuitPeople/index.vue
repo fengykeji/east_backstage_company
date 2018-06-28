@@ -52,7 +52,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination background class='page' layout="prev, pager, next" :page-size="limit" :current-page="searchObj.page" :total="total" @current-change="pageChange">
+      <el-pagination background class='page' layout="prev, pager, next" :page-size="pageSize" :current-page="searchObj.page" :total="total" @current-change="pageChange">
       </el-pagination>
       <el-dialog title="查看" :visible.sync="dialogFormVisible" class='dialog' @close="cancel">
         <div class='btn'>
@@ -163,7 +163,7 @@ export default {
         name: "",
         page: 1
       },
-      limit: 10,
+      pageSize: 0,
       total: 0,
       examinePeople: {
         name: "",
@@ -198,7 +198,7 @@ export default {
   },
   methods: {
     getIndex(row) {
-      let index = ( row.$index + 1 ) + (this.searchObj.page - 1) * 10;
+      let index = ( row.$index + 1 ) + (this.searchObj.page - 1) * this.pageSize;
       return index;
     },
     getRole(row) {
@@ -256,6 +256,7 @@ export default {
       if ((res.code = 200)) {
         this.tableData = res.data.data;
         this.total = res.data.total;
+        this.pageSize = res.data.per_page;
       }
     }
   }
