@@ -109,7 +109,7 @@
       <el-form-item label="联系电话" prop="project_hold_phone" class='input'>
         <el-input :disabled="operationType===2" v-model="form.project_hold_phone" auto-complete="off" placeholder="请输入联系电话"></el-input>
       </el-form-item>
-      <el-form-item label="备注" class='textarea'>
+      <el-form-item label="备注" class='textarea' v-if='!operationType==1'>
         <el-input :disabled="operationType===2" v-model="form.remark" type="textarea"></el-input>
       </el-form-item>
     </el-form>
@@ -260,7 +260,6 @@
      </el-table>
      <div>保证金总额：{{}}</div>
   </el-dialog> -->
-
   </div>
 </template>
 
@@ -524,6 +523,7 @@ export default {
       let res = await this.api.getProjectInfo({
         project_id: this.form.project_id
       });
+      console.log(res);
       if (res.code == 200) {
         let temp = { ...res.data.project };
         temp.property_type = [];

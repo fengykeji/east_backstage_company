@@ -30,23 +30,23 @@
   <div class='box project'>
     <div class='title'>
       <div class='left'>
-        <div class='text1'>当前位置：项目管理</div>
         <div class="tab-block">
+          <div class='text1'>当前位置：项目管理</div>
+          <div class="tab-block-inner">
+            <el-input v-model="searchObj.search" class='query' placeholder="可按项目编号/项目名称进行查询"></el-input>
+            <el-button @click="search" icon="el-icon-search" circle></el-button>
+            <el-button type="primary" @click='showAdd(0)'>新增</el-button>
+          </div>
+        </div>
+        <div>
           <el-button class='tip' type="text" @click="search(0)">全部</el-button>
           <el-button class='tip' type="text" @click="search(1)">待审核</el-button>
           <el-button class='tip' type="text" @click="search(2)">审核不通过</el-button>
           <el-button class='tip' type="text" @click="search(3)">未认证</el-button>
           <el-button class='tip' type="text" @click="search(4)">已认证</el-button>
           <el-button class='tip' type="text" @click="search(5)">已转出</el-button>
-          <div class="tab-block-inner">
-            <el-input v-model="searchObj.search" class='query'></el-input>
-            <el-button @click="search" icon="el-icon-search" circle></el-button>
-            <el-button type="primary" @click='showAdd(0)'>新增</el-button>
-          </div>
         </div>
       </div>
-      <span class='right'>
-      </span>
     </div>
     <template>
       <el-table :data="tableData" border style="width: 100%">
@@ -82,7 +82,7 @@
           </template>
         </el-table-column>
       </el-table>
-     <el-pagination background class='page' layout="prev, pager, next" :page-size="per_page" :current-page="searchObj.page" :total="total" @current-change="pageChange">
+      <el-pagination background class='page' layout="prev, pager, next" :page-size="per_page" :current-page="searchObj.page" :total="total" @current-change="pageChange">
       </el-pagination>
     </template>
   </div>

@@ -44,7 +44,7 @@
       <div class='left'>
         <div class='text1'>当前位置：在职经纪人</div>
         <div class="search-block">
-          <el-input v-model="searchObj.name" class='query'></el-input>
+          <el-input v-model="searchObj.name" class='query' placeholder="可查询云算号/经纪人姓名"></el-input>
           <el-button @click="search()" icon="el-icon-search" circle></el-button>
         </div>
       </div>
@@ -52,7 +52,7 @@
     <el-table :data="tableData" border style="width: 100%">
       <el-table-column prop="" label="序号" align='center' width="80px"> </el-table-column>
       <el-table-column prop="account" label="云算号" align='center' width="110px"></el-table-column>
-      <el-table-column prop="name" label="名称" align='center'></el-table-column>
+      <el-table-column prop="name" label="经纪人姓名" align='center'></el-table-column>
       <el-table-column prop="tel" label="联系方式" align='center'></el-table-column>
       <el-table-column prop="project_name" label="申请项目" align='center'></el-table-column>
       <el-table-column prop="role" label="角色" align='center' width="100px">

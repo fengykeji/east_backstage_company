@@ -89,7 +89,7 @@
           <el-button class='tip' type="text" @click="search(2)">待审核</el-button>
           <el-button class='tip' type="text" @click="search(0)">审核未通过</el-button>
           <div class="search-block">
-            <el-input class='query'></el-input>
+            <el-input class='query' placeholder="可查询云算号/经纪人姓名"></el-input>
             <el-button icon="el-icon-search" circle></el-button>
           </div>
         </div>
@@ -99,7 +99,7 @@
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column prop="" label="序号" align='center' width="80px"> </el-table-column>
         <el-table-column prop="account" label="云算号" align='center' width="110px"></el-table-column>
-        <el-table-column prop="name" label="名称" align='center'></el-table-column>
+        <el-table-column prop="name" label="经纪人姓名" align='center'></el-table-column>
         <el-table-column prop="project_name" label="申请项目" align='center'></el-table-column>
         <el-table-column prop="role" label="角色" align='center'>
           <template slot-scope="scope">{{getRole(scope.row.role)}}</template>

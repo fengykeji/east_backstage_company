@@ -7,11 +7,6 @@
   .el-dialog__body {
     padding-top: 0;
   }
-  .btn {
-    position: absolute;
-    right: 220px;
-    top: 135px;
-  }
   .el-table--border,
   .el-table--group {
     margin-top: 20px;
@@ -27,19 +22,20 @@
 <template>
   <div class='box distribution'>
     <div class='title'>
-      <span class='left'>
-        <div class='text1'>当前位置：项目分销</div>
+     
+        <div class='tab-block'>
+          <div class='text1'>当前位置：项目分销</div>
+          <div class='btn'>
+            <!-- <el-button type="primary" @click="getList">高级查询</el-button> -->
+            <el-button type="primary" @click='startApply'>发起申请</el-button>
+          </div>
+        </div>
         <div>
           <el-button class='tip' type="text" @click="search(0)">全部</el-button>
           <el-button class='tip' type="text" @click="search(1)">待审核</el-button>
           <el-button class='tip' type="text" @click="search(2)">已通过</el-button>
           <el-button class='tip' type="text" @click="search(3)">已终止</el-button>
-          <span class='btn'>
-            <el-button type="primary" @click="getList">高级查询</el-button>
-            <el-button type="primary" @click='startApply'>发起申请</el-button>
-          </span>
         </div>
-      </span>
       <!-- <el-input v-model="searchObj.tag_search" class='query'></el-input> -->
 
     </div>

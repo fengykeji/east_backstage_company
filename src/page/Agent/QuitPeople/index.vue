@@ -21,7 +21,7 @@
       <div class='left'>
         <div class='text1'>当前位置：离职经纪人</div>
         <div class="search-block">
-          <el-input class='query'></el-input>
+          <el-input class='query' placeholder="可查询云算号/经纪人姓名"></el-input>
           <el-button @click="search" icon="el-icon-search" circle></el-button>
         </div>
       </div>
@@ -33,7 +33,7 @@
           <template slot-scope="scope">{{getIndex(scope)}}</template>
         </el-table-column>
         <el-table-column prop="account" label="云算号" align='center' width="110px"></el-table-column>
-        <el-table-column prop="name" label="名称" align='center'></el-table-column>
+        <el-table-column prop="name" label="经纪人姓名" align='center'></el-table-column>
         <el-table-column prop="tel" label="联系方式" align='center' width="120px"></el-table-column>
         <el-table-column prop="project_name" label="申请项目" align='center'></el-table-column>
         <el-table-column prop="role" label="角色" align='center'>

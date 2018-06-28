@@ -19,11 +19,13 @@
 <template>
   <div class='distri_commission'>
     <div class='title'>
-      <span class='left'>
+      <div class='table-title'>
         <div class='text1'>当前位置：分销佣金管理</div>
-      </span>
-      <el-input class='query' v-model="searchObj.search"></el-input>
-      <el-button icon="el-icon-search" @click='getDistributionList' circle></el-button>
+        <div class='search'>
+          <el-input class='query' v-model="searchObj.search" placeholder="可按项目名称进行查询"></el-input>
+          <el-button icon="el-icon-search" @click='getDistributionList' circle></el-button>
+        </div>
+      </div>
     </div>
     <el-table :data="tableData" border style="width: 100%">
       <el-table-column label="序号" align='center' width="70px">

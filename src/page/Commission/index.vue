@@ -20,13 +20,12 @@
 <template>
   <div class='commission'>
     <div class='title'>
-      <span></span>
-      <span class='left'>
+      <div class='table-title'>
         <div class='text1'>当前位置：佣金管理</div>
-      </span>
-      <div>
-        <el-input class='query'></el-input>
-        <el-button icon="el-icon-search" circle></el-button>
+        <div class='search'>
+          <el-input class='query' placeholder="可按项目名称进行查询"></el-input>
+          <el-button icon="el-icon-search" circle></el-button>
+        </div>
       </div>
     </div>
     <template>
@@ -120,7 +119,7 @@ export default {
       }
     },
     personPrice(row, type) {
-       if (type == 0) {
+      if (type == 0) {
         this.$router.push({
           name: "personPrice",
           params: {
@@ -128,17 +127,16 @@ export default {
             project_id: row.project_id
           }
         });
-      } 
-      // else if (type == 1) {
-      //   this.$router.push({
-      //     name: "companyPrice",
-      //     params: {
-      //       personType: type,
-      //       project_id: row.project_id
-      //     }
-      //   });
-      // } 
-      else if (type == 2) {
+      } else if (type == 2) {
+        // else if (type == 1) {
+        //   this.$router.push({
+        //     name: "companyPrice",
+        //     params: {
+        //       personType: type,
+        //       project_id: row.project_id
+        //     }
+        //   });
+        // }
         this.$router.push({
           name: "personPrice",
           params: {
@@ -147,7 +145,6 @@ export default {
           }
         });
       }
-
     },
 
     async getProjectCommissionList() {
