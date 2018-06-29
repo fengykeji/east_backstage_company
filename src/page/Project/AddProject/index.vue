@@ -141,7 +141,7 @@
       </el-upload>
     </div>
     <div class='tableIn-btn' v-if="operationType == 0">
-      <el-button type="primary" @click='showUploadFile'>文件上传确定</el-button>
+      <el-button type="primary" @click='showUploadFile'>附件上传</el-button>
     </div>
     <el-table :data="form.project_agreement" border>
       <el-table-column property="file_name" label="文件名称" align='center'></el-table-column>

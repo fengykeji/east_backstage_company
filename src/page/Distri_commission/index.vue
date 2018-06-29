@@ -21,8 +21,8 @@
     <div class='title'>
       <div class='table-title'>
         <div class='text1'>当前位置：分销佣金管理</div>
-        <div class='search'>
-          <el-input class='query' v-model="searchObj.search" placeholder="可按项目名称进行查询"></el-input>
+          <div class="search-block">
+         <el-input class='query' v-model="searchObj.search" placeholder="可按项目名称进行查询"></el-input>
           <el-button icon="el-icon-search" @click='getDistributionList' circle></el-button>
         </div>
       </div>
