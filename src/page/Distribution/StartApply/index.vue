@@ -72,22 +72,22 @@
     <div class='box'>
       <div class='relative'>
         <city-selector class='selectDis' :province.sync="searchObj.province" :city.sync="searchObj.city" :district.sync="searchObj.district" />
-        <el-input class='query' v-model="searchObj.search"></el-input>
+        <el-input class='query' v-model="searchObj.search" placeholder="可按项目编号/项目名称进行查询"></el-input>
+         <el-button @click="search" icon="el-icon-search" circle></el-button>
         <span class='pos-abs'>
-          <el-button @click="search" icon="el-icon-search" circle></el-button>
           <el-button type="primary" class="pos-right" @click="close">返回</el-button>
         </span>
       </div>
     </div>
     <el-table :data="sumbitForm" border>
       <el-table-column property="id" label="序号" align='center' width="70px"></el-table-column>
+       <el-table-column property="project_code" label="项目编号" align='center'></el-table-column>
       <el-table-column property="project_name" label="项目名称" align='center'></el-table-column>
       <el-table-column property="absolute_address" label="地址" align='center' width="320px">
         <template slot-scope="scope">
           <span>{{scope.row.province_name + scope.row.city_name + scope.row.district_name+scope.row.absolute_address}}</span>
         </template>
       </el-table-column>
-      <el-table-column property="project_code" label="项目编号" align='center'></el-table-column>
       <el-table-column property="project_hold_name" label="项目负责人" align='center'></el-table-column>
       <el-table-column property="project_hold_phone" label="联系方式" align='center' width="120px"></el-table-column>
       <el-table-column property="operation" label="操作" align='center'>
@@ -120,7 +120,7 @@ export default {
     async search() {
       let res = await this.api.changeProjectList(this.searchObj);
       if (res.code == 200) {
-        this.sumbitForm = res.data;
+        this.sumbitForm = res.data.data;
       }
     },
     async sumbit(row) {

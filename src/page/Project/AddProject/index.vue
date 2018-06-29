@@ -130,7 +130,7 @@
         <template slot-scope="scope">
           <el-button type="text" @click='editUser(scope.row , scope.$index)'>修改</el-button>
           <el-button type="text" v-if="operationType == 0" @click='removeUser(scope.$index)'>删除</el-button>
-          <el-button type="text" @click='enabledDisable(scope.row)'>{{StateBtn(scope.row.state)}}</el-button>
+          <el-button type="text" @click='enabledDisable(scope.row)' v-if="!operationType == 0">{{StateBtn(scope.row.state)}}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -555,7 +555,7 @@ export default {
             temp.statement_company = this.form.statement_company;
             let res = await this.api.getUpdateProject(temp);
             if (res.code == 200) {
-              this.$message({ type: "success", message: "保存成功" });
+              this.$message({ type: "success", message: "修改成功" });
               setTimeout(() => {
                 this.$router.push({ name: "project" });
               }, 2000);
@@ -563,7 +563,7 @@ export default {
           } else {
             let res = await this.api.getCreateProject(this.form);
             if (res.code == 200) {
-              this.$message({ type: "success", message: "保存成功" });
+              this.$message({ type: "success", message: "新增成功" });
               setTimeout(() => {
                 this.$router.push({ name: "project" });
               }, 2000);
@@ -588,11 +588,21 @@ export default {
               let temp = Object.assign({}, this.projectUserForm);
               temp.index = undefined;
               await this.api.updateProjectAdmin(temp);
+              if (res.code == 200) {
+                this.$message({
+                  type: "success",
+                  message: "修改成功!"
+                });
+              } else {
+                this.$message({ type: "error", message: "修改失败" });
+              }
             } else {
               this.projectUserForm.project_id = this.form.project_id;
               let temp = Object.assign({}, this.projectUserForm);
               temp.index = undefined;
               await this.api.addProjectAdmin(temp);
+              if (res.code == 200) {
+              }
             }
           }
           let temp = Object.assign({}, this.projectUserForm);

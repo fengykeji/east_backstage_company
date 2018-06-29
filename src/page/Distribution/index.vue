@@ -1,5 +1,8 @@
 <style lang="less" scoped src="./index.less" ></style>
 <style lang="less">
+body {
+  background-color: #fafafc;
+}
 .distribution {
   .el-form-item__label {
     float: none;
@@ -95,10 +98,9 @@
           <template slot-scope="scope">{{auditingState(scope.row.state)}}</template>
         </el-table-column>
         <el-table-column prop="is_distribution" label="分配状态" align='center'></el-table-column>
-        <el-table-column prop="operation" label="操作" align='center' width="210px">
+        <el-table-column prop="operation" label="操作" align='center' width="170px">
           <template slot-scope="scope">
             <el-button type="text" @click='showProject(scope.row,0)'>查看</el-button>
-            <el-button type="text" @click='showProject(scope.row,1)'>修改</el-button>
             <el-button type="text" @click='fastDistribution(scope.row)'>分配到访确认人</el-button>
           </template>
         </el-table-column>
@@ -136,7 +138,7 @@ export default {
     async getList() {
       let res = await this.api.getList(this.searchObj);
       if (res.code == 200) {
-        this.tableData = res.data;
+        this.tableData = res.data.data;
       }
     },
     startApply() {

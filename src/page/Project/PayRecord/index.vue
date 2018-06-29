@@ -1,14 +1,16 @@
 <style lang="less" >
 .payRecord {
   width: 800px;
-  margin: 0 auto;
+  margin: 100px auto 0;
   border: 1px solid #eee;
+  .payRecord-table{
+    margin-top: 10px;
+  }
   .title {
     font-size: 20px;
-    padding-top: 10px;
   }
   .box {
-    padding: 15px 20px;
+    padding: 10px 20px;
     text-align: left;
   }
   .input {
@@ -35,7 +37,6 @@
     margin-bottom: 5px;
   }
   .num_set {
-    padding-top: 15px;
     font-size: 20px;
   }
   .cancel {
@@ -50,6 +51,7 @@
 
 <template>
   <div class='payRecord'>
+    <div class='payRecord-table'>
     <div class="title">缴纳记录</div>
     <div class='box'>
       <el-form class='table' v-model="refund">
@@ -112,6 +114,7 @@
       <div slot="footer" class="cancel">
         <el-button @click='cancelRefund' type="primary">关 闭</el-button>
       </div>
+    </div>
     </div>
   </div>
 </template>

@@ -11,7 +11,7 @@
   }
   .search {
     position: absolute;
-    top: -10px;
+    top: 0px;
     right: 0;
   }
   .table {
@@ -57,6 +57,7 @@
         <el-table-column prop="operation" label="操作" align='center' width="140px">
           <template slot-scope="scope">
             <el-button type="text" @click='showAdd(0, scope.row)'>查看</el-button>
+            <el-button type="text" @click='remove(scope.row)'>结束</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -107,11 +108,34 @@ export default {
     }
   },
   methods: {
+    remove(row) {
+      this.$confirm("此操作将结束到访确认人的权利, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(async () => {
+          let res = await this.api.endAgent({agent_id:row.agent_id});
+          if (res.code == 200) {
+            this.$message({
+              type: "success",
+              message: "结束成功!"
+            });
+            this.getAgent();
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消结束到访确认人的权利"
+          });
+        });
+    },
     async getAgent() {
       let res = await this.api.getAgent({ project_id: this.project_id });
       if (res.code == 200) {
-        this.maintain = res.data.y_info;
-        this.examine = res.data.n_info;
+        this.maintain = res.data.y_info.data;
+        this.examine = res.data.n_info.data;
       }
     },
     cancel() {

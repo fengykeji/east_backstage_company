@@ -153,7 +153,7 @@ export default {
                 this.$message({ type: "success", message: "提交成功!" });
                 this.$router.push({ name: "maidInfo" });
               } else {
-                this.$message({ type: "error", message: res.msg });
+                this.$message({ type: "error", message: "提交失败" });
               }
             })
             .catch(() => {

@@ -1,7 +1,16 @@
 <style lang="less" scoped>
 .personPrice {
+  .search-block {
+    position: absolute;
+    right: 0;
+    top: 8px;
+    white-space: nowrap;
+  }
+  .margin-right {
+    margin-right: 100px;
+  }
   .table {
-    margin: 90px 100px 50px 200px;
+    margin: 90px 100px 50px 240px;
     .text {
       font-size: 15px;
       text-align: left;
@@ -49,95 +58,100 @@
 }
 </style>
 <template>
-    <div class='personPrice'>
-        <div class='table' v-if='personType==0'>
-            <div class='title'>
-                <span class='title-text'>个人累计列表</span>
-                <el-input v-model="searchObj.search" class='query' placeholder="可查询推荐编号/经纪人名称"></el-input>
-                <el-button @click="getPersonInfoList" icon="el-icon-search" circle></el-button>
-                <el-button class='pos-btn' type="primary" @click='cancel'>关闭</el-button>
-            </div>
-            <div class='text'>
-                <span class='price'>累计金额:{{sumbitForm.total_price}}</span>
-                <span class='price'>累计笔数:{{sumbitForm.count}}笔</span>
-            </div>
-            <el-table :data="tableData" border style="width: 100%">
-                <el-table-column prop="" label="序号" align='center' width="70px"></el-table-column>
-                <el-table-column prop="client_id" label="推荐编号" align='center'></el-table-column>
-                <el-table-column prop="project_name" label="项目名称" align='center'></el-table-column>
-                <el-table-column prop="house_info" label="房间号" align='center'></el-table-column>
-                <el-table-column prop="name" label="经纪人名称" align='center'></el-table-column>
-                <el-table-column prop="tel" label="联系电话" align='center'></el-table-column>
-                <el-table-column prop="broker_type" label="佣金类型" align='center'>
-                    <template slot-scope="scope">{{brokerType(scope.row.broker_type)}}</template>
-                </el-table-column>
-                <el-table-column prop="create_time" label="时间" align='center' width="160px"></el-table-column>
-                <el-table-column prop="broker_num" label="佣金金额" align='center'></el-table-column>
-                <el-table-column prop="commission_way" label="计算规则" align='center' width="120px"></el-table-column>
-                <el-table-column prop="pay_state" label="状态" align='center'>
-                    <template slot-scope="scope">{{state(scope.row.pay_state)}}</template>
-                </el-table-column>
-                <el-table-column prop="create_time" label="结佣时间" align='center' width="160px"></el-table-column>
-            </el-table>
-        </div>
-        <div class='table' v-if='personType==1'>
-            <div class='title'>
-                <span class='title-text'>个人已结列表</span>
-                <el-input v-model="searchObj.search" class='query' placeholder="可查询付款单据号"></el-input>
-                <el-button @click="getPersonInfoList" icon="el-icon-search" circle></el-button>
-                <el-button class='pos-btn' type="primary" @click='cancel'>关闭</el-button>
-            </div>
-            <div class='text'>
-                <span class='price'>已结金额:{{sumbitForm.total_price}}</span>
-                <span class='price'>已结笔数:{{sumbitForm.count}}笔</span>
-            </div>
-            <el-table :data="tableDataS" border style="width: 100%">
-                <el-table-column prop="" label="序号" align='center' width="70px"></el-table-column>
-                <el-table-column prop="batch_name" label="批次名称" align='center'></el-table-column>
-                <el-table-column prop="apply_name" label="申请人员" align='center'></el-table-column>
-                <el-table-column prop="create_time" label="申请时间" align='center'></el-table-column>
-                <el-table-column prop="broker_num" label="申请金额" align='center' width="80px"></el-table-column>
-                <el-table-column prop="chargebacks_price" label="扣款金额" align='center' width="80px"></el-table-column>
-                <el-table-column label="审核金额" align='center'>
-                    <template slot-scope="scope">{{scope.row.broker_num-scope.row.chargebacks_price}}</template>
-                </el-table-column>
-                <el-table-column prop="check_name" label="审核人员" align='center'></el-table-column>
-                <el-table-column prop="check_time" label="审核时间" align='center'></el-table-column>
-                <el-table-column prop="document_num" label="付款单据号" align='center' width="110px"></el-table-column>
-                <el-table-column prop="recive_bank" label="收款银行" align='center'></el-table-column>
-                <el-table-column prop="recive_bank_card" label="收款银行卡号" align='center' width="120px"></el-table-column>
-                <el-table-column prop="recive_name" label="收款户名" align='center'></el-table-column>
-                <el-table-column prop="update_time" label="结佣时间" align='center'></el-table-column>
-            </el-table>
-        </div>
-        <div class='table' v-if='personType==2'>
-            <div class='title'>
-                <span class='title-text'>个人未结列表</span>
-                <el-input v-model="searchObj.search" class='query' placeholder="可查询推荐编号/经纪人名称"></el-input>
-                <el-button @click="getPersonInfoList" icon="el-icon-search" circle></el-button>
-                <el-button class='pos-btn' type="primary" @click='cancel'>关闭</el-button>
-            </div>
-            <div class='text'>
-                <span class='price'>未结金额:{{sumbitForm.total_price}}</span>
-                <span class='price'>未结笔数:{{sumbitForm.count}}笔</span>
-            </div>
-            <el-table :data="tableDataSa" border style="width: 100%">
-                <el-table-column prop="" label="序号" align='center' width="70px"></el-table-column>
-                <el-table-column prop="client_id" label="推荐编号" align='center'></el-table-column>
-                <el-table-column prop="project_name" label="项目名称" align='center'></el-table-column>
-                <el-table-column prop="house_info" label="房间号" align='center'></el-table-column>
-                <el-table-column prop="name" label="经纪人名称" align='center' width="110px"></el-table-column>
-                <el-table-column prop="tel" label="联系电话" align='center'></el-table-column>
-                <el-table-column prop="broker_type" label="佣金类型" align='center'>
-                    <template slot-scope="scope">{{brokerType(scope.row.broker_type)}}</template>
-                </el-table-column>
-                <el-table-column prop="create_time" label="时间" align='center' width="160px"></el-table-column>
-                <el-table-column prop="broker_num" label="佣金金额" align='center'></el-table-column>
-                <el-table-column prop="commission_way" label="计算规则" align='center'></el-table-column>
-                <el-table-column prop="create_time" label="结佣时间" align='center' width="160px"></el-table-column>
-            </el-table>
-        </div>
+  <div class='personPrice'>
+    <div class='table' v-if='personType==0'>
+      <div class='title'>
+        <span class='title-text'>个人累计列表</span>
+        <span class='search-block'>
+          <span>
+            <el-input v-model="searchObj.search" class='query' placeholder="可查询推荐编号/经纪人名称"></el-input>
+            <el-button @click="getPersonInfoList" icon="el-icon-search" circle class='margin-right'></el-button>
+          </span>
+
+          <el-button class='pos-btn' type="primary" @click='cancel'>关闭</el-button>
+        </span>
+      </div>
+      <div class='text'>
+        <span class='price'>累计金额:{{sumbitForm.total_price}}</span>
+        <span class='price'>累计笔数:{{sumbitForm.count}}笔</span>
+      </div>
+      <el-table :data="tableData" border style="width: 100%">
+        <el-table-column prop="" label="序号" align='center' width="70px"></el-table-column>
+        <el-table-column prop="client_id" label="推荐编号" align='center'></el-table-column>
+        <el-table-column prop="project_name" label="项目名称" align='center'></el-table-column>
+        <el-table-column prop="house_info" label="房间号" align='center'></el-table-column>
+        <el-table-column prop="name" label="经纪人名称" align='center'></el-table-column>
+        <el-table-column prop="tel" label="联系电话" align='center'></el-table-column>
+        <el-table-column prop="broker_type" label="佣金类型" align='center'>
+          <template slot-scope="scope">{{brokerType(scope.row.broker_type)}}</template>
+        </el-table-column>
+        <el-table-column prop="create_time" label="时间" align='center' width="160px"></el-table-column>
+        <el-table-column prop="broker_num" label="佣金金额" align='center'></el-table-column>
+        <el-table-column prop="commission_way" label="计算规则" align='center' width="120px"></el-table-column>
+        <el-table-column prop="pay_state" label="状态" align='center'>
+          <template slot-scope="scope">{{state(scope.row.pay_state)}}</template>
+        </el-table-column>
+        <el-table-column prop="create_time" label="确认时间" align='center' width="160px"></el-table-column>
+      </el-table>
     </div>
+    <div class='table' v-if='personType==1'>
+      <div class='title'>
+        <span class='title-text'>个人已结列表</span>
+        <el-input v-model="searchObj.search" class='query' placeholder="可查询付款单据号"></el-input>
+        <el-button @click="getPersonInfoList" icon="el-icon-search" circle></el-button>
+        <el-button class='pos-btn' type="primary" @click='cancel'>关闭</el-button>
+      </div>
+      <div class='text'>
+        <span class='price'>已结金额:{{sumbitForm.total_price}}</span>
+        <span class='price'>已结笔数:{{sumbitForm.count}}笔</span>
+      </div>
+      <el-table :data="tableDataS" border style="width: 100%">
+        <el-table-column prop="" label="序号" align='center' width="70px"></el-table-column>
+        <el-table-column prop="batch_name" label="批次名称" align='center'></el-table-column>
+        <el-table-column prop="apply_name" label="申请人员" align='center'></el-table-column>
+        <el-table-column prop="create_time" label="申请时间" align='center'></el-table-column>
+        <el-table-column prop="broker_num" label="申请金额" align='center' width="80px"></el-table-column>
+        <el-table-column prop="chargebacks_price" label="扣款金额" align='center' width="80px"></el-table-column>
+        <el-table-column label="审核金额" align='center'>
+          <template slot-scope="scope">{{scope.row.broker_num-scope.row.chargebacks_price}}</template>
+        </el-table-column>
+        <el-table-column prop="check_name" label="审核人员" align='center'></el-table-column>
+        <el-table-column prop="check_time" label="审核时间" align='center'></el-table-column>
+        <el-table-column prop="document_num" label="付款单据号" align='center' width="110px"></el-table-column>
+        <el-table-column prop="recive_bank" label="收款银行" align='center'></el-table-column>
+        <el-table-column prop="recive_bank_card" label="收款银行卡号" align='center' width="120px"></el-table-column>
+        <el-table-column prop="recive_name" label="收款户名" align='center'></el-table-column>
+        <el-table-column prop="update_time" label="确认时间" align='center'></el-table-column>
+      </el-table>
+    </div>
+    <div class='table' v-if='personType==2'>
+      <div class='title'>
+        <span class='title-text'>个人未结列表</span>
+        <el-input v-model="searchObj.search" class='query' placeholder="可查询推荐编号/经纪人名称"></el-input>
+        <el-button @click="getPersonInfoList" icon="el-icon-search" circle></el-button>
+        <el-button class='pos-btn' type="primary" @click='cancel'>关闭</el-button>
+      </div>
+      <div class='text'>
+        <span class='price'>未结金额:{{sumbitForm.total_price}}</span>
+        <span class='price'>未结笔数:{{sumbitForm.count}}笔</span>
+      </div>
+      <el-table :data="tableDataSa" border style="width: 100%">
+        <el-table-column prop="" label="序号" align='center' width="70px"></el-table-column>
+        <el-table-column prop="client_id" label="推荐编号" align='center'></el-table-column>
+        <el-table-column prop="project_name" label="项目名称" align='center'></el-table-column>
+        <el-table-column prop="house_info" label="房间号" align='center'></el-table-column>
+        <el-table-column prop="name" label="经纪人名称" align='center' width="110px"></el-table-column>
+        <el-table-column prop="tel" label="联系电话" align='center'></el-table-column>
+        <el-table-column prop="broker_type" label="佣金类型" align='center'>
+          <template slot-scope="scope">{{brokerType(scope.row.broker_type)}}</template>
+        </el-table-column>
+        <el-table-column prop="create_time" label="时间" align='center' width="160px"></el-table-column>
+        <el-table-column prop="broker_num" label="佣金金额" align='center'></el-table-column>
+        <el-table-column prop="commission_way" label="计算规则" align='center'></el-table-column>
+        <el-table-column prop="create_time" label="确认时间" align='center' width="160px"></el-table-column>
+      </el-table>
+    </div>
+  </div>
 </template>
 <script>
 export default {

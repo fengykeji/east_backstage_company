@@ -1,6 +1,9 @@
 <style lang="less" scoped src="./index.less" ></style>
 <style lang="less">
 .examinePeople {
+  .el-table thead {
+    color: #333;
+  }
   .el-table th {
     padding: 8px 5px;
   }
@@ -32,7 +35,7 @@
       padding: 5px 0;
     }
     .border {
-      width: 200px;
+      width: 140px;
       height: 35px;
       border: 1px solid#bbb;
       border-radius: 6px;
@@ -89,7 +92,7 @@
           <el-button class='tip' type="text" @click="search(2)">待审核</el-button>
           <el-button class='tip' type="text" @click="search(0)">审核未通过</el-button>
           <div class="search-block">
-            <el-input class='query' placeholder="可查询云算号/经纪人姓名"></el-input>
+            <el-input class='query' v-model="searchObj.search" placeholder="可查询云算号/经纪人姓名"></el-input>
             <el-button icon="el-icon-search" circle></el-button>
           </div>
         </div>
@@ -99,7 +102,7 @@
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column prop="" label="序号" align='center' width="80px"> </el-table-column>
         <el-table-column prop="account" label="云算号" align='center' width="110px"></el-table-column>
-        <el-table-column prop="name" label="经纪人姓名" align='center'></el-table-column>
+        <el-table-column prop="name" label="经纪人姓名" align='center' width="110px"></el-table-column>
         <el-table-column prop="project_name" label="申请项目" align='center'></el-table-column>
         <el-table-column prop="role" label="角色" align='center'>
           <template slot-scope="scope">{{getRole(scope.row.role)}}</template>
@@ -112,8 +115,8 @@
         <el-table-column prop="state" label="审核状态" align='center'>
           <template slot-scope="scope">{{auditingState(scope.row.state)}}</template>
         </el-table-column>
-        <el-table-column prop="remark" label="备注" align='center' width="200px"></el-table-column>
-        <el-table-column prop="entry_time" label="申请时间" align='center'></el-table-column>
+        <el-table-column prop="remark" label="备注" align='center' width="160px"></el-table-column>
+        <el-table-column prop="entry_time" label="申请时间" align='center' width="110px"></el-table-column>
         <el-table-column label="操作" align='center'>
           <template slot-scope="scope">
             <el-button type="text" @click='examine(scope.row)' v-if='scope.row.state==2'>审核</el-button>
@@ -121,7 +124,8 @@
           </template>
         </el-table-column>
       </el-table>
-
+      <el-pagination background class='page' layout="prev, pager, next" :page-size="pageSize" :current-page="searchObj.page" :total="total" @current-change="pageChange">
+      </el-pagination>
       <el-dialog title="审核" :visible.sync="dialogFormVisible" class='dialog' @close="cancel">
         <div class='btn'>
           <el-button type='primary' @click="check(1)" v-if="operationType==0">审核通过</el-button>
@@ -153,19 +157,19 @@
             <div class='border'>{{examinePeople.position}}</div>
           </el-form-item>
           <el-form-item class='input1'>
-            <div>工牌照片</div>
-            <div class='border  img'>
-                <img class='heightWidth' v-if='examinePeople.img_url' :src="'http://120.27.21.136:2798/' + examinePeople.img_url" />
-              <img class='heightWidth' v-else src="../../../assets/images/head.png" />
-            </div>
-          </el-form-item>
-          <el-form-item class='input1'>
             <div>申请时间</div>
             <div class='border'>{{examinePeople.entry_time}}</div>
           </el-form-item>
           <el-form-item class='input1'>
             <div>申请项目</div>
             <div class='border'>{{examinePeople.project_name}}</div>
+          </el-form-item>
+          <el-form-item class='input1'>
+            <div>工牌照片</div>
+            <div class='border  img'>
+              <span>(工牌照片)</span>
+              <el-button type='text' @click='seeimgUrl'>点击查看</el-button>
+            </div>
           </el-form-item>
           <div class='num_set'>基础信息</div>
           <el-form-item class='input1'>
@@ -187,11 +191,6 @@
             <div class='border width'>{{examinePeople.city_name+examinePeople.district_name+examinePeople.absolute_address}}</div>
           </el-form-item>
           <div class='num_set'>审核信息</div>
-
-          <el-form-item class='input1'>
-            <div>审核状态</div>
-            <div class='border'>{{auditingState(examinePeople.state)}}</div>
-          </el-form-item>
           <el-form-item class='input1'>
             <div>审核人员</div>
             <div class='border'>{{examinePeople.auditing_name}}</div>
@@ -200,10 +199,6 @@
             <div>审核时间</div>
             <div class='border'>{{examinePeople.auditing_time}}</div>
           </el-form-item>
-          <!-- <el-form-item  class='input1'>
-                    <div>拒绝类型</div>
-                    <div class='border'>{{examinePeople.tabsolute_addressel}}</div>
-                </el-form-item> -->
           <el-form-item class='input1'>
             <div>备注</div>
             <div class='border height'>{{examinePeople.remark}}</div>
@@ -221,6 +216,10 @@
           <el-button type="primary" @click="check(0)">确 定</el-button>
         </div>
       </el-dialog>
+      <el-dialog title="工牌照照片" :visible.sync="showImgUrl">
+        <img class='heightWidth' v-if='examinePeople.img_url' :src="'http://120.27.21.136:2798/' + examinePeople.img_url" />
+        <img class='heightWidth' v-else src="../../../assets/images/head.png" />
+      </el-dialog>
     </template>
   </div>
 </template>
@@ -230,8 +229,11 @@ export default {
     return {
       tableData: [],
       searchObj: {
-        tag_search: ""
+        tag_search: "",
+        search: ""
       },
+      pageSize: 0,
+      total: 0,
       dialogFormVisible: false,
       refuseInfo: false,
       examinePeople: {
@@ -254,6 +256,7 @@ export default {
         id: null,
         remark: ""
       },
+      showImgUrl: false,
       submitForm: {},
       remark: "",
       operationType: 0 //0审核  1 查看
@@ -267,7 +270,9 @@ export default {
     showCheck(type) {
       this.refuseInfo = true;
     },
-
+    seeimgUrl() {
+      this.showImgUrl = true;
+    },
     async check(type) {
       this.submitForm.type = type;
       let temp = Object.assign({}, this.submitForm);
@@ -337,7 +342,7 @@ export default {
         return "拒绝";
       } else if (row == 1) {
         return "通过";
-      }else if (row == 2) {
+      } else if (row == 2) {
         return "待审核";
       }
     },
@@ -365,12 +370,23 @@ export default {
       this.remark = "";
     },
     async getExList() {
-      let res = await this.api.getExList();
+      let res = await this.api.getExList(this.searchObj);
       if ((res.code = 200)) {
         this.tableData = res.data.data;
+        this.total = res.data.total;
+        this.pageSize = res.data.per_page;
       }
     },
+    pageChange(page) {
+      this.searchObj.page = page;
+      this.getExList();
+    },
+    getIndex(row) {
+      let index = row.$index + 1 + (this.searchObj.page - 1) * this.pageSize;
+      return index;
+    },
     search(type) {
+      this.searchObj.page = 1;
       this.searchObj.tag_search = type;
       this.getExList();
     }

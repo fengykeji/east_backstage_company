@@ -1,7 +1,16 @@
 <style lang="less" scoped>
 .companyPriceInfo {
+  .search-block {
+    position: absolute;
+    right: 0;
+    top: 8px;
+    white-space: nowrap;
+  }
+  .margin-right {
+    margin-right: 100px;
+  }
   .table {
-    margin: 90px 100px 50px 200px;
+    margin: 90px 100px 50px 240px;
     .text {
       font-size: 15px;
       text-align: left;
@@ -53,9 +62,14 @@
     <div class='table' v-if='companyType==0'>
       <div class='title'>
         <span class='title-text'>链家公司累计列表</span>
-        <el-input v-model="searchObj.search" class='query' placeholder="可查询推荐编号/经纪人名称"></el-input>
-        <el-button @click="getCompanyAllInfo" icon="el-icon-search" circle></el-button>
-        <el-button class='pos-btn' type="primary" @click='cancel'>关闭</el-button>
+        <span class='search-block'>
+          <span>
+            <el-input v-model="searchObj.search" class='query' placeholder="可查询推荐编号/经纪人名称"></el-input>
+            <el-button @click="getCompanyAllInfo" icon="el-icon-search" circle class='margin-right'></el-button>
+          </span>
+          <el-button class='pos-btn' type="primary" @click='cancel'>关闭</el-button>
+        </span>
+
       </div>
       <div class='text'>
         <span class='price'>累计金额:{{sumbitForm.total_price}}</span>
@@ -79,7 +93,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class='table'  v-if='companyType==1'>
+    <div class='table' v-if='companyType==1'>
       <div class='title'>
         <span class='title-text'>链家公司已结列表</span>
         <el-input v-model="searchObj.search" class='query' placeholder="可查询付款单据号"></el-input>
@@ -97,19 +111,19 @@
         <el-table-column prop="create_time" label="申请时间" align='center'></el-table-column>
         <el-table-column prop="broker_num" label="申请金额" align='center' width="80px"></el-table-column>
         <el-table-column prop="chargebacks_price" label="扣款金额" align='center' width="80px"></el-table-column>
-        <el-table-column  label="审核金额" align='center'>
+        <el-table-column label="审核金额" align='center'>
           <template slot-scope="scope">{{scope.row.broker_num-scope.row.chargebacks_price}}</template>
         </el-table-column>
         <el-table-column prop="check_name" label="审核人员" align='center'></el-table-column>
-        <el-table-column prop="check_time" label="审核时间" align='center' ></el-table-column>
+        <el-table-column prop="check_time" label="审核时间" align='center'></el-table-column>
         <el-table-column prop="document_num" label="付款单据号" align='center' width="110px"></el-table-column>
         <el-table-column prop="recive_bank" label="收款银行" align='center'></el-table-column>
         <el-table-column prop="recive_bank_card" label="收款银行卡号" align='center' width="120px"></el-table-column>
         <el-table-column prop="recive_name" label="收款户名" align='center'></el-table-column>
-        <el-table-column prop="update_time" label="结佣时间" align='center' ></el-table-column>
+        <el-table-column prop="update_time" label="结佣时间" align='center'></el-table-column>
       </el-table>
     </div>
- <div class='table' v-if='companyType==2'>
+    <div class='table' v-if='companyType==2'>
       <div class='title'>
         <span class='title-text'>链家公司未结列表</span>
         <el-input v-model="searchObj.search" class='query' placeholder="可查询推荐编号/经纪人名称"></el-input>
@@ -146,7 +160,7 @@ export default {
     return {
       tableData: [],
       tableDataS: [],
-      tableDataSa:[],
+      tableDataSa: [],
       project_id: "",
       company_rule_id: "",
       searchObj: {
@@ -194,8 +208,7 @@ export default {
           this.sumbitForm.total_price = res.data.total_price;
           this.sumbitForm.count = res.data.count;
         }
-      }
-      else if (this.companyType == 2) {
+      } else if (this.companyType == 2) {
         let res = await this.api.getCompanyNInfo({
           project_id: this.project_id,
           company_rule_id: this.company_rule_id,

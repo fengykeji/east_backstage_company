@@ -123,7 +123,7 @@ let api = {
   changeProjectList: doGet('company/distribution/changeProject'),
 
   //申请分销 - 提交
-  changeProjectAdd: doPost('company/distribution/changeProject'),
+  changeProjectAdd: doPost('company/distribution/applyProject'),
 
   //经纪人管理   第二板块
   //审核经纪人

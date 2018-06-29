@@ -5,7 +5,7 @@
   border: 1px solid #999;
   text-align: left;
   padding: 15px 30px;
-   margin-top: 90px;
+  margin-top: 90px;
   .input {
     width: 180px;
     display: inline-block;
@@ -38,7 +38,7 @@
 <template>
   <div class='projectInfo'>
     <div class='title-text'>项目分销详情</div>
-    <el-form :model="submitForm" class='form' :disabled="isDisable()">
+    <el-form :model="submitForm" class='form' :disabled="!operationType==1">
       <div>
         <el-form-item label="项目编号" class='input'>
           <el-input v-model="submitForm.project_code" auto-complete="off" placeholder="请输入项目编号"></el-input>
@@ -47,7 +47,6 @@
           <el-input v-model="submitForm.project_name" auto-complete="off" placeholder="请输入项目名称"></el-input>
         </el-form-item>
       </div>
-
       <!-- 物业类型 -->
       <div class="text">物业类型</div>
       <el-form-item prop="property_tags">
@@ -58,10 +57,6 @@
         <city-selector :province.sync="submitForm.province_name" :city.sync="submitForm.city_name" :district.sync="submitForm.district_name" />
         <el-input class='input1' v-model="submitForm.absolute_address"></el-input>
       </el-form-item>
-      <el-form-item label="项目状态" class='input'>
-        <template slot-scope="scope">
-          {{state(submitForm.state)}}</template>
-      </el-form-item><br/>
       <el-form-item label="项目负责人" class='input'>
         <el-input v-model="submitForm.project_hold_name" auto-complete="off"></el-input>
       </el-form-item>
@@ -97,37 +92,38 @@
             </template>
             </el-table-column>
         </el-table> -->
-    <div class='title-text'>审核项目信息</div>
-    <el-form :model="submitForm.auditProject">
-      <div>
-        <el-form-item label="审核人员" class='input'>
-          <el-input v-model="submitForm.fp_name" auto-complete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="审核时间" class='input'>
-          <el-input v-model="submitForm.fp_time" auto-complete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="审核状态" class='input'>
-          <el-input v-model="submitForm.state" auto-complete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="备注" class='input'>
-          <el-input v-model="submitForm.remark" auto-complete="off"></el-input>
-        </el-form-item>
-      </div>
-    </el-form>
-    <div class='title-text'>到访确认人信息</div>
-    <el-table :data="submitForm.peopleInfo" border>
-      <el-table-column property="nub" label="序号" align='center' width="70px"></el-table-column>
-      <el-table-column property="company_name" label="云算号" align='center'></el-table-column>
-      <el-table-column property="company_relation" label="名称" align='center'></el-table-column>
-      <el-table-column property="s_time" label="联系方式" align='center'></el-table-column>
-      <el-table-column property="e_time" label="所属部门" align='center'></el-table-column>
-      <el-table-column property="project_hold_name" label="职位" align='center'></el-table-column>
-      <el-table-column property="project_hold_phone" label="入职时间" align='center'></el-table-column>
-      <el-table-column property="project_hold_phone" label="申请时间" align='center'></el-table-column>
-      <el-table-column property="project_hold_phone" label="审核状态" align='center'></el-table-column>
-      <el-table-column property="project_hold_phone" label="分配时间" align='center'></el-table-column>
-      <el-table-column property="project_hold_phone" label="工作状态" align='center'></el-table-column>
-    </el-table>
+    <div :disabled="!operationType==1">
+      <div class='title-text' v-if='operationType==0'>审核项目信息</div>
+      <el-form :model="submitForm.auditProject" v-if='operationType==0'>
+        <div>
+          <el-form-item label="审核人员" class='input'>
+            <el-input v-model="submitForm.fp_name" auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="审核时间" class='input'>
+            <el-input v-model="submitForm.fp_time" auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="备注" class='input'>
+            <el-input v-model="submitForm.remark" auto-complete="off"></el-input>
+          </el-form-item>
+        </div>
+      </el-form>
+    </div>
+    <div v-if='operationType==0'>
+      <div class='title-text'>到访确认人信息</div>
+      <el-table :data="submitForm.peopleInfo" border>
+        <el-table-column property="nub" label="序号" align='center' width="70px"></el-table-column>
+        <el-table-column property="company_name" label="云算号" align='center'></el-table-column>
+        <el-table-column property="company_relation" label="名称" align='center'></el-table-column>
+        <el-table-column property="s_time" label="联系方式" align='center'></el-table-column>
+        <el-table-column property="e_time" label="所属部门" align='center'></el-table-column>
+        <el-table-column property="project_hold_name" label="职位" align='center'></el-table-column>
+        <el-table-column property="project_hold_phone" label="入职时间" align='center'></el-table-column>
+        <el-table-column property="project_hold_phone" label="申请时间" align='center'></el-table-column>
+        <el-table-column property="project_hold_phone" label="审核状态" align='center'></el-table-column>
+        <el-table-column property="project_hold_phone" label="分配时间" align='center'></el-table-column>
+        <el-table-column property="project_hold_phone" label="工作状态" align='center'></el-table-column>
+      </el-table>
+    </div>
     <div slot="footer" class="dialog-footer">
       <el-button @click='cancel'>关 闭</el-button>
       <el-button type="primary" @click='submit' :disabled="isDisable()">提 交</el-button>
@@ -149,13 +145,14 @@ export default {
         property_tags: []
       },
       project_id: "",
-      typeOptions: []
+      typeOptions: [],
+      operationType: 0
     };
   },
   mounted() {
+    this.project_id = this.$route.params.project_id;
     if (this.$route.params.project_id) {
       this.operationType = this.$route.params.operationType;
-      this.project_id = this.$route.params.project_id;
       this.getProjectDetail();
       this.getType();
     } else {
@@ -169,20 +166,11 @@ export default {
         this.typeOptions = res.data;
       }
     },
-    state(row) {
-      if (row == 1) {
-        return "正常";
-      } else if (row == 0) {
-        return "弃用";
-      } else if (row == 2) {
-        return "已转新房";
-      } else if (row == 3) {
-        return "已转二手房";
-      }
-    },
     isDisable() {
       if (this.operationType == 0) {
         return true;
+      } else if (this.operationType == 1) {
+        return false;
       } else {
         return false;
       }
@@ -191,13 +179,13 @@ export default {
       Object.assign(this.submitForm, this.$route.params.projectInfo);
       let res = await this.api.applyProject({ project_id: this.project_id });
       if (res.code == 200) {
-          Object.assign(this.submitForm, res.data);
-          let property_tags = res.data.property_tags;
-          let arr = [];
-          for (let type of property_tags) {
-            arr.push(type.property_tag_id);
-          }
-          this.submitForm.property_tags = arr;
+        Object.assign(this.submitForm, res.data);
+        let property_tags = res.data.property_tags;
+        let arr = [];
+        for (let type of property_tags) {
+          arr.push(type.property_tag_id);
+        }
+        this.submitForm.property_tags = arr;
       }
     },
     async search() {
@@ -210,10 +198,15 @@ export default {
     },
     async submit() {
       let res = this.api.changeProjectAdd({
-        project_id: this.submitForm.project_id
+        project_id: this.project_id
       });
       if (res.code == 200) {
         this.$router.push({ name: "distribution" });
+      } else {
+        this.$message({
+          type: "error",
+          message: "已经分销过此项目，不可再次申请"
+        });
       }
     },
     cancel() {

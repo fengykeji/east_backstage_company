@@ -23,9 +23,14 @@
     <div class='table'>
       <div class='title'>
         <span class='title-text'>公司累计列表</span>
-        <el-input v-model="searchObj.search" class='query' placeholder="可查询项目名称"></el-input>
-        <el-button @click="getCompanyAll" icon="el-icon-search" circle></el-button>
-        <el-button class='pos-btn' type="primary" @click='cancel'>关闭</el-button>
+        <span class='search-block'>
+         <span class='input-pad-right'>
+            <el-input v-model="searchObj.search" class='query' placeholder="可查询公司名称"></el-input>
+          <el-button @click="getCompanyAll" icon="el-icon-search" circle class='margin-right'></el-button>
+         </span>
+          <el-button class='pos-btn' type="primary" @click='cancel'>关闭</el-button>
+        </span>
+        
       </div>
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column prop="" label="序号" align='center' width="70px"></el-table-column>

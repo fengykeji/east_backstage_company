@@ -1,5 +1,8 @@
 <style lang="less" scoped src="./index.less"></style>
 <style lang="less">
+body {
+  background-color: #fafafc;
+}
 .distri_commission {
   .el-table--border,
   .el-table--group {

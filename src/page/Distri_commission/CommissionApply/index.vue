@@ -64,8 +64,6 @@
         </el-table-column>
         <el-table-column prop="create_time" label="时间" align='center' width="160px"></el-table-column>
         <el-table-column prop="broker_num" label="佣金金额" align='center'></el-table-column>
-        <!-- <el-table-column prop="project_hold_phone" label="扣款金额" align='center' v-if='operationType==1'></el-table-column>
-        <el-table-column prop="all_price" label="审核金额" align='center' v-if='operationType==1'></el-table-column> -->
       </el-table>
     </div>
   </div>

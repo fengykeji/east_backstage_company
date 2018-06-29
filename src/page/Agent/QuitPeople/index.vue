@@ -2,6 +2,9 @@
 </style>
 <style lang="less">
 .quitPeople {
+   .el-table thead{
+    color: #333;
+  }
   .el-table th {
     padding: 8px 5px;
   }
@@ -21,7 +24,7 @@
       <div class='left'>
         <div class='text1'>当前位置：离职经纪人</div>
         <div class="search-block">
-          <el-input class='query' placeholder="可查询云算号/经纪人姓名"></el-input>
+          <el-input class='query' v-model="searchObj.search"  placeholder="可查询云算号/经纪人姓名"></el-input>
           <el-button @click="search" icon="el-icon-search" circle></el-button>
         </div>
       </div>
@@ -32,20 +35,20 @@
         <el-table-column label="序号" align='center' width="70px">
           <template slot-scope="scope">{{getIndex(scope)}}</template>
         </el-table-column>
-        <el-table-column prop="account" label="云算号" align='center' width="110px"></el-table-column>
-        <el-table-column prop="name" label="经纪人姓名" align='center'></el-table-column>
+        <el-table-column prop="account" label="云算号" align='center' width="100px"></el-table-column>
+        <el-table-column prop="name" label="经纪人姓名" align='center' width="110px"></el-table-column>
         <el-table-column prop="tel" label="联系方式" align='center' width="120px"></el-table-column>
         <el-table-column prop="project_name" label="申请项目" align='center'></el-table-column>
         <el-table-column prop="role" label="角色" align='center'>
           <template slot-scope="scope">{{getRole(scope.row.role)}}</template>
         </el-table-column>
-        <el-table-column prop="department" label="所属部门" align='center'></el-table-column>
+        <el-table-column prop="department" label="所属部门" align='center' ></el-table-column>
         <el-table-column prop="position" label="职位" align='center'></el-table-column>
         <el-table-column prop="city" label="城市" align='center'></el-table-column>
         <el-table-column prop="district" label="区域" align='center'></el-table-column>
         <el-table-column prop="entry_time" label="入职时间" align='center' width="100px"></el-table-column>
         <el-table-column prop="create_time" label="离职时间" align='center' width="100px"></el-table-column>
-        <el-table-column prop="remark" label="离职原因" align='center' width="200px"></el-table-column>
+        <el-table-column prop="remark" label="离职原因" align='center' width="190px"></el-table-column>
         <el-table-column label="操作" align='center'>
           <template slot-scope="scope">
             <el-button type="text" @click='showSee(scope.row)'>查看</el-button>
@@ -82,16 +85,16 @@
             <div>职位</div>
             <div class='border'>{{examinePeople.position}}</div>
           </el-form-item>
+            <el-form-item class='input1'>
+            <div>入职时间</div>
+            <div class='border'>{{examinePeople.entry_time}}</div>
+          </el-form-item>
           <el-form-item class='input1'>
             <div>工牌照片</div>
             <div class='border  img'>
-              <img class='heightWidth' v-if='examinePeople.img_url' :src="'http://120.27.21.136:2798/' + examinePeople.img_url" />
-              <img class='heightWidth' v-else src="../../../assets/images/head.png" />
+              <span>(工牌照片)</span>
+              <el-button type='text' @click='seeimgUrl'>点击查看</el-button>
             </div>
-          </el-form-item>
-          <el-form-item class='input1'>
-            <div>入职时间</div>
-            <div class='border'>{{examinePeople.entry_time}}</div>
           </el-form-item>
           <div class='num_set'>基础信息</div>
           <el-form-item class='input1'>
@@ -109,21 +112,8 @@
             <div class='border'>{{examinePeople.birth}}</div>
           </el-form-item>
           <el-form-item class='input1'>
-            <div>通讯地址</div>
-            <div class='border'>{{examinePeople.city_name+examinePeople.district_name+examinePeople.absolute_address}}</div>
-          </el-form-item>
-          <el-form-item class='input1'>
             <div>身份证</div>
             <div class='border'>{{examinePeople.id_card}}</div>
-          </el-form-item>
-          <el-form-item class='input1'>
-            <div>证件照片</div>
-            <div class='border  img'>
-              <img class='heightWidth' v-if='examinePeople.card_front' :src="'http://120.27.21.136:2798/' + examinePeople.card_front" />
-              <img class='heightWidth' v-else src="../../../assets/images/idCard.png" />
-              <img class='heightWidth' v-if='examinePeople.card_back' :src="'http://120.27.21.136:2798/' + examinePeople.card_back" />
-              <img class='heightWidth' v-else src="../../../assets/images/Document_2@2x.png" />
-            </div>
           </el-form-item>
           <el-form-item class='input1'>
             <div>绑定银行</div>
@@ -132,6 +122,17 @@
           <el-form-item class='input1'>
             <div>银行卡号</div>
             <div class='border'>{{examinePeople.bank_card}}</div>
+          </el-form-item>
+           <el-form-item class='input1'>
+            <div>通讯地址</div>
+            <div class='border3'>{{examinePeople.city_name+examinePeople.district_name+examinePeople.absolute_address}}</div>
+          </el-form-item>
+          <el-form-item class='input1'>
+            <div>证件照片</div>
+            <div class='border  img'>
+              <span>(证件照片为正反两面)</span>
+              <el-button type='text' @click='seeIdCard'>点击查看</el-button>
+            </div>
           </el-form-item>
           <el-form-item class='input2'>
             <div>个人介绍</div>
@@ -146,11 +147,21 @@
             <div>离职类型</div>
             <div class='border'> {{quitType(examinePeople.quit? examinePeople.quit.type : '')}}</div>
           </el-form-item>
-          <el-form-item class='input1'>
+          <el-form-item class='input2'>
             <div>备注</div>
             <div class='border height'>{{examinePeople.quit ? examinePeople.quit.remark : ''}}</div>
           </el-form-item>
         </el-form>
+      </el-dialog>
+      <el-dialog title="工牌照照片" :visible.sync="showImgUrl">
+        <img class='heightWidth' v-if='examinePeople.img_url' :src="'http://120.27.21.136:2798/' + examinePeople.img_url" />
+        <img class='heightWidth' v-else src="../../../assets/images/head.png" />
+      </el-dialog>
+      <el-dialog title="证件照照片" :visible.sync="showIdCard" class='showIdCard'>
+        <img class='heightWidth' v-if='examinePeople.card_front' :src="'http://120.27.21.136:2798/' + examinePeople.card_front" />
+        <img class='heightWidth' v-else src="../../../assets/images/idCard.png" />
+        <img class='heightWidth' v-if='examinePeople.card_back' :src="'http://120.27.21.136:2798/' + examinePeople.card_back" />
+        <img class='heightWidth' v-else src="../../../assets/images/Document_2@2x.png" />
       </el-dialog>
     </template>
   </div>
@@ -162,7 +173,7 @@ export default {
       tableData: [],
       dialogFormVisible: false,
       searchObj: {
-        name: "",
+        search: "",
         page: 1
       },
       pageSize: 0,
@@ -192,13 +203,21 @@ export default {
           type: "",
           remark: ""
         }
-      }
+      },
+      showImgUrl: false,
+      showIdCard: false
     };
   },
   mounted() {
     this.getQuitList();
   },
   methods: {
+    seeimgUrl() {
+      this.showImgUrl = true;
+    },
+    seeIdCard() {
+      this.showIdCard = true;
+    },
     getIndex(row) {
       let index = row.$index + 1 + (this.searchObj.page - 1) * this.pageSize;
       return index;

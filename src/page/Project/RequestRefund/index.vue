@@ -4,7 +4,7 @@
   margin: 50px auto 0;
   display: inline-block;
   text-align: left;
-  .el-form-item{
+  .el-form-item {
     margin-bottom: 5px;
   }
   .text {
@@ -64,7 +64,7 @@
         <el-form-item label="收款人" class='input' prop="payee">
           <el-input v-model="requestRefund.payee" class='input'></el-input>
         </el-form-item>
-        <el-form-item label="退款原因" class='input1' >
+        <el-form-item label="退款原因" class='input1' prop='refund_remarks'>
           <el-input v-model="requestRefund.refund_remarks" type="textarea"></el-input>
         </el-form-item>
         <el-form-item label="备注" class='input1'>
@@ -121,6 +121,14 @@ export default {
           {
             max: 20,
             message: "最大长度为20个字符",
+            trigger: "change"
+          }
+        ],
+        refund_remarks: [
+          { required: true, message: "请输入退款原因", change: "change" },
+          {
+            max: 255,
+            message: "最大长度为255个字符",
             trigger: "change"
           }
         ]

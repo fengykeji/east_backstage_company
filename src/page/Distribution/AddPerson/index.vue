@@ -185,7 +185,6 @@ export default {
       this.submitForm.id = this.id;
       this.submitForm.agent_id = this.agent_id;
       let res = await this.api.agentAdd(this.submitForm);
-
       if (res.code == 200) {
         this.$router.push({
           name: "fastDistribution",

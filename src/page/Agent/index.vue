@@ -1,8 +1,14 @@
 <style lang="less" scoped src="./index.less" ></style>
 <style lang="less">
+body {
+  background-color: #fafafc;
+}
 .agent {
   margin-left: 180px;
   margin-top: 195px;
+   .el-table thead{
+    color: #333;
+  }
   .el-table th {
     padding: 8px 5px;
   }
@@ -27,7 +33,7 @@
     }
   }
   .el-dialog__body {
-    padding: 0px 20px 100px 20px;
+    padding: 0px 20px 20px 20px;
   }
   .showImg {
     width: 800px;
@@ -44,7 +50,7 @@
       <div class='left'>
         <div class='text1'>当前位置：在职经纪人</div>
         <div class="search-block">
-          <el-input v-model="searchObj.name" class='query' placeholder="可查询云算号/经纪人姓名"></el-input>
+          <el-input v-model="searchObj.search" class='query' placeholder="可查询云算号/经纪人姓名"></el-input>
           <el-button @click="search()" icon="el-icon-search" circle></el-button>
         </div>
       </div>
@@ -75,8 +81,8 @@
     <el-pagination background class='page' layout="prev, pager, next" :page-size="pageSize" :current-page="searchObj.page" :total="total" @current-change="pageChange">
     </el-pagination>
     <el-dialog title="离职申请" :visible.sync="dialogFormVisible" class='dialog' @close="cancel">
-      <el-form :model="form" :rules="rules" ref="form">
-        <el-form-item label="离职原因" prop="remark">
+      <el-form :model="form">
+        <el-form-item label="离职原因">
           <el-input v-model="form.remark" class='textarea' type="textarea" />
         </el-form-item>
       </el-form>
@@ -86,89 +92,99 @@
       </div>
     </el-dialog>
     <el-dialog title="查看详情" :visible.sync="showInfo" class='dialog'>
-      <div class='btn'>
-        <el-button type='primary' @click='showCancel'>关闭</el-button>
+      <div class='showInfo'>
+        <div class='btn'>
+          <el-button type='primary' @click='showCancel'>关闭</el-button>
+        </div>
+        <div class='num_set'>员工信息</div>
+        <el-form v-model="examinePeople">
+          <el-form-item class='input1'>
+            <div>姓名</div>
+            <div class='border'>{{examinePeople.name}}</div>
+          </el-form-item>
+          <el-form-item class='input1'>
+            <div>角色</div>
+            <div class='border'>
+              {{role(examinePeople.role)}}
+            </div>
+          </el-form-item>
+          <el-form-item class='input1'>
+            <div>云算号</div>
+            <div class='border'>{{examinePeople.account}}</div>
+          </el-form-item>
+          <el-form-item class='input1'>
+            <div>所属部门</div>
+            <div class='border'>{{examinePeople.department}}</div>
+          </el-form-item>
+          <el-form-item class='input1'>
+            <div>职位</div>
+            <div class='border'>{{examinePeople.position}}</div>
+          </el-form-item>
+          <el-form-item class='input1'>
+            <div>入职时间</div>
+            <div class='border'>{{examinePeople.entry_time}}</div>
+          </el-form-item>
+          <el-form-item class='input1'>
+            <div>工牌照片</div>
+            <div class='border  img'>
+              <span>(工牌照片)</span>
+              <el-button type='text' @click='seeimgUrl'>点击查看</el-button>
+            </div>
+          </el-form-item>
+          <div class='num_set'>基础信息</div>
+          <el-form-item class='input1'>
+            <div>性别</div>
+            <div class='border'>
+              {{sex(examinePeople.sex)}}
+            </div>
+          </el-form-item>
+          <el-form-item class='input1'>
+            <div>电话号码</div>
+            <div class='border'>{{examinePeople.tel}}</div>
+          </el-form-item>
+          <el-form-item class='input1'>
+            <div>出生年月</div>
+            <div class='border'>{{examinePeople.birth}}</div>
+          </el-form-item>
+          <el-form-item class='input1'>
+            <div>通讯地址</div>
+            <div class='border1'>{{examinePeople.city_name+examinePeople.district_name+examinePeople.absolute_address}}</div>
+          </el-form-item>
+          <el-form-item class='input1'>
+            <div>身份证号码</div>
+            <div class='border'>{{examinePeople.id_card}}</div>
+          </el-form-item>
+          <el-form-item class='input1'>
+            <div>绑定银行</div>
+            <div class='border'>{{examinePeople.bank_name}}</div>
+          </el-form-item>
+          <el-form-item class='input1'>
+            <div>银行卡号</div>
+            <div class='border'>{{examinePeople.bank_card}}</div>
+          </el-form-item>
+          <el-form-item class='input1'>
+            <div>证件照片</div>
+            <div class='border  img'>
+              <span>(证件照片为正反两面)</span>
+              <el-button type='text' @click='seeIdCard'>点击查看</el-button>
+            </div>
+          </el-form-item>
+          <el-form-item class='input2'>
+            <div>个人介绍</div>
+            <div class='border height'>{{examinePeople.slef_desc}}</div>
+          </el-form-item>
+        </el-form>
       </div>
-      <div class='num_set'>员工信息</div>
-      <el-form v-model="examinePeople">
-        <el-form-item class='input1'>
-          <div>姓名</div>
-          <div class='border'>{{examinePeople.name}}</div>
-        </el-form-item>
-        <el-form-item class='input1'>
-          <div>角色</div>
-          <div class='border'>
-            {{role(examinePeople.role)}}
-          </div>
-        </el-form-item>
-        <el-form-item class='input1'>
-          <div>云算号</div>
-          <div class='border'>{{examinePeople.account}}</div>
-        </el-form-item>
-        <el-form-item class='input1'>
-          <div>所属部门</div>
-          <div class='border'>{{examinePeople.department}}</div>
-        </el-form-item>
-        <el-form-item class='input1'>
-          <div>职位</div>
-          <div class='border'>{{examinePeople.position}}</div>
-        </el-form-item>
-        <el-form-item class='input1'>
-          <div>工牌照片</div>
-          <div class='border  img'>
-            <img class='heightWidth' v-if='examinePeople.img_url' :src="'http://120.27.21.136:2798/' + examinePeople.img_url" />
-            <img class='heightWidth' v-else src="../../assets/images/head.png" />
-          </div>
-        </el-form-item>
-        <el-form-item class='input1'>
-          <div>入职时间</div>
-          <div class='border'>{{examinePeople.entry_time}}</div>
-        </el-form-item>
-        <div class='num_set'>基础信息</div>
-        <el-form-item class='input1'>
-          <div>性别</div>
-          <div class='border'>
-            {{sex(examinePeople.sex)}}
-          </div>
-        </el-form-item>
-        <el-form-item class='input1'>
-          <div>电话号码</div>
-          <div class='border'>{{examinePeople.tel}}</div>
-        </el-form-item>
-        <el-form-item class='input1'>
-          <div>出生年月</div>
-          <div class='border'>{{examinePeople.birth}}</div>
-        </el-form-item>
-        <el-form-item class='input1'>
-          <div>通讯地址</div>
-          <div class='border'>{{examinePeople.city_name+examinePeople.district_name+examinePeople.absolute_address}}</div>
-        </el-form-item>
-        <el-form-item class='input1'>
-          <div>身份证</div>
-          <div class='border'>{{examinePeople.id_card}}</div>
-        </el-form-item>
-        <el-form-item class='input1'>
-          <div>证件照片</div>
-          <div class='border  img'>
-            <img class='heightWidth' v-if='examinePeople.card_front' :src="'http://120.27.21.136:2798/' + examinePeople.card_front" />
-            <img class='heightWidth' v-else src="../../assets/images/idCard.png" />
-            <img class='heightWidth' v-if='examinePeople.card_back' :src="'http://120.27.21.136:2798/' + examinePeople.card_back" />
-            <img class='heightWidth' v-else src="../../assets/images/Document_2@2x.png" />
-          </div>
-        </el-form-item>
-        <el-form-item class='input1'>
-          <div>绑定银行</div>
-          <div class='border'>{{examinePeople.bank_name}}</div>
-        </el-form-item>
-        <el-form-item class='input1'>
-          <div>银行卡号</div>
-          <div class='border'>{{examinePeople.bank_card}}</div>
-        </el-form-item>
-        <el-form-item class='input2'>
-          <div>个人介绍</div>
-          <div class='border height'>{{examinePeople.slef_desc}}</div>
-        </el-form-item>
-      </el-form>
+    </el-dialog>
+    <el-dialog title="工牌照照片" :visible.sync="showImgUrl">
+      <img class='heightWidth' v-if='examinePeople.img_url' :src="'http://120.27.21.136:2798/' + examinePeople.img_url" />
+      <img class='heightWidth' v-else src="../../assets/images/head.png" />
+    </el-dialog>
+    <el-dialog title="证件照照片" :visible.sync="showIdCard" class='showIdCard'>
+      <img class='heightWidth' v-if='examinePeople.card_front' :src="'http://120.27.21.136:2798/' + examinePeople.card_front" />
+      <img class='heightWidth' v-else src="../../assets/images/idCard.png" />
+      <img class='heightWidth' v-if='examinePeople.card_back' :src="'http://120.27.21.136:2798/' + examinePeople.card_back" />
+      <img class='heightWidth' v-else src="../../assets/images/Document_2@2x.png" />
     </el-dialog>
   </div>
 </template>
@@ -176,13 +192,8 @@
 export default {
   data() {
     return {
-      rules: {
-        remark: [
-          { required: true, message: "请输入离职原因", change: "change" }
-        ]
-      },
       searchObj: {
-        name: "",
+        search: "",
         page: 1
       },
       pageSize: 0,
@@ -212,13 +223,21 @@ export default {
       form: {
         id: null,
         remark: ""
-      }
+      },
+      showImgUrl: false,
+      showIdCard: false
     };
   },
   mounted() {
     this.search();
   },
   methods: {
+    seeimgUrl() {
+      this.showImgUrl = true;
+    },
+    seeIdCard() {
+      this.showIdCard = true;
+    },
     getRole(row) {
       if (row == 1) {
         return "经纪人";
@@ -227,19 +246,13 @@ export default {
       }
     },
     async sumbit() {
-      this.$refs["form"].validate(async valid => {
-        if (valid) {
-          let res = await this.api.quitPeople(this.form);
+
+ let res = await this.api.quitPeople(this.form);
           if (res.code == 200) {
             this.$message({ type: "success", message: "离职成功" });
             this.search();
             this.cancel();
           }
-        } else {
-          this.cancel();
-          return false;
-        }
-      });
     },
     async showSee(row) {
       this.showInfo = true;
@@ -291,7 +304,7 @@ export default {
         this.searchObj.page = 1;
       }
       let res = await this.api.getPayrollList(this.searchObj);
-      if ((res.code = 200)) {
+      if (res.code == 200) {
         this.tableData = res.data.data;
         this.total = res.data.total;
         this.pageSize = res.data.per_page;
