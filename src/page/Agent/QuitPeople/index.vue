@@ -29,7 +29,7 @@
     </div>
     <template>
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column  label="序号" align='center' width="70px">
+        <el-table-column label="序号" align='center' width="70px">
           <template slot-scope="scope">{{getIndex(scope)}}</template>
         </el-table-column>
         <el-table-column prop="account" label="云算号" align='center' width="110px"></el-table-column>
@@ -85,8 +85,8 @@
           <el-form-item class='input1'>
             <div>工牌照片</div>
             <div class='border  img'>
-              <!-- <img src="../../../assets/images/head.png" /> -->
-              <img :src="'http://120.27.21.136:2798/' + examinePeople.img_url" />
+              <img class='heightWidth' v-if='examinePeople.img_url' :src="'http://120.27.21.136:2798/' + examinePeople.img_url" />
+              <img class='heightWidth' v-else src="../../../assets/images/head.png" />
             </div>
           </el-form-item>
           <el-form-item class='input1'>
@@ -119,8 +119,10 @@
           <el-form-item class='input1'>
             <div>证件照片</div>
             <div class='border  img'>
-              <!-- <img src="../../../assets/images/idCard.png" /> -->
-              <img :src="'http://120.27.21.136:2798/' + examinePeople.card_url" />
+              <img class='heightWidth' v-if='examinePeople.card_front' :src="'http://120.27.21.136:2798/' + examinePeople.card_front" />
+              <img class='heightWidth' v-else src="../../../assets/images/idCard.png" />
+              <img class='heightWidth' v-if='examinePeople.card_back' :src="'http://120.27.21.136:2798/' + examinePeople.card_back" />
+              <img class='heightWidth' v-else src="../../../assets/images/Document_2@2x.png" />
             </div>
           </el-form-item>
           <el-form-item class='input1'>
@@ -142,7 +144,7 @@
           </el-form-item>
           <el-form-item class='input1'>
             <div>离职类型</div>
-            <div class='border'>{{examinePeople.quit ? examinePeople.quit.type : ''}}</div>
+            <div class='border'> {{quitType(examinePeople.quit? examinePeople.quit.type : '')}}</div>
           </el-form-item>
           <el-form-item class='input1'>
             <div>备注</div>
@@ -198,7 +200,7 @@ export default {
   },
   methods: {
     getIndex(row) {
-      let index = ( row.$index + 1 ) + (this.searchObj.page - 1) * this.pageSize;
+      let index = row.$index + 1 + (this.searchObj.page - 1) * this.pageSize;
       return index;
     },
     getRole(row) {
@@ -229,6 +231,13 @@ export default {
         return "新房经纪人";
       } else if (row == 2) {
         return "项目对接人";
+      }
+    },
+    quitType(row) {
+      if (row == 1) {
+        return "自行离职";
+      } else if (row == 2) {
+        return "公司辞退";
       }
     },
     sex(row) {

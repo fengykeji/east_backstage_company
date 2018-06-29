@@ -27,7 +27,7 @@
     }
   }
   .el-dialog__body {
-    padding: 0px 20px 20px 20px;
+    padding: 0px 20px 100px 20px;
   }
   .showImg {
     width: 800px;
@@ -116,8 +116,8 @@
         <el-form-item class='input1'>
           <div>工牌照片</div>
           <div class='border  img'>
-            <!-- <img src="../../assets/images/head.png" /> -->
-            <img :src="'http://120.27.21.136:2798/' + examinePeople.img_url" />
+            <img class='heightWidth' v-if='examinePeople.img_url' :src="'http://120.27.21.136:2798/' + examinePeople.img_url" />
+            <img class='heightWidth' v-else src="../../assets/images/head.png" />
           </div>
         </el-form-item>
         <el-form-item class='input1'>
@@ -150,8 +150,10 @@
         <el-form-item class='input1'>
           <div>证件照片</div>
           <div class='border  img'>
-            <!-- <img src="../../assets/images/idCard.png" /> -->
-            <img :src="'http://120.27.21.136:2798/' + examinePeople.card_url" />
+            <img class='heightWidth' v-if='examinePeople.card_front' :src="'http://120.27.21.136:2798/' + examinePeople.card_front" />
+            <img class='heightWidth' v-else src="../../assets/images/idCard.png" />
+            <img class='heightWidth' v-if='examinePeople.card_back' :src="'http://120.27.21.136:2798/' + examinePeople.card_back" />
+            <img class='heightWidth' v-else src="../../assets/images/Document_2@2x.png" />
           </div>
         </el-form-item>
         <el-form-item class='input1'>

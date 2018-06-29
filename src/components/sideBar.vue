@@ -5,14 +5,13 @@
   top: 0;
   height: 100%;
   z-index: 100;
-  width: 160px;
-  border-right: 1px solid #aaaaaa;
+  width: 200px;
   margin-top: 81px;
 }
 .text {
   font-size: 16px;
   color: #999;
-  width: 160px;
+  width: 200px;
   &.is-active {
     color: #409eff;
     background-color: rgb(236, 245, 255);
@@ -21,7 +20,7 @@
 .delent {
   font-size: 16px;
   color: #999;
-  width: 160px;
+  width: 200px;
   text-align: center;
 }
 .box {
@@ -33,7 +32,7 @@
   left: 0;
   width: 100%;
   height: 80px;
-  background: rgb(236, 245, 255);
+  background: #fff;
   z-index: 110;
   text-align: left;
 }
@@ -78,9 +77,9 @@
       <span class='tou'>
         <img class='img' src='../assets/images/logo.png' />
       </span>
-      <span class='top-name'>公司名称:  {{company_name}}
+      <span class='top-name'>公司名称: {{company_name}}
       </span>
-      <span class='top-one'>个人名称:   {{name}}
+      <span class='top-one'>个人名称: {{name}}
       </span>
       <el-button type='text' class='top-text' @click='cancel'>退出</el-button>
     </div>
@@ -113,8 +112,8 @@ export default {
     this.activeIndex = this.$route.name;
   },
   mounted() {
-     this.name = localStorage.getItem("name");
-      this.company_name = localStorage.getItem("company_name");
+    this.name = localStorage.getItem("name");
+    this.company_name = localStorage.getItem("company_name");
   },
   methods: {
     cancel() {

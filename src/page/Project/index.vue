@@ -1,5 +1,8 @@
 <style lang="less" scoped src="./index.less" ></style>
 <style lang="less">
+body {
+  background-color: #fafafc;
+}
 .project {
   .el-form-item__label {
     float: none;
@@ -54,7 +57,7 @@
           <template slot-scope="scope">{{getIndex(scope)}}</template>
         </el-table-column>
         <el-table-column prop="project_code" label="项目编号" align='center'></el-table-column>
-        <el-table-column prop="project_name" label="项目名称" align='center'></el-table-column>
+        <el-table-column prop="project_name" label="项目名称" align='center' width="140px"></el-table-column>
         <!-- 项目状态函数 -->
         <el-table-column prop="state" label="项目状态" align='center'>
           <template slot-scope="scope">{{projectState(scope.row.state)}}</template>
@@ -82,7 +85,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination background class='page' layout="prev, pager, next" :page-size="per_page" :current-page="searchObj.page" :total="total" @current-change="pageChange">
+      <el-pagination background class='page' layout="prev, pager, next" :page-size="pageSize" :current-page="searchObj.page" :total="total" @current-change="pageChange">
       </el-pagination>
     </template>
   </div>
@@ -97,9 +100,9 @@ export default {
         tag_search: "",
         page: 1
       },
+      pageSize: 0,
       name: "",
       company_name: "",
-      per_page: 10,
       total: 0,
       tableData: [],
       operationType: 0 //0 查看  1 修改
@@ -110,7 +113,7 @@ export default {
   },
   methods: {
     getIndex(row) {
-      let index = row.$index + 1 + (this.searchObj.page - 1) * 1;
+      let index = row.$index + 1 + (this.searchObj.page - 1) * this.pageSize;
       return index;
     },
     search(type) {
@@ -123,6 +126,7 @@ export default {
       if (res.code == 200) {
         this.tableData = res.data.data;
         this.total = res.data.total;
+        this.pageSize = res.data.per_page;
       }
     },
     projectState(row) {

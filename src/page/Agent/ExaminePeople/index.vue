@@ -155,8 +155,8 @@
           <el-form-item class='input1'>
             <div>工牌照片</div>
             <div class='border  img'>
-              <!-- <img src="../../../assets/images/head.png" /> -->
-              <img :src="'http://120.27.21.136:2798/' + examinePeople.img_url" />
+                <img class='heightWidth' v-if='examinePeople.img_url' :src="'http://120.27.21.136:2798/' + examinePeople.img_url" />
+              <img class='heightWidth' v-else src="../../../assets/images/head.png" />
             </div>
           </el-form-item>
           <el-form-item class='input1'>
