@@ -125,6 +125,7 @@ export default {
     this.project_id = this.$route.params.project_id;
     this.id = this.$route.params.id;
     this.agent_id = this.$route.params.agent_id;
+    if(!this.agent_id && !this.$route.params.agentInfo) return;
     if (this.$route.params.agentInfo === undefined) {
       this.getAgentInfo();
     } else {

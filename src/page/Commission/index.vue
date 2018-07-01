@@ -4,6 +4,12 @@ body {
   background-color: #fafafc;
 }
 .commission {
+  .el-table thead.is-group th {
+    background-color: #fff;
+  }
+  .el-table thead {
+    color: #333;
+  }
   .el-table--border,
   .el-table--group {
     margin-top: 20px;
@@ -17,10 +23,10 @@ body {
   .el-dialog__body {
     padding-top: 0;
   }
-  .el-table thead{
+  .el-table thead {
     color: #333;
   }
-  .el-table thead.is-group th{
+  .el-table thead.is-group th {
     background-color: none;
   }
 }
@@ -32,14 +38,16 @@ body {
       <div class='table-title'>
         <div class='text1'>当前位置：佣金管理</div>
         <div class="search-block">
-          <el-input class='query' placeholder="可按项目名称进行查询"></el-input>
-          <el-button icon="el-icon-search" circle></el-button>
+          <el-input class='query' placeholder="可按项目名称进行查询" v-model="searchObj.search"></el-input>
+          <el-button icon="el-icon-search" circle @click="getProjectCommissionList"></el-button>
         </div>
       </div>
     </div>
     <template>
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column prop="" label="序号" align='center' width="70px"></el-table-column>
+        <el-table-column label="序号" align='center' width="70px">
+          <template slot-scope="scope">{{getIndex(scope)}}</template>
+        </el-table-column>
         <el-table-column prop="project_name" label="项目名称" align='center' width="110px"></el-table-column>
         <el-table-column prop="company_name" label="所属单位" align='center' width="150px"></el-table-column>
         <el-table-column prop="city_name" label="区域" align='center' width="80px"></el-table-column>
@@ -88,6 +96,8 @@ body {
           </el-table-column>
         </el-table-column>
       </el-table>
+      <el-pagination background class='page' layout="prev, pager, next" :page-size="pageSize" :current-page="searchObj.page" :total="total" @current-change="pageChange">
+      </el-pagination>
     </template>
   </div>
 </template>
@@ -96,6 +106,12 @@ export default {
   data() {
     return {
       tableData: [],
+      searchObj: {
+        search: "",
+        page: 1
+      },
+      pageSize: 0,
+      total: 0,
       companyType: 0, //0公司累计金额   1  公司已结金额  2 公司未结金额
       personType: 0 //0全民经纪人累计金额   1  全民经纪人已结金额  2 全民经纪人未结金额
     };
@@ -159,11 +175,24 @@ export default {
         });
       }
     },
-
+    search() {
+      this.searchObj.page = 1;
+      this.getProjectCommissionList();
+    },
+    getIndex(row) {
+      let index = row.$index + 1 + (this.searchObj.page - 1) * this.pageSize;
+      return index;
+    },
+    pageChange(page) {
+      this.searchObj.page = page;
+      this.getProjectCommissionList();
+    },
     async getProjectCommissionList() {
-      let res = await this.api.getProjectCommissionList();
+      let res = await this.api.getProjectCommissionList(this.searchObj);
       if (res.code == 200) {
         this.tableData = res.data.data;
+        this.total = res.data.total;
+        this.pageSize = res.data.per_page;
       }
     }
   }

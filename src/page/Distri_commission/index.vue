@@ -4,6 +4,9 @@ body {
   background-color: #fafafc;
 }
 .distri_commission {
+   .el-table thead {
+    color: #333;
+  }
   .el-table--border,
   .el-table--group {
     margin-top: 20px;

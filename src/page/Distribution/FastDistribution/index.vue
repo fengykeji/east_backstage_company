@@ -1,6 +1,6 @@
 <style lang="less">
 .fastDistribution {
-  padding-top: 90px;
+  padding-top: 20px;
   margin: 0 auto;
   width: 1200px;
   .el-table th {
@@ -26,7 +26,7 @@
       .text {
         font-size: 18px;
         width: 200px;
-        margin-bottom: 20px;
+        margin-bottom: 30px;
       }
     }
   }
@@ -43,7 +43,9 @@
         </span>
       </div>
       <el-table :data="maintain" border>
-        <el-table-column prop="nub" label="序号" align='center' width="70px"></el-table-column>
+        <el-table-column prop="nub" label="序号" align='center' width="70px">
+          <template slot-scope="scope">{{getIndex(scope)}}</template>
+        </el-table-column>
         <el-table-column prop="account" label="云算号" align='center'></el-table-column>
         <el-table-column prop="name" label="名称" align='center'></el-table-column>
         <el-table-column prop="tel" label="联系方式" align='center'></el-table-column>
@@ -61,6 +63,8 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-pagination background class='page' layout="prev, pager, next" :page-size="pageSize" :current-page="page" :total="total" @current-change="pageChange">
+      </el-pagination>
     </div>
     <div class='table'>
       <div class='title'>
@@ -84,6 +88,7 @@
           </template>
         </el-table-column>
       </el-table>
+
     </div>
   </div>
 </template>
@@ -91,6 +96,9 @@
 export default {
   data() {
     return {
+      page: 1,
+      pageSize: 0,
+      total: 0,
       maintain: [],
       examine: [],
       project_id: "",
@@ -115,7 +123,7 @@ export default {
         type: "warning"
       })
         .then(async () => {
-          let res = await this.api.endAgent({agent_id:row.agent_id});
+          let res = await this.api.endAgent({ agent_id: row.agent_id });
           if (res.code == 200) {
             this.$message({
               type: "success",
@@ -136,7 +144,17 @@ export default {
       if (res.code == 200) {
         this.maintain = res.data.y_info.data;
         this.examine = res.data.n_info.data;
+        this.total = res.data.y_info.total;
+        this.pageSize = res.data.y_info.per_page;
       }
+    },
+    getIndex(row) {
+      let index = row.$index + 1 + (this.page - 1) * this.pageSize;
+      return index;
+    },
+    pageChange(page) {
+      this.page = page;
+      this.getAgent();
     },
     cancel() {
       this.$router.push({ name: "distribution" });
@@ -146,7 +164,7 @@ export default {
         //查看
         this.$router.push({
           name: "addPerson",
-          params: { operationType: type, agent_id: row.agent_id }
+          params: { project_id: this.project_id ,  operationType: type, agent_id: row.agent_id }
         });
       } else if (type == 1) {
         //审核
@@ -190,7 +208,7 @@ export default {
       //新增
       this.$router.push({
         name: "addPerson",
-        params: { project_id: this.project_id }
+        params: { project_id: this.project_id,}
       });
     }
   }

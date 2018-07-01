@@ -122,7 +122,7 @@ export default {
         nail_tel: "",
         second_name: "",
         second_tel: "",
-        broker_id: '',
+        broker_id: "",
         state: 3,
         count_num: 0
       },
@@ -133,7 +133,7 @@ export default {
     };
   },
   mounted() {
-    this.broker_id=this.$route.params.broker_id;
+    this.broker_id = this.$route.params.broker_id;
     this.project_id = this.$route.params.project_id;
     this.operationType = this.$route.params.operationType;
     if (!this.project_id) {
@@ -141,7 +141,8 @@ export default {
       return;
     }
     let d = new Date();
-    this.sumbitForm.batch_name = d.getFullYear() + "年" + ( d.getMonth() + 1 ) +"月" +d.getDate() + "日";
+    this.sumbitForm.batch_name =
+      d.getFullYear() + "年" + (d.getMonth() + 1) + "月" + d.getDate() + "日";
     this.rule_id = this.$route.params.rule_id;
     this.getBrokerApply();
   },
@@ -162,8 +163,6 @@ export default {
               if (res.code == 200) {
                 this.$message({ type: "success", message: "提交成功!" });
                 this.$router.push({ name: "maidInfo" });
-              } else {
-                this.$message({ type: "error", message: res.msg });
               }
             })
             .catch(() => {

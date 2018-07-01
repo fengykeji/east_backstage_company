@@ -1,7 +1,5 @@
 <style lang="less" scoped>
 .paymentRequest {
-  margin-top: 90px;
-  margin-left: 180px;
   .table {
     margin: 0 auto;
     width: 1000px;
@@ -152,8 +150,6 @@ export default {
               if (res.code == 200) {
                 this.$message({ type: "success", message: "提交成功!" });
                 this.$router.push({ name: "maidInfo" });
-              } else {
-                this.$message({ type: "error", message: "提交失败" });
               }
             })
             .catch(() => {

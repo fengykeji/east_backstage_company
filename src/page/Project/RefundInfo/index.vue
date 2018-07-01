@@ -6,7 +6,6 @@
 }
 .title {
   font-size: 20px;
-  padding-top: 10px;
 }
 .box {
   padding: 15px 20px;

@@ -4,9 +4,7 @@ body {
   background-color: #fafafc;
 }
 .agent {
-  margin-left: 180px;
-  margin-top: 195px;
-   .el-table thead{
+  .el-table thead {
     color: #333;
   }
   .el-table th {
@@ -18,8 +16,6 @@ body {
   .title {
     background-color: #fafafc;
     text-align: left;
-    padding-left: 180px;
-    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -55,7 +51,7 @@ body {
         </div>
       </div>
     </div>
-    <el-table :data="tableData" border style="width: 100%">
+    <el-table :data="tableData" class="mt-20" border style="width: 100%">
       <el-table-column prop="" label="序号" align='center' width="80px">
         <template slot-scope="scope">{{getIndex(scope)}}</template>
       </el-table-column>
@@ -246,13 +242,12 @@ export default {
       }
     },
     async sumbit() {
-
- let res = await this.api.quitPeople(this.form);
-          if (res.code == 200) {
-            this.$message({ type: "success", message: "离职成功" });
-            this.search();
-            this.cancel();
-          }
+      let res = await this.api.quitPeople(this.form);
+      if (res.code == 200) {
+        this.$message({ type: "success", message: "离职成功" });
+        this.search();
+        this.cancel();
+      }
     },
     async showSee(row) {
       this.showInfo = true;

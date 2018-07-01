@@ -42,12 +42,12 @@ body {
           </div>
         </div>
         <div>
-          <el-button class='tip' type="text" @click="search(0)">全部</el-button>
-          <el-button class='tip' type="text" @click="search(1)">待审核</el-button>
-          <el-button class='tip' type="text" @click="search(2)">审核不通过</el-button>
-          <el-button class='tip' type="text" @click="search(3)">未认证</el-button>
-          <el-button class='tip' type="text" @click="search(4)">已认证</el-button>
-          <el-button class='tip' type="text" @click="search(5)">已转出</el-button>
+          <el-button class='tip' :class="tipActiveIndex==0?'active':''" type="text" @click="clickTip(0)">全部</el-button>
+          <el-button class='tip' :class="tipActiveIndex==1?'active':''" type="text" @click="clickTip(1)">待审核</el-button>
+          <el-button class='tip' :class="tipActiveIndex==2?'active':''" type="text" @click="clickTip(2)">审核不通过</el-button>
+          <el-button class='tip' :class="tipActiveIndex==3?'active':''" type="text" @click="clickTip(3)">未认证</el-button>
+          <el-button class='tip' :class="tipActiveIndex==4?'active':''" type="text" @click="clickTip(4)">已认证</el-button>
+          <el-button class='tip' :class="tipActiveIndex==5?'active':''" type="text" @click="clickTip(5)">已转出</el-button>
         </div>
       </div>
     </div>
@@ -100,6 +100,7 @@ export default {
         tag_search: "",
         page: 1
       },
+      tipActiveIndex: 0,
       pageSize: 0,
       name: "",
       company_name: "",
@@ -116,9 +117,13 @@ export default {
       let index = row.$index + 1 + (this.searchObj.page - 1) * this.pageSize;
       return index;
     },
-    search(type) {
+    clickTip(index) {
+      this.tipActiveIndex = index;
+      this.searchObj.tag_search = index;
+      this.search();
+    },
+    search() {
       this.searchObj.page = 1;
-      this.searchObj.tag_search = type;
       this.getProjectList();
     },
     async getProjectList() {

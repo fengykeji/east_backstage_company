@@ -20,9 +20,13 @@ const fileUpload = (url, params) => { return http.post(`${base}/${url}`, params,
 
 //返回拦截器
 http.interceptors.response.use(function (res) {
-  if (res.data.code == 201) {
+  if (res.data.code == 200) {
+  }
+  else if (res.data.code == 201) {
     Vue.prototype.$message({ type: 'error', message: '当前登录已过期，请重新登录' });
     location.href = '/';
+  }else {
+    Vue.prototype.$message({ type: 'error', message: res.data.msg });
   }
   return res.data;
 });

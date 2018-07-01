@@ -202,11 +202,6 @@ export default {
       });
       if (res.code == 200) {
         this.$router.push({ name: "distribution" });
-      } else {
-        this.$message({
-          type: "error",
-          message: "已经分销过此项目，不可再次申请"
-        });
       }
     },
     cancel() {

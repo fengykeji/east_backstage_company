@@ -1,7 +1,7 @@
 <style lang="less" >
 .requestRefund {
-  width: 960px;
-  margin: 50px auto 0;
+  width: 760px;
+  margin: 0 auto 0;
   display: inline-block;
   text-align: left;
   .el-form-item {
@@ -158,8 +158,6 @@ export default {
               name: "addProject",
               params: this.$route.params
             });
-          } else {
-            this.$message({ type: "error", message: res.msg });
           }
         } else {
           return false;

@@ -73,7 +73,7 @@
       <div class='relative'>
         <city-selector class='selectDis' :province.sync="searchObj.province" :city.sync="searchObj.city" :district.sync="searchObj.district" />
         <el-input class='query' v-model="searchObj.search" placeholder="可按项目编号/项目名称进行查询"></el-input>
-         <el-button @click="search" icon="el-icon-search" circle></el-button>
+        <el-button @click="search" icon="el-icon-search" circle></el-button>
         <span class='pos-abs'>
           <el-button type="primary" class="pos-right" @click="close">返回</el-button>
         </span>
@@ -81,7 +81,7 @@
     </div>
     <el-table :data="sumbitForm" border>
       <el-table-column property="id" label="序号" align='center' width="70px"></el-table-column>
-       <el-table-column property="project_code" label="项目编号" align='center'></el-table-column>
+      <el-table-column property="project_code" label="项目编号" align='center'></el-table-column>
       <el-table-column property="project_name" label="项目名称" align='center'></el-table-column>
       <el-table-column property="absolute_address" label="地址" align='center' width="320px">
         <template slot-scope="scope">

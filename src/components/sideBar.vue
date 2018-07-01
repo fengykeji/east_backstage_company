@@ -1,3 +1,5 @@
+<style lang="less" scoped src="./icon.less"></style>
+
 <style scoped lang="less">
 .sidebar-menu {
   position: fixed !important;
@@ -7,6 +9,7 @@
   z-index: 100;
   width: 200px;
   margin-top: 81px;
+  text-align: left;
 }
 .text {
   font-size: 16px;
@@ -84,13 +87,18 @@
       <el-button type='text' class='top-text' @click='cancel'>退出</el-button>
     </div>
     <el-menu :default-active="activeIndex" class="sidebar-menu" @open="menuOpen" @close="menuOpen">
-      <el-menu-item index="project" class='text' @click="handleSelect('project')">项目管理</el-menu-item>
-      <el-menu-item index="distribution" class='text' @click="handleSelect('distribution')">分销管理</el-menu-item>
-      <el-menu-item index="commission" class='text' @click="handleSelect('commission')">项目佣金管理</el-menu-item>
-      <el-menu-item index="distri_commission" class='text' @click="handleSelect('distri_commission')">分销佣金管理</el-menu-item>
+      <el-menu-item index="project" class='text' @click="handleSelect('project')">
+        <i class="icon-project"></i>项目管理</el-menu-item>
+      <el-menu-item index="distribution" class='text' @click="handleSelect('distribution')">
+        <i class="icon-distribution"></i>分销管理</el-menu-item>
+      <el-menu-item index="commission" class='text' @click="handleSelect('commission')">
+        <i class="icon-commission"></i>项目佣金管理</el-menu-item>
+      <el-menu-item index="distri_commission" class='text' @click="handleSelect('distri_commission')">
+        <i class="icon-distri_commission"></i>分销佣金管理</el-menu-item>
       <el-submenu index=''>
         <template slot="title">
-          <span class='delent'>经纪人管理</span>
+          <span class='delent'>
+            <i class="icon-agent"></i>经纪人管理</span>
         </template>
         <el-menu-item index="agent" class='people' @click="handleSelect('agent')">在职经纪人</el-menu-item>
         <el-menu-item index="examinePeople" class='people' @click="handleSelect('examinePeople')">审核经纪人</el-menu-item>

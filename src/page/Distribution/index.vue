@@ -4,6 +4,9 @@ body {
   background-color: #fafafc;
 }
 .distribution {
+  .el-table thead {
+    color: #333;
+  }
   .el-form-item__label {
     float: none;
   }
@@ -25,20 +28,24 @@ body {
 <template>
   <div class='box distribution'>
     <div class='title'>
-     
-        <div class='tab-block'>
-          <div class='text1'>当前位置：项目分销</div>
-          <div class='btn'>
-            <!-- <el-button type="primary" @click="getList">高级查询</el-button> -->
-            <el-button type="primary" @click='startApply'>发起申请</el-button>
-          </div>
+
+      <div class='tab-block'>
+        <div class='text1'>当前位置：项目分销</div>
+        <div class="search-block">
+          <el-input class='query' placeholder="可按项目名称进行查询" v-model="searchObj.search"></el-input>
+          <el-button icon="el-icon-search" circle @click="getList"></el-button>
         </div>
-        <div>
-          <el-button class='tip' type="text" @click="search(0)">全部</el-button>
-          <el-button class='tip' type="text" @click="search(1)">待审核</el-button>
-          <el-button class='tip' type="text" @click="search(2)">已通过</el-button>
-          <el-button class='tip' type="text" @click="search(3)">已终止</el-button>
+        <div class='btn'>
+          <!-- <el-button type="primary" @click="getList">高级查询</el-button> -->
+          <el-button type="primary" @click='startApply'>发起申请</el-button>
         </div>
+      </div>
+      <div>
+        <el-button class='tip' :class="tipActiveIndex==0?'active':''" type="text" @click="clickTip(0)">全部</el-button>
+        <el-button class='tip' :class="tipActiveIndex==1?'active':''" type="text" @click="clickTip(1)">待审核</el-button>
+        <el-button class='tip' :class="tipActiveIndex==2?'active':''" type="text" @click="clickTip(2)">已通过</el-button>
+        <el-button class='tip' :class="tipActiveIndex==3?'active':''" type="text" @click="clickTip(3)">已终止</el-button>
+      </div>
       <!-- <el-input v-model="searchObj.tag_search" class='query'></el-input> -->
 
     </div>
@@ -80,7 +87,9 @@ body {
     </div>
     <template>
       <el-table :data="tableData" border style="width: 100%" class="mt-30">
-        <el-table-column prop="" label="序号" align='center' width="70px"> </el-table-column>
+        <el-table-column prop="" label="序号" align='center' width="70px">
+          <template slot-scope="scope">{{getIndex(scope)}}</template>
+        </el-table-column>
         <el-table-column prop="project_code" label="项目编号" align='center'></el-table-column>
         <el-table-column prop="project_name" label="项目名称" align='center'></el-table-column>
         <el-table-column prop="end_state" label="项目状态" align='center' width="90px">
@@ -105,6 +114,8 @@ body {
           </template>
         </el-table-column>
       </el-table>
+      <el-pagination background class='page' layout="prev, pager, next" :page-size="pageSize" :current-page="searchObj.page" :total="total" @current-change="pageChange">
+      </el-pagination>
     </template>
 
   </div>
@@ -118,8 +129,13 @@ export default {
         project_code: "",
         project_name: "",
         developer_name: "",
-        source: ""
+        source: "",
+        page: 1,
+        search: ""
       },
+      pageSize: 0,
+      total: 0,
+      tipActiveIndex: 0,
       tableData: [],
       project_id: "",
       options: [],
@@ -131,15 +147,33 @@ export default {
     this.getList();
   },
   methods: {
-    search(tag_search) {
-      this.searchObj.tag_search = tag_search;
+    clickTip(index) {
+      this.tipActiveIndex = index;
+      this.searchObj.tag_search = index;
+      this.search();
+    },
+    search() {
       this.getList();
     },
     async getList() {
       let res = await this.api.getList(this.searchObj);
       if (res.code == 200) {
         this.tableData = res.data.data;
+        this.total = res.data.total;
+        this.pageSize = res.data.per_page;
       }
+    },
+    search() {
+      this.searchObj.page = 1;
+      this.getList();
+    },
+    getIndex(row) {
+      let index = row.$index + 1 + (this.searchObj.page - 1) * this.pageSize;
+      return index;
+    },
+    pageChange(page) {
+      this.searchObj.page = page;
+      this.getList();
     },
     startApply() {
       this.$router.push({

@@ -88,19 +88,21 @@
       <div class='left'>
         <div class='text1'>当前位置：审核经纪人</div>
         <div class="left">
-          <el-button class='tip' type="text" @click="search(1)">全部</el-button>
-          <el-button class='tip' type="text" @click="search(2)">待审核</el-button>
-          <el-button class='tip' type="text" @click="search(0)">审核未通过</el-button>
+          <el-button class='tip' :class="tipActiveIndex==1?'active':''" type="text" @click="clickTip(1)">全部</el-button>
+          <el-button class='tip' :class="tipActiveIndex==2?'active':''" type="text" @click="clickTip(2)">待审核</el-button>
+          <el-button class='tip' :class="tipActiveIndex==0?'active':''" type="text" @click="clickTip(0)">审核未通过</el-button>
           <div class="search-block">
             <el-input class='query' v-model="searchObj.search" placeholder="可查询云算号/经纪人姓名"></el-input>
-            <el-button icon="el-icon-search" circle></el-button>
+            <el-button icon="el-icon-search" circle @click='getExList'></el-button>
           </div>
         </div>
       </div>
     </div>
     <template>
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column prop="" label="序号" align='center' width="80px"> </el-table-column>
+        <el-table-column prop="" label="序号" align='center' width="80px">
+          <template slot-scope="scope">{{getIndex(scope)}}</template>
+        </el-table-column>
         <el-table-column prop="account" label="云算号" align='center' width="110px"></el-table-column>
         <el-table-column prop="name" label="经纪人姓名" align='center' width="110px"></el-table-column>
         <el-table-column prop="project_name" label="申请项目" align='center'></el-table-column>
@@ -230,8 +232,10 @@ export default {
       tableData: [],
       searchObj: {
         tag_search: "",
-        search: ""
+        search: "",
+        page:1,
       },
+      tipActiveIndex: 1,
       pageSize: 0,
       total: 0,
       dialogFormVisible: false,
@@ -277,13 +281,30 @@ export default {
       this.submitForm.type = type;
       let temp = Object.assign({}, this.submitForm);
       if (type == 0) {
-        temp.remark = this.remark;
-        let res = await this.api.exPeople(temp);
-        if (res.code == 200) {
-          this.getExList();
-          this.cancelRefuseInfo();
-          this.cancel();
-        }
+        this.$confirm("此操作将审核不通过, 是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(async () => {
+            temp.remark = this.remark;
+            let res = await this.api.exPeople(temp);
+            if (res.code == 200) {
+              this.$message({
+                type: "success",
+                message: "审核不通过成功!"
+              });
+            }
+            this.getExList();
+            this.cancelRefuseInfo();
+            this.cancel();
+          })
+          .catch(() => {
+            this.$message({
+              type: "info",
+              message: "已取消审核不通过"
+            });
+          });
       } else {
         this.$confirm("此操作将审核成功, 是否继续?", "提示", {
           confirmButtonText: "确定",
@@ -297,10 +318,10 @@ export default {
                 type: "success",
                 message: "审核成功!"
               });
-              this.getExList();
-              this.cancelRefuseInfo();
-              this.cancel();
             }
+            this.getExList();
+            this.cancelRefuseInfo();
+            this.cancel();
           })
           .catch(() => {
             this.$message({
@@ -314,11 +335,12 @@ export default {
       this.operationType = 0;
       this.dialogFormVisible = true;
       this.examinePeople = row;
+      this.submitForm.project_id = row.project_id;
+      this.submitForm.agent_id = row.agent_id;
+      this.submitForm.id = row.id;
       let res = await this.api.getExInfo(this.examinePeople);
       if (res.code == 200) {
-        this.submitForm.project_id = row.project_id;
-        this.submitForm.agent_id = row.agent_id;
-        this.submitForm.id = row.id;
+        Object.assign(this.examinePeople, res.data);
       }
     },
     async showSee(row) {
@@ -385,9 +407,13 @@ export default {
       let index = row.$index + 1 + (this.searchObj.page - 1) * this.pageSize;
       return index;
     },
+    clickTip(index) {
+      this.tipActiveIndex = index;
+      this.searchObj.tag_search = index;
+      this.search();
+    },
     search(type) {
       this.searchObj.page = 1;
-      this.searchObj.tag_search = type;
       this.getExList();
     }
   }

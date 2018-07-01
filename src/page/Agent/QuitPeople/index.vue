@@ -2,7 +2,7 @@
 </style>
 <style lang="less">
 .quitPeople {
-   .el-table thead{
+  .el-table thead {
     color: #333;
   }
   .el-table th {
@@ -24,14 +24,14 @@
       <div class='left'>
         <div class='text1'>当前位置：离职经纪人</div>
         <div class="search-block">
-          <el-input class='query' v-model="searchObj.search"  placeholder="可查询云算号/经纪人姓名"></el-input>
-          <el-button @click="search" icon="el-icon-search" circle></el-button>
+          <el-input class='query' v-model="searchObj.search" placeholder="可查询云算号/经纪人姓名"></el-input>
+          <el-button @click="getQuitList" icon="el-icon-search" circle></el-button>
         </div>
       </div>
 
     </div>
     <template>
-      <el-table :data="tableData" border style="width: 100%">
+      <el-table class="mt-20" :data="tableData" border style="width: 100%">
         <el-table-column label="序号" align='center' width="70px">
           <template slot-scope="scope">{{getIndex(scope)}}</template>
         </el-table-column>
@@ -42,7 +42,7 @@
         <el-table-column prop="role" label="角色" align='center'>
           <template slot-scope="scope">{{getRole(scope.row.role)}}</template>
         </el-table-column>
-        <el-table-column prop="department" label="所属部门" align='center' ></el-table-column>
+        <el-table-column prop="department" label="所属部门" align='center'></el-table-column>
         <el-table-column prop="position" label="职位" align='center'></el-table-column>
         <el-table-column prop="city" label="城市" align='center'></el-table-column>
         <el-table-column prop="district" label="区域" align='center'></el-table-column>
@@ -85,7 +85,7 @@
             <div>职位</div>
             <div class='border'>{{examinePeople.position}}</div>
           </el-form-item>
-            <el-form-item class='input1'>
+          <el-form-item class='input1'>
             <div>入职时间</div>
             <div class='border'>{{examinePeople.entry_time}}</div>
           </el-form-item>
@@ -123,7 +123,7 @@
             <div>银行卡号</div>
             <div class='border'>{{examinePeople.bank_card}}</div>
           </el-form-item>
-           <el-form-item class='input1'>
+          <el-form-item class='input1'>
             <div>通讯地址</div>
             <div class='border3'>{{examinePeople.city_name+examinePeople.district_name+examinePeople.absolute_address}}</div>
           </el-form-item>
@@ -218,10 +218,6 @@ export default {
     seeIdCard() {
       this.showIdCard = true;
     },
-    getIndex(row) {
-      let index = row.$index + 1 + (this.searchObj.page - 1) * this.pageSize;
-      return index;
-    },
     getRole(row) {
       if (row == 1) {
         return "经纪人";
@@ -274,6 +270,10 @@ export default {
     search() {
       this.searchObj.page = 1;
       this.getQuitList();
+    },
+    getIndex(row) {
+      let index = row.$index + 1 + (this.searchObj.page - 1) * this.pageSize;
+      return index;
     },
     pageChange(page) {
       this.searchObj.page = page;

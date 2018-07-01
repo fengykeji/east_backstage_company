@@ -57,8 +57,6 @@ export default {
         localStorage.setItem("name", res.data.name);
         localStorage.setItem("company_name", res.data.company_name);
         localStorage.setItem("token", res.data.token);
-      } else {
-        this.$message({ type: "error", message: res.msg });
       }
     }
   }
