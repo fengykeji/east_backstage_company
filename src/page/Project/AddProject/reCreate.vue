@@ -42,9 +42,10 @@
     text-align: left;
     position: relative;
     font-size: 20px;
+    padding-bottom: 18px;
     .title-btn {
       position: absolute;
-      top: 40px;
+      top: 15px;
       right: 0;
     }
   }

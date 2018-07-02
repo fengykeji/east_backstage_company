@@ -48,7 +48,7 @@
     font-size: 18px;
     .title-btn {
       position: absolute;
-      top: 22px;
+      top: 18px;
       right: 0;
     }
   }
