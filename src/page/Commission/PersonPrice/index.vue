@@ -10,7 +10,7 @@
     margin-right: 100px;
   }
   .table {
-    margin: 90px 100px 50px 240px;
+    margin: 20px 100px 50px 240px;
     .text {
       font-size: 15px;
       text-align: left;

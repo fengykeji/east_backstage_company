@@ -42,7 +42,7 @@
 .top-name {
   position: absolute;
   top: 28px;
-  right: 400px;
+  right: 360px;
   font-size: 15px;
 }
 .top-text {
@@ -50,6 +50,13 @@
   top: 20px;
   right: 50px;
   font-size: 15px;
+}
+.top-img {
+  vertical-align: top;
+  position: relative;
+  top: -5px;
+  width: 25px;
+  height: 25px;
 }
 .top-one {
   position: absolute;
@@ -80,11 +87,13 @@
       <span class='tou'>
         <img class='img' src='../assets/images/logo.png' />
       </span>
-      <span class='top-name'>公司名称: {{company_name}}
+      <span class='top-name'>{{company_name}}
       </span>
       <span class='top-one'>个人名称: {{name}}
       </span>
-      <el-button type='text' class='top-text' @click='cancel'>退出</el-button>
+     <span  @click='cancel'>
+        <el-button type='text' class='top-text'><img class='top-img' src='../assets/images/exit@2x.png' />退出</el-button>
+     </span>
     </div>
     <el-menu :default-active="activeIndex" class="sidebar-menu" @open="menuOpen" @close="menuOpen">
       <el-menu-item index="project" class='text' @click="handleSelect('project')">

@@ -5,7 +5,7 @@
   border: 1px solid #999;
   text-align: left;
   padding: 15px 30px;
-  margin-top: 90px;
+  margin-top: 20px;
   .input {
     width: 180px;
     display: inline-block;
@@ -28,16 +28,24 @@
   .title-text {
     font-size: 16px;
     padding: 5px 0;
+    position: relative;
   }
   .dialog-footer {
-    text-align: right;
-    padding-top: 20px;
+    position: absolute;
+    right: 0;
+    top: 0;
   }
 }
 </style>
 <template>
+
   <div class='projectInfo'>
-    <div class='title-text'>项目分销详情</div>
+    <div class='title-text'>项目分销详情
+      <div slot="footer" class="dialog-footer">
+        <el-button @click='cancel'>关 闭</el-button>
+        <el-button type="primary" @click='submit' :disabled="isDisable()">提 交</el-button>
+      </div>
+    </div>
     <el-form :model="submitForm" class='form' :disabled="!operationType==1">
       <div>
         <el-form-item label="项目编号" class='input'>
@@ -54,7 +62,7 @@
       </el-form-item>
       <div class='text'>现住地址</div>
       <el-form-item>
-        <city-selector :province.sync="submitForm.province_name" :city.sync="submitForm.city_name" :district.sync="submitForm.district_name" />
+        <city-selector :province.sync="submitForm.province" :city.sync="submitForm.city" :district.sync="submitForm.district" />
         <el-input class='input1' v-model="submitForm.absolute_address"></el-input>
       </el-form-item>
       <el-form-item label="项目负责人" class='input'>
@@ -93,7 +101,7 @@
             </el-table-column>
         </el-table> -->
     <div :disabled="!operationType==1">
-      <div class='title-text' v-if='operationType==0'>审核项目信息</div>
+      <div class='title-text' v-if='submitForm.state==1'>审核项目信息</div>
       <el-form :model="submitForm.auditProject" v-if='operationType==0'>
         <div>
           <el-form-item label="审核人员" class='input'>
@@ -123,10 +131,6 @@
         <el-table-column property="project_hold_phone" label="分配时间" align='center'></el-table-column>
         <el-table-column property="project_hold_phone" label="工作状态" align='center'></el-table-column>
       </el-table>
-    </div>
-    <div slot="footer" class="dialog-footer">
-      <el-button @click='cancel'>关 闭</el-button>
-      <el-button type="primary" @click='submit' :disabled="isDisable()">提 交</el-button>
     </div>
   </div>
 </template>
