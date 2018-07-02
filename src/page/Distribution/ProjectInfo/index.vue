@@ -7,9 +7,9 @@
   padding: 15px 30px;
   margin-top: 20px;
   .input {
-    width: 180px;
+    width: 190px;
     display: inline-block;
-    padding-right: 30px;
+    padding-right: 31px;
   }
   .input1 {
     padding-top: 10px;
@@ -100,35 +100,34 @@
             </template>
             </el-table-column>
         </el-table> -->
-    <div :disabled="!operationType==1">
-      <div class='title-text' v-if='submitForm.state==1'>审核项目信息</div>
-      <el-form :model="submitForm.auditProject" v-if='operationType==0'>
+    <div v-if="this.auditing_state==1">
+      <div class='title-text'>审核项目信息</div>
+      <el-form :model="submitForm.auditProject">
         <div>
           <el-form-item label="审核人员" class='input'>
-            <el-input v-model="submitForm.fp_name" auto-complete="off"></el-input>
+            <el-input v-model="submitForm.fp_name" auto-complete="off" :disabled="operationType==0"></el-input>
           </el-form-item>
           <el-form-item label="审核时间" class='input'>
-            <el-input v-model="submitForm.fp_time" auto-complete="off"></el-input>
+            <el-input v-model="submitForm.fp_time" auto-complete="off" :disabled="operationType==0"></el-input>
           </el-form-item>
           <el-form-item label="备注" class='input'>
-            <el-input v-model="submitForm.remark" auto-complete="off"></el-input>
+            <el-input v-model="submitForm.remark" auto-complete="off" :disabled="operationType==0"></el-input>
           </el-form-item>
         </div>
       </el-form>
     </div>
-    <div v-if='operationType==0'>
+    <div v-if="this.auditing_state==1">
       <div class='title-text'>到访确认人信息</div>
       <el-table :data="submitForm.peopleInfo" border>
-        <el-table-column property="nub" label="序号" align='center' width="70px"></el-table-column>
-        <el-table-column property="company_name" label="云算号" align='center'></el-table-column>
-        <el-table-column property="company_relation" label="名称" align='center'></el-table-column>
-        <el-table-column property="s_time" label="联系方式" align='center'></el-table-column>
-        <el-table-column property="e_time" label="所属部门" align='center'></el-table-column>
-        <el-table-column property="project_hold_name" label="职位" align='center'></el-table-column>
-        <el-table-column property="project_hold_phone" label="入职时间" align='center'></el-table-column>
-        <el-table-column property="project_hold_phone" label="申请时间" align='center'></el-table-column>
+        <el-table-column label="序号" align='center' width="70px"></el-table-column>
+        <el-table-column property="account" label="云算号" align='center'></el-table-column>
+        <el-table-column property="name" label="名称" align='center'></el-table-column>
+        <el-table-column property="tel" label="联系方式" align='center'></el-table-column>
+        <el-table-column property="department" label="所属部门" align='center'></el-table-column>
+        <el-table-column property="position" label="职位" align='center'></el-table-column>
+        <el-table-column property="entry_time" label="入职时间" align='center'></el-table-column>
         <el-table-column property="project_hold_phone" label="审核状态" align='center'></el-table-column>
-        <el-table-column property="project_hold_phone" label="分配时间" align='center'></el-table-column>
+        <el-table-column property="fp_time" label="分配时间" align='center'></el-table-column>
         <el-table-column property="project_hold_phone" label="工作状态" align='center'></el-table-column>
       </el-table>
     </div>
@@ -146,14 +145,17 @@ export default {
         project_id: "",
         auditProject: {},
         peopleInfo: [],
-        property_tags: []
+        property_tags: [],
+        state: ""
       },
       project_id: "",
       typeOptions: [],
-      operationType: 0
+      operationType: 0,
+      auditing_state: ""
     };
   },
   mounted() {
+    this.auditing_state = this.$route.params.auditing_state;
     this.project_id = this.$route.params.project_id;
     if (this.$route.params.project_id) {
       this.operationType = this.$route.params.operationType;
@@ -184,6 +186,7 @@ export default {
       let res = await this.api.applyProject({ project_id: this.project_id });
       if (res.code == 200) {
         Object.assign(this.submitForm, res.data);
+        console.log(this.submitForm);
         let property_tags = res.data.property_tags;
         let arr = [];
         for (let type of property_tags) {
@@ -200,13 +203,28 @@ export default {
         this.sumbitForm = res.data;
       }
     },
-    async submit() {
-      let res = this.api.changeProjectAdd({
-        project_id: this.project_id
-      });
-      if (res.code == 200) {
-        this.$router.push({ name: "distribution" });
-      }
+    submit(row) {
+      this.$confirm("此操作将提交成功, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(async () => {
+          let res = this.api.changeProjectAdd({ project_id: this.project_id });
+          if (res.code == 200) {
+            this.$message({
+              type: "success",
+              message: "提交成功!"
+            });
+          }
+          this.$router.push({ name: "distribution" });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消提交"
+          });
+        });
     },
     cancel() {
       if (this.$route.params.operationType != undefined) {

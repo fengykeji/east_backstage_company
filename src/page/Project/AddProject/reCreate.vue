@@ -182,7 +182,9 @@
             </el-form-item>
             <div class='num_details'>保证金详情</div>
             <el-table :data='authentication_info.business_log' border>
-              <el-table-column property="id" label="序号" align='center' width="70px"></el-table-column>
+              <el-table-column label="序号" align='center' width="70px">
+                <template slot-scope="scope">{{getIndex(scope)}}</template>
+              </el-table-column>
               <el-table-column property="drawee" label="付款户名" align='center'></el-table-column>
               <el-table-column property="payee" label="收款户名" align='center'></el-table-column>
               <el-table-column property="price" label="金额（￥）" align='center'></el-table-column>
@@ -207,7 +209,9 @@
         <div v-if="operationType==2" :disabled="operationType===2">
           <div class='num_set'>项目历史</div>
           <el-table :data="project_history" border>
-            <el-table-column property="nub" label="序号" align='center' width="70px"></el-table-column>
+            <el-table-column property="nub" label="序号" align='center' width="70px">
+              <template slot-scope="scope">{{getIndex(scope)}}</template>
+            </el-table-column>
             <el-table-column property="company_name" label="公司名称" align='center'></el-table-column>
             <el-table-column property="company_relation" label="与项目关系" align='center'></el-table-column>
             <el-table-column property="s_time" label="开始时间" align='center'></el-table-column>
@@ -232,7 +236,6 @@
           <el-form-item label="联系电话" prop="phone" class='input'>
             <el-input v-model="projectUserForm.phone" auto-complete="off" placeholder="请输入联系电话"></el-input>
           </el-form-item>
-
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click='cancelUser'>关 闭</el-button>
@@ -473,6 +476,10 @@ export default {
     this.getType();
   },
   methods: {
+    getIndex(row) {
+      let index = row.$index + 1;
+      return index;
+    },
     async requestRefund() {
       this.$router.push({
         name: "requestRefund",

@@ -32,7 +32,7 @@ body {
       <div class='tab-block'>
         <div class='text1'>当前位置：项目分销</div>
         <div class="search-block">
-          <el-input class='query' placeholder="可按项目名称进行查询" v-model="searchObj.search"></el-input>
+          <el-input class='query' placeholder="可按项目名称/项目编号进行查询" v-model="searchObj.search"></el-input>
           <el-button icon="el-icon-search" circle @click="getList"></el-button>
         </div>
         <div class='btn'>
@@ -110,7 +110,7 @@ body {
         <el-table-column prop="operation" label="操作" align='center' width="170px">
           <template slot-scope="scope">
             <el-button type="text" @click='showProject(scope.row,0)'>查看</el-button>
-            <el-button type="text" @click='fastDistribution(scope.row)'>分配到访确认人</el-button>
+            <el-button type="text" @click='fastDistribution(scope.row)' v-if='scope.row.state==1'>分配到访确认人</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -190,7 +190,11 @@ export default {
       if (type == 0) {
         this.$router.push({
           name: "projectInfo",
-          params: { operationType: type, project_id: row.project_id }
+          params: {
+            operationType: type,
+            project_id: row.project_id,
+            auditing_state: row.state
+          }
         });
       }
     },
@@ -214,7 +218,7 @@ export default {
       } else if (row == 1) {
         return "通过";
       } else if (row == 2) {
-        return "审核中";
+        return "待审核";
       }
     }
   }

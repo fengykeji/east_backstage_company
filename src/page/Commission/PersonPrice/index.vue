@@ -1,50 +1,10 @@
-<style lang="less" scoped>
-.personPrice {
-  .search-block {
-    position: absolute;
-    right: 0;
-    top: 8px;
-    white-space: nowrap;
-  }
-  .margin-right {
-    margin-right: 100px;
-  }
-  .table {
-    margin: 20px 100px 50px 240px;
-    .text {
-      font-size: 15px;
-      text-align: left;
-      padding-bottom: 10px;
-      .price {
-        padding-right: 20px;
-      }
-    }
-    .title {
-      position: relative;
-      padding-bottom: 20px;
-      text-align: left;
-      .title-text {
-        padding-right: 360px;
-        font-size: 20px;
-        padding-bottom: 15px;
-      }
-      .pos-btn {
-        position: absolute;
-        top: 0;
-        right: 0;
-      }
-    }
-    .query {
-      width: 300px;
-    }
-  }
-}
+<style lang="less" scoped src='./index.less'>
 </style>
 <style lang="less">
 .personPrice {
   .el-table--border,
   .el-table--group {
-    margin-top: 20px;
+    margin-top: 10px;
   }
   .el-table th {
     padding: 8px 0px;
@@ -65,9 +25,8 @@
         <span class='search-block'>
           <span>
             <el-input v-model="searchObj.search" class='query' placeholder="可查询推荐编号/经纪人名称"></el-input>
-            <el-button @click="getPersonInfoList" icon="el-icon-search" circle class='margin-right'></el-button>
+            <el-button @click="getPersonInfoList" icon="el-icon-search" circle class='mt-10'></el-button>
           </span>
-
           <el-button class='pos-btn' type="primary" @click='cancel'>关闭</el-button>
         </span>
       </div>
@@ -76,7 +35,9 @@
         <span class='price'>累计笔数:{{sumbitForm.count}}笔</span>
       </div>
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column prop="" label="序号" align='center' width="70px"></el-table-column>
+        <el-table-column prop="" label="序号" align='center' width="70px">
+          <template slot-scope="scope">{{getIndex(scope)}}</template>
+        </el-table-column>
         <el-table-column prop="client_id" label="推荐编号" align='center'></el-table-column>
         <el-table-column prop="project_name" label="项目名称" align='center'></el-table-column>
         <el-table-column prop="house_info" label="房间号" align='center'></el-table-column>
@@ -93,6 +54,8 @@
         </el-table-column>
         <el-table-column prop="create_time" label="确认时间" align='center' width="160px"></el-table-column>
       </el-table>
+      <el-pagination background class='page' layout="prev, pager, next" :page-size="pageSize" :current-page="searchObj.page" :total="total" @current-change="pageChange">
+      </el-pagination>
     </div>
     <div class='table' v-if='personType==1'>
       <div class='title'>
@@ -106,7 +69,9 @@
         <span class='price'>已结笔数:{{sumbitForm.count}}笔</span>
       </div>
       <el-table :data="tableDataS" border style="width: 100%">
-        <el-table-column prop="" label="序号" align='center' width="70px"></el-table-column>
+        <el-table-column prop="" label="序号" align='center' width="70px">
+          <template slot-scope="scope">{{getIndex(scope)}}</template>
+        </el-table-column>
         <el-table-column prop="batch_name" label="批次名称" align='center'></el-table-column>
         <el-table-column prop="apply_name" label="申请人员" align='center'></el-table-column>
         <el-table-column prop="create_time" label="申请时间" align='center'></el-table-column>
@@ -123,20 +88,28 @@
         <el-table-column prop="recive_name" label="收款户名" align='center'></el-table-column>
         <el-table-column prop="update_time" label="确认时间" align='center'></el-table-column>
       </el-table>
+      <el-pagination background class='page' layout="prev, pager, next" :page-size="pageSize" :current-page="searchObj.page" :total="total" @current-change="pageChange">
+      </el-pagination>
     </div>
     <div class='table' v-if='personType==2'>
       <div class='title'>
         <span class='title-text'>个人未结列表</span>
-        <el-input v-model="searchObj.search" class='query' placeholder="可查询推荐编号/经纪人名称"></el-input>
-        <el-button @click="getPersonInfoList" icon="el-icon-search" circle></el-button>
-        <el-button class='pos-btn' type="primary" @click='cancel'>关闭</el-button>
+        <span class='search-block'>
+          <span>
+            <el-input v-model="searchObj.search" class='query' placeholder="可查询推荐编号/经纪人名称"></el-input>
+            <el-button @click="getPersonInfoList" icon="el-icon-search" circle class='mt-10'></el-button>
+          </span>
+          <el-button class='pos-btn' type="primary" @click='cancel'>关闭</el-button>
+        </span>
       </div>
       <div class='text'>
         <span class='price'>未结金额:{{sumbitForm.total_price}}</span>
         <span class='price'>未结笔数:{{sumbitForm.count}}笔</span>
       </div>
       <el-table :data="tableDataSa" border style="width: 100%">
-        <el-table-column prop="" label="序号" align='center' width="70px"></el-table-column>
+        <el-table-column prop="" label="序号" align='center' width="70px">
+          <template slot-scope="scope">{{getIndex(scope)}}</template>
+        </el-table-column>
         <el-table-column prop="client_id" label="推荐编号" align='center'></el-table-column>
         <el-table-column prop="project_name" label="项目名称" align='center'></el-table-column>
         <el-table-column prop="house_info" label="房间号" align='center'></el-table-column>
@@ -145,11 +118,13 @@
         <el-table-column prop="broker_type" label="佣金类型" align='center'>
           <template slot-scope="scope">{{brokerType(scope.row.broker_type)}}</template>
         </el-table-column>
-        <el-table-column prop="create_time" label="时间" align='center' width="160px"></el-table-column>
+        <!-- <el-table-column prop="create_time" label="时间" align='center' width="160px"></el-table-column> -->
         <el-table-column prop="broker_num" label="佣金金额" align='center'></el-table-column>
         <el-table-column prop="commission_way" label="计算规则" align='center'></el-table-column>
         <el-table-column prop="create_time" label="确认时间" align='center' width="160px"></el-table-column>
       </el-table>
+      <el-pagination background class='page' layout="prev, pager, next" :page-size="pageSize" :current-page="searchObj.page" :total="total" @current-change="pageChange">
+      </el-pagination>
     </div>
   </div>
 </template>
@@ -163,8 +138,11 @@ export default {
       project_id: "",
       company_rule_id: "",
       searchObj: {
-        search: ""
+        search: "",
+        page: 1
       },
+      pageSize: 0,
+      total: 0,
       sumbitForm: {
         total_price: "",
         count: ""
@@ -184,6 +162,17 @@ export default {
     this.getPersonInfoList();
   },
   methods: {
+    pageChange(page) {
+      this.search(page);
+    },
+    getIndex(row) {
+      let index = row.$index + 1 + (this.searchObj.page - 1) * this.pageSize;
+      return index;
+    },
+    search() {
+      this.searchObj.page = 1;
+      this.getPersonInfoList();
+    },
     async getPersonInfoList() {
       if (this.personType == 0) {
         let res = await this.api.getPersonInfoList({
@@ -194,6 +183,8 @@ export default {
           this.tableData = res.data.broker_info.data;
           this.sumbitForm.total_price = res.data.total_price;
           this.sumbitForm.count = res.data.count;
+          this.total = res.data.broker_info.total;
+          this.pageSize = res.data.broker_info.per_page;
         }
       } else if (this.personType == 2) {
         //   else if (this.personType == 1) {
@@ -216,6 +207,8 @@ export default {
           this.tableDataSa = res.data.broker_info.data;
           this.sumbitForm.total_price = res.data.total_price;
           this.sumbitForm.count = res.data.count;
+          this.total = res.data.broker_info.total;
+          this.pageSize = res.data.broker_info.per_page;
         }
       }
     },

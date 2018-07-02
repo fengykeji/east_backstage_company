@@ -100,25 +100,25 @@
     </div>
     <template>
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column prop="" label="序号" align='center' width="80px">
+        <el-table-column prop="" label="序号" align='center' width="70px">
           <template slot-scope="scope">{{getIndex(scope)}}</template>
         </el-table-column>
-        <el-table-column prop="account" label="云算号" align='center' width="110px"></el-table-column>
+        <el-table-column prop="account" label="云算号" align='center'></el-table-column>
         <el-table-column prop="name" label="经纪人姓名" align='center' width="110px"></el-table-column>
-        <el-table-column prop="project_name" label="申请项目" align='center'></el-table-column>
+        <el-table-column prop="tel" label="联系方式" align='center' width="110px"></el-table-column>
         <el-table-column prop="role" label="角色" align='center'>
           <template slot-scope="scope">{{getRole(scope.row.role)}}</template>
         </el-table-column>
+        <el-table-column prop="project_name" label="申请项目" align='center'></el-table-column>
         <el-table-column prop="department" label="所属部门" align='center'></el-table-column>
-        <el-table-column prop="position" label="职位" align='center'></el-table-column>
+        <!-- <el-table-column prop="position" label="职位" align='center'></el-table-column> -->
         <el-table-column prop="city_name" label="城市" align='center'></el-table-column>
         <el-table-column prop="district_name" label="区域" align='center'></el-table-column>
-        <el-table-column prop="tel" label="联系方式" align='center' width="120px"></el-table-column>
         <el-table-column prop="state" label="审核状态" align='center'>
           <template slot-scope="scope">{{auditingState(scope.row.state)}}</template>
         </el-table-column>
-        <el-table-column prop="remark" label="备注" align='center' width="160px"></el-table-column>
-        <el-table-column prop="entry_time" label="申请时间" align='center' width="110px"></el-table-column>
+        <!-- <el-table-column prop="remark" label="备注" align='center' width="160px"></el-table-column> -->
+        <el-table-column prop="entry_time" label="申请时间" align='center'></el-table-column>
         <el-table-column label="操作" align='center'>
           <template slot-scope="scope">
             <el-button type="text" @click='examine(scope.row)' v-if='scope.row.state==2'>审核</el-button>
@@ -233,11 +233,11 @@ export default {
       searchObj: {
         tag_search: "",
         search: "",
-        page:1,
+        page: 1
       },
-      tipActiveIndex: 1,
       pageSize: 0,
       total: 0,
+      tipActiveIndex: 1,
       dialogFormVisible: false,
       refuseInfo: false,
       examinePeople: {
@@ -412,7 +412,7 @@ export default {
       this.searchObj.tag_search = index;
       this.search();
     },
-    search(type) {
+    search() {
       this.searchObj.page = 1;
       this.getExList();
     }

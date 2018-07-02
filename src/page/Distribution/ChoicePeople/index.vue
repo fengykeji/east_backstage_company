@@ -35,12 +35,19 @@
   position: relative;
   top: 16px;
 }
+.title {
+  position: relative;
+  padding-bottom: 30px;
+}
+.search-block {
+  position: absolute;
+  right: 0;
+  top: -10px;
+  white-space: nowrap;
+}
 .btn {
   position: relative;
-  left: 320px;
-  .btn-1 {
-    margin-right: 120px;
-  }
+  right: 0;
 }
 .box {
   padding-left: 20px;
@@ -50,26 +57,41 @@
   margin: 2px 0;
 }
 .query {
-  width: 200px;
+  width: 240px;
   margin: 12px 0;
 }
 </style>
+<style lang="less">
+.addPerson {
+  .el-table td {
+    padding: 0;
+  }
+  .el-table th {
+    padding: 5px 0;
+  }
+}
+</style>
+
 <template>
   <div class='addPerson'>
     <div class='box'>
-      <span class='num_set'>选择经纪人</span>
-      <div>
-        <el-input class='query' @click='search'></el-input>
-        <el-button icon="el-icon-search" circle></el-button>
-        <span class='btn'>
-          <el-button class='btn-1' @click="close">返回</el-button>
+      <div class='title'>
+        <span class='num_set'>选择经纪人</span>
+        <span class='search-block'>
+          <el-input class='query' @click='search' placeholder="可按云算号/经纪人姓名进行查询"></el-input>
+          <el-button icon="el-icon-search" circle></el-button>
+          <span class='btn'>
+            <el-button @click="close">返回</el-button>
+          </span>
         </span>
       </div>
       <el-table :data="agentInfo" border>
-        <el-table-column property="id" label="序号" align='center'></el-table-column>
+        <el-table-column label="序号" align='center'>
+          <template slot-scope="scope">{{getIndex(scope)}}</template>
+        </el-table-column>
         <el-table-column property="account" label="云算号" align='center'></el-table-column>
         <el-table-column property="name" label="经纪人名称" align='center'></el-table-column>
-        <el-table-column property="phone" label="联系电话" align='center'></el-table-column>
+        <el-table-column property="tel" label="联系电话" align='center'></el-table-column>
         <el-table-column label="操作" align='center' width="120px">
           <template slot-scope="scope">
             <el-button type="text" @click='submit(scope.row)'>选择</el-button>
@@ -85,7 +107,7 @@ export default {
     return {
       agentInfo: [],
       project_id: "",
-      id: ""
+      id: "",
     };
   },
   mounted() {
@@ -93,6 +115,10 @@ export default {
     this.search();
   },
   methods: {
+    getIndex(row) {
+      let index = row.$index + 1;
+      return index;
+    },
     async search() {
       let res = await this.api.agentList();
       if (res.code == 200) {

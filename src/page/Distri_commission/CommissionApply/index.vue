@@ -86,7 +86,7 @@ export default {
           { required: true, message: "请输入甲方联系人", change: "change" },
           {
             pattern: /[\u4E00-\u9FA5]{2,5}(?:·[\u4E00-\u9FA5]{2,5})*/,
-            message: "最大长度为5个字符",
+            message: "长度为2-5个字符",
             trigger: "change"
           }
         ],
@@ -102,7 +102,7 @@ export default {
           { required: true, message: "请输入乙方联系人", change: "change" },
           {
             pattern: /[\u4E00-\u9FA5]{2,5}(?:·[\u4E00-\u9FA5]{2,5})*/,
-            message: "最大长度为5个字符",
+            message: "长度为2-5个字符",
             trigger: "change"
           }
         ],

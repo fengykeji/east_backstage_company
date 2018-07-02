@@ -1,6 +1,6 @@
 <style lang="less" scoped>
 .select-1{
-  width: 204px;
+  width: 200px;
   margin-right: 10px;
   
 }

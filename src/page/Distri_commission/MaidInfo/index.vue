@@ -20,6 +20,9 @@
         <el-button class='pos-btn' type="primary" @click='cancel'>关闭</el-button>
       </div>
       <el-table :data="tableData" border style="width: 100%">
+        <el-table-column property="id" label="序号" align='center' width="70px">
+          <template slot-scope="scope">{{getIndex(scope)}}</template>
+        </el-table-column>
         <el-table-column prop="batch_name" label="申请名称" align='center'></el-table-column>
         <el-table-column prop="broker_num" label="申请金额 (￥)" align='center'></el-table-column>
         <el-table-column prop="count_num" label="申请笔数" align='center'></el-table-column>
@@ -37,8 +40,13 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-pagination background class='page' layout="prev, pager, next" :page-size="pageSize" :current-page="searchObj.page" :total="total" @current-change="pageChange">
+      </el-pagination>
       <div class='title-text'>付款申请列表</div>
       <el-table :data="tableDataS" border style="width: 100%">
+        <el-table-column property="id" label="序号" align='center' width="70px">
+          <template slot-scope="scope">{{getIndex(scope)}}</template>
+        </el-table-column>
         <el-table-column prop="batch_name" label="申请名称" align='center'></el-table-column>
         <el-table-column prop="broker_num" label="申请金额 (￥)" align='center'></el-table-column>
         <el-table-column prop="chargebacks_price" label="扣款金额(￥)" align='center'></el-table-column>
@@ -58,6 +66,8 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-pagination background class='page' layout="prev, pager, next" :page-size="pageSize1" :current-page="searchObj.page" :total="total1" @current-change="pageChange">
+      </el-pagination>
     </div>
   </div>
 </template>
@@ -70,6 +80,11 @@ export default {
       tableData: [],
       tableDataS: [],
       batch_id: "",
+      searchObj: {
+        page: 1
+      },
+      pageSize1: 0,
+      total1: 0,
       operationType: 0 // 1 修改  0 查看 2审核信息的查看
     };
   },
@@ -95,6 +110,14 @@ export default {
         }
       });
     },
+    getIndex(row) {
+      let index = row.$index + 1 + (this.searchObj.page - 1) * this.pageSize;
+      return index;
+    },
+    pageChange(page) {
+      this.searchObj.page = page;
+      this.changeProjectList();
+    },
     async seeCommissionList(type) {
       let res = await this.api.seeCommissionList({
         project_id: this.project_id
@@ -102,6 +125,10 @@ export default {
       if (res.code == 200) {
         this.tableData = res.data.broker.data;
         this.tableDataS = res.data.price.data;
+        this.total = res.data.broker.total;
+        this.pageSize = res.data.broker.per_page;
+        this.total1 = res.data.price.total;
+        this.pageSize1 = res.data.price.per_page;
       }
     },
     async see(row, type) {
@@ -109,7 +136,7 @@ export default {
         name: "updateCommission",
         params: {
           project_id: this.project_id,
-          operationType : this.operationType,
+          operationType: this.operationType,
           batch_id: row.batch_id,
           state: row.state,
           operationType: type
@@ -121,7 +148,7 @@ export default {
         name: "updateCommission",
         params: {
           project_id: this.project_id,
-          operationType : this.operationType,
+          operationType: this.operationType,
           apply_id: row.apply_id,
           batch_id: row.batch_id,
           operationType: type

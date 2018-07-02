@@ -1,11 +1,15 @@
 <style lang="less" scoped>
 .addPerson {
-  width: 950px;
+  width: 1100px;
   margin: 0 auto;
   border: 1px solid #999;
   text-align: left;
   padding: 15px 30px;
   margin-top: 20px;
+}
+.page {
+  text-align: right;
+  padding-top: 20px;
 }
 .input1 {
   width: 200px;
@@ -40,7 +44,7 @@
   margin: 2px 0;
 }
 .query {
-  width: 200px;
+  width: 240px;
 }
 .selectDis {
   display: inline-block;
@@ -73,14 +77,16 @@
       <div class='relative'>
         <city-selector class='selectDis' :province.sync="searchObj.province" :city.sync="searchObj.city" :district.sync="searchObj.district" />
         <el-input class='query' v-model="searchObj.search" placeholder="可按项目编号/项目名称进行查询"></el-input>
-        <el-button @click="search" icon="el-icon-search" circle></el-button>
+        <el-button @click="changeProjectList" icon="el-icon-search" circle></el-button>
         <span class='pos-abs'>
           <el-button type="primary" class="pos-right" @click="close">返回</el-button>
         </span>
       </div>
     </div>
     <el-table :data="sumbitForm" border>
-      <el-table-column property="id" label="序号" align='center' width="70px"></el-table-column>
+      <el-table-column property="id" label="序号" align='center' width="70px">
+        <template slot-scope="scope">{{getIndex(scope)}}</template>
+      </el-table-column>
       <el-table-column property="project_code" label="项目编号" align='center'></el-table-column>
       <el-table-column property="project_name" label="项目名称" align='center'></el-table-column>
       <el-table-column property="absolute_address" label="地址" align='center' width="320px">
@@ -96,6 +102,8 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination background class='page' layout="prev, pager, next" :page-size="pageSize" :current-page="searchObj.page" :total="total" @current-change="pageChange">
+    </el-pagination>
   </div>
 </template>
 <script>
@@ -107,23 +115,40 @@ export default {
         search: "",
         province: "",
         city: "",
-        district: ""
+        district: "",
+        page: 1
       },
+      pageSize: 0,
+      total: 0,
       sumbitForm: [],
       project_id: ""
     };
   },
   mounted() {
-    this.search();
+    this.changeProjectList();
   },
   methods: {
-    async search() {
+    search() {
+      this.searchObj.page = 1;
+      this.changeProjectList();
+    },
+    getIndex(row) {
+      let index = row.$index + 1 + (this.searchObj.page - 1) * this.pageSize;
+      return index;
+    },
+    pageChange(page) {
+      this.searchObj.page = page;
+      this.changeProjectList();
+    },
+    async changeProjectList() {
       let res = await this.api.changeProjectList(this.searchObj);
       if (res.code == 200) {
         this.sumbitForm = res.data.data;
+        this.total = res.data.total;
+        this.pageSize = res.data.per_page;
       }
     },
-    async sumbit(row) {
+    sumbit(row) {
       this.$router.push({
         name: "projectInfo",
         params: {

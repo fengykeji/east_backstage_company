@@ -125,7 +125,7 @@ export default {
     this.project_id = this.$route.params.project_id;
     this.id = this.$route.params.id;
     this.agent_id = this.$route.params.agent_id;
-    if(!this.agent_id && !this.$route.params.agentInfo) return;
+    if (!this.agent_id && !this.$route.params.agentInfo) return;
     if (this.$route.params.agentInfo === undefined) {
       this.getAgentInfo();
     } else {
@@ -182,17 +182,29 @@ export default {
       this.remark = "";
     },
     async sumbit() {
+      if (!this.submitForm.id) {
+        this.$message({
+          type: "warning",
+          message: "请选择到访确认人!"
+        });
+        return;
+      }
       this.submitForm.project_id = this.project_id;
       this.submitForm.id = this.id;
       this.submitForm.agent_id = this.agent_id;
       let res = await this.api.agentAdd(this.submitForm);
       if (res.code == 200) {
+        this.$message({
+          type: "success",
+          message: "选择到访确认人成功!"
+        });
         this.$router.push({
           name: "fastDistribution",
           params: { submitForm: this.submitForm }
         });
       }
     },
+
     isDisable() {
       if (this.operationType == 1) {
         return false;

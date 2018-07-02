@@ -1,3 +1,11 @@
+<style lang="less" scoped>
+.fastDistribution {
+  .page {
+    padding-top: 10px;
+  }
+}
+</style>
+
 <style lang="less">
 .fastDistribution {
   padding-top: 20px;
@@ -18,7 +26,7 @@
     margin-bottom: 20px;
     text-align: right;
     .el-button {
-      margin-bottom: 20px;
+      margin-bottom: 0px;
     }
     .title {
       text-align: left;
@@ -71,7 +79,9 @@
         <div class='text'>到访确认人审核信息</div>
       </div>
       <el-table :data="examine" border>
-        <el-table-column prop="nub" label="序号" align='center' width="70px"></el-table-column>
+        <el-table-column label="序号" align='center' width="70px">
+          <template slot-scope="scope">{{getIndex(scope)}}</template>
+        </el-table-column>
         <el-table-column prop="account" label="云算号" align='center'></el-table-column>
         <el-table-column prop="name" label="名称" align='center'></el-table-column>
         <el-table-column prop="tel" label="联系方式" align='center'></el-table-column>
@@ -88,7 +98,8 @@
           </template>
         </el-table-column>
       </el-table>
-
+      <el-pagination background class='page' layout="prev, pager, next" :page-size="pageSize1" :current-page="page" :total="total1" @current-change="pageChange">
+      </el-pagination>
     </div>
   </div>
 </template>
@@ -99,6 +110,8 @@ export default {
       page: 1,
       pageSize: 0,
       total: 0,
+      pageSize1: 0,
+      total1: 0,
       maintain: [],
       examine: [],
       project_id: "",
@@ -146,6 +159,8 @@ export default {
         this.examine = res.data.n_info.data;
         this.total = res.data.y_info.total;
         this.pageSize = res.data.y_info.per_page;
+        this.total1 = res.data.n_info.total;
+        this.pageSize1 = res.data.n_info.per_page;
       }
     },
     getIndex(row) {
@@ -164,7 +179,11 @@ export default {
         //查看
         this.$router.push({
           name: "addPerson",
-          params: { project_id: this.project_id ,  operationType: type, agent_id: row.agent_id }
+          params: {
+            project_id: this.project_id,
+            operationType: type,
+            agent_id: row.agent_id
+          }
         });
       } else if (type == 1) {
         //审核
@@ -208,7 +227,7 @@ export default {
       //新增
       this.$router.push({
         name: "addPerson",
-        params: { project_id: this.project_id,}
+        params: { project_id: this.project_id }
       });
     }
   }

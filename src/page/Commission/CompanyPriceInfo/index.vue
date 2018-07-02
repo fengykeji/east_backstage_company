@@ -1,5 +1,9 @@
 <style lang="less" scoped>
 .companyPriceInfo {
+  .page{
+      text-align: right;
+      padding-top: 20px;
+    }
   .search-block {
     position: absolute;
     right: 0;
@@ -10,7 +14,7 @@
     margin-right: 100px;
   }
   .table {
-    margin: 20px 100px 50px 240px;
+    margin: 20px 100px 50px 0px;
     .text {
       font-size: 15px;
       text-align: left;
@@ -61,7 +65,7 @@
   <div class='companyPriceInfo'>
     <div class='table' v-if='companyType==0'>
       <div class='title'>
-        <span class='title-text'>链家公司累计列表</span>
+        <span class='title-text'>公司累计列表</span>
         <span class='search-block'>
           <span>
             <el-input v-model="searchObj.search" class='query' placeholder="可查询推荐编号/经纪人名称"></el-input>
@@ -69,14 +73,15 @@
           </span>
           <el-button class='pos-btn' type="primary" @click='cancel'>关闭</el-button>
         </span>
-
       </div>
       <div class='text'>
         <span class='price'>累计金额:{{sumbitForm.total_price}}</span>
         <span class='price'>累计笔数:{{sumbitForm.count}}笔</span>
       </div>
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column prop="" label="序号" align='center' width="70px"></el-table-column>
+        <el-table-column prop="" label="序号" align='center' width="70px">
+               <template slot-scope="scope">{{getIndex(scope)}}</template>
+        </el-table-column>
         <el-table-column prop="client_id" label="推荐编号" align='center'></el-table-column>
         <el-table-column prop="project_name" label="项目名称" align='center'></el-table-column>
         <el-table-column prop="house_info" label="房间号" align='center'></el-table-column>
@@ -92,20 +97,28 @@
           <template slot-scope="scope">{{state(scope.row.pay_state)}}</template>
         </el-table-column>
       </el-table>
+       <el-pagination background class='page' layout="prev, pager, next" :page-size="pageSize" :current-page="searchObj.page" :total="total" @current-change="pageChange">
+      </el-pagination>
     </div>
     <div class='table' v-if='companyType==1'>
       <div class='title'>
-        <span class='title-text'>链家公司已结列表</span>
-        <el-input v-model="searchObj.search" class='query' placeholder="可查询付款单据号"></el-input>
-        <el-button @click="getCompanyAllInfo" icon="el-icon-search" circle></el-button>
-        <el-button class='pos-btn' type="primary" @click='cancel'>关闭</el-button>
+        <span class='title-text'>公司已结列表</span>
+        <span class='search-block'>
+          <span>
+            <el-input v-model="searchObj.search" class='query' placeholder="可查询付款单据号"></el-input>
+            <el-button @click="getCompanyAllInfo" icon="el-icon-search" circle class='margin-right'></el-button>
+          </span>
+          <el-button class='pos-btn' type="primary" @click='cancel'>关闭</el-button>
+        </span>
       </div>
       <div class='text'>
         <span class='price'>已结金额:{{sumbitForm.total_price}}</span>
         <span class='price'>已结笔数:{{sumbitForm.count}}笔</span>
       </div>
       <el-table :data="tableDataS" border style="width: 100%">
-        <el-table-column prop="" label="序号" align='center' width="70px"></el-table-column>
+        <el-table-column prop="" label="序号" align='center' width="70px">
+          <template slot-scope="scope">{{getIndex(scope)}}</template>
+        </el-table-column>
         <el-table-column prop="batch_name" label="批次名称" align='center'></el-table-column>
         <el-table-column prop="apply_name" label="申请人员" align='center'></el-table-column>
         <el-table-column prop="create_time" label="申请时间" align='center'></el-table-column>
@@ -122,20 +135,28 @@
         <el-table-column prop="recive_name" label="收款户名" align='center'></el-table-column>
         <el-table-column prop="update_time" label="结佣时间" align='center'></el-table-column>
       </el-table>
+       <el-pagination background class='page' layout="prev, pager, next" :page-size="pageSize" :current-page="searchObj.page" :total="total" @current-change="pageChange">
+      </el-pagination>
     </div>
     <div class='table' v-if='companyType==2'>
       <div class='title'>
-        <span class='title-text'>链家公司未结列表</span>
-        <el-input v-model="searchObj.search" class='query' placeholder="可查询推荐编号/经纪人名称"></el-input>
-        <el-button @click="getCompanyAllInfo" icon="el-icon-search" circle></el-button>
-        <el-button class='pos-btn' type="primary" @click='cancel'>关闭</el-button>
+        <span class='title-text'>公司未结列表</span>
+        <span class='search-block'>
+          <span>
+            <el-input v-model="searchObj.search" class='query' placeholder="可查询推荐编号/经纪人名称"></el-input>
+            <el-button @click="getCompanyAllInfo" icon="el-icon-search" circle class='margin-right'></el-button>
+          </span>
+          <el-button class='pos-btn' type="primary" @click='cancel'>关闭</el-button>
+        </span>
       </div>
       <div class='text'>
         <span class='price'>未结金额:{{sumbitForm.total_price}}</span>
         <span class='price'>未结笔数:{{sumbitForm.count}}笔</span>
       </div>
       <el-table :data="tableDataSa" border style="width: 100%">
-        <el-table-column prop="" label="序号" align='center' width="70px"></el-table-column>
+        <el-table-column prop="" label="序号" align='center' width="70px">
+             <template slot-scope="scope">{{getIndex(scope)}}</template>
+        </el-table-column>
         <el-table-column prop="client_id" label="推荐编号" align='center'></el-table-column>
         <el-table-column prop="project_name" label="项目名称" align='center'></el-table-column>
         <el-table-column prop="house_info" label="房间号" align='center'></el-table-column>
@@ -151,6 +172,8 @@
           <template slot-scope="scope">{{state(scope.row.pay_state)}}</template>
         </el-table-column>
       </el-table>
+      <el-pagination background class='page' layout="prev, pager, next" :page-size="pageSize" :current-page="searchObj.page" :total="total" @current-change="pageChange">
+      </el-pagination>
     </div>
   </div>
 </template>
@@ -164,8 +187,12 @@ export default {
       project_id: "",
       company_rule_id: "",
       searchObj: {
-        search: ""
+        tag_search: "",
+        search: "",
+        page: 1
       },
+      pageSize: 0,
+      total: 0,
       sumbitForm: {
         total_price: "",
         count: ""
@@ -185,6 +212,18 @@ export default {
     this.getCompanyAllInfo();
   },
   methods: {
+    search() {
+      this.searchObj.page = 1;
+      this.getQuitList();
+    },
+    getIndex(row) {
+      let index = row.$index + 1 + (this.searchObj.page - 1) * this.pageSize;
+      return index;
+    },
+    pageChange(page) {
+      this.searchObj.page = page;
+      this.getQuitList();
+    },
     async getCompanyAllInfo() {
       if (this.companyType == 0) {
         let res = await this.api.getCompanyAllInfo({
@@ -196,6 +235,8 @@ export default {
           this.tableData = res.data.broker_info.data;
           this.sumbitForm.total_price = res.data.total_price;
           this.sumbitForm.count = res.data.count;
+            this.total = res.data.broker_info.total;
+        this.pageSize = res.data.broker_info.per_page;
         }
       } else if (this.companyType == 1) {
         let res = await this.api.getCompanyYInfo({
@@ -207,6 +248,8 @@ export default {
           this.tableDataS = res.data.batch_list.data;
           this.sumbitForm.total_price = res.data.total_price;
           this.sumbitForm.count = res.data.count;
+            this.total = res.data.batch_list.total;
+        this.pageSize = res.data.batch_list.per_page;
         }
       } else if (this.companyType == 2) {
         let res = await this.api.getCompanyNInfo({
@@ -218,6 +261,8 @@ export default {
           this.tableDataSa = res.data.broker_info.data;
           this.sumbitForm.total_price = res.data.total_price;
           this.sumbitForm.count = res.data.count;
+            this.total = res.data.broker_info.total;
+        this.pageSize = res.data.broker_info.per_page;
         }
       }
     },
