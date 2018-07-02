@@ -43,7 +43,7 @@
     <div class='title-text'>项目分销详情
       <div slot="footer" class="dialog-footer">
         <el-button @click='cancel'>关 闭</el-button>
-        <el-button type="primary" @click='submit' :disabled="isDisable()">提 交</el-button>
+        <el-button type="primary" v-if="!isDisable()" @click='submit'>提 交</el-button>
       </div>
     </div>
     <el-form :model="submitForm" class='form' :disabled="!operationType==1">
@@ -162,7 +162,7 @@ export default {
       this.getProjectDetail();
       this.getType();
     } else {
-      this.$router.push({ name: "startApply" });
+      this.$router.push({ name: "distribution" });
     }
   },
   methods: {

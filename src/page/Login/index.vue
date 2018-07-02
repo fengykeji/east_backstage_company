@@ -28,7 +28,13 @@ export default {
     };
   },
 
-  mounted() {},
+  mounted() {
+    window.onkeydown = (e)=>{
+      if(e.keyCode == '13') {
+          this.login();  
+      }
+    }
+  },
   methods: {
     async login() {
       if (this.submitForm.account == "") {

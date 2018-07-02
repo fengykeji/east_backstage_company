@@ -5,7 +5,7 @@
     <div class='box'>
       <span class='num_set'>到访确认人信息</span>
       <span class='btn'>
-        <el-button type="primary" @click='sumbit' v-if='!operationType==1' :disabled="!isDisable()">确定</el-button>
+        <el-button type="primary" @click='sumbit' v-show='operationType!=0'>确定</el-button>
         <el-button type="primary" @click='exAgent(1)' v-if='operationType==1'>审核通过</el-button>
         <el-button type="primary" @click='exAgent(0)' v-if='operationType==1'>审核不通过</el-button>
         <el-button class='btn-1' @click="close">返回</el-button>
@@ -16,7 +16,7 @@
           <div class='border'>{{submitForm ? submitForm.name : ''}}</div>
         </el-form-item>
         <span>
-          <el-button type="primary" class='button' @click='choice' :disabled="!isDisable()">选择</el-button>
+          <el-button type="primary" v-if='operationType!=0' class='button' @click='choice'>选择</el-button>
         </span>
         <div class='num_set'>员工信息</div>
         <el-form v-model="submitForm">

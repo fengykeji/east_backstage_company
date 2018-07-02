@@ -85,6 +85,8 @@ export default {
       },
       pageSize1: 0,
       total1: 0,
+      pageSize: 0,
+      total: 0,
       operationType: 0 // 1 修改  0 查看 2审核信息的查看
     };
   },
