@@ -25,7 +25,7 @@ http.interceptors.response.use(function (res) {
   // else
   if (res.data.code == 200) {
     Vue.prototype.$message({ type: 'error', message: '当前登录已过期，请重新登录' });
-    location.href = '/';
+    location.href = 'http://120.27.21.136:2798/';
   } else {
     Vue.prototype.$message({ type: 'error', message: res.data.msg });
   }
