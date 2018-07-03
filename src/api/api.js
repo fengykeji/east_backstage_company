@@ -24,14 +24,13 @@ http.interceptors.response.use(function (res) {
   // }
   // else
   if (res.data.code == 200) {
-    Vue.prototype.$message({ type: 'error', message: '当前登录已过期，请重新登录' });
-    location.href = 'http://120.27.21.136:2798/';
+    Vue.prototype.$message({ type: 'error', message: '由于您长时间没有操作, 登录已过期, 请重新登录' });
+    location.href = 'http://120.27.21.136:2798/admin/company/';
   } else {
     Vue.prototype.$message({ type: 'error', message: res.data.msg });
   }
   return res.data;
 });
-
 // token拦截器
 http.interceptors.request.use(function (req) {
   let token = localStorage.getItem('token');
