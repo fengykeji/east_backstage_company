@@ -209,9 +209,6 @@ export default {
             arr.push(type.property_tag_id);
           }
           this.submitForm.property_tags = arr;
-          this.rule_id = res.data;
-          console.log(this.rule_id);
-          console.log(res);
         }
       }
     },
@@ -230,17 +227,18 @@ export default {
         type: "warning"
       })
         .then(async () => {
-          let res = this.api.changeProjectAdd({ project_id: this.project_id });
+          let res = await this.api.changeProjectAdd({ project_id: this.project_id });
           if (res.code == 200) {
             this.$message({
               type: "success",
               message: "提交成功!"
             });
+            let rule_id = res.data;
+            this.$router.push({
+              name: "ruleOfMaid",
+              params: { project_id: this.project_id, rule_id: rule_id }
+            });
           }
-          this.$router.push({
-            name: "ruleOfMaid",
-            params: { project_id: this.project_id, rule_id: this.rule_id }
-          });
         })
         .catch(() => {
           this.$message({

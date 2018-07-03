@@ -175,9 +175,13 @@ export default {
       let temp = Object.assign({}, this.sumbitForm);
       temp.project_id = this.project_id;
       temp.rule_id = this.rule_id;
-      console.log(temp)
+      console.log(temp);
       let res = await this.api.addRule(temp);
       if (res.code == 200) {
+        this.$message({
+          type: "success",
+          message: "提交成功!"
+        });
         this.$router.push({
           name: "distribution"
         });

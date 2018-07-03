@@ -71,27 +71,22 @@ export default {
     return {
       rules: {
         recive_bank: [
-          { required: true, message: "请选择收款银行", change: "change" },
-          {
-            max: 20,
-            message: "最大长度为20个字符",
-            trigger: "change"
-          }
+          { required: true, message: "请选择收款银行", change: "change" }
         ],
         recive_name: [
-          { required: true, message: "请输入收款户名", change: "change" },
           {
-            pattern: /[\u4E00-\u9FA5]{2,5}(?:·[\u4E00-\u9FA5]{2,5})*/,
-            message: "长度为2-5个字符",
-            trigger: "change"
+            required: true,
+            message: "请输入收款户名,长度为2-5个字符",
+            change: "change",
+            pattern: /[\u4E00-\u9FA5]{2,5}(?:·[\u4E00-\u9FA5]{2,5})*/
           }
         ],
         recive_bank_card: [
-          { required: true, message: "请输入收款银行卡号", change: "change" },
           {
-            pattern: /^([1-9]{1})(\d{14}|\d{18})$/,
+            required: true,
             message: "请输入正确的银行卡号",
-            change: "change"
+            change: "change",
+            pattern: /^([1-9]{1})(\d{14}|\d{18})$/
           }
         ]
       },

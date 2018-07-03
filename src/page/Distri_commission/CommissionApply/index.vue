@@ -25,11 +25,11 @@
   <div class='commissionApply'>
     <div class='table'>
       <div class='title'>
-         <el-button class='pos-btn-1' type="primary" @click='sumbit(2)'>提交</el-button>
+        <el-button class='pos-btn-1' type="primary" @click='sumbit(2)'>提交</el-button>
         <el-button class='pos-btn-2' type="primary" @click='sumbit(3)'>保存</el-button>
         <el-button class='pos-btn' @click='cancel' type="primary">关闭</el-button>
       </div>
-       <div class='title-text'>佣金申请信息</div>
+      <div class='title-text'>佣金申请信息</div>
       <el-form :model="sumbitForm" class='form' :rules="rules" ref="sumbitForm">
         <el-form-item label="申请名称" class='row' prop="batch_name">
           <el-input v-model="sumbitForm.batch_name" auto-complete="off" class='input'></el-input>
@@ -75,43 +75,44 @@ export default {
     return {
       rules: {
         batch_name: [
-          { required: true, message: "请输入申请名称", change: "change" },
           {
+            required: true,
+            message: "请输入申请名称,长度为2-20个字符",
+            change: "change",
             max: 20,
-            message: "最大长度为20个字符",
-            trigger: "change"
+            min: 2
           }
         ],
         nail_name: [
-          { required: true, message: "请输入甲方联系人", change: "change" },
           {
-            pattern: /[\u4E00-\u9FA5]{2,5}(?:·[\u4E00-\u9FA5]{2,5})*/,
-            message: "长度为2-5个字符",
-            trigger: "change"
+            required: true,
+            message: "请输入甲方联系人,长度为2-5个字符",
+            change: "change",
+            pattern: /[\u4E00-\u9FA5]{2,5}(?:·[\u4E00-\u9FA5]{2,5})*/
           }
         ],
         nail_tel: [
-          { required: true, message: "电话号码必须填写", change: "change" },
           {
-            pattern: /^1[34578]\d{9}$/,
-            message: "请输入正确的电话号码",
-            change: "change"
+            required: true,
+            message: "请输入正确的电话号码格式",
+            change: "change",
+            pattern: /^1[34578]\d{9}$/
           }
         ],
         second_name: [
-          { required: true, message: "请输入乙方联系人", change: "change" },
           {
-            pattern: /[\u4E00-\u9FA5]{2,5}(?:·[\u4E00-\u9FA5]{2,5})*/,
-            message: "长度为2-5个字符",
-            trigger: "change"
+            required: true,
+            message: "请输入乙方联系人,长度为2-5个字符",
+            change: "change",
+            pattern: /[\u4E00-\u9FA5]{2,5}(?:·[\u4E00-\u9FA5]{2,5})*/
           }
         ],
         second_tel: [
-          { required: true, message: "电话号码必须填写", change: "change" },
           {
-            pattern: /^1[34578]\d{9}$/,
-            message: "请输入正确的电话号码",
-            change: "change"
+            required: true,
+            message: "请输入正确的电话号码格式",
+            change: "change",
+            pattern: /^1[34578]\d{9}$/
           }
         ]
       },

@@ -93,43 +93,39 @@ export default {
       bankOptions: [],
       rules: {
         price: [
-          { required: true, message: "请输入退款金额", change: "change" },
           {
-            pattern: /^[0-9]+(.[0-9]{1,2})?$/,
-            message: "请输入正确的金额",
-            change: "change"
+            required: true,
+            message: "请输入退款金额,必须小于可退金额",
+            change: "change",
+            pattern: /^[0-9]+(.[0-9]{1,2})?$/
           }
         ],
         payee: [
-          { required: true, message: "请输入收款人姓名", change: "change" },
           {
-            pattern: /[\u4E00-\u9FA5]{2,5}(?:·[\u4E00-\u9FA5]{2,5})*/,
-            message: "长度为2-5个字符",
-            trigger: "change"
+            required: true,
+            message: "请输入收款人姓名,长度为2-5个字符",
+            change: "change",
+            pattern: /[\u4E00-\u9FA5]{2,5}(?:·[\u4E00-\u9FA5]{2,5})*/
           }
         ],
         payee_account: [
-          { required: true, message: "请输入收款人账号", change: "change" },
           {
-            pattern: /^([1-9]{1})(\d{14}|\d{18})$/,
+            required: true,
             message: "请输入正确的银行卡号",
-            change: "change"
+            change: "change",
+            pattern: /^([1-9]{1})(\d{14}|\d{18})$/
           }
         ],
         payee_bank: [
-          { required: true, message: "请选择收款银行", change: "change" },
-          {
-            max: 20,
-            message: "最大长度为20个字符",
-            trigger: "change"
-          }
+          { required: true, message: "请选择收款银行", change: "change" }
         ],
         refund_remarks: [
-          { required: true, message: "请输入退款原因", change: "change" },
           {
+            required: true,
+            message: "请输入退款原因,长度为5-255个字符",
+            change: "change",
             max: 255,
-            message: "最大长度为255个字符",
-            trigger: "change"
+            min: 5
           }
         ]
       }

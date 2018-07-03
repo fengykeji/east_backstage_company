@@ -56,16 +56,16 @@ body {
         <el-table-column prop="" label="序号" align='center' width="70px">
           <template slot-scope="scope">{{getIndex(scope)}}</template>
         </el-table-column>
-        <el-table-column prop="project_code" label="项目编号" align='center'></el-table-column>
+        <el-table-column prop="project_code" label="项目编号" align='center' width="90px"></el-table-column>
         <el-table-column prop="project_name" label="项目名称" align='center' width="140px"></el-table-column>
         <!-- 项目状态函数 -->
-        <el-table-column prop="state" label="项目状态" align='center'>
+        <el-table-column prop="state" label="项目状态" align='center' width="90px">
           <template slot-scope="scope">{{projectState(scope.row.state)}}</template>
         </el-table-column>
         <el-table-column prop="city" label="区域" align='center'></el-table-column>
         <!-- <el-table-column  prop="absolute_address" label="地址" align='center' width="220px"></el-table-column> -->
-        <el-table-column prop="developer_name" label="开发商" align='center' width="200px"></el-table-column>
-        <el-table-column prop="company_relation" label="与项目关系" align='center'></el-table-column>
+        <el-table-column prop="developer_name" label="开发商" align='center' width="150px"></el-table-column>
+        <el-table-column prop="company_relation" label="与项目关系" align='center' width="150px"></el-table-column>
         <el-table-column prop="subordinate_company" label="所属单位" align='center' width="200px"></el-table-column>
         <el-table-column prop="source" label="来源" align='center' width="80px">
           <template slot-scope="scope">{{scopeState (scope.row.source)}}</template>

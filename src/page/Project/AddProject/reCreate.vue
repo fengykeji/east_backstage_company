@@ -268,11 +268,12 @@ export default {
     return {
       rules: {
         project_name: [
-          { required: true, message: "请输入项目名称", change: "change" },
           {
-            max: 20,
-            message: "最大长度为20个字符",
-            trigger: "change"
+            required: true,
+            message: "请输入项目名称,长度为2-20个字符",
+            change: "change",
+            min: 2,
+            max: 20
           }
         ],
         property_type: [
@@ -284,11 +285,12 @@ export default {
           }
         ],
         statement_company: [
-          { required: true, message: "请输入结佣单位", change: "change" },
           {
-            max: 20,
-            message: "最大长度为20个字符",
-            trigger: "change"
+            required: true,
+            message: "请输入结佣单位,长度为2-20个字符",
+            change: "change",
+            min: 2,
+            max: 20
           }
         ],
         province: [
@@ -298,27 +300,28 @@ export default {
           { required: true, message: "请输入具体地址", change: "change" }
         ],
         developer_name: [
-          { required: true, message: "请输入开发商名字", change: "change" },
           {
-            max: 20,
-            message: "最大长度为20个字符",
-            trigger: "change"
+            required: true,
+            message: "请输入开发商名字,长度为2-20个字符",
+            change: "change",
+            min: 2,
+            max: 20
           }
         ],
         project_hold_name: [
           {
-            max: 4,
-            message: "最大长度为4个字符",
-            trigger: "change"
-          },
-          { required: true, message: "请输入项目负责人", change: "change" }
+            pattern: /[\u4E00-\u9FA5]{2,5}(?:·[\u4E00-\u9FA5]{2,5})*/,
+            required: true,
+            message: "请输入负责人姓名,长度为2-5个字符",
+            change: "change"
+          }
         ],
         project_hold_phone: [
-          { required: true, message: "电话号码必须填写", change: "change" },
           {
-            pattern: /^1[34578]\d{9}$/,
-            message: "请输入正确的电话号码",
-            change: "change"
+            required: true,
+            message: "请输入正确的电话号码格式",
+            change: "change",
+            pattern: /^1[34578]\d{9}$/
           }
         ],
         company_relation: [
@@ -327,37 +330,37 @@ export default {
       },
       userFormRules: {
         name: [
-          { required: true, message: "请输入管理员", change: "change" },
           {
-            max: 4,
-            message: "最大长度为4个字符",
-            trigger: "change"
+            pattern: /[\u4E00-\u9FA5]{2,5}(?:·[\u4E00-\u9FA5]{2,5})*/,
+            required: true,
+            message: "请输入管理员姓名，长度在2-5个字符",
+            change: "change"
           }
         ],
         account: [
-          { required: true, message: "请输入账号", change: "change" },
           {
+            required: true,
+            message: "请输入账号,长度在4-16个字符",
+            change: "change",
             min: 4,
-            max: 16,
-            message: "长度在 4 到 16 个字符",
-            trigger: "change"
+            max: 16
           }
         ],
         password: [
-          { required: true, message: "请输入密码", change: "change" },
           {
+            required: true,
+            message: "请输入密码,长度在6-16个字符",
+            change: "change",
             min: 6,
-            max: 16,
-            message: "长度在 6 到 16 个字符",
-            trigger: "change"
+            max: 16
           }
         ],
         phone: [
-          { required: true, message: "电话号码必须填写", change: "change" },
           {
-            pattern: /^1[34578]\d{9}$/,
-            message: "请输入正确的电话号码",
-            change: "change"
+            required: true,
+            message: "请输入正确的电话号码格式",
+            change: "change",
+            pattern: /^1[34578]\d{9}$/
           }
         ]
       },
