@@ -42,12 +42,12 @@
 .top-name {
   position: absolute;
   top: 28px;
-  right: 360px;
+  right: 320px;
   font-size: 15px;
 }
 .top-text {
   position: absolute;
-  top: 20px;
+  top: 19px;
   right: 50px;
   font-size: 15px;
 }
@@ -61,7 +61,7 @@
 .top-one {
   position: absolute;
   top: 28px;
-  right: 200px;
+  right: 160px;
   font-size: 15px;
 }
 .tou {

@@ -20,6 +20,9 @@ import UpdateCommission from '@/page/Distri_commission/UpdateCommission'
 import RequestPayment from '@/page/Distri_commission/RequestPayment'
 
 import Distribution from '@/page/Distribution'
+import RuleOfMaid from '@/page/Distribution/RuleOfMaid'
+import RuleSetting from '@/page/Distribution/RuleSetting'
+
 import FastDistribution from '@/page/Distribution/FastDistribution'
 import AddPerson from '@/page/Distribution/AddPerson'
 import ChoicePeople from '@/page/Distribution/ChoicePeople'
@@ -42,11 +45,11 @@ export default new Router({
     {
       path: '/project',
       component: Container,
-      children:[
+      children: [
         {
-          path:'',
-          name:'project',
-          component:Project,
+          path: '',
+          name: 'project',
+          component: Project,
         },
         {
           path: '/addProject',
@@ -78,118 +81,126 @@ export default new Router({
     {
       path: '/agent',
       component: Container,
-      children:[
+      children: [
         {
-          path:'',
-          name:'agent',
-          component:Agent,
+          path: '',
+          name: 'agent',
+          component: Agent,
         },
         {
-          path:'/examinePeople',
-          name:'examinePeople',
-          component:ExaminePeople,
+          path: '/examinePeople',
+          name: 'examinePeople',
+          component: ExaminePeople,
         },
         {
-          path:'/quitPeople',
-          name:'quitPeople',
-          component:QuitPeople,
+          path: '/quitPeople',
+          name: 'quitPeople',
+          component: QuitPeople,
         },
       ]
     },
     {
       path: '/commission',
       component: Container,
-      children:[
+      children: [
         {
-          path:'',
-          name:'commission',
-          component:Commission,
+          path: '',
+          name: 'commission',
+          component: Commission,
         },
         {
-          path:'companyPrice',
-          name:'companyPrice',
-          component:CompanyPrice,
+          path: 'companyPrice',
+          name: 'companyPrice',
+          component: CompanyPrice,
         },
         {
-          path:'personPrice',
-          name:'personPrice',
-          component:PersonPrice,
-        },{
-          path:'companyPriceInfo',
-          name:'companyPriceInfo',
-          component:CompanyPriceInfo,
+          path: 'personPrice',
+          name: 'personPrice',
+          component: PersonPrice,
+        }, {
+          path: 'companyPriceInfo',
+          name: 'companyPriceInfo',
+          component: CompanyPriceInfo,
         },
       ]
     },
     {
       path: '/distri_commission',
       component: Container,
-      children:[
+      children: [
         {
-          path:'',
-          name:'distri_commission',
-          component:Distri_commission,
+          path: '',
+          name: 'distri_commission',
+          component: Distri_commission,
         },
         {
-          path:'maidInfo',
-          name:'maidInfo',
-          component:MaidInfo,
+          path: 'maidInfo',
+          name: 'maidInfo',
+          component: MaidInfo,
         },
         {
-          path:'commissionApply',
-          name:'commissionApply',
-          component:CommissionApply,
+          path: 'commissionApply',
+          name: 'commissionApply',
+          component: CommissionApply,
         },
         {
-          path:'updateCommission',
-          name:'updateCommission',
-          component:UpdateCommission,
+          path: 'updateCommission',
+          name: 'updateCommission',
+          component: UpdateCommission,
         },
         {
-          path:'requestPayment',
-          name:'requestPayment',
-          component:RequestPayment,
+          path: 'requestPayment',
+          name: 'requestPayment',
+          component: RequestPayment,
         },
-       
-        
+
+
       ]
     },
     {
       path: '/distribution',
       component: Container,
-      children:[
+      children: [
         {
-          path:'',
-          name:'distribution',
-          component:Distribution,
+          path: '',
+          name: 'distribution',
+          component: Distribution,
         },
         {
-          path:'/fastDistribution',
-          name:'fastDistribution',
-          component:FastDistribution,
+          path: '/fastDistribution',
+          name: 'fastDistribution',
+          component: FastDistribution,
         },
         {
-          path:'/addPerson',
-          name:'addPerson',
-          component:AddPerson,
+          path: '/addPerson',
+          name: 'addPerson',
+          component: AddPerson,
         },
         {
-          path:'/choicePeople',
-          name:'choicePeople',
-          component:ChoicePeople,
+          path: '/choicePeople',
+          name: 'choicePeople',
+          component: ChoicePeople,
         },
         {
-          path:'/startApply',
-          name:'startApply',
-          component:StartApply,
+          path: '/startApply',
+          name: 'startApply',
+          component: StartApply,
         },
         {
-          path:'/projectInfo',
-          name:'projectInfo',
-          component:ProjectInfo,
+          path: '/projectInfo',
+          name: 'projectInfo',
+          component: ProjectInfo,
+        }, {
+          path: '/ruleOfMaid',
+          name: 'ruleOfMaid',
+          component: RuleOfMaid,
+        },
+        {
+          path: '/ruleSetting',
+          name: 'ruleSetting',
+          component: RuleSetting,
         }
 
-        
       ]
     },
   ]

@@ -84,23 +84,7 @@
         <el-input v-model="submitForm.company_relation" auto-complete="off"></el-input>
       </el-form-item>
     </el-form>
-    <!-- <div class='title-text'>结佣规则</div>
-        <el-table :data="gridData" border>
-            <el-table-column  type="selection"></el-table-column>
-            <el-table-column prop="date" label="序号" align='center'></el-table-column>
-            <el-table-column prop="name" label="计划开始日期" align='center'></el-table-column>
-            <el-table-column prop="address" label="计划截至日期" align='center'></el-table-column>
-            <el-table-column prop="address" label="实际开始日期" align='center'></el-table-column>
-            <el-table-column prop="address" label="实际截至日期" align='center'></el-table-column>
-            <el-table-column prop="address" label="申请状态" align='center'></el-table-column>
-            <el-table-column prop="address" label="执行状态" align='center'></el-table-column>
-            <el-table-column label="操作" align='center'>
-                <template slot-scope="scope">
-                <el-button>查看</el-button>
-            </template>
-            </el-table-column>
-        </el-table> -->
-    <div v-if="this.auditing_state==1">
+    <!-- <div v-if="this.auditing_state==1">
       <div class='title-text'>审核项目信息</div>
       <el-form :model="submitForm.auditProject">
         <div>
@@ -115,20 +99,31 @@
           </el-form-item>
         </div>
       </el-form>
-    </div>
-    <div v-if="this.auditing_state==1">
+    </div> -->
+    <div v-if="this.auditing_state==1||operationType==0">
       <div class='title-text'>到访确认人信息</div>
-      <el-table :data="submitForm.peopleInfo" border>
+      <el-table :data="peopleInfo" border>
         <el-table-column label="序号" align='center' width="70px"></el-table-column>
         <el-table-column property="account" label="云算号" align='center'></el-table-column>
         <el-table-column property="name" label="名称" align='center'></el-table-column>
         <el-table-column property="tel" label="联系方式" align='center'></el-table-column>
         <el-table-column property="department" label="所属部门" align='center'></el-table-column>
         <el-table-column property="position" label="职位" align='center'></el-table-column>
-        <el-table-column property="entry_time" label="入职时间" align='center'></el-table-column>
-        <el-table-column property="project_hold_phone" label="审核状态" align='center'></el-table-column>
-        <el-table-column property="fp_time" label="分配时间" align='center'></el-table-column>
-        <el-table-column property="project_hold_phone" label="工作状态" align='center'></el-table-column>
+        <el-table-column property="create_time" label="入职时间" align='center'></el-table-column>
+        <el-table-column property="entry_time" label="分配时间" align='center'></el-table-column>
+      </el-table>
+    </div>
+    <div v-if='operationType==1||operationType==0'>
+      <div class='title-text'>结佣规则</div>
+      <el-table :data="gridData" border>
+        <el-table-column prop="date" label="序号" align='center'></el-table-column>
+        <el-table-column prop="state" label="申请状态" align='center'></el-table-column>
+        <el-table-column prop="end_state" label="执行状态" align='center'></el-table-column>
+        <el-table-column label="操作" align='center'>
+          <template slot-scope="scope">
+            <el-button>查看</el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
   </div>
@@ -143,20 +138,24 @@ export default {
         city: "",
         district: "",
         project_id: "",
+        rule_id: "",
         auditProject: {},
-        peopleInfo: [],
         property_tags: [],
         state: ""
       },
+      peopleInfo: [],
       project_id: "",
+      rule_id: "",
       typeOptions: [],
       operationType: 0,
-      auditing_state: ""
+      auditing_state: "",
+      gridData: []
     };
   },
   mounted() {
     this.auditing_state = this.$route.params.auditing_state;
     this.project_id = this.$route.params.project_id;
+    this.rule_id = this.$route.params.rule_id;
     if (this.$route.params.project_id) {
       this.operationType = this.$route.params.operationType;
       this.getProjectDetail();
@@ -183,16 +182,37 @@ export default {
     },
     async getProjectDetail() {
       Object.assign(this.submitForm, this.$route.params.projectInfo);
-      let res = await this.api.applyProject({ project_id: this.project_id });
-      if (res.code == 200) {
-        Object.assign(this.submitForm, res.data);
-        console.log(this.submitForm);
-        let property_tags = res.data.property_tags;
-        let arr = [];
-        for (let type of property_tags) {
-          arr.push(type.property_tag_id);
+      if (this.operationType == 0) {
+        let res = await this.api.getRole({
+          project_id: this.project_id,
+          rule_id: this.rule_id
+        });
+        if (res.code == 200) {
+          Object.assign(this.submitForm, res.data.project);
+          let property_tags = res.data.project.property_tags;
+          let arr = [];
+          for (let type of property_tags) {
+            arr.push(type.property_tag_id);
+          }
+          this.submitForm.property_tags = arr;
+          this.gridData = res.data.broker;
+          this.peopleInfo = res.data.agent;
         }
-        this.submitForm.property_tags = arr;
+      } else {
+        Object.assign(this.submitForm, this.$route.params.projectInfo);
+        let res = await this.api.applyProject({ project_id: this.project_id });
+        if (res.code == 200) {
+          Object.assign(this.submitForm, res.data);
+          let property_tags = res.data.property_tags;
+          let arr = [];
+          for (let type of property_tags) {
+            arr.push(type.property_tag_id);
+          }
+          this.submitForm.property_tags = arr;
+          this.rule_id = res.data;
+          console.log(this.rule_id);
+          console.log(res);
+        }
       }
     },
     async search() {
@@ -203,7 +223,7 @@ export default {
         this.sumbitForm = res.data;
       }
     },
-    submit(row) {
+    submit() {
       this.$confirm("此操作将提交成功, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -217,7 +237,10 @@ export default {
               message: "提交成功!"
             });
           }
-          this.$router.push({ name: "distribution" });
+          this.$router.push({
+            name: "ruleOfMaid",
+            params: { project_id: this.project_id, rule_id: this.rule_id }
+          });
         })
         .catch(() => {
           this.$message({

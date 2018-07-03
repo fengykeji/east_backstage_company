@@ -7,6 +7,9 @@
   padding: 15px 20px;
   margin-top: 20px;
 }
+.rule {
+  margin-top: 20px;
+}
 .page {
   text-align: right;
   padding-top: 20px;
@@ -37,7 +40,6 @@
   text-align: right;
 }
 .box {
-  padding-bottom: 30px;
 }
 .el-form-item {
   margin: 2px 0;
@@ -47,6 +49,9 @@
 }
 .selectDis {
   display: inline-block;
+}
+.texe-1 {
+  padding-bottom: 10px;
 }
 .btn {
   position: relative;
@@ -59,6 +64,15 @@
 .relative {
   position: relative;
   margin: 15px 0;
+}
+.title {
+  position: relative;
+  padding-bottom: 10px;
+}
+.addbtn {
+  position: absolute;
+  top: -6px;
+  right: 0;
 }
 </style>
 <style lang="less" >
@@ -82,8 +96,9 @@
         </span>
       </div>
     </div>
+    <div class='texe-1'>申请项目信息</div>
     <el-table :data="sumbitForm" border>
-      <el-table-column property="id" label="序号" align='center' width="70px">
+      <el-table-column label="序号" align='center' width="70px">
         <template slot-scope="scope">{{getIndex(scope)}}</template>
       </el-table-column>
       <el-table-column property="project_code" label="项目编号" align='center'></el-table-column>
@@ -95,7 +110,7 @@
       </el-table-column>
       <el-table-column property="project_hold_name" label="项目负责人" align='center'></el-table-column>
       <el-table-column property="project_hold_phone" label="联系方式" align='center' width="120px"></el-table-column>
-      <el-table-column property="operation" label="操作" align='center'>
+      <el-table-column label="操作" align='center'>
         <template slot-scope="scope">
           <el-button @click='sumbit(scope.row)'>提交</el-button>
         </template>
@@ -127,6 +142,11 @@ export default {
     this.changeProjectList();
   },
   methods: {
+    addshow() {
+      this.$router.push({
+        name: "ruleOfMaid"
+      });
+    },
     search() {
       this.searchObj.page = 1;
       this.changeProjectList();

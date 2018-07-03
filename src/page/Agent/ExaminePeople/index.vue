@@ -219,7 +219,7 @@
         </div>
       </el-dialog>
       <el-dialog title="工牌照照片" :visible.sync="showImgUrl">
-        <img class='heightWidth' v-if='examinePeople.img_url' :src="'http://120.27.21.136:2798/' + examinePeople.img_url" />
+        <img class='heightWidth' v-if='examinePeople.img_url' :src="this.url + examinePeople.img_url" />
         <img class='heightWidth' v-else src="../../../assets/images/head.png" />
       </el-dialog>
     </template>
@@ -229,6 +229,7 @@
 export default {
   data() {
     return {
+      url: "http://120.27.21.136:2798/",
       tableData: [],
       searchObj: {
         tag_search: "",

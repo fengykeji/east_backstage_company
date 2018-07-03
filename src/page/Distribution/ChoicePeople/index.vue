@@ -121,10 +121,10 @@ export default {
     this.agentList();
   },
   methods: {
-    search() {
-      this.searchObj.page = 1;
-      this.agentList();
-    },
+    // search() {
+    //   this.searchObj.page = 1;
+    //   this.agentList();
+    // },
     getIndex(row) {
       let index = row.$index + 1;
       return index;

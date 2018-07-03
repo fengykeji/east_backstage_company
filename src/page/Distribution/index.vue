@@ -90,23 +90,23 @@ body {
         <el-table-column prop="" label="序号" align='center' width="70px">
           <template slot-scope="scope">{{getIndex(scope)}}</template>
         </el-table-column>
-        <el-table-column prop="project_code" label="项目编号" align='center'></el-table-column>
+        <el-table-column prop="project_code" label="项目编号" align='center' width="90px"></el-table-column>
         <el-table-column prop="project_name" label="项目名称" align='center'></el-table-column>
-        <el-table-column prop="end_state" label="项目状态" align='center' width="90px">
+        <el-table-column prop="end_state" label="执行状态" align='center' width="90px">
           <template slot-scope="scope">{{projectState(scope.row.end_state)}}</template>
         </el-table-column>
         <el-table-column prop="city" label="区域" align='center'></el-table-column>
-        <el-table-column prop="absolute_address" label="地址" align='center' width="184px"></el-table-column>
-        <el-table-column prop="subordinate_company" label="项目所属单位" align='center' width="110px"></el-table-column>
-        <el-table-column prop="company_relation" label="与项目关系" align='center' width="110px"></el-table-column>
-        <el-table-column prop="developer_name" label="所属单位" align='center' width="150px"></el-table-column>
+        <!-- <el-table-column prop="absolute_address" label="地址" align='center' width="184px"></el-table-column> -->
+        <el-table-column prop="subordinate_company" label="项目所属单位" align='center' width="150px"></el-table-column>
+        <el-table-column prop="company_relation" label="与项目关系" align='center' width="100px"></el-table-column>
+        <el-table-column prop="developer_name" label="所属单位" align='center' width="230px"></el-table-column>
         <el-table-column prop="source" label="来源" align='center' width="80px">
           <template slot-scope="scope">{{scopeState (scope.row.source)}}</template>
         </el-table-column>
-        <el-table-column prop="state" label="审核状态" align='center'>
+        <el-table-column prop="state" label="审核状态" align='center' width="80px">
           <template slot-scope="scope">{{auditingState(scope.row.state)}}</template>
         </el-table-column>
-        <el-table-column prop="is_distribution" label="分配状态" align='center'></el-table-column>
+        <el-table-column prop="is_distribution" label="分配状态" align='center' width="80px"></el-table-column>
         <el-table-column prop="operation" label="操作" align='center' width="170px">
           <template slot-scope="scope">
             <el-button type="text" @click='showProject(scope.row,0)'>查看</el-button>
@@ -138,6 +138,7 @@ export default {
       tipActiveIndex: 0,
       tableData: [],
       project_id: "",
+      rule_id: "",
       options: [],
       value: "",
       operationType: 0 //0 查看  1 修改
@@ -183,7 +184,9 @@ export default {
     fastDistribution(row) {
       this.$router.push({
         name: "fastDistribution",
-        params: { project_id: row.project_id }
+        params: {
+          project_id: row.project_id
+        }
       });
     },
     showProject(row, type) {
@@ -193,6 +196,7 @@ export default {
           params: {
             operationType: type,
             project_id: row.project_id,
+            rule_id: row.rule_id,
             auditing_state: row.state
           }
         });
@@ -207,7 +211,7 @@ export default {
     },
     projectState(row) {
       if (row == 0) {
-        return "管理中";
+        return "执行中";
       } else {
         return "以终止";
       }

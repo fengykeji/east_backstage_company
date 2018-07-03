@@ -154,13 +154,13 @@
         </el-form>
       </el-dialog>
       <el-dialog title="工牌照照片" :visible.sync="showImgUrl">
-        <img class='heightWidth' v-if='examinePeople.img_url' :src="'http://120.27.21.136:2798/' + examinePeople.img_url" />
+        <img class='heightWidth' v-if='examinePeople.img_url' :src="this.url + examinePeople.img_url" />
         <img class='heightWidth' v-else src="../../../assets/images/head.png" />
       </el-dialog>
       <el-dialog title="证件照照片" :visible.sync="showIdCard" class='showIdCard'>
-        <img class='heightWidth' v-if='examinePeople.card_front' :src="'http://120.27.21.136:2798/' + examinePeople.card_front" />
+        <img class='heightWidth' v-if='examinePeople.card_front' :src="this.url + examinePeople.card_front" />
         <img class='heightWidth' v-else src="../../../assets/images/idCard.png" />
-        <img class='heightWidth' v-if='examinePeople.card_back' :src="'http://120.27.21.136:2798/' + examinePeople.card_back" />
+        <img class='heightWidth' v-if='examinePeople.card_back' :src="this.url + examinePeople.card_back" />
         <img class='heightWidth' v-else src="../../../assets/images/Document_2@2x.png" />
       </el-dialog>
     </template>
@@ -170,6 +170,7 @@
 export default {
   data() {
     return {
+      url: "http://120.27.21.136:2798/",
       tableData: [],
       dialogFormVisible: false,
       searchObj: {

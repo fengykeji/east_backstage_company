@@ -109,7 +109,8 @@ let api = {
 
   //到访确认人 详情
   getAgentInfo: doGet('company/distribution/getAgentInfo'),
-
+  //查看到访确认人详情
+  getRole: doGet('company/distribution/getRule'),
   //结束到访确认人
   endAgent: doGet('company/distribution/endAgent'),
 
@@ -127,6 +128,9 @@ let api = {
 
   //申请分销 - 提交
   changeProjectAdd: doPost('company/distribution/applyProject'),
+  //佣金规则 - 编辑合同信息
+  addRule: doPost('company/distribution/addRule'),
+
 
   //经纪人管理   第二板块
   //审核经纪人
