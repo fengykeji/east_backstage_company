@@ -78,8 +78,8 @@
       <div class='title'>
         <span class='num_set'>选择经纪人</span>
         <span class='search-block'>
-          <el-input class='query' @click='search' placeholder="可按云算号/经纪人姓名进行查询"></el-input>
-          <el-button icon="el-icon-search" circle></el-button>
+          <el-input class='query' v-model="searchObj.search" placeholder="可按云算号/经纪人姓名进行查询"></el-input>
+          <el-button icon="el-icon-search" @click='agentList' circle></el-button>
           <span class='btn'>
             <el-button @click="close">返回</el-button>
           </span>
@@ -108,19 +108,29 @@ export default {
       agentInfo: [],
       project_id: "",
       id: "",
+      searchObj: {
+        search: "",
+        page: 1
+      },
+      pageSize: 0,
+      total: 0
     };
   },
   mounted() {
     this.project_id = this.$route.params.project_id;
-    this.search();
+    this.agentList();
   },
   methods: {
+    search() {
+      this.searchObj.page = 1;
+      this.agentList();
+    },
     getIndex(row) {
       let index = row.$index + 1;
       return index;
     },
-    async search() {
-      let res = await this.api.agentList();
+    async agentList() {
+      let res = await this.api.agentList(this.searchObj);
       if (res.code == 200) {
         this.agentInfo = res.data;
       }

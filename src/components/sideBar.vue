@@ -91,9 +91,9 @@
       </span>
       <span class='top-one'>个人名称: {{name}}
       </span>
-     <span  @click='cancel'>
+      <span @click='cancel'>
         <el-button type='text' class='top-text'><img class='top-img' src='../assets/images/exit@2x.png' />退出</el-button>
-     </span>
+      </span>
     </div>
     <el-menu :default-active="activeIndex" class="sidebar-menu" @open="menuOpen" @close="menuOpen">
       <el-menu-item index="project" class='text' @click="handleSelect('project')">

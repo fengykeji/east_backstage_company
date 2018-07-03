@@ -1,10 +1,10 @@
 <style lang="less" scoped>
 .addPerson {
-  width: 1100px;
+  width: 1050px;
   margin: 0 auto;
   border: 1px solid #999;
   text-align: left;
-  padding: 15px 30px;
+  padding: 15px 20px;
   margin-top: 20px;
 }
 .page {
@@ -37,7 +37,6 @@
   text-align: right;
 }
 .box {
-  padding-left: 20px;
   padding-bottom: 30px;
 }
 .el-form-item {
