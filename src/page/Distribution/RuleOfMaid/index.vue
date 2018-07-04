@@ -4,6 +4,11 @@ body {
   background-color: #fafafc;
 }
 .ruleOfMaid {
+  .el-upload-list {
+    width: 0;
+    height: 0;
+    overflow: hidden;
+  }
   .el-table th {
     padding: 5px 0px;
   }
@@ -77,7 +82,7 @@ body {
                         </template>
                     </el-table-column>
                     <el-table-column property="uploader" label="上传人员" align='center'></el-table-column>
-                    <el-table-column property="create_time" label="上传时间" align='center'></el-table-column>
+                    <el-table-column property="update_time" label="上传时间" align='center'></el-table-column>
                     <el-table-column label="操作" align='center'>
                         <template slot-scope="scope">
                             <el-button type='text' @click='remove(scope.row)'>删除</el-button>
@@ -229,6 +234,7 @@ export default {
   mounted() {
     this.project_id = this.$route.params.project_id;
     this.rule_id = this.$route.params.rule_id;
+    this.getBrokerAgreement();
   },
   methods: {
     async fileUpload(fileObj) {
@@ -248,19 +254,30 @@ export default {
         return;
       }
       let file = this.fileObject.raw;
-      console.log(file);
       let formData = new FormData();
       formData.append("url", file);
       let res = await this.api.uploadBrokerCommission(formData);
-      console.log(res);
       if (res.code == 200) {
-        let Temp = {};
-        Temp.uploader = res.data.uploader;
-        Temp.url = res.data.url;
-        Temp.create_time = res.data.create_time;
-        Temp.file_name = fileObj.name;
-        this.refund = [];
-        this.refund.push(Temp);
+        let temp = {};
+        temp.uploader = res.data.uploader;
+        temp.url = res.data.img_url;
+        temp.create_time = res.data.create_time;
+        temp.file_name = fileObj.name;
+        this.refund=[],
+        this.refund.push(temp);
+        console.log(temp);
+        this.addBrokerAgreement();
+      }
+    },
+    async addBrokerAgreement() {
+      let temp = {};
+      temp.file_name = this.refund[0].file_name;
+      temp.file_url = this.refund[0].url;
+      temp.uploader = this.refund[0].uploader;
+      temp.rule_id = this.rule_id;
+      let res = await this.api.addBrokerAgreement(temp);
+      console.log(this.refund);
+      if (res.code == 200) {
       }
     },
     async getBrokerAgreement() {
@@ -270,7 +287,7 @@ export default {
       }
     },
     remove(index) {
-          this.refund.splice(index, 1);
+      this.refund.splice(index, 1);
     },
     sumbit() {
       this.$refs["sumbitForm"].validate(async valid => {

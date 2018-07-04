@@ -185,9 +185,13 @@ export default {
     }
   },
   methods: {
-    seeShow(row) {
-      console.log(123);
-      this.$router.push({ name: "ruleOfMaid" });
+    seeShow() {
+      this.$router.push({
+        name: "ruleOfMaid",
+        params: {
+          rule_id: this.rule_id
+        }
+      });
     },
     getIndex(row) {
       let index = row.$index + 1;

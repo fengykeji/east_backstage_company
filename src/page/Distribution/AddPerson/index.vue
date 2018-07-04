@@ -13,7 +13,7 @@
       <el-form v-model="submitForm">
         <el-form-item class='input1'>
           <div>到访确认人</div>
-          <div class='border'>{{submitForm ? submitForm.name : ''}}</div>
+          <div class='border'>{{submitForm.name}}</div>
         </el-form-item>
         <span>
           <el-button type="primary" v-if='operationType!=0' class='button' @click='choice'>选择</el-button>
@@ -22,7 +22,7 @@
         <el-form v-model="submitForm">
           <el-form-item class='input1'>
             <div>姓名</div>
-            <div class='border'>{{submitForm ? submitForm.name : ''}}</div>
+            <div class='border'>{{submitForm.name}}</div>
           </el-form-item>
           <el-form-item class='input1'>
             <div>入职时间</div>
@@ -30,48 +30,48 @@
           </el-form-item>
           <el-form-item class='input1'>
             <div>云算号</div>
-            <div class='border'>{{submitForm ?submitForm.account: ''}}</div>
+            <div class='border'>{{submitForm.account}}</div>
           </el-form-item>
           <el-form-item class='input1'>
             <div>所属部门</div>
-            <div class='border'>{{submitForm ?submitForm.department: ''}}</div>
+            <div class='border'>{{submitForm.department}}</div>
           </el-form-item>
           <el-form-item class='input1'>
             <div>职位</div>
-            <div class='border'>{{submitForm ?submitForm.position: ''}}</div>
+            <div class='border'>{{submitForm.position}}</div>
           </el-form-item>
           <div class='num_set'>基础信息</div>
           <el-form-item class='input1'>
             <div>性别</div>
             <div class='border'>
-              {{sex(submitForm ?submitForm.sex: '')}}
+              {{sex(submitForm.sex)}}
             </div>
           </el-form-item>
           <el-form-item class='input1'>
             <div>电话号码</div>
-            <div class='border'>{{submitForm ?submitForm.tel: ''}}</div>
+            <div class='border'>{{submitForm.tel}}</div>
           </el-form-item>
           <el-form-item class='input1'>
             <div>出生年月</div>
-            <div class='border'>{{submitForm ?submitForm.birth: ''}}</div>
+            <div class='border'>{{submitForm.birth}}</div>
           </el-form-item>
           <el-form-item class='input1'>
             <div>通讯地址</div>
-            <div class='border width'>{{submitForm ?submitForm.tabsolute_addressel: ''}}</div>
+            <div class='border width'>{{submitForm.province?submitForm.province:''+submitForm.district?submitForm.district:''+submitForm.city?submitForm.city:''+submitForm.absolute_address?submitForm.absolute_address:''}}</div>
           </el-form-item>
           <div v-if='operationType==0'>
             <div class='num_set'>分配信息</div>
             <el-form-item class='input1'>
               <div>分配人</div>
-              <div class='border'>{{submitForm ?submitForm.fp_name: ''}}</div>
+              <div class='border'>{{submitForm.fp_name}}</div>
             </el-form-item>
             <el-form-item class='input1'>
               <div>分配时间</div>
-              <div class='border'>{{submitForm ?submitForm.fp_time: ''}}</div>
+              <div class='border'>{{submitForm.fp_time}}</div>
             </el-form-item>
             <el-form-item class='input1-br'>
               <div>备注</div>
-              <div class='border width-1'>{{submitForm ?submitForm.remark: ''}}</div>
+              <div class='border width-1'>{{submitForm.remark}}</div>
             </el-form-item>
           </div>
         </el-form>
@@ -129,7 +129,7 @@ export default {
       this.getAgentInfo();
     } else {
       this.agent_id = this.$route.params.agentInfo.agent_id;
-      this.submitForm = this.$route.params.agentInfo;
+
       this.getAgentInfo();
     }
   },

@@ -142,7 +142,7 @@ let api = {
   //佣金规则 - 添加协议
   addBrokerAgreement: doPost('company/distribution/addBrokerAgreement'),
   //佣金规则 - 获取协议
-  getBrokerAgreement: doGet('company/distribution/addBrokerAgreement'),
+  getBrokerAgreement: doGet('company/distribution/getBrokerAgreement'),
   //经纪人管理   第二板块
   //审核经纪人
   exPeople: doPost('company/CompanyAgent/ex'),
