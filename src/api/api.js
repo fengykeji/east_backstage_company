@@ -3,7 +3,12 @@ import qs from 'qs'
 import Vue from 'vue'
 //请求带上cookie
 // http.defaults.withCredentials = true;
-let base = 'http://120.78.69.178:2902';
+
+// let base = 'http://120.78.69.178:2902';
+// Vue.prototype.base = 'http://120.78.69.178:2902';    //正式服地址
+
+let base = 'http://120.27.21.136:2798';
+Vue.prototype.base = 'http://120.27.21.136:2798';  //测试服地址
 
 const doPost = function (url) {
   return function (params) {
@@ -24,9 +29,9 @@ http.interceptors.response.use(function (res) {
   }
   else if (res.data.code == 201) {
     Vue.prototype.$message({ type: 'error', message: '由于您长时间没有操作, 登录已过期, 请重新登录' });
-    location.href = 'http://120.78.69.178:2902/admin/company/';
-    //上正式服
-    // location.href = 'http://120.27.21.136:2798/admin/company/';  测试服
+    // location.href = 'http://120.78.69.178:2902/admin/company/';  //正式服
+
+    location.href = 'http://120.27.21.136:2798/admin/company/';  //测试服
   } else {
     Vue.prototype.$message({ type: 'error', message: res.data.msg });
   }
@@ -133,7 +138,7 @@ let api = {
   //佣金规则 - 编辑合同信息
   addRule: doPost('company/distribution/addRule'),
   //佣金规则 - 协议上传
-  uploadBrokerAgreement: doPost('company/distribution/uploadBrokerAgreement'),
+  uploadBrokerCommission: (params) => { return fileUpload(`company/distribution/uploadBrokerAgreement`, params) },
   //佣金规则 - 添加协议
   addBrokerAgreement: doPost('company/distribution/addBrokerAgreement'),
   //佣金规则 - 获取协议

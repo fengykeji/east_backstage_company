@@ -73,14 +73,14 @@ body {
                     <el-table-column label="文件名称" prop="file_name" align='center'></el-table-column>
                     <el-table-column label="附件" align='center'>
                         <template slot-scope='scope'>
-                            <a target="_blank" :href="'http://120.78.69.178:2902/' + scope.row.url">查看附件</a>
+                            <a target="_blank" :href="this.base + scope.row.url">查看附件</a>
                         </template>
                     </el-table-column>
                     <el-table-column property="uploader" label="上传人员" align='center'></el-table-column>
                     <el-table-column property="create_time" label="上传时间" align='center'></el-table-column>
                     <el-table-column label="操作" align='center'>
                         <template slot-scope="scope">
-                            <el-button type="primary">删除</el-button>
+                            <el-button type='text' @click='remove(scope.row)'>删除</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -248,24 +248,29 @@ export default {
         return;
       }
       let file = this.fileObject.raw;
+      console.log(file);
       let formData = new FormData();
       formData.append("url", file);
-      let res = await this.api.uploadBrokerAgreement(formData);
+      let res = await this.api.uploadBrokerCommission(formData);
+      console.log(res);
       if (res.code == 200) {
         let Temp = {};
-        Temp.uploader = res.data.data.uploader;
-        Temp.url = res.data.data.img_url;
+        Temp.uploader = res.data.uploader;
+        Temp.url = res.data.url;
+        Temp.create_time = res.data.create_time;
         Temp.file_name = fileObj.name;
-        this.form.project_agreement = [];
-        this.form.project_agreement.push(Temp);
+        this.refund = [];
+        this.refund.push(Temp);
       }
-      this.getBrokerAgreement();
     },
     async getBrokerAgreement() {
       let res = await this.api.getBrokerAgreement({ rule_id: this.rule_id });
       if (res.code == 200) {
         this.refund = res.data.data;
       }
+    },
+    remove(index) {
+          this.refund.splice(index, 1);
     },
     sumbit() {
       this.$refs["sumbitForm"].validate(async valid => {

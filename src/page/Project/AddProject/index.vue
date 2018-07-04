@@ -153,7 +153,7 @@
           <el-table-column property="file_name" label="文件名称" align='center'></el-table-column>
           <el-table-column label="附件" align='center'>
             <template slot-scope='scope'>
-              <a target="_blank" :href="'http://120.78.69.178:2902/' + scope.row.url">查看附件</a>
+              <a target="_blank" :href="this.base + scope.row.url">查看附件</a>
             </template>
           </el-table-column>
           <el-table-column property="create_name" label="上传人员" align='center'></el-table-column>
@@ -740,6 +740,7 @@ export default {
         return;
       }
       let file = this.fileObject.raw;
+      console.log(file);
       let formData = new FormData();
       formData.append("url", file);
       let res = await this.api.uploadProjectAgreement(formData);
@@ -752,7 +753,6 @@ export default {
         this.form.project_agreement = [];
         this.form.project_agreement.push(projectAgreementTemp);
       }
-      this.getProjectList();
     },
 
     showMapDetails() {

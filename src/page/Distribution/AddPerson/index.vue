@@ -26,7 +26,7 @@
           </el-form-item>
           <el-form-item class='input1'>
             <div>入职时间</div>
-            <div class='border'>{{submitForm ?submitForm.entry_time: ''}}</div>
+            <div class='border'>{{ submitForm.entry_time}}</div>
           </el-form-item>
           <el-form-item class='input1'>
             <div>云算号</div>
@@ -95,6 +95,7 @@ export default {
   data() {
     return {
       submitForm: {
+        entry_time: "",
         tabsolute_addressel: "",
         birth: "",
         tel: "",
@@ -102,10 +103,8 @@ export default {
         position: "",
         department: "",
         account: "",
-        entry_time: "",
         name: "",
         project_id: "",
-        id: "",
         agent_id: "",
         fp_name: "",
         fp_time: "",
@@ -123,13 +122,13 @@ export default {
     this.ex_id = this.$route.params.ex_id;
     this.type = this.$route.params.type;
     this.project_id = this.$route.params.project_id;
-    this.id = this.$route.params.id;
+    // this.id = this.$route.params.id;
     this.agent_id = this.$route.params.agent_id;
     if (!this.agent_id && !this.$route.params.agentInfo) return;
     if (this.$route.params.agentInfo === undefined) {
       this.getAgentInfo();
     } else {
-      this.agent_id = this.$route.params.agentInfo.id;
+      this.agent_id = this.$route.params.agentInfo.agent_id;
       this.submitForm = this.$route.params.agentInfo;
       this.getAgentInfo();
     }
@@ -182,7 +181,7 @@ export default {
       this.remark = "";
     },
     async sumbit() {
-      if (!this.submitForm.id) {
+      if (!this.submitForm.agent_id) {
         this.$message({
           type: "warning",
           message: "请选择到访确认人!"
@@ -190,7 +189,6 @@ export default {
         return;
       }
       this.submitForm.project_id = this.project_id;
-      this.submitForm.id = this.id;
       this.submitForm.agent_id = this.agent_id;
       let res = await this.api.agentAdd(this.submitForm);
       if (res.code == 200) {

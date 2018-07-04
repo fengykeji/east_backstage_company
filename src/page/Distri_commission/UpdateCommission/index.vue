@@ -85,7 +85,7 @@
           <el-table-column label="文件名称" prop="file_name" align='center'></el-table-column>
           <el-table-column label="附件" align='center'>
             <template slot-scope='scope'>
-              <a target="_blank" :href="'http://120.78.69.178:2902/' + scope.row.file_url">查看附件</a>
+              <a target="_blank" :href="this.base + scope.row.file_url">查看附件</a>
             </template>
           </el-table-column>
           <el-table-column property="create_name" label="上传人员" align='center'></el-table-column>

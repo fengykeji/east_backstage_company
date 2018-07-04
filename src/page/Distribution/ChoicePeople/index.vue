@@ -107,7 +107,7 @@ export default {
     return {
       agentInfo: [],
       project_id: "",
-      id: "",
+      agent_id: "",
       searchObj: {
         search: "",
         page: 1
@@ -138,7 +138,11 @@ export default {
     submit(row) {
       this.$router.push({
         name: "addPerson",
-        params: { agentInfo: row, id: row.id, project_id: this.project_id }
+        params: {
+          agentInfo: row,
+          agent_id: row.agent_id,
+          project_id: this.project_id
+        }
       });
     },
     close() {

@@ -115,7 +115,6 @@ export default {
       maintain: [],
       examine: [],
       project_id: "",
-      id: "",
       agent_id: "",
       operationType: 0 //0 查看  1 审核  2 审核的查看
     };
