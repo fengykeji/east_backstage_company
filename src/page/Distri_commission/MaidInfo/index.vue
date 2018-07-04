@@ -4,9 +4,11 @@
 .maidInfo {
   .el-table th {
     padding: 3px 0px;
+     color: #333;
   }
   .el-table td {
     padding: 0px 0px;
+     color: #333;
   }
 }
 </style>

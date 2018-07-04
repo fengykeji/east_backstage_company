@@ -130,8 +130,12 @@ let api = {
   changeProjectAdd: doPost('company/distribution/applyProject'),
   //佣金规则 - 编辑合同信息
   addRule: doPost('company/distribution/addRule'),
-
-
+  //佣金规则 - 协议上传
+  uploadBrokerAgreement: doPost('company/distribution/uploadBrokerAgreement'),
+  //佣金规则 - 添加协议
+  addBrokerAgreement: doPost('company/distribution/addBrokerAgreement'),
+  //佣金规则 - 获取协议
+  getBrokerAgreement: doGet('company/distribution/addBrokerAgreement'),
   //经纪人管理   第二板块
   //审核经纪人
   exPeople: doPost('company/CompanyAgent/ex'),

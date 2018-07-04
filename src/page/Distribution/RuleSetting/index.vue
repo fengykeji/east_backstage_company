@@ -1,5 +1,10 @@
 <style lang="less" scoped src='./index.less'>
 </style>
+<style lang="less">
+body {
+  background-color: #fafafc;
+}
+</style>
 <template>
     <div class='ruleSetting'>
         <div class='ruleSetting-box'>

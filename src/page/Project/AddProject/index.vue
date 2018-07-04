@@ -7,6 +7,7 @@
   .el-table td,
   .el-table th {
     padding: 0;
+    color: #333;
   }
   .el-form-item.is-error {
     padding-bottom: 20px;
@@ -16,6 +17,7 @@
   }
   .el-form-item__label {
     float: none;
+    color: #333;
   }
   .el-dialog__body {
     padding-top: 0;
@@ -30,7 +32,7 @@
   }
   .property_type {
     font-size: 14px;
-    color: #606266;
+    color: #333;
     line-height: 40px;
     padding: 0 10px 0 0;
   }
@@ -49,7 +51,7 @@
     text-align: left;
     position: relative;
     top: 10px;
-    font-size: 18px;
+    font-size: 19px;
     .title-btn {
       position: absolute;
       top: 18px;
@@ -129,7 +131,7 @@
           </el-table-column>
           <el-table-column property="account" label="帐号" align='center'></el-table-column>
           <el-table-column property="name" label="管理员" align='center'></el-table-column>
-          <el-table-column property="phone" label="电话号码" align='center'></el-table-column>
+          <!-- <el-table-column property="phone" label="电话号码" align='center'></el-table-column> -->
           <el-table-column property="operation" v-if="operationType == 0 || operationType == 1" label="操作" align='center'>
             <template slot-scope="scope">
               <el-button type="text" @click='editUser(scope.row , scope.$index)'>修改</el-button>
@@ -244,9 +246,9 @@
             <el-form-item label="管理员姓名" prop="name" class='input'>
               <el-input v-model="projectUserForm.name" auto-complete="off" placeholder="请输入管理员姓名"></el-input>
             </el-form-item>
-            <el-form-item label="联系电话" prop="phone" class='input'>
+            <!-- <el-form-item label="联系电话" prop="phone" class='input'>
               <el-input v-model="projectUserForm.phone" auto-complete="off" placeholder="请输入联系电话"></el-input>
-            </el-form-item>
+            </el-form-item> -->
 
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -316,7 +318,7 @@ export default {
         developer_name: [
           {
             required: true,
-            message: "请输入开发商名字,长度为2-20个字符",
+            message: "请输入开发商名称,长度为2-20个字符",
             change: "change",
             max: 20,
             min: 2
@@ -325,10 +327,9 @@ export default {
         project_hold_name: [
           {
             required: true,
-            message: "请输入项目负责人,长度为2-4个字符",
+            message: "请输入负责人姓名,长度为2-5个字符，必须是中文",
             change: "change",
-            min: 2,
-            max: 4
+            pattern: /[\u4E00-\u9FA5]{2,5}(?:·[\u4E00-\u9FA5]{2,5})*/
           }
         ],
         project_hold_phone: [
@@ -348,17 +349,16 @@ export default {
           {
             pattern: /[\u4E00-\u9FA5]{2,5}(?:·[\u4E00-\u9FA5]{2,5})*/,
             required: true,
-            message: "请输入管理员姓名，长度为2-4个字符",
+            message: "请输入管理员姓名，长度为2-5个字符，必须是中文",
             change: "change"
           }
         ],
         account: [
           {
+            pattern: /^1[34578]\d{9}$/,
             required: true,
-            message: "请输入账号，长度在 4-16 个字符",
-            change: "change",
-            min: 4,
-            max: 16
+            message: "请输入账号，由手机号码构成",
+            change: "change"
           }
         ],
         password: [
@@ -368,14 +368,6 @@ export default {
             change: "change",
             min: 6,
             max: 16
-          }
-        ],
-        phone: [
-          {
-            required: true,
-            message: "请输入正确的电话号码格式",
-            change: "change",
-            pattern: /^1[34578]\d{9}$/
           }
         ]
       },

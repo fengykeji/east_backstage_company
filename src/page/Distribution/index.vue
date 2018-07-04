@@ -15,18 +15,20 @@ body {
   }
   .el-table--border,
   .el-table--group {
-    margin-top: 20px;
+    margin-top: 5px;
   }
   .el-table th {
     padding: 8px 0px;
+    color: #333;
   }
   .el-table td {
     padding: 0;
+    color: #333;
   }
 }
 </style>
 <template>
-  <div class='box distribution'>
+  <div class='distribution'>
     <div class='title'>
 
       <div class='tab-block'>

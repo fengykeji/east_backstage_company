@@ -52,9 +52,11 @@
   }
   .el-table th {
     padding: 8px 0px;
+     color: #333;
   }
   .el-table td {
     padding: 5px 0;
+     color: #333;
   }
   .el-dialog__body {
     padding-top: 0;

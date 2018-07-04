@@ -21,7 +21,7 @@
   .text {
     vertical-align: middle;
     font-size: 14px;
-    color: #606266;
+    color: #333;
     line-height: 40px;
     padding: 0 12px 0 0;
   }
@@ -29,6 +29,7 @@
     font-size: 16px;
     padding: 5px 0;
     position: relative;
+    color: #333;
   }
   .dialog-footer {
     position: absolute;
@@ -37,6 +38,20 @@
   }
 }
 </style>
+<style lang="less">
+.projectInfo {
+  .el-form-item__label {
+    float: none;
+    color: #333;
+  }
+  .el-table td,
+  .el-table th {
+    padding: 4px 0;
+    color: #333;
+  }
+}
+</style>
+
 <template>
 
   <div class='projectInfo'>
@@ -103,7 +118,9 @@
     <div v-if="this.auditing_state==1||operationType==0">
       <div class='title-text'>到访确认人信息</div>
       <el-table :data="peopleInfo" border>
-        <el-table-column label="序号" align='center' width="70px"></el-table-column>
+        <el-table-column label="序号" align='center' width="70px">
+          <template slot-scope="scope">{{getIndex(scope)}}</template>
+        </el-table-column>
         <el-table-column property="account" label="云算号" align='center'></el-table-column>
         <el-table-column property="name" label="名称" align='center'></el-table-column>
         <el-table-column property="tel" label="联系方式" align='center'></el-table-column>
@@ -116,12 +133,15 @@
     <div v-if='operationType==1||operationType==0'>
       <div class='title-text'>结佣规则</div>
       <el-table :data="gridData" border>
-        <el-table-column prop="date" label="序号" align='center'></el-table-column>
-        <el-table-column prop="state" label="申请状态" align='center'></el-table-column>
-        <el-table-column prop="end_state" label="执行状态" align='center'></el-table-column>
+        <el-table-column prop="state" label="申请状态" align='center'>
+          <template slot-scope="scope">{{state(scope.row.state)}}</template>
+        </el-table-column>
+        <el-table-column prop="end_state" label="执行状态" align='center'>
+          <template slot-scope="scope">{{end_state(scope.row.end_state)}}</template>
+        </el-table-column>
         <el-table-column label="操作" align='center'>
           <template slot-scope="scope">
-            <el-button>查看</el-button>
+            <el-button type='text'>查看</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -165,6 +185,26 @@ export default {
     }
   },
   methods: {
+    getIndex(row) {
+      let index = row.$index + 1;
+      return index;
+    },
+    end_state(row) {
+      if (row == 0) {
+        return "执行中";
+      } else {
+        return "已终止";
+      }
+    },
+    state(row) {
+      if (row == 0) {
+        return "通过";
+      } else if (row == 1) {
+        return "拒绝";
+      } else if (row == 2) {
+        return "待审核";
+      }
+    },
     async getType() {
       let res = await this.api.getTags();
       if (res.code == 200) {
@@ -227,7 +267,9 @@ export default {
         type: "warning"
       })
         .then(async () => {
-          let res = await this.api.changeProjectAdd({ project_id: this.project_id });
+          let res = await this.api.changeProjectAdd({
+            project_id: this.project_id
+          });
           if (res.code == 200) {
             this.$message({
               type: "success",

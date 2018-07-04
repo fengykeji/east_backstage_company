@@ -16,7 +16,7 @@ body {
   }
   .el-table--border,
   .el-table--group {
-    margin-top: 20px;
+    margin-top: 5px;
   }
   .el-table th {
     padding: 8px 0px;

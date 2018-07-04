@@ -8,9 +8,11 @@
   }
   .el-table th {
     padding: 8px 0px;
+     color: #333;
   }
   .el-table td {
     padding: 5px 0;
+     color: #333;
   }
   .el-dialog__body {
     padding-top: 0;
@@ -163,7 +165,8 @@ export default {
   },
   methods: {
     pageChange(page) {
-      this.search(page);
+      this.searchObj.page = page;
+      this.getPersonInfoList();
     },
     getIndex(row) {
       let index = row.$index + 1 + (this.searchObj.page - 1) * this.pageSize;

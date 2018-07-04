@@ -1,11 +1,17 @@
 <style lang="less" scoped src='./index.less'></style>
 <style lang="less">
+body {
+  background-color: #fafafc;
+}
 .ruleOfMaid {
   .el-table th {
     padding: 5px 0px;
   }
   .el-table td {
     padding: 0;
+  }
+  .el-form-item {
+    padding-bottom: 15px;
   }
 }
 </style>
@@ -21,32 +27,32 @@
             </div>
             <div class='infoform'>
                 <div class='text'>合同信息（甲方为项目方，乙方为销售方）</div>
-                <el-form v-model="sumbitForm">
+                <el-form :model="sumbitForm" :rules="rules" ref="sumbitForm">
                     <!-- <el-form-item label="甲方单位：" class='input'>
                         <el-input v-model="sumbitForm.deposit"></el-input>
                     </el-form-item> -->
-                    <el-form-item label="甲方对接人" class='input'>
+                    <el-form-item label="甲方对接人" class='input' prop="project_docker">
                         <el-input v-model="sumbitForm.project_docker"></el-input>
                     </el-form-item>
-                    <el-form-item label="甲方对接人电话" class='input'>
+                    <el-form-item label="甲方对接人电话" class='input' prop="project_docker_tel">
                         <el-input v-model="sumbitForm.project_docker_tel"></el-input>
                     </el-form-item>
                     <!-- <el-form-item label="乙方单位：" class='input'>
                         <el-input v-model="sumbitForm.sell_docker"></el-input>
                     </el-form-item> -->
-                    <el-form-item label="乙方对接人" class='input'>
+                    <el-form-item label="乙方对接人" class='input' prop="sell_docker">
                         <el-input v-model="sumbitForm.sell_docker"></el-input>
                     </el-form-item>
-                    <el-form-item label="乙方对接人电话" class='input'>
+                    <el-form-item label="乙方对接人电话" class='input' prop="sell_docker_tel">
                         <el-input v-model="sumbitForm.sell_docker_tel"></el-input>
                     </el-form-item>
-                    <el-form-item label="合同开始日期" class='input'>
+                    <el-form-item label="合同开始日期" class='input' prop="compact_begin">
                         <el-date-picker v-model="sumbitForm.compact_begin" type="date" placeholder="选择日期" class="block"></el-date-picker>
                     </el-form-item>
-                    <el-form-item label="合同截至日期" class='input'>
+                    <el-form-item label="合同截至日期" class='input' prop="compact_end">
                         <el-date-picker v-model="sumbitForm.compact_end" type="date" placeholder="选择日期" class="block"></el-date-picker>
                     </el-form-item>
-                    <el-form-item label="实际开始日期" class='input'>
+                    <el-form-item label="实际开始日期" class='input' prop="act_start">
                         <el-date-picker v-model="sumbitForm.act_start" type="date" placeholder="选择日期" class="block"></el-date-picker>
                     </el-form-item>
                     <!-- <el-form-item label="实际截至日期" class='input'>
@@ -58,17 +64,19 @@
                 <div class='title'>
                     <div class='text'>公司证明资料</div>
                     <span class='btn'>
-                        <el-button type="primary">新增</el-button>
+                        <el-upload :auto-upload="false" action="" :on-change="fileUpload">
+                            <el-button ref="uploadBtn" type="primary" :show-file-list="false">点击上传</el-button>
+                        </el-upload>
                     </span>
                 </div>
-                <el-table :data="refund.file" border>
+                <el-table :data="refund" border>
                     <el-table-column label="文件名称" prop="file_name" align='center'></el-table-column>
                     <el-table-column label="附件" align='center'>
                         <template slot-scope='scope'>
                             <a target="_blank" :href="'http://120.27.21.136:2798/' + scope.row.url">查看附件</a>
                         </template>
                     </el-table-column>
-                    <el-table-column property="create_name" label="上传人员" align='center'></el-table-column>
+                    <el-table-column property="uploader" label="上传人员" align='center'></el-table-column>
                     <el-table-column property="create_time" label="上传时间" align='center'></el-table-column>
                     <el-table-column label="操作" align='center'>
                         <template slot-scope="scope">
@@ -151,6 +159,58 @@
 export default {
   data() {
     return {
+      rules: {
+        project_docker: [
+          {
+            pattern: /[\u4E00-\u9FA5]{2,5}(?:·[\u4E00-\u9FA5]{2,5})*/,
+            required: true,
+            message: "请输入姓名,2-5个字符，必须是中文",
+            change: "change"
+          }
+        ],
+        project_docker_tel: [
+          {
+            required: true,
+            message: "请输入电话号码，11位手机号码格式",
+            change: "change",
+            pattern: /^1[34578]\d{9}$/
+          }
+        ],
+        sell_docker: [
+          {
+            pattern: /[\u4E00-\u9FA5]{2,5}(?:·[\u4E00-\u9FA5]{2,5})*/,
+            required: true,
+            message: "请输入姓名,2-5个字符，必须是中文",
+            change: "change"
+          }
+        ],
+        sell_docker_tel: [
+          {
+            required: true,
+            message: "请输入电话号码，11位手机号码格式",
+            change: "change",
+            pattern: /^1[34578]\d{9}$/
+          }
+        ],
+        compact_begin: [
+          {
+            required: true,
+            message: "请选择合同开始日期"
+          }
+        ],
+        compact_end: [
+          {
+            required: true,
+            message: "请选择合同截至日期"
+          }
+        ],
+        act_start: [
+          {
+            required: true,
+            message: "请选择实际开始日期"
+          }
+        ]
+      },
       sumbitForm: {
         project_docker: "",
         project_docker_tel: "",
@@ -171,22 +231,58 @@ export default {
     this.rule_id = this.$route.params.rule_id;
   },
   methods: {
-    async sumbit() {
-      let temp = Object.assign({}, this.sumbitForm);
-      temp.project_id = this.project_id;
-      temp.rule_id = this.rule_id;
-      console.log(temp);
-      let res = await this.api.addRule(temp);
-      if (res.code == 200) {
+    async fileUpload(fileObj) {
+      this.fileObject = fileObj;
+      let flag = false;
+      if (
+        this.fileObject.name.indexOf(".docx") > -1 ||
+        this.fileObject.name.indexOf(".doc") > -1
+      ) {
+        flag = true;
+      }
+      if (!flag) {
         this.$message({
-          type: "success",
-          message: "提交成功!"
+          type: "error",
+          message: "文件上传格式有误，请上传docx或者doc格式"
         });
-        this.$router.push({
-          name: "distribution"
-        });
+        return;
+      }
+      let file = this.fileObject.raw;
+      let formData = new FormData();
+      formData.append("url", file);
+      let res = await this.api.uploadBrokerAgreement(formData);
+      if (res.code == 200) {
+        let projectAgreementTemp = {};
+        projectAgreementTemp.uploader = res.data.uploader;
+        projectAgreementTemp.url = res.data.img_url;
+        projectAgreementTemp.file_name = fileObj.name;
+        this.form.project_agreement = [];
+        this.form.project_agreement.push(projectAgreementTemp);
       }
     },
+
+    sumbit() {
+      this.$refs["sumbitForm"].validate(async valid => {
+        if (valid) {
+          let temp = Object.assign({}, this.sumbitForm);
+          temp.project_id = this.project_id;
+          temp.rule_id = this.rule_id;
+          let res = await this.api.addRule(temp);
+          if (res.code == 200) {
+            this.$message({
+              type: "success",
+              message: "提交成功!"
+            });
+            this.$router.push({
+              name: "distribution"
+            });
+          }
+        } else {
+          return false;
+        }
+      });
+    },
+
     addShow() {
       this.$router.push({
         name: "ruleSetting"

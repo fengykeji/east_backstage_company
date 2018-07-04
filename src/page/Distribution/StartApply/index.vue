@@ -39,8 +39,6 @@
   margin-top: 20px;
   text-align: right;
 }
-.box {
-}
 .el-form-item {
   margin: 2px 0;
 }
@@ -79,6 +77,11 @@
 .addPerson {
   .el-select {
     width: 150px;
+  }
+    .el-table td,
+  .el-table th {
+    padding: 5px 0;
+      color: #333;
   }
 }
 </style>

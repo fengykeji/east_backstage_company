@@ -7,9 +7,11 @@
   }
   .el-table th {
     padding: 5px 0px;
+     color: #333;
   }
   .el-table td {
     padding: 5px 0px;
+     color: #333;
   }
   .el-input__inner {
     height: 35px;
@@ -86,7 +88,7 @@ export default {
         nail_name: [
           {
             required: true,
-            message: "请输入甲方联系人,长度为2-5个字符",
+            message: "请输入联系人,2-5个字符，必须是中文",
             change: "change",
             pattern: /[\u4E00-\u9FA5]{2,5}(?:·[\u4E00-\u9FA5]{2,5})*/
           }
@@ -94,7 +96,7 @@ export default {
         nail_tel: [
           {
             required: true,
-            message: "请输入正确的电话号码格式",
+            message: "请输入电话号码，11位手机号码格式",
             change: "change",
             pattern: /^1[34578]\d{9}$/
           }
@@ -102,7 +104,7 @@ export default {
         second_name: [
           {
             required: true,
-            message: "请输入乙方联系人,长度为2-5个字符",
+            message: "请输入联系人,2-5个字符,必须是中文",
             change: "change",
             pattern: /[\u4E00-\u9FA5]{2,5}(?:·[\u4E00-\u9FA5]{2,5})*/
           }
@@ -110,7 +112,7 @@ export default {
         second_tel: [
           {
             required: true,
-            message: "请输入正确的电话号码格式",
+            message: "请输入电话号码，11位手机号码格式",
             change: "change",
             pattern: /^1[34578]\d{9}$/
           }
