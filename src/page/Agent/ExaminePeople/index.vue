@@ -229,7 +229,7 @@
 export default {
   data() {
     return {
-      url: "http://120.27.21.136:2798/",
+      url: "http://120.78.69.178:2902/",
       tableData: [],
       searchObj: {
         tag_search: "",

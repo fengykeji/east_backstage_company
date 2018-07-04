@@ -73,7 +73,7 @@ body {
                     <el-table-column label="文件名称" prop="file_name" align='center'></el-table-column>
                     <el-table-column label="附件" align='center'>
                         <template slot-scope='scope'>
-                            <a target="_blank" :href="'http://120.27.21.136:2798/' + scope.row.url">查看附件</a>
+                            <a target="_blank" :href="'http://120.78.69.178:2902/' + scope.row.url">查看附件</a>
                         </template>
                     </el-table-column>
                     <el-table-column property="uploader" label="上传人员" align='center'></el-table-column>
@@ -252,15 +252,21 @@ export default {
       formData.append("url", file);
       let res = await this.api.uploadBrokerAgreement(formData);
       if (res.code == 200) {
-        let projectAgreementTemp = {};
-        projectAgreementTemp.uploader = res.data.uploader;
-        projectAgreementTemp.url = res.data.img_url;
-        projectAgreementTemp.file_name = fileObj.name;
+        let Temp = {};
+        Temp.uploader = res.data.data.uploader;
+        Temp.url = res.data.data.img_url;
+        Temp.file_name = fileObj.name;
         this.form.project_agreement = [];
-        this.form.project_agreement.push(projectAgreementTemp);
+        this.form.project_agreement.push(Temp);
+      }
+      this.getBrokerAgreement();
+    },
+    async getBrokerAgreement() {
+      let res = await this.api.getBrokerAgreement({ rule_id: this.rule_id });
+      if (res.code == 200) {
+        this.refund = res.data.data;
       }
     },
-
     sumbit() {
       this.$refs["sumbitForm"].validate(async valid => {
         if (valid) {

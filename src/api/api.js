@@ -3,7 +3,7 @@ import qs from 'qs'
 import Vue from 'vue'
 //请求带上cookie
 // http.defaults.withCredentials = true;
-let base = 'http://120.27.21.136:2798';
+let base = 'http://120.78.69.178:2902';
 
 const doPost = function (url) {
   return function (params) {
@@ -24,7 +24,9 @@ http.interceptors.response.use(function (res) {
   }
   else if (res.data.code == 201) {
     Vue.prototype.$message({ type: 'error', message: '由于您长时间没有操作, 登录已过期, 请重新登录' });
-    location.href = 'http://120.27.21.136:2798/admin/company/';
+    location.href = 'http://120.78.69.178:2902/admin/company/';
+    //上正式服
+    // location.href = 'http://120.27.21.136:2798/admin/company/';  测试服
   } else {
     Vue.prototype.$message({ type: 'error', message: res.data.msg });
   }

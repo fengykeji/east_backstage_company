@@ -141,7 +141,7 @@
         </el-table-column>
         <el-table-column label="操作" align='center'>
           <template slot-scope="scope">
-            <el-button type='text'>查看</el-button>
+            <el-button type='text' @click='seeShow(scope.row)'>查看</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -185,6 +185,10 @@ export default {
     }
   },
   methods: {
+    seeShow(row) {
+      console.log(123);
+      this.$router.push({ name: "ruleOfMaid" });
+    },
     getIndex(row) {
       let index = row.$index + 1;
       return index;
