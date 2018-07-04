@@ -199,7 +199,8 @@ export default {
             operationType: type,
             project_id: row.project_id,
             rule_id: row.rule_id,
-            auditing_state: row.state
+            auditing_state: row.state,
+            backUrl : 'projectInfo'
           }
         });
       }

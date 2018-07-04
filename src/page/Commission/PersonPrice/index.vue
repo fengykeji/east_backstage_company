@@ -8,11 +8,11 @@
   }
   .el-table th {
     padding: 8px 0px;
-     color: #333;
+    color: #333;
   }
   .el-table td {
     padding: 5px 0;
-     color: #333;
+    color: #333;
   }
   .el-dialog__body {
     padding-top: 0;
@@ -180,7 +180,8 @@ export default {
       if (this.personType == 0) {
         let res = await this.api.getPersonInfoList({
           project_id: this.project_id,
-          search: this.searchObj.search
+          search: this.searchObj.search,
+          page: this.searchObj.page
         });
         if (res.code == 200) {
           this.tableData = res.data.broker_info.data;
@@ -204,7 +205,8 @@ export default {
         //   }
         let res = await this.api.getPersonNInfo({
           project_id: this.project_id,
-          search: this.searchObj.search
+          search: this.searchObj.search,
+          page: this.searchObj.page
         });
         if (res.code == 200) {
           this.tableDataSa = res.data.broker_info.data;

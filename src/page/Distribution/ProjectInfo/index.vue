@@ -189,7 +189,10 @@ export default {
       this.$router.push({
         name: "ruleOfMaid",
         params: {
-          rule_id: this.rule_id
+          rule_id: this.rule_id,
+          project_id : this.project_id,
+          operationType : this.operationType,
+          backUrl : this.$route.params.backUrl
         }
       });
     },
