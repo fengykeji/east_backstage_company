@@ -32,10 +32,13 @@
     color: #333;
   }
   .el-table th {
-    padding: 2px 5px;
+    padding: 2px 0px;
+  }
+  .el-table td {
+    padding: 0px 0px;
   }
   .cell {
-    padding: 10px 0px;
+    padding: 4px 0px;
   }
   .request {
     display: inline-block;
@@ -229,7 +232,7 @@
       <el-dialog title="新建账号" :visible.sync="dialogFormVisibleAccounts" class='tableUser' @close="cancelUser">
         <el-form :model="projectUserForm" :rules="userFormRules" ref="projectUserForm">
           <el-form-item label="设定帐号" prop="account" class='input'>
-            <el-input v-model="projectUserForm.account" auto-complete="off" placeholder="请输入帐号"></el-input>
+            <el-input v-model="projectUserForm.account" auto-complete="off" placeholder="请输入手机号码"></el-input>
           </el-form-item>
           <el-form-item label="设定密码" prop="password" class='input'>
             <el-input v-model="projectUserForm.password" auto-complete="off" type='password' placeholder="请输入密码"></el-input>
@@ -528,6 +531,7 @@ export default {
           temp.property_type.push(type.property_tag_id);
         }
         Object.assign(this.form, temp);
+        console.log(temp, this.form);
         this.$nextTick(() => {
           this.initMap(temp);
         });
@@ -757,12 +761,11 @@ export default {
       if (this.operationType == 1 || this.operationType == 2) {
         return;
       }
-
       let ac = new BMap.Autocomplete({
         input: "suggestId",
         location: this.map
       });
-
+      suggestId.value = this.form.absolute_address;
       function G(id) {
         return document.getElementById(id);
       }

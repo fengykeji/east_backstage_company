@@ -12,7 +12,7 @@
   }
   .el-table td {
     padding: 0;
-     color: #333;
+    color: #333;
   }
   .el-dialog__body {
     padding-top: 0;
@@ -38,15 +38,13 @@
         <el-table-column prop="" label="序号" align='center' width="70px">
           <template slot-scope="scope">{{getIndex(scope)}}</template>
         </el-table-column>
-        <el-table-column prop="company_name" label="公司名称" align='center'></el-table-column>
-        <el-table-column prop="absolute_address" label="公司地址" align='center' width="280px"></el-table-column>
+        <el-table-column prop="company_name" label="公司名称" align='center' width="140px"></el-table-column>
         <el-table-column prop="project_hold_name" label="负责人" align='center'></el-table-column>
-        <el-table-column prop="project_hold_phone" label="联系电话" align='center' width="110px"></el-table-column>
-        <el-table-column prop="begin_time" label="开始执行时间" align='center'></el-table-column>
-        <el-table-column prop="end_time" label="截至执行时间" align='center'></el-table-column>
+        <el-table-column prop="project_hold_phone" label="联系电话" align='center' width="130px"></el-table-column>
+        <el-table-column prop="begin_time" label="开始执行时间" align='center' width="110px"></el-table-column>
+        <el-table-column prop="end_time" label="截至执行时间" align='center' width="110px"></el-table-column>
+        <el-table-column prop="absolute_address" label="公司地址" align='center' width="220px"></el-table-column>
         <el-table-column prop="price" label="累计金额" align='center'></el-table-column>
-        <el-table-column prop="price" label="已结金额" align='center'></el-table-column>
-        <el-table-column prop="price" label="未结金额" align='center'></el-table-column>
         <el-table-column property="operation" label="操作" align='center'>
           <template slot-scope="scope">
             <el-button type="text" @click='showAdd(scope.row)'>查看</el-button>
@@ -72,15 +70,13 @@
         <el-table-column prop="" label="序号" align='center' width="70px">
           <template slot-scope="scope">{{getIndex(scope)}}</template>
         </el-table-column>
-        <el-table-column prop="company_name" label="公司名称" align='center'></el-table-column>
-        <el-table-column prop="absolute_address" label="公司地址" align='center' width="280px"></el-table-column>
+        <el-table-column prop="company_name" label="公司名称" align='center' width="140px"></el-table-column>
         <el-table-column prop="project_hold_name" label="负责人" align='center'></el-table-column>
-        <el-table-column prop="project_hold_phone" label="联系电话" align='center' width="110px"></el-table-column>
-        <el-table-column prop="begin_time" label="开始执行时间" align='center'></el-table-column>
-        <el-table-column prop="end_time" label="截至执行时间" align='center'></el-table-column>
-        <el-table-column prop="price" label="累计金额" align='center' v-if='companyType==0'></el-table-column>
+        <el-table-column prop="project_hold_phone" label="联系电话" align='center' width="130px"></el-table-column>
+        <el-table-column prop="begin_time" label="开始执行时间" align='center' width="110px"></el-table-column>
+        <el-table-column prop="end_time" label="截至执行时间" align='center' width="110px"></el-table-column>
+        <el-table-column prop="absolute_address" label="公司地址" align='center' width="220px"></el-table-column>
         <el-table-column prop="price" label="已结金额" align='center' v-if='companyType==1'></el-table-column>
-        <el-table-column prop="price" label="未结金额" align='center' v-if='companyType==2'></el-table-column>
         <el-table-column property="operation" label="操作" align='center'>
           <template slot-scope="scope">
             <el-button type="text" @click='showAdd(scope.row)'>查看</el-button>
@@ -106,14 +102,12 @@
         <el-table-column prop="" label="序号" align='center' width="70px">
           <template slot-scope="scope">{{getIndex(scope)}}</template>
         </el-table-column>
-        <el-table-column prop="company_name" label="公司名称" align='center'></el-table-column>
-        <el-table-column prop="absolute_address" label="公司地址" align='center' width="280px"></el-table-column>
+        <el-table-column prop="company_name" label="公司名称" align='center' width="140px"></el-table-column>
         <el-table-column prop="project_hold_name" label="负责人" align='center'></el-table-column>
         <el-table-column prop="project_hold_phone" label="联系电话" align='center' width="110px"></el-table-column>
-        <el-table-column prop="begin_time" label="开始执行时间" align='center'></el-table-column>
-        <el-table-column prop="end_time" label="截至执行时间" align='center'></el-table-column>
-        <el-table-column prop="price" label="累计金额" align='center'></el-table-column>
-        <el-table-column prop="price" label="已结金额" align='center' v-if='companyType==1'></el-table-column>
+        <el-table-column prop="begin_time" label="开始执行时间" align='center' width="110px"></el-table-column>
+        <el-table-column prop="end_time" label="截至执行时间" align='center' width="110px"></el-table-column>
+          <el-table-column prop="absolute_address" label="公司地址" align='center' width="220px"></el-table-column>
         <el-table-column prop="price" label="未结金额" align='center' v-if='companyType==2'></el-table-column>
         <el-table-column property="operation" label="操作" align='center'>
           <template slot-scope="scope">

@@ -226,7 +226,10 @@ export default {
       //新增
       this.$router.push({
         name: "addPerson",
-        params: { project_id: this.project_id }
+        params: {
+          project_id: this.project_id,
+          backUrl: this.$route.params.backUrl
+        }
       });
     }
   }

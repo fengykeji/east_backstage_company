@@ -40,15 +40,15 @@
         <el-table-column prop="" label="序号" align='center' width="70px">
           <template slot-scope="scope">{{getIndex(scope)}}</template>
         </el-table-column>
-        <el-table-column prop="client_id" label="推荐编号" align='center'></el-table-column>
-        <el-table-column prop="project_name" label="项目名称" align='center'></el-table-column>
+        <el-table-column prop="client_id" label="推荐编号" align='center' width="100px"></el-table-column>
+        <el-table-column prop="project_name" label="项目名称" align='center' width="120px"></el-table-column>
         <el-table-column prop="house_info" label="房间号" align='center'></el-table-column>
-        <el-table-column prop="name" label="经纪人名称" align='center'></el-table-column>
-        <el-table-column prop="tel" label="联系电话" align='center'></el-table-column>
+        <el-table-column prop="name" label="经纪人名称" align='center' width="110px"></el-table-column>
+        <el-table-column prop="tel" label="联系电话" align='center' width="120px"></el-table-column>
         <el-table-column prop="broker_type" label="佣金类型" align='center'>
           <template slot-scope="scope">{{brokerType(scope.row.broker_type)}}</template>
         </el-table-column>
-        <el-table-column prop="create_time" label="时间" align='center' width="160px"></el-table-column>
+        <!-- <el-table-column prop="create_time" label="时间" align='center' width="160px"></el-table-column> -->
         <el-table-column prop="broker_num" label="佣金金额" align='center'></el-table-column>
         <el-table-column prop="commission_way" label="计算规则" align='center' width="120px"></el-table-column>
         <el-table-column prop="pay_state" label="状态" align='center'>
@@ -74,7 +74,7 @@
         <el-table-column prop="" label="序号" align='center' width="70px">
           <template slot-scope="scope">{{getIndex(scope)}}</template>
         </el-table-column>
-        <el-table-column prop="batch_name" label="批次名称" align='center'></el-table-column>
+        <el-table-column prop="batch_name" label="批次名称" align='center' width="120px"></el-table-column>
         <el-table-column prop="apply_name" label="申请人员" align='center'></el-table-column>
         <el-table-column prop="create_time" label="申请时间" align='center'></el-table-column>
         <el-table-column prop="broker_num" label="申请金额" align='center' width="80px"></el-table-column>
@@ -112,18 +112,18 @@
         <el-table-column prop="" label="序号" align='center' width="70px">
           <template slot-scope="scope">{{getIndex(scope)}}</template>
         </el-table-column>
-        <el-table-column prop="client_id" label="推荐编号" align='center'></el-table-column>
-        <el-table-column prop="project_name" label="项目名称" align='center'></el-table-column>
+        <el-table-column prop="client_id" label="推荐编号" align='center' width="100px"></el-table-column>
+        <el-table-column prop="project_name" label="项目名称" align='center' width="140px"></el-table-column>
         <el-table-column prop="house_info" label="房间号" align='center'></el-table-column>
-        <el-table-column prop="name" label="经纪人名称" align='center' width="110px"></el-table-column>
-        <el-table-column prop="tel" label="联系电话" align='center'></el-table-column>
+        <el-table-column prop="name" label="经纪人名称" align='center' width="140px"></el-table-column>
+        <el-table-column prop="tel" label="联系电话" align='center' width="140px"></el-table-column>
         <el-table-column prop="broker_type" label="佣金类型" align='center'>
           <template slot-scope="scope">{{brokerType(scope.row.broker_type)}}</template>
         </el-table-column>
         <!-- <el-table-column prop="create_time" label="时间" align='center' width="160px"></el-table-column> -->
         <el-table-column prop="broker_num" label="佣金金额" align='center'></el-table-column>
-        <el-table-column prop="commission_way" label="计算规则" align='center'></el-table-column>
-        <el-table-column prop="create_time" label="确认时间" align='center' width="160px"></el-table-column>
+        <el-table-column prop="commission_way" label="计算规则" align='center' width="160px"></el-table-column>
+        <el-table-column prop="create_time" label="确认时间" align='center' width="180px"></el-table-column>
       </el-table>
       <el-pagination background class='page' layout="prev, pager, next" :page-size="pageSize" :current-page="searchObj.page" :total="total" @current-change="pageChange">
       </el-pagination>

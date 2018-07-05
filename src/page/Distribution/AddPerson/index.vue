@@ -189,10 +189,17 @@ export default {
           type: "success",
           message: "选择到访确认人成功!"
         });
-        this.$router.push({
-          name: "fastDistribution",
-          params: { submitForm: this.submitForm }
-        });
+        if (this.$route.params.backUrl) {
+          this.$router.push({
+            name: this.$route.params.backUrl,
+            params: this.$route.params
+          });
+        } else {
+          this.$router.push({
+            name: "fastDistribution",
+            params: { submitForm: this.submitForm }
+          });
+        }
       }
     },
 
@@ -225,7 +232,10 @@ export default {
     choice() {
       this.$router.push({
         name: "choicePeople",
-        params: { project_id: this.project_id }
+        params: {
+          project_id: this.project_id,
+          backUrl: this.$route.params.backUrl
+        }
       });
     },
     close() {

@@ -60,7 +60,6 @@
   }
 }
 </style>
-
 <template>
   <div class="AddProject">
     <div class="AddPorject-wrapper">
@@ -91,7 +90,7 @@
           <!-- 物业类型 -->
           <div class="property_type">物业类型</div>
           <el-form-item prop="property_type">
-            <el-checkbox :disabled="operationType===2" v-model="form.property_type" v-for="item in typeOptions" :key="item.param_id" :label="item.param_id">{{item.param}}</el-checkbox>
+            <el-checkbox :disabled="isPropertyTypeDisabled(item)" v-model="form.property_type" v-for="item in typeOptions" :key="item.param_id" :label="item.param_id">{{item.param}}</el-checkbox>
           </el-form-item>
 
           <el-form-item label="开发商" prop="developer_name" class='input1'>
@@ -235,7 +234,7 @@
         <el-dialog title="新建账号" :visible.sync="dialogFormVisibleAccounts" class='tableUser' @close="cancelUser">
           <el-form :model="projectUserForm" :rules="userFormRules" ref="projectUserForm">
             <el-form-item label="设定帐号" prop="account" class='input'>
-              <el-input v-model="projectUserForm.account" auto-complete="off" placeholder="请输入帐号"></el-input>
+              <el-input v-model="projectUserForm.account" auto-complete="off" placeholder="请输入手机号码"></el-input>
             </el-form-item>
             <el-form-item v-show="isAccountValid" label="设定密码" prop="password" class='input'>
               <el-input v-model="projectUserForm.password" auto-complete="off" type='password' placeholder="请输入密码"></el-input>
@@ -387,6 +386,7 @@ export default {
         company_relation: "",
         remark: "",
         project_id: "",
+        check_state: "",
         project_agreement: [],
         project_user: []
       },
@@ -409,7 +409,7 @@ export default {
         account: "",
         password: "",
         phone: "",
-        state: ""
+        state: 1
       },
       auditing_info: {
         auditing_name: "",
@@ -424,6 +424,7 @@ export default {
       operationType: 0, //0 新增  1 修改  2 查看
       project: [],
       typeOptions: [],
+      haveTypeOptions: [],
       project_history: [],
       projectHistory: {
         company_id: "",
@@ -530,11 +531,19 @@ export default {
         return true;
       }
     },
+    isPropertyTypeDisabled(item) {
+      if (this.operationType == 2) {
+        return true;
+      } else if (this.operationType == 0) {
+        return false;
+      } else if (this.operationType == 1 && this.form.check_state == 1) {
+        return this.haveTypeOptions.includes(item.param_id);
+      }
+    },
     async getProjectInfo() {
       let res = await this.api.getProjectInfo({
         project_id: this.form.project_id
       });
-      console.log(res);
       if (res.code == 200) {
         let temp = { ...res.data.project };
         temp.property_type = [];
@@ -543,8 +552,10 @@ export default {
         this.authentication_info = res.data.authentication_info;
         this.auditing_info = res.data.auditing_info;
         this.project_history = res.data.project_history;
+        this.haveTypeOptions = [];
         for (let type of res.data.project.property_type) {
           temp.property_type.push(type.property_tag_id);
+          this.haveTypeOptions.push(type.property_tag_id);
         }
         Object.assign(this.form, temp);
         this.$nextTick(() => {

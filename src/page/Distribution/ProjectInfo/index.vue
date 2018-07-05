@@ -133,6 +133,8 @@
     <div v-if='operationType==1||operationType==0'>
       <div class='title-text'>结佣规则</div>
       <el-table :data="gridData" border>
+        <el-table-column prop="plan_start" label="计划开始执行时间" align='center'></el-table-column>
+        <el-table-column prop="plan_end" label="计划结束执行时间" align='center'></el-table-column>
         <el-table-column prop="state" label="申请状态" align='center'>
           <template slot-scope="scope">{{state(scope.row.state)}}</template>
         </el-table-column>
@@ -190,9 +192,9 @@ export default {
         name: "ruleOfMaid",
         params: {
           rule_id: this.rule_id,
-          project_id : this.project_id,
-          operationType : this.operationType,
-          backUrl : this.$route.params.backUrl
+          project_id: this.project_id,
+          operationType: this.operationType,
+          backUrl: this.$route.params.backUrl
         }
       });
     },

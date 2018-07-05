@@ -223,6 +223,11 @@ let api = {
   getApplyInfo: doGet('company/DistributionCommission/getApplyInfo'),
   //佣金重新申请 - 获取
   getRePriceApply: doGet('company/DistributionCommission/rePriceApply'),
+
+  //第五模块  全民项目管理
+  //获取列表
+  getPeopleList: doGet('company/PeopleProject/getList'),
+
 }
 
 export default api; 

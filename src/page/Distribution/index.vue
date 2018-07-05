@@ -87,7 +87,6 @@ body {
               </span>
           </div> -->
     </div>
-    <template>
       <el-table :data="tableData" border style="width: 100%" class="mt-30">
         <el-table-column prop="" label="序号" align='center' width="70px">
           <template slot-scope="scope">{{getIndex(scope)}}</template>
@@ -118,8 +117,6 @@ body {
       </el-table>
       <el-pagination background class='page' layout="prev, pager, next" :page-size="pageSize" :current-page="searchObj.page" :total="total" @current-change="pageChange">
       </el-pagination>
-    </template>
-
   </div>
 </template>
 <script>
