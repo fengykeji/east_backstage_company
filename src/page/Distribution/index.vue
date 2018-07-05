@@ -87,36 +87,34 @@ body {
               </span>
           </div> -->
     </div>
-      <el-table :data="tableData" border style="width: 100%" class="mt-30">
-        <el-table-column prop="" label="序号" align='center' width="70px">
-          <template slot-scope="scope">{{getIndex(scope)}}</template>
-        </el-table-column>
-        <el-table-column prop="project_code" label="项目编号" align='center' width="90px"></el-table-column>
-        <el-table-column prop="project_name" label="项目名称" align='center'></el-table-column>
-        <el-table-column prop="end_state" label="执行状态" align='center' width="90px">
-          <template slot-scope="scope">{{projectState(scope.row.end_state)}}</template>
-        </el-table-column>
-        <el-table-column prop="city" label="区域" align='center'></el-table-column>
-        <!-- <el-table-column prop="absolute_address" label="地址" align='center' width="184px"></el-table-column> -->
-        <el-table-column prop="subordinate_company" label="项目所属单位" align='center' width="150px"></el-table-column>
-        <el-table-column prop="company_relation" label="与项目关系" align='center' width="100px"></el-table-column>
-        <el-table-column prop="developer_name" label="所属单位" align='center' width="230px"></el-table-column>
-        <el-table-column prop="source" label="来源" align='center' width="80px">
-          <template slot-scope="scope">{{scopeState (scope.row.source)}}</template>
-        </el-table-column>
-        <el-table-column prop="state" label="审核状态" align='center' width="80px">
-          <template slot-scope="scope">{{auditingState(scope.row.state)}}</template>
-        </el-table-column>
-        <el-table-column prop="is_distribution" label="分配状态" align='center' width="80px"></el-table-column>
-        <el-table-column prop="operation" label="操作" align='center' width="170px">
-          <template slot-scope="scope">
-            <el-button type="text" @click='showProject(scope.row,0)'>查看</el-button>
-            <el-button type="text" @click='fastDistribution(scope.row)' v-if='scope.row.state==1'>分配到访确认人</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-pagination background class='page' layout="prev, pager, next" :page-size="pageSize" :current-page="searchObj.page" :total="total" @current-change="pageChange">
-      </el-pagination>
+    <el-table :data="tableData" border style="width: 100%" class="mt-30">
+      <el-table-column prop="" label="序号" align='center' width="70px">
+        <template slot-scope="scope">{{getIndex(scope)}}</template>
+      </el-table-column>
+      <el-table-column prop="project_code" label="项目编号" align='center' width="90px"></el-table-column>
+      <el-table-column prop="project_name" label="项目名称" align='center'></el-table-column>
+      <el-table-column prop="end_state" label="执行状态" align='center' width="90px"></el-table-column>
+      <el-table-column prop="city" label="区域" align='center'></el-table-column>
+      <!-- <el-table-column prop="absolute_address" label="地址" align='center' width="184px"></el-table-column> -->
+      <el-table-column prop="subordinate_company" label="项目所属单位" align='center' width="150px"></el-table-column>
+      <el-table-column prop="company_relation" label="与项目关系" align='center' width="100px"></el-table-column>
+      <el-table-column prop="developer_name" label="所属单位" align='center' width="230px"></el-table-column>
+      <el-table-column prop="source" label="来源" align='center' width="80px">
+        <template slot-scope="scope">{{scopeState (scope.row.source)}}</template>
+      </el-table-column>
+      <el-table-column prop="state" label="审核状态" align='center' width="80px">
+        <template slot-scope="scope">{{auditingState(scope.row.state)}}</template>
+      </el-table-column>
+      <el-table-column prop="is_distribution" label="分配状态" align='center' width="80px"></el-table-column>
+      <el-table-column prop="operation" label="操作" align='center' width="170px">
+        <template slot-scope="scope">
+          <el-button type="text" @click='showProject(scope.row,0)'>查看</el-button>
+          <el-button type="text" @click='fastDistribution(scope.row)' v-if='!scope.row.state==1&&scope.row.end_state==0'>分配到访确认人</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-pagination background class='page' layout="prev, pager, next" :page-size="pageSize" :current-page="searchObj.page" :total="total" @current-change="pageChange">
+    </el-pagination>
   </div>
 </template>
 <script>
@@ -197,7 +195,7 @@ export default {
             project_id: row.project_id,
             rule_id: row.rule_id,
             auditing_state: row.state,
-            backUrl : 'projectInfo'
+            backUrl: "projectInfo"
           }
         });
       }
@@ -209,16 +207,9 @@ export default {
         return "项目方选择";
       }
     },
-    projectState(row) {
-      if (row == 0) {
-        return "执行中";
-      } else {
-        return "以终止";
-      }
-    },
     auditingState(row) {
       if (row == 0) {
-        return "停用";
+        return "已拒绝";
       } else if (row == 1) {
         return "通过";
       } else if (row == 2) {

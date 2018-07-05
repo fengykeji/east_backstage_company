@@ -227,6 +227,8 @@ let api = {
   //第五模块  全民项目管理
   //获取列表
   getPeopleList: doGet('company/PeopleProject/getList'),
+  //查看项目详情
+  getPeopleRole: doGet('company/PeopleProject/getRule'),
 
 }
 

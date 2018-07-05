@@ -196,7 +196,7 @@ export default {
           });
         } else {
           this.$router.push({
-            name: "fastDistribution",
+            name: "peopleFastDistribution",
             params: { submitForm: this.submitForm }
           });
         }
@@ -231,7 +231,7 @@ export default {
     },
     choice() {
       this.$router.push({
-        name: "choicePeople",
+        name: "peopleChoicePeople",
         params: {
           project_id: this.project_id
         }
@@ -239,7 +239,7 @@ export default {
     },
     close() {
       this.$router.push({
-        name: "fastDistribution",
+        name: "peopleFastDistribution",
         params: this.$route.params
       });
     }

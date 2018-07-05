@@ -123,11 +123,16 @@
         </el-table-column>
         <el-table-column property="account" label="云算号" align='center'></el-table-column>
         <el-table-column property="name" label="名称" align='center'></el-table-column>
-        <el-table-column property="tel" label="联系方式" align='center'></el-table-column>
+        <el-table-column property="tel" label="联系方式" align='center' width="110px"></el-table-column>
         <el-table-column property="department" label="所属部门" align='center'></el-table-column>
         <el-table-column property="position" label="职位" align='center'></el-table-column>
         <el-table-column property="entry_time" label="入职时间" align='center'></el-table-column>
         <el-table-column property="create_time" label="分配时间" align='center'></el-table-column>
+        <el-table-column label="操作" align='center'>
+          <template slot-scope="scope">
+            <el-button type='text' @click='remove(scope.row)'>结束</el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
     <div v-if='operationType==1||operationType==0'>
@@ -197,6 +202,29 @@ export default {
           backUrl: this.$route.params.backUrl
         }
       });
+    },
+    remove(row) {
+      this.$confirm("此操作将结束到访确认人的权利, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(async () => {
+          let res = await this.api.endAgent({ agent_id: row.agent_id });
+          if (res.code == 200) {
+            this.$message({
+              type: "success",
+              message: "结束成功!"
+            });
+            this.getProjectDetail();
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消结束到访确认人的权利"
+          });
+        });
     },
     getIndex(row) {
       let index = row.$index + 1;

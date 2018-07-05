@@ -227,8 +227,7 @@ export default {
       this.$router.push({
         name: "addPerson",
         params: {
-          project_id: this.project_id,
-          backUrl: this.$route.params.backUrl
+          project_id: this.project_id
         }
       });
     }

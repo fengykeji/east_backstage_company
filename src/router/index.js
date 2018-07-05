@@ -4,6 +4,13 @@ import Container from '@/page/Container'
 import Login from '@/page/Login'
 import Project from '@/page/Project'
 import PeopleProject from '@/page/peopleProject'
+import PeopleFastDistribution from '@/page/peopleProject/PeopleFastDistribution'
+import PeopleAddPerson from '@/page/peopleProject/PeopleAddPerson'
+import PeopleChoicePeople from '@/page/peopleProject/PeopleChoicePeople'
+import PeopleProjectInfo from '@/page/peopleProject/PeopleProjectInfo'
+import PeopleRuleOfMaid from '@/page/peopleProject/PeopleRuleOfMaid'
+
+
 import AddProject from '@/page/Project/AddProject'
 import ReCreateProject from '@/page/Project/AddProject/reCreate'
 import RequestRefund from '@/page/Project/RequestRefund'
@@ -86,6 +93,33 @@ export default new Router({
           name: 'peopleProject',
           component: PeopleProject,
         },
+        {
+          path: '/peopleFastDistribution',
+          name: 'peopleFastDistribution',
+          component: PeopleFastDistribution,
+        },
+        {
+          path: '/peopleAddPerson',
+          name: 'peopleAddPerson',
+          component: PeopleAddPerson,
+        },
+        {
+          path: '/peopleChoicePeople',
+          name: 'peopleChoicePeople',
+          component: PeopleChoicePeople,
+        },
+
+        {
+          path: '/peopleProjectInfo',
+          name: 'peopleProjectInfo',
+          component: PeopleProjectInfo,
+        },
+        {
+          path: '/peopleRuleOfMaid',
+          name: 'peopleRuleOfMaid',
+          component: PeopleRuleOfMaid,
+        },
+        
       ]
     },
     {

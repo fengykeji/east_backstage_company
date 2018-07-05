@@ -123,14 +123,14 @@
         </div>
         <!-- 用户显示 -->
         <el-table :data="form.project_user" border>
+          <el-table-column property="account" label="帐号" align='center'></el-table-column>
+          <el-table-column property="name" label="管理员" align='center'></el-table-column>
+          <!-- <el-table-column property="phone" label="电话号码" align='center'></el-table-column> -->
           <el-table-column property="state" label="当前状态" align='center' v-if="operationType==1">
             <template slot-scope="scope">
               {{showState(scope.row.state)}}
             </template>
           </el-table-column>
-          <el-table-column property="account" label="帐号" align='center'></el-table-column>
-          <el-table-column property="name" label="管理员" align='center'></el-table-column>
-          <!-- <el-table-column property="phone" label="电话号码" align='center'></el-table-column> -->
           <el-table-column property="operation" v-if="operationType == 0 || operationType == 1" label="操作" align='center'>
             <template slot-scope="scope">
               <el-button type="text" @click='editUser(scope.row , scope.$index)'>修改</el-button>
