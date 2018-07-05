@@ -346,10 +346,9 @@ export default {
     async showSee(row) {
       this.operationType = 1;
       this.dialogFormVisible = true;
-      Object.assign(this.examinePeople, row);
-      let res = await this.api.getRefuseInfo(this.examinePeople);
+      let res = await this.api.getRefuseInfo({ agent_id: row.agent_id });
       if (res.code == 200) {
-        this.examinePeople = res.data;
+        Object.assign(this.examinePeople, res.data);
       }
     },
     getRole(row) {

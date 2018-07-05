@@ -57,7 +57,7 @@
           </el-form-item>
           <el-form-item class='input1'>
             <div>通讯地址</div>
-            <div class='border width'>{{submitForm.province?submitForm.province:''+submitForm.district?submitForm.district:''+submitForm.city?submitForm.city:''+submitForm.absolute_address?submitForm.absolute_address:''}}</div>
+            <div class='border width'>{{submitForm.province+submitForm.district+submitForm.city+submitForm.absolute_address}}</div>
           </el-form-item>
           <div v-if='operationType==0'>
             <div class='num_set'>分配信息</div>

@@ -38,6 +38,7 @@
   background: #fff;
   z-index: 110;
   text-align: left;
+  border-bottom: 1px solid #eee;
 }
 .top-name {
   position: absolute;
@@ -65,10 +66,10 @@
   font-size: 15px;
 }
 .tou {
-  height: 58px;
+  height: 63px;
   width: 120px;
-  padding-left: 42px;
-  padding-top: 10px;
+  padding-left: 25px;
+  padding-top: 9px;
   display: inline-block;
   vertical-align: middle;
 }
@@ -100,6 +101,8 @@
         <i class="icon-project"></i>项目管理</el-menu-item>
       <el-menu-item index="distribution" class='text' @click="handleSelect('distribution')">
         <i class="icon-distribution"></i>分销管理</el-menu-item>
+      <el-menu-item index="peopleProject" class='text' @click="handleSelect('peopleProject')">
+        <i class="icon-peopleProject"></i>全民项目管理</el-menu-item>
       <el-menu-item index="commission" class='text' @click="handleSelect('commission')">
         <i class="icon-commission"></i>项目佣金管理</el-menu-item>
       <el-menu-item index="distri_commission" class='text' @click="handleSelect('distri_commission')">

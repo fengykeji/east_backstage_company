@@ -252,11 +252,9 @@ export default {
     },
     async showSee(row) {
       this.showInfo = true;
-      Object.assign(this.examinePeople, row);
-      this.examinePeople.agent_id = row.agent_id;
-      let res = await this.api.getPayrollInfo(this.examinePeople);
+      let res = await this.api.getPayrollInfo({ agent_id: row.agent_id });
       if (res.code == 200) {
-        this.examinePeople = res.data;
+        Object.assign(this.examinePeople, res.data);
       }
     },
     role(row) {

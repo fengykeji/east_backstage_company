@@ -126,8 +126,8 @@
         <el-table-column property="tel" label="联系方式" align='center'></el-table-column>
         <el-table-column property="department" label="所属部门" align='center'></el-table-column>
         <el-table-column property="position" label="职位" align='center'></el-table-column>
-        <el-table-column property="create_time" label="入职时间" align='center'></el-table-column>
-        <el-table-column property="entry_time" label="分配时间" align='center'></el-table-column>
+        <el-table-column property="entry_time" label="入职时间" align='center'></el-table-column>
+        <el-table-column property="create_time" label="分配时间" align='center'></el-table-column>
       </el-table>
     </div>
     <div v-if='operationType==1||operationType==0'>

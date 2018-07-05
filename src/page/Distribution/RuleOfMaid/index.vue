@@ -234,6 +234,10 @@ export default {
   mounted() {
     this.project_id = this.$route.params.project_id;
     this.rule_id = this.$route.params.rule_id;
+    if (this.$route.params.rule_id) {
+    } else {
+      this.$router.push({ name: "distribution" });
+    }
     this.getBrokerAgreement();
   },
   methods: {
@@ -263,7 +267,8 @@ export default {
         temp.url = res.data.img_url;
         temp.create_time = res.data.create_time;
         temp.file_name = fileObj.name;
-        (this.refund = []), this.refund.push(temp);
+        this.refund = [];
+        this.refund.push(temp);
         console.log(temp);
         this.addBrokerAgreement();
       }
@@ -319,7 +324,7 @@ export default {
       if (this.$route.params.backUrl) {
         this.$router.push({
           name: this.$route.params.backUrl,
-          params : this.$route.params
+          params: this.$route.params
         });
       } else {
         this.$router.push({

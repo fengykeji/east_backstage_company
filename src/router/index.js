@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Container from '@/page/Container'
 import Login from '@/page/Login'
 import Project from '@/page/Project'
+import PeopleProject from '@/page/peopleProject'
 import AddProject from '@/page/Project/AddProject'
 import ReCreateProject from '@/page/Project/AddProject/reCreate'
 import RequestRefund from '@/page/Project/RequestRefund'
@@ -18,11 +19,9 @@ import MaidInfo from '@/page/Distri_commission/MaidInfo'
 import CommissionApply from '@/page/Distri_commission/CommissionApply'
 import UpdateCommission from '@/page/Distri_commission/UpdateCommission'
 import RequestPayment from '@/page/Distri_commission/RequestPayment'
-
 import Distribution from '@/page/Distribution'
 import RuleOfMaid from '@/page/Distribution/RuleOfMaid'
 import RuleSetting from '@/page/Distribution/RuleSetting'
-
 import FastDistribution from '@/page/Distribution/FastDistribution'
 import AddPerson from '@/page/Distribution/AddPerson'
 import ChoicePeople from '@/page/Distribution/ChoicePeople'
@@ -76,6 +75,17 @@ export default new Router({
           name: 'refundInfo',
           component: RefundInfo
         }
+      ]
+    },
+    {
+      path: '/peopleProject',
+      component: Container,
+      children: [
+        {
+          path: '',
+          name: 'peopleProject',
+          component: PeopleProject,
+        },
       ]
     },
     {
