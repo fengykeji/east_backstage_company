@@ -155,6 +155,7 @@ export default {
     this.rule_id = this.$route.params.rule_id;
     if (this.$route.params.project_id) {
       this.getProjectDetail();
+      this.getType();
     } else {
       this.$router.push({ name: "peopleProject" });
     }
@@ -165,9 +166,24 @@ export default {
       temp.project_id = this.project_id;
       temp.rule_id = this.rule_id;
       let res = await this.api.getPeopleRole(temp);
-      Object.assign(this.submitForm, res.data.project);
-      this.peopleInfo = res.data.agent;
-      this.gridData.push(res.data.broker);
+      if (res.code == 200) {
+        Object.assign(this.submitForm, res.data.project);
+        let property_tags = res.data.project.property_tags;
+        let arr = [];
+        for (let type of property_tags) {
+          arr.push(type.property_tag_id);
+        }
+        console.log(this.submitForm.property_tags);
+        this.submitForm.property_tags = arr;
+        this.gridData.push(res.data.broker);
+        this.peopleInfo = res.data.agent;
+      }
+    },
+    async getType() {
+      let res = await this.api.getTags();
+      if (res.code == 200) {
+        this.typeOptions = res.data;
+      }
     },
     getIndex(row) {
       let index = row.$index + 1;

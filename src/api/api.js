@@ -229,7 +229,10 @@ let api = {
   getPeopleList: doGet('company/PeopleProject/getList'),
   //查看项目详情
   getPeopleRole: doGet('company/PeopleProject/getRule'),
-
+  //获取合同信息
+  getRuleContract: doGet('company/PeopleProject/getRuleInfo'),
+  //获取附件信息
+  getBrokerAgreement: doGet('company/PeopleProject/getBrokerAgreement'),  //暂时未用
 }
 
 export default api; 

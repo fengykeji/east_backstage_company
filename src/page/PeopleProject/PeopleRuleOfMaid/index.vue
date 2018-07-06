@@ -22,200 +22,103 @@ body {
 </style>
 
 <template>
-    <div class='ruleOfMaid'>
-        <div class='ruleOfMaid-box'>
-            <div class='title'>
-                <span class='btn'>
-                    <el-button type="primary" @click='sumbit'>提交</el-button>
-                    <el-button type="primary" @click='cancel'>关闭</el-button>
-                </span>
-            </div>
-            <div class='infoform'>
-                <div class='text'>合同信息（甲方为项目方，乙方为销售方）</div>
-                <el-form :model="sumbitForm" :rules="rules" ref="sumbitForm">
-                    <!-- <el-form-item label="甲方单位：" class='input'>
-                        <el-input v-model="sumbitForm.deposit"></el-input>
-                    </el-form-item> -->
-                    <el-form-item label="甲方对接人" class='input' prop="project_docker">
-                        <el-input v-model="sumbitForm.project_docker"></el-input>
-                    </el-form-item>
-                    <el-form-item label="甲方对接人电话" class='input' prop="project_docker_tel">
-                        <el-input v-model="sumbitForm.project_docker_tel"></el-input>
-                    </el-form-item>
-                    <!-- <el-form-item label="乙方单位：" class='input'>
-                        <el-input v-model="sumbitForm.sell_docker"></el-input>
-                    </el-form-item> -->
-                    <el-form-item label="乙方对接人" class='input' prop="sell_docker">
-                        <el-input v-model="sumbitForm.sell_docker"></el-input>
-                    </el-form-item>
-                    <el-form-item label="乙方对接人电话" class='input' prop="sell_docker_tel">
-                        <el-input v-model="sumbitForm.sell_docker_tel"></el-input>
-                    </el-form-item>
-                    <el-form-item label="合同开始日期" class='input' prop="compact_begin">
-                        <el-date-picker v-model="sumbitForm.compact_begin" type="date" placeholder="选择日期" class="block"></el-date-picker>
-                    </el-form-item>
-                    <el-form-item label="合同截至日期" class='input' prop="compact_end">
-                        <el-date-picker v-model="sumbitForm.compact_end" type="date" placeholder="选择日期" class="block"></el-date-picker>
-                    </el-form-item>
-                    <el-form-item label="实际开始日期" class='input' prop="act_start">
-                        <el-date-picker v-model="sumbitForm.act_start" type="date" placeholder="选择日期" class="block"></el-date-picker>
-                    </el-form-item>
-                    <!-- <el-form-item label="实际截至日期" class='input'>
-                        <el-input v-model="sumbitForm.allow"></el-input>
-                    </el-form-item> -->
-                </el-form>
-            </div>
-            <div class='info'>
-                <div class='title'>
-                    <div class='text'>公司证明资料</div>
-                    <span class='btn'>
-                        <el-upload :auto-upload="false" action="" :on-change="fileUpload">
-                            <el-button ref="uploadBtn" type="primary" :show-file-list="false">点击上传</el-button>
-                        </el-upload>
-                    </span>
-                </div>
-                <el-table :data="refund" border>
-                    <el-table-column label="文件名称" prop="file_name" align='center'></el-table-column>
-                    <el-table-column label="附件" align='center'>
-                        <template slot-scope='scope'>
-                            <a target="_blank" :href="this.base + scope.row.url">查看附件</a>
-                        </template>
-                    </el-table-column>
-                    <el-table-column property="uploader" label="上传人员" align='center'></el-table-column>
-                    <el-table-column property="update_time" label="上传时间" align='center'></el-table-column>
-                    <el-table-column label="操作" align='center'>
-                        <template slot-scope="scope">
-                            <el-button type='text' @click='remove(scope.row)'>删除</el-button>
-                        </template>
-                    </el-table-column>
-                </el-table>
-            </div>
-            <div class='info'>
-                <div class='title'>
-                    <div class='text'>成交佣金（推荐的客户在该项目购置房源后产生的佣金）</div>
-                    <span class='btn'>
-                        <el-button type="primary" @click='addShow'>新增</el-button>
-                    </span>
-                </div>
-                <el-table :data="ruleForm" border>
-                    <el-table-column label="序号" align='center' width="70px">
-                        <template slot-scope="scope">{{getIndex(scope)}}</template>
-                    </el-table-column>
-                    <el-table-column property="project_code" label="物业类型" align='center'></el-table-column>
-                    <el-table-column property="project_name" label="跳点" align='center'></el-table-column>
-                    <el-table-column property="absolute_address" label="提成公式" align='center'></el-table-column>
-                    <el-table-column property="project_hold_name" label="单位" align='center'></el-table-column>
-                    <el-table-column property="project_hold_phone" label="奖励金额（元/套）" align='center'></el-table-column>
-                    <el-table-column label="操作" align='center'>
-                        <template slot-scope="scope">
-                            <el-button type="text">查看</el-button>
-                            <el-button type="text">编辑</el-button>
-                            <el-button type="text">删除</el-button>
-                        </template>
-                    </el-table-column>
-                </el-table>
-            </div>
-            <div class='info'>
-                <div class='title'>
-                    <div class='text'>到访佣金（客户到访后且售楼处确认后产生的佣金</div>
-                    <span class='btn'>
-                        <el-button type="primary">新增</el-button>
-                    </span>
-                </div>
-                <el-table :data="ruleForm" border>
-                    <el-table-column label="序号" align='center' width="70px">
-                        <template slot-scope="scope">{{getIndex(scope)}}</template>
-                    </el-table-column>
-                    <el-table-column property="project_code" label="单位" align='center'></el-table-column>
-                    <el-table-column property="project_hold_phone" label="奖励金额（元/套）" align='center'></el-table-column>
-                    <el-table-column label="操作" align='center'>
-                        <template slot-scope="scope">
-                            <el-button type="text">编辑</el-button>
-                            <el-button type="text">删除</el-button>
-                        </template>
-                    </el-table-column>
-                </el-table>
-            </div>
-            <div class='info'>
-                <div class='title'>
-                    <div class='text'>推荐佣金（经纪人将客户推荐给项目后的佣金）</div>
-                    <span class='btn'>
-                        <el-button type="primary">新增</el-button>
-                    </span>
-                </div>
-                <el-table :data="ruleForm" border>
-                    <el-table-column label="序号" align='center' width="70px">
-                        <template slot-scope="scope">{{getIndex(scope)}}</template>
-                    </el-table-column>
-                    <el-table-column property="project_code" label="单位" align='center'></el-table-column>
-                    <el-table-column property="project_hold_phone" label="奖励金额（元/套）" align='center'></el-table-column>
-                    <el-table-column label="操作" align='center'>
-                        <template slot-scope="scope">
-                            <el-button type="text">编辑</el-button>
-                            <el-button type="text">删除</el-button>
-                        </template>
-                    </el-table-column>
-                </el-table>
-            </div>
+  <div class='ruleOfMaid'>
+    <div class='ruleOfMaid-box'>
+      <div class='title'>
+        <span class='btn'>
+          <el-button type="primary" @click='cancel'>关闭</el-button>
+        </span>
+      </div>
+      <div class='infoform'>
+        <div class='text'>规则信息</div>
+        <el-form :model="sumbitForm" disabled='disabled'>
+          <el-form-item label="规则名称" class='input' prop="rule_name">
+            <el-input v-model="sumbitForm.rule_name"></el-input>
+          </el-form-item>
+          <el-form-item label="合同开始日期" class='input' prop="plan_start">
+            <el-input v-model="sumbitForm.plan_start"></el-input>
+          </el-form-item>
+          <el-form-item label="合同截至日期" class='input' prop="plan_end">
+            <el-input v-model="sumbitForm.plan_end"></el-input>
+          </el-form-item>
+          <el-form-item label="实际开始日期" class='input' prop="act_start">
+            <el-input v-model="sumbitForm.act_start"></el-input>
+          </el-form-item>
+          <el-form-item label="佣金规则" class='input1' prop="commission_describe">
+            <el-input type="textarea" v-model="sumbitForm.commission_describe"></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
+      <div class='info'>
+        <div class='title'>
+          <div class='text'>成交佣金（推荐的客户在该项目购置房源后产生的佣金）</div>
+          <span class='btn'>
+            <el-button type="primary" @click='addShow' class='add'>新增</el-button>
+          </span>
         </div>
+        <el-table :data="ruleForm" border>
+          <el-table-column label="序号" align='center' width="70px">
+            <template slot-scope="scope">{{getIndex(scope)}}</template>
+          </el-table-column>
+          <el-table-column property="project_code" label="物业类型" align='center'></el-table-column>
+          <el-table-column property="absolute_address" label="提成公式" align='center'></el-table-column>
+          <el-table-column property="project_hold_name" label="参数" align='center'></el-table-column>
+          <el-table-column label="操作" align='center'>
+            <template slot-scope="scope">
+              <el-button type="text">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <div class='info'>
+        <div class='title'>
+          <div class='text'>到访佣金（客户到访后且售楼处确认后产生的佣金</div>
+          <span class='btn'>
+            <el-button type="primary" class='add'>新增</el-button>
+          </span>
+        </div>
+        <el-table :data="ruleForm" border>
+          <el-table-column label="序号" align='center' width="70px">
+            <template slot-scope="scope">{{getIndex(scope)}}</template>
+          </el-table-column>
+          <el-table-column property="project_code" label="单位" align='center'></el-table-column>
+          <el-table-column property="project_hold_phone" label="奖励金额（元/套）" align='center'></el-table-column>
+          <el-table-column label="操作" align='center'>
+            <template slot-scope="scope">
+              <el-button type="text">编辑</el-button>
+              <el-button type="text">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <div class='info'>
+        <div class='title'>
+          <div class='text'>推荐佣金（经纪人将客户推荐给项目后的佣金）</div>
+          <span class='btn'>
+            <el-button type="primary" class='add'>新增</el-button>
+          </span>
+        </div>
+        <el-table :data="ruleForm" border>
+          <el-table-column label="序号" align='center' width="70px">
+            <template slot-scope="scope">{{getIndex(scope)}}</template>
+          </el-table-column>
+          <el-table-column property="project_code" label="单位" align='center'></el-table-column>
+          <el-table-column property="project_hold_phone" label="奖励金额（元/套）" align='center'></el-table-column>
+          <el-table-column label="操作" align='center'>
+            <template slot-scope="scope">
+              <el-button type="text">编辑</el-button>
+              <el-button type="text">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </div>
+  </div>
 </template>
 <script>
 export default {
   data() {
     return {
-      rules: {
-        project_docker: [
-          {
-            pattern: /[\u4E00-\u9FA5]{2,5}(?:·[\u4E00-\u9FA5]{2,5})*/,
-            required: true,
-            message: "请输入姓名,2-5个字符，必须是中文",
-            change: "change"
-          }
-        ],
-        project_docker_tel: [
-          {
-            required: true,
-            message: "请输入电话号码，11位手机号码格式",
-            change: "change",
-            pattern: /^1[34578]\d{9}$/
-          }
-        ],
-        sell_docker: [
-          {
-            pattern: /[\u4E00-\u9FA5]{2,5}(?:·[\u4E00-\u9FA5]{2,5})*/,
-            required: true,
-            message: "请输入姓名,2-5个字符，必须是中文",
-            change: "change"
-          }
-        ],
-        sell_docker_tel: [
-          {
-            required: true,
-            message: "请输入电话号码，11位手机号码格式",
-            change: "change",
-            pattern: /^1[34578]\d{9}$/
-          }
-        ],
-        compact_begin: [
-          {
-            required: true,
-            message: "请选择合同开始日期"
-          }
-        ],
-        compact_end: [
-          {
-            required: true,
-            message: "请选择合同截至日期"
-          }
-        ],
-        act_start: [
-          {
-            required: true,
-            message: "请选择实际开始日期"
-          }
-        ]
-      },
       sumbitForm: {
         project_docker: "",
         project_docker_tel: "",
@@ -241,6 +144,12 @@ export default {
     this.getBrokerAgreement();
   },
   methods: {
+    async getRuleContract() {
+      let res = await this.api.getRuleContract({ rule_id: this.rule_id });
+      if (res.code == 200) {
+        Object.assign(this.sumbitForm, res.data);
+      }
+    },
     async fileUpload(fileObj) {
       this.fileObject = fileObj;
       let flag = false;
@@ -289,6 +198,7 @@ export default {
       if (res.code == 200) {
         this.refund = res.data;
       }
+      this.getRuleContract();
     },
     remove(index) {
       this.refund.splice(index, 1);
@@ -316,9 +226,9 @@ export default {
     },
 
     addShow() {
-    //   this.$router.push({
-    //     name: "ruleSetting"
-    //   });
+      //   this.$router.push({
+      //     name: "ruleSetting"
+      //   });
     },
     cancel() {
       this.$router.push({

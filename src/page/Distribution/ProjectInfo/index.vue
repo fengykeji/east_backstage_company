@@ -115,7 +115,7 @@
         </div>
       </el-form>
     </div> -->
-    <div v-if="this.auditing_state==1||operationType==0">
+    <div v-if="this.auditing_state==1&&operationType==0">
       <div class='title-text'>到访确认人信息</div>
       <el-table :data="peopleInfo" border>
         <el-table-column label="序号" align='center' width="70px">
@@ -135,7 +135,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <div v-if='operationType==1||operationType==0'>
+    <div v-if='(operationType==1||operationType==0)&&this.auditing_state==1'>
       <div class='title-text'>结佣规则</div>
       <el-table :data="gridData" border>
         <el-table-column prop="plan_start" label="计划开始执行时间" align='center'></el-table-column>

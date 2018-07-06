@@ -236,7 +236,7 @@ export default {
     this.rule_id = this.$route.params.rule_id;
     if (this.$route.params.rule_id) {
     } else {
-      this.$router.push({ name: "distribution" });
+      this.$router.push({ name: "distribution"});
     }
     this.getBrokerAgreement();
   },
