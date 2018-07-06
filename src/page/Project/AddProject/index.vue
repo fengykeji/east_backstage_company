@@ -461,7 +461,8 @@ export default {
         url: "",
         create_name: "",
         create_time: ""
-      }
+      },
+      userIndex: 0
     };
   },
   computed: {
@@ -608,7 +609,6 @@ export default {
             if (this.isUserEdit) {
               this.projectUserForm.project_id = this.form.project_id;
               let temp = Object.assign({}, this.projectUserForm);
-              temp.index = undefined;
               let res = await this.api.updateProjectAdmin(temp);
               if (res.code != 200) {
                 return;
@@ -616,7 +616,6 @@ export default {
             } else {
               this.projectUserForm.project_id = this.form.project_id;
               let temp = Object.assign({}, this.projectUserForm);
-              temp.index = undefined;
               let res = await this.api.addProjectAdmin(temp);
               if (res.code != 200) {
                 return;
@@ -630,7 +629,7 @@ export default {
               type: "success",
               message: "修改成功!"
             });
-            Object.assign(this.form.project_user[temp.index], temp);
+            Object.assign(this.form.project_user[this.userIndex], temp);
           } else {
             this.$message({
               type: "success",
@@ -661,12 +660,12 @@ export default {
       this.isUserEdit = true;
       this.dialogFormVisibleAccounts = true;
       Object.assign(this.projectUserForm, row);
-      this.projectUserForm.index = index;
+      this.userIndex = index;
     },
     checkUserAccout(temp) {
       for (let i = 0; i < this.form.project_user.length; i++) {
         let user = this.form.project_user[i];
-        if (i === temp.index) continue;
+        if (i === this.userIndex) continue;
         if (user.account == temp.account) {
           this.$message({ type: "error", message: "该账号已存在" });
           return false;
@@ -739,14 +738,22 @@ export default {
       let flag = false;
       if (
         this.fileObject.name.indexOf(".docx") > -1 ||
-        this.fileObject.name.indexOf(".doc") > -1
+        this.fileObject.name.indexOf(".xlcx") > -1 ||
+        this.fileObject.name.indexOf(".doc") > -1 ||
+        this.fileObject.name.indexOf(".jpg") > -1 ||
+        this.fileObject.name.indexOf(".zip") > -1 ||
+        this.fileObject.name.indexOf(".rar") > -1 ||
+        this.fileObject.name.indexOf(".csv") > -1 ||
+        this.fileObject.name.indexOf(".png") > -1 ||
+        this.fileObject.name.indexOf(".pdf") > -1
       ) {
         flag = true;
       }
       if (!flag) {
         this.$message({
           type: "error",
-          message: "文件上传格式有误，请上传docx或者doc格式"
+          message:
+            "文件上传格式有误，请上传docx,doc,xlcx,jpg,zip,rar,csv,png,pdf格式"
         });
         return;
       }

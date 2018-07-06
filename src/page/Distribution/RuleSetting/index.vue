@@ -16,24 +16,34 @@ body {
             </div>
             <div class='infoform'>
                 <div class='text'>规则设置</div>
-                <el-form v-model="xx">
-                    <el-form-item label="物业类型" class='input'>
-                        <el-input v-model="xx.deposit"></el-input>
-                    </el-form-item>
-                    <el-form-item label="跳点提成累积" class='input'>
-                        <el-input v-model="xx.no_price"></el-input>
-                    </el-form-item>
-                    <el-form-item label="跳点" class='input'>
-                        <el-input v-model="xx.allow"></el-input>
+                <el-form :model="form">
+                    <el-form-item prop="property_type">
+                        <el-checkbox v-model="form.property_type" v-for="item in typeOptions" :key="item.param_id" :label="item.param_id">{{item.param}}</el-checkbox>
                     </el-form-item>
                     <el-form-item label="提成方式" class='input'>
-                        <el-input v-model="xx.deposit"></el-input>
+                        <el-select clearable placeholder="请选择提成方式" v-model="form.commission_way">
+                            <el-option v-for="item in commissionWayOption" :key="item.param_id" :label="item.param" :value="item.param_id"></el-option>
+                        </el-select>
                     </el-form-item>
                     <el-form-item label="单位" class='input'>
-                        <el-input v-model="xx.no_price"></el-input>
+                        <el-select clearable placeholder="请选择币种" v-model="form.money_type">
+                            <el-option v-for="item in moneyTypeOption" :key="item.param_id" :label="item.param" :value="item.param_id"></el-option>
+                        </el-select>
                     </el-form-item>
                     <el-form-item label="参数" class='input'>
-                        <el-input v-model="xx.allow"></el-input>
+                        <el-input v-model="form.param"></el-input>
+                    </el-form-item>
+                    <el-form-item label="跳点提成累积" class='input'>
+                        <el-radio-group v-model="form.is_total">
+                            <el-radio label="是" value='1'></el-radio>
+                            <el-radio label="否" value='0'></el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+                    <el-form-item label="跳点" class='input2'>
+                        <el-radio-group v-model="form.is_jump">
+                            <el-radio label="是" value='1'></el-radio>
+                            <el-radio label="否" value='0'></el-radio>
+                        </el-radio-group>
                     </el-form-item>
                 </el-form>
             </div>
@@ -71,12 +81,45 @@ body {
 export default {
   data() {
     return {
-      xx: [],
-      refund: []
+      refund: [],
+      form: {
+        property_type: "",
+        is_jump: "",
+        is_total: "",
+        money_type: "",
+        commission_way: "",
+        param: ""
+      },
+      value: "",
+      typeOptions: [],
+      commissionWayOption: [],
+      moneyTypeOption: []
     };
   },
-  mounted() {},
+  mounted() {
+    this.getType();
+    this.getMoneyType();
+    this.getCommissionWay();
+  },
   methods: {
+    async getCommissionWay() {
+      let res = await this.api.getCommissionWay();
+      if (res.code == 200) {
+        this.commissionWayOption = res.data;
+      }
+    },
+    async getMoneyType() {
+      let res = await this.api.getMoneyType();
+      if (res.code == 200) {
+        this.moneyTypeOption = res.data;
+      }
+    },
+    async getType() {
+      let res = await this.api.getTags();
+      if (res.code == 200) {
+        this.typeOptions = res.data;
+      }
+    },
     cancel() {
       this.$router.push({
         name: "ruleOfMaid"

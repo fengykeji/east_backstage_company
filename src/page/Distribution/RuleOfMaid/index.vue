@@ -236,7 +236,7 @@ export default {
     this.rule_id = this.$route.params.rule_id;
     if (this.$route.params.rule_id) {
     } else {
-      this.$router.push({ name: "distribution"});
+      this.$router.push({ name: "distribution" });
     }
     this.getBrokerAgreement();
   },
@@ -246,14 +246,22 @@ export default {
       let flag = false;
       if (
         this.fileObject.name.indexOf(".docx") > -1 ||
-        this.fileObject.name.indexOf(".doc") > -1
+        this.fileObject.name.indexOf(".xlcx") > -1 ||
+        this.fileObject.name.indexOf(".doc") > -1 ||
+        this.fileObject.name.indexOf(".jpg") > -1 ||
+        this.fileObject.name.indexOf(".zip") > -1 ||
+        this.fileObject.name.indexOf(".rar") > -1 ||
+        this.fileObject.name.indexOf(".csv") > -1 ||
+        this.fileObject.name.indexOf(".png") > -1 ||
+        this.fileObject.name.indexOf(".pdf") > -1
       ) {
         flag = true;
       }
       if (!flag) {
         this.$message({
           type: "error",
-          message: "文件上传格式有误，请上传docx或者doc格式"
+          message:
+            "文件上传格式有误，请上传docx,doc,xlcx,jpg,zip,rar,csv,png,pdf格式"
         });
         return;
       }

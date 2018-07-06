@@ -11,12 +11,14 @@ body {
   }
   .el-table th {
     padding: 5px 0px;
+    color: #333;
   }
   .el-table td {
     padding: 0;
+    color: #333;
   }
   .el-form-item {
-    padding-bottom: 15px;
+    padding-top: 6px;
   }
 }
 </style>
@@ -32,19 +34,19 @@ body {
       <div class='infoform'>
         <div class='text'>规则信息</div>
         <el-form :model="sumbitForm" disabled='disabled'>
-          <el-form-item label="规则名称" class='input' prop="rule_name">
+          <el-form-item label="规则名称" class='input'>
             <el-input v-model="sumbitForm.rule_name"></el-input>
           </el-form-item>
-          <el-form-item label="合同开始日期" class='input' prop="plan_start">
+          <el-form-item label="合同开始日期" class='input'>
             <el-input v-model="sumbitForm.plan_start"></el-input>
           </el-form-item>
-          <el-form-item label="合同截至日期" class='input' prop="plan_end">
+          <el-form-item label="合同截至日期" class='input'>
             <el-input v-model="sumbitForm.plan_end"></el-input>
           </el-form-item>
-          <el-form-item label="实际开始日期" class='input' prop="act_start">
+          <el-form-item label="实际开始日期" class='input'>
             <el-input v-model="sumbitForm.act_start"></el-input>
           </el-form-item>
-          <el-form-item label="佣金规则" class='input1' prop="commission_describe">
+          <el-form-item label="佣金规则" class='input1'>
             <el-input type="textarea" v-model="sumbitForm.commission_describe"></el-input>
           </el-form-item>
         </el-form>
@@ -52,64 +54,39 @@ body {
       <div class='info'>
         <div class='title'>
           <div class='text'>成交佣金（推荐的客户在该项目购置房源后产生的佣金）</div>
-          <span class='btn'>
-            <el-button type="primary" @click='addShow' class='add'>新增</el-button>
-          </span>
         </div>
-        <el-table :data="ruleForm" border>
+        <el-table :data="dealCommission" border>
           <el-table-column label="序号" align='center' width="70px">
             <template slot-scope="scope">{{getIndex(scope)}}</template>
           </el-table-column>
-          <el-table-column property="project_code" label="物业类型" align='center'></el-table-column>
-          <el-table-column property="absolute_address" label="提成公式" align='center'></el-table-column>
-          <el-table-column property="project_hold_name" label="参数" align='center'></el-table-column>
-          <el-table-column label="操作" align='center'>
-            <template slot-scope="scope">
-              <el-button type="text">删除</el-button>
-            </template>
-          </el-table-column>
+          <el-table-column property="property_type" label="物业类型" align='center'></el-table-column>
+          <el-table-column property="money_type" label="单位" align='center'></el-table-column>
+          <el-table-column property="commission_way" label="提成公式" align='center'></el-table-column>
+          <el-table-column property="param" label="参数" align='center'></el-table-column>
         </el-table>
       </div>
       <div class='info'>
         <div class='title'>
           <div class='text'>到访佣金（客户到访后且售楼处确认后产生的佣金</div>
-          <span class='btn'>
-            <el-button type="primary" class='add'>新增</el-button>
-          </span>
         </div>
-        <el-table :data="ruleForm" border>
+        <el-table :data="visitCommission" border>
           <el-table-column label="序号" align='center' width="70px">
             <template slot-scope="scope">{{getIndex(scope)}}</template>
           </el-table-column>
-          <el-table-column property="project_code" label="单位" align='center'></el-table-column>
-          <el-table-column property="project_hold_phone" label="奖励金额（元/套）" align='center'></el-table-column>
-          <el-table-column label="操作" align='center'>
-            <template slot-scope="scope">
-              <el-button type="text">编辑</el-button>
-              <el-button type="text">删除</el-button>
-            </template>
-          </el-table-column>
+          <el-table-column property="money_type" label="单位" align='center'></el-table-column>
+          <el-table-column property="param" label="奖励金额（元/套）" align='center'></el-table-column>
         </el-table>
       </div>
       <div class='info'>
         <div class='title'>
           <div class='text'>推荐佣金（经纪人将客户推荐给项目后的佣金）</div>
-          <span class='btn'>
-            <el-button type="primary" class='add'>新增</el-button>
-          </span>
         </div>
-        <el-table :data="ruleForm" border>
+        <el-table :data="recCommission" border>
           <el-table-column label="序号" align='center' width="70px">
             <template slot-scope="scope">{{getIndex(scope)}}</template>
           </el-table-column>
-          <el-table-column property="project_code" label="单位" align='center'></el-table-column>
-          <el-table-column property="project_hold_phone" label="奖励金额（元/套）" align='center'></el-table-column>
-          <el-table-column label="操作" align='center'>
-            <template slot-scope="scope">
-              <el-button type="text">编辑</el-button>
-              <el-button type="text">删除</el-button>
-            </template>
-          </el-table-column>
+          <el-table-column property="money_type" label="单位" align='center'></el-table-column>
+          <el-table-column property="param" label="奖励金额（元/套）" align='center'></el-table-column>
         </el-table>
       </div>
     </div>
@@ -129,7 +106,10 @@ export default {
         act_start: ""
       },
       refund: [],
-      ruleForm: [],
+      dealCommission: [],
+      visitCommission: [],
+      recCommission: [],
+
       project_id: "",
       rule_id: ""
     };
@@ -189,8 +169,15 @@ export default {
       temp.uploader = this.refund[0].uploader;
       temp.rule_id = this.rule_id;
       let res = await this.api.addBrokerAgreement(temp);
-      console.log(this.refund);
       if (res.code == 200) {
+      }
+    },
+    async getPeopleRuleInfo() {
+      let res = await this.api.getPeopleRuleInfo({ rule_id: this.rule_id });
+      if (res.code == 200) {
+        this.dealCommission = res.data.deal;
+        this.visitCommission = res.data.visit;
+        this.recCommission = res.data.recommend;
       }
     },
     async getBrokerAgreement() {
@@ -199,9 +186,14 @@ export default {
         this.refund = res.data;
       }
       this.getRuleContract();
+      this.getPeopleRuleInfo();
     },
     remove(index) {
       this.refund.splice(index, 1);
+    },
+    getIndex(row) {
+      let index = row.$index + 1;
+      return index;
     },
     sumbit() {
       this.$refs["sumbitForm"].validate(async valid => {

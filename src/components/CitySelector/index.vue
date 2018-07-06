@@ -1,8 +1,7 @@
 <style lang="less" scoped>
-.select-1{
+.select-1 {
   width: 200px;
   margin-right: 10px;
-  
 }
 </style>
 <template>
@@ -100,10 +99,10 @@ export default {
           district = option.name;
         }
       }
-      let address = ""
-      if(province.indexOf("市") > -1) {
+      let address = "";
+      if (province.indexOf("市") > -1) {
         address = province + district;
-      }else {
+      } else {
         address = province + city + district;
       }
       this.$emit("changeDistrict", address);

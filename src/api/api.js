@@ -143,7 +143,20 @@ let api = {
   addBrokerAgreement: doPost('company/distribution/addBrokerAgreement'),
   //佣金规则 - 获取协议
   getBrokerAgreement: doGet('company/distribution/getBrokerAgreement'),
-  //经纪人管理   第二板块
+  //佣金规则 - 新增结佣方式
+  addMaidRule: doPost('company/distribution/addAgent'),
+  //佣金规则 - 修改结佣方式
+  updateBrokeRule: doPost('company/distribution/updateBrokeRule'),
+  //佣金规则 - 删除佣金规则
+  delBrokeRule: doGet('company/distribution/updateBrokeRule'),
+  //佣金规则 - 获取提成方式
+  getCommissionWay: doGet('company/distribution/getCommissionWay'),
+  //佣金规则 - 获取币种
+  getMoneyType: doGet('company/distribution/getMoneyType'),
+  //佣金规则 - 获取佣金规则详情
+  getCommissionRuleInfo: doGet('company/distribution/brokerInfo'),
+
+  //经纪人管理   第三板块
   //审核经纪人
   exPeople: doPost('company/CompanyAgent/ex'),
 
@@ -229,10 +242,12 @@ let api = {
   getPeopleList: doGet('company/PeopleProject/getList'),
   //查看项目详情
   getPeopleRole: doGet('company/PeopleProject/getRule'),
-  //获取合同信息
+  //获取规则信息
   getRuleContract: doGet('company/PeopleProject/getRuleInfo'),
   //获取附件信息
   getBrokerAgreement: doGet('company/PeopleProject/getBrokerAgreement'),  //暂时未用
+  //全民规则详情
+  getPeopleRuleInfo: doGet('company/PeopleProject/brokerInfo'),
 }
 
 export default api; 
