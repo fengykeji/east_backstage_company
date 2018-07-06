@@ -325,7 +325,8 @@ export default {
 
     addShow() {
       this.$router.push({
-        name: "ruleSetting"
+        name: "ruleSetting",
+        params: {}
       });
     },
     cancel() {

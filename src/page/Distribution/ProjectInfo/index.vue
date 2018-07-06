@@ -199,7 +199,7 @@ export default {
           rule_id: this.rule_id,
           project_id: this.project_id,
           operationType: this.operationType,
-          backUrl: this.$route.params.backUrl
+          backUrl: this.$route.params.backUrl,
         }
       });
     },

@@ -10,7 +10,7 @@ body {
         <div class='ruleSetting-box'>
             <div class='title'>
                 <span class='btn'>
-                    <el-button type="primary">提交</el-button>
+                    <el-button type="primary" @click='sumbit'>提交</el-button>
                     <el-button type="primary" @click='cancel'>关闭</el-button>
                 </span>
             </div>
@@ -54,7 +54,7 @@ body {
                         <el-button type="primary">新增</el-button>
                     </span>
                 </div>
-                <el-table :data="refund.file" border>
+                <el-table :data="refund" border>
                     <el-table-column label="序号" align='center' width="70px">
                         <template slot-scope="scope">{{getIndex(scope)}}</template>
                     </el-table-column>
@@ -102,6 +102,26 @@ export default {
     this.getCommissionWay();
   },
   methods: {
+    async sumbit() {
+      let temp = {};
+      temp.company_rule_id = this.company_rule_id;
+      temp.brokerage_type = this.form.brokerage_type;
+      temp.is_jump = this.form.is_jump;
+      temp.is_total = this.form.is_total;
+      temp.money_type = this.form.money_type;
+      temp.commission_way = this.form.commission_way;
+      temp.param = this.form.param;
+      let res = await this.api.addMaidRule(temp);
+      console.log(temp);
+      if (res.code == 200) {
+      }
+    },
+    async getJumpRuleList() {
+      let res = await this.api.getJumpRuleList();
+      if (res.code == 200) {
+        this.refund = res.data;
+      }
+    },
     async getCommissionWay() {
       let res = await this.api.getCommissionWay();
       if (res.code == 200) {

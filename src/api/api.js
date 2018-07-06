@@ -155,6 +155,8 @@ let api = {
   getMoneyType: doGet('company/distribution/getMoneyType'),
   //佣金规则 - 获取佣金规则详情
   getCommissionRuleInfo: doGet('company/distribution/brokerInfo'),
+  //佣金规则 - 获取跳点规则
+  getJumpRuleList: doGet('company/distribution/jumpRuleList'),
 
   //经纪人管理   第三板块
   //审核经纪人

@@ -99,7 +99,7 @@ body {
       <el-table-column prop="subordinate_company" label="项目所属单位" align='center' width="150px"></el-table-column>
       <el-table-column prop="company_relation" label="与项目关系" align='center' width="100px"></el-table-column>
       <el-table-column prop="developer_name" label="所属单位" align='center' width="230px"></el-table-column>
-      <el-table-column prop="source" label="来源" align='center' width="80px">
+      <el-table-column prop="source" label="来源" align='center' width="100px">
         <template slot-scope="scope">{{scopeState (scope.row.source)}}</template>
       </el-table-column>
       <el-table-column prop="state" label="审核状态" align='center' width="80px">
