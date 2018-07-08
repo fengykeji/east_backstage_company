@@ -188,15 +188,20 @@ export default {
     },
     showProject(row, type) {
       if (type == 0) {
+        // this.$router.push({
+        //   name: "projectInfo",
+        //   params: {
+        //     operationType: type,
+        //     project_id: row.project_id,
+        //     rule_id: row.rule_id,
+        //     auditing_state: row.state,
+        //     backUrl: "projectInfo"
+        //   }
+        // });
+        this.$store.commit("distribution" , row);
+        this.$store.commit("operationType" , type);
         this.$router.push({
-          name: "projectInfo",
-          params: {
-            operationType: type,
-            project_id: row.project_id,
-            rule_id: row.rule_id,
-            auditing_state: row.state,
-            backUrl: "projectInfo"
-          }
+          name: 'projectInfo'
         });
       }
     },

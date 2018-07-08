@@ -32,7 +32,7 @@ body {
       </div>
       <div class='infoform'>
         <div class='text'>合同信息（甲方为项目方，乙方为销售方）</div>
-        <el-form :model="sumbitForm" :rules="rules" ref="sumbitForm">
+        <el-form :model="sumbitForm" :disabled="operationType == 0" :rules="rules" ref="sumbitForm">
           <!-- <el-form-item label="甲方单位：" class='input'>
                         <el-input v-model="sumbitForm.deposit"></el-input>
                     </el-form-item> -->
@@ -94,23 +94,25 @@ body {
         <div class='title'>
           <div class='text'>成交佣金（推荐的客户在该项目购置房源后产生的佣金）</div>
           <span class='btn'>
-            <el-button type="primary" @click='addShow'>新增</el-button>
+            <el-button type="primary" @click='showAdd(1,1)'>新增</el-button>
           </span>
         </div>
-        <el-table :data="ruleForm" border>
+        <el-table :data="ruleForm.deal" border>
           <el-table-column label="序号" align='center' width="70px">
             <template slot-scope="scope">{{getIndex(scope)}}</template>
           </el-table-column>
-          <el-table-column property="project_code" label="物业类型" align='center'></el-table-column>
-          <el-table-column property="project_name" label="跳点" align='center'></el-table-column>
-          <el-table-column property="absolute_address" label="提成公式" align='center'></el-table-column>
-          <el-table-column property="project_hold_name" label="单位" align='center'></el-table-column>
-          <el-table-column property="project_hold_phone" label="奖励金额（元/套）" align='center'></el-table-column>
+          <el-table-column property="property_type" label="物业类型" align='center'></el-table-column>
+          <el-table-column label="跳点" align='center'>
+            <template slot-scope="scope">{{ scope.row.is_jump == 1 ? '是 ' : '否' }}</template>
+          </el-table-column>
+          <el-table-column property="commission_way" label="提成公式" align='center'></el-table-column>
+          <el-table-column property="money_type" label="单位" align='center'></el-table-column>
+          <el-table-column property="param" label="奖励金额（元/套）" align='center'></el-table-column>
           <el-table-column label="操作" align='center'>
             <template slot-scope="scope">
-              <el-button type="text">查看</el-button>
-              <el-button type="text">编辑</el-button>
-              <el-button type="text">删除</el-button>
+              <el-button type="text" @click="showAdd(1, 3 , scope.row )">查看</el-button>
+              <el-button type="text" @click="showAdd(1, 2 , scope.row )">编辑</el-button>
+              <el-button v-if="distribution.state==2" type="text" @click="removeRule(scope.row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -119,19 +121,19 @@ body {
         <div class='title'>
           <div class='text'>到访佣金（客户到访后且售楼处确认后产生的佣金</div>
           <span class='btn'>
-            <el-button type="primary">新增</el-button>
+            <el-button type="primary" @click="showAdd(2 , 1)">新增</el-button>
           </span>
         </div>
-        <el-table :data="ruleForm" border>
+        <el-table :data="ruleForm.visit" border>
           <el-table-column label="序号" align='center' width="70px">
             <template slot-scope="scope">{{getIndex(scope)}}</template>
           </el-table-column>
-          <el-table-column property="project_code" label="单位" align='center'></el-table-column>
-          <el-table-column property="project_hold_phone" label="奖励金额（元/套）" align='center'></el-table-column>
+          <el-table-column property="money_type" label="单位" align='center'></el-table-column>
+          <el-table-column property="param" label="奖励金额（元/套）" align='center'></el-table-column>
           <el-table-column label="操作" align='center'>
             <template slot-scope="scope">
-              <el-button type="text">编辑</el-button>
-              <el-button type="text">删除</el-button>
+              <el-button type="text" @click="showAdd(2,2,scope.row)">编辑</el-button>
+              <el-button type="text" @click="removeRule(scope.row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -140,19 +142,19 @@ body {
         <div class='title'>
           <div class='text'>推荐佣金（经纪人将客户推荐给项目后的佣金）</div>
           <span class='btn'>
-            <el-button type="primary">新增</el-button>
+            <el-button type="primary" @click="showAdd(3 , 1)">新增</el-button>
           </span>
         </div>
-        <el-table :data="ruleForm" border>
+        <el-table :data="ruleForm.recommend" border>
           <el-table-column label="序号" align='center' width="70px">
             <template slot-scope="scope">{{getIndex(scope)}}</template>
           </el-table-column>
-          <el-table-column property="project_code" label="单位" align='center'></el-table-column>
-          <el-table-column property="project_hold_phone" label="奖励金额（元/套）" align='center'></el-table-column>
+          <el-table-column property="money_type" label="单位" align='center'></el-table-column>
+          <el-table-column property="param" label="奖励金额（元/套）" align='center'></el-table-column>
           <el-table-column label="操作" align='center'>
             <template slot-scope="scope">
-              <el-button type="text">编辑</el-button>
-              <el-button type="text">删除</el-button>
+              <el-button type="text" @click="showAdd(3, 2 , scope.row)">编辑</el-button>
+              <el-button type="text" @click="removeRule(scope.row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -226,21 +228,65 @@ export default {
         act_start: ""
       },
       refund: [],
-      ruleForm: [],
+      ruleForm: {
+        deal: [],
+        visit: [],
+        recommend: []
+      },
       project_id: "",
-      rule_id: ""
+      company_rule_id: "",
+      moneyTypeOption: [],
+      //到访佣金增删改
+      visitForm: {},
+      visitDialogFormVisible: false,
+      distribution: {},
+      operationType: 0
     };
   },
   mounted() {
-    this.project_id = this.$route.params.project_id;
-    this.rule_id = this.$route.params.rule_id;
-    if (this.$route.params.rule_id) {
-    } else {
+    this.distribution = this.$store.state.distribution.distribution;
+    this.operationType = this.$store.state.operationType;
+    if (!this.distribution) {
       this.$router.push({ name: "distribution" });
+      return;
     }
+    this.project_id = this.distribution.project_id;
+    this.company_rule_id = this.distribution.rule_id;
     this.getBrokerAgreement();
+    this.getCommissionRuleInfo();
+    this.getMoneyType();
+    this.getCompanyRuleInfo();
   },
   methods: {
+    getIndex(row) {
+      // let index = row.$index + 1 + (this.searchObj.page - 1) * this.pageSize;
+      let index = row.$index + 1;
+      return index;
+    },
+    async getCompanyRuleInfo() {
+      if (!this.company_rule_id) return;
+      let result = await this.api.getCompanyRuleInfo({
+        company_rule_id: this.company_rule_id
+      });
+      if (result.code == 200) {
+        Object.assign(this.sumbitForm, result.data);
+      }
+    },
+    async getCommissionRuleInfo() {
+      if (!this.company_rule_id) return;
+      let result = await this.api.getCommissionRuleInfo({
+        company_rule_id: this.company_rule_id
+      });
+      if (result.code == 200) {
+        this.ruleForm = result.data;
+      }
+    },
+    async getMoneyType() {
+      let res = await this.api.getMoneyType();
+      if (res.code == 200) {
+        this.moneyTypeOption = res.data;
+      }
+    },
     async fileUpload(fileObj) {
       this.fileObject = fileObj;
       let flag = false;
@@ -277,7 +323,6 @@ export default {
         temp.file_name = fileObj.name;
         this.refund = [];
         this.refund.push(temp);
-        console.log(temp);
         this.addBrokerAgreement();
       }
     },
@@ -286,14 +331,16 @@ export default {
       temp.file_name = this.refund[0].file_name;
       temp.file_url = this.refund[0].url;
       temp.uploader = this.refund[0].uploader;
-      temp.rule_id = this.rule_id;
+      temp.rule_id = this.company_rule_id;
       let res = await this.api.addBrokerAgreement(temp);
-      console.log(this.refund);
       if (res.code == 200) {
       }
     },
     async getBrokerAgreement() {
-      let res = await this.api.getBrokerAgreement({ rule_id: this.rule_id });
+      if (!this.company_rule_id) return;
+      let res = await this.api.getBrokerAgreement({
+        rule_id: this.company_rule_id
+      });
       if (res.code == 200) {
         this.refund = res.data;
       }
@@ -306,7 +353,7 @@ export default {
         if (valid) {
           let temp = Object.assign({}, this.sumbitForm);
           temp.project_id = this.project_id;
-          temp.rule_id = this.rule_id;
+          temp.rule_id = this.company_rule_id;
           let res = await this.api.addRule(temp);
           if (res.code == 200) {
             this.$message({
@@ -323,23 +370,68 @@ export default {
       });
     },
 
-    addShow() {
+    showAdd(type, operationState, item) {
+      if (type == 1) {
+        let dealList = this.ruleForm.deal;
+        let arr = [];
+        for (let detail of dealList) {
+          let property_type = detail.property_type;
+          if (property_type.length <= 0) continue;
+          else {
+            let tempArr = property_type.split(",");
+            arr = arr.concat(tempArr);
+          }
+        }
+        this.distribution.property_type = arr;
+      }
+      this.$store.commit("distribution", this.distribution);
+      //规则类型 1成交 2到访 3推荐
+      //operationState 操作状态 1新增 2修改 3查看
       this.$router.push({
         name: "ruleSetting",
-        params: {}
+        query: {
+          broker_type: type,
+          rule_id: item ? item.rule_id : undefined,
+          operationState: operationState
+        }
       });
     },
     cancel() {
-      if (this.$route.params.backUrl) {
+      if (this.company_rule_id) {
         this.$router.push({
-          name: this.$route.params.backUrl,
-          params: this.$route.params
+          name: "projectInfo"
         });
       } else {
         this.$router.push({
           name: "startApply"
         });
       }
+    },
+    removeRule(row) {
+      this.$confirm("此操作将删除成功, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(async () => {
+          let res = await this.api.delBrokeRule({
+            rule_id: row.rule_id,
+            company_rule_id: this.company_rule_id
+          });
+          if (res.code == 200) {
+            this.$message({
+              type: "success",
+              message: "删除成功!"
+            });
+          }
+          this.getCommissionRuleInfo();
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
     }
   }
 };

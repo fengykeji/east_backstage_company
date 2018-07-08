@@ -144,19 +144,27 @@ let api = {
   //佣金规则 - 获取协议
   getBrokerAgreement: doGet('company/distribution/getBrokerAgreement'),
   //佣金规则 - 新增结佣方式
-  addMaidRule: doPost('company/distribution/addAgent'),
+  addBrokeRule: doPost('company/distribution/createCompanyBrokerRule'),
   //佣金规则 - 修改结佣方式
   updateBrokeRule: doPost('company/distribution/updateBrokeRule'),
   //佣金规则 - 删除佣金规则
-  delBrokeRule: doGet('company/distribution/updateBrokeRule'),
+  delBrokeRule: doGet('company/distribution/deleteBrokerRule'),
   //佣金规则 - 获取提成方式
   getCommissionWay: doGet('company/distribution/getCommissionWay'),
   //佣金规则 - 获取币种
   getMoneyType: doGet('company/distribution/getMoneyType'),
   //佣金规则 - 获取佣金规则详情
-  getCommissionRuleInfo: doGet('company/distribution/brokerInfo'),
+  getCommissionRuleInfo: doGet('company/distribution/getRuleInfo'),
   //佣金规则 - 获取跳点规则
   getJumpRuleList: doGet('company/distribution/jumpRuleList'),
+  //佣金规则 - 新增跳点规则
+  addJumpRule: doPost('company/distribution/setJumpRule'),
+  //佣金规则 - 修改跳点规则
+  updateJumpRule: doPost('company/distribution/updateJumpRule'),
+  //佣金规则 - 删除跳点规则
+  deleteJumpRule : doGet('company/distribution/deleteJumpRule'),
+  //佣金规则 - 查看合同信息
+  getCompanyRuleInfo: doGet('/company/distribution/getCompanyRuleInfo'),
 
   //经纪人管理   第三板块
   //审核经纪人

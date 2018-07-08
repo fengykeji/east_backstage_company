@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import ElementUI from 'element-ui'
 import api from './api/api';
+import store from '../store/store.js';
 
 Vue.use(ElementUI);
 
@@ -12,7 +13,7 @@ import '../theme/index.css'
 
 Vue.config.productionTip = false
 
-Vue.prototype.api=api;
+Vue.prototype.api = api;
 
 // Vue.prototype.ajax=function(method,url,onload,param){
 //   let xhr=new XMLHttpRequest();
@@ -29,6 +30,7 @@ Vue.prototype.api=api;
 
 /* eslint-disable no-new */
 new Vue({
+  store : store,
   el: '#app',
   router,
   components: { App },

@@ -171,11 +171,10 @@ export default {
       }
     },
     sumbit(row) {
+      this.$store.commit("distribution" , row);
+      this.$store.commit("operationType" , -1);
       this.$router.push({
         name: "projectInfo",
-        params: {
-          project_id: row.project_id
-        }
       });
     },
     close() {

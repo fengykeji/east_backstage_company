@@ -61,7 +61,7 @@
         <el-button type="primary" v-if="!isDisable()" @click='submit'>提 交</el-button>
       </div>
     </div>
-    <el-form :model="submitForm" class='form' :disabled="!operationType==1">
+    <el-form :model="submitForm" class='form' :disabled="!(operationType==1)">
       <div>
         <el-form-item label="项目编号" class='input'>
           <el-input v-model="submitForm.project_code" auto-complete="off" placeholder="请输入项目编号"></el-input>
@@ -135,7 +135,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <div v-if='(operationType==1||operationType==0)&&this.auditing_state==1'>
+    <div v-if='operationType==1||operationType==0'>
       <div class='title-text'>结佣规则</div>
       <el-table :data="gridData" border>
         <el-table-column prop="plan_start" label="计划开始执行时间" align='center'></el-table-column>
@@ -176,15 +176,17 @@ export default {
       typeOptions: [],
       operationType: 0,
       auditing_state: "",
-      gridData: []
+      gridData: [],
+      distribution: {}
     };
   },
   mounted() {
-    this.auditing_state = this.$route.params.auditing_state;
-    this.project_id = this.$route.params.project_id;
-    this.rule_id = this.$route.params.rule_id;
-    if (this.$route.params.project_id) {
-      this.operationType = this.$route.params.operationType;
+    this.distribution = this.$store.state.distribution.distribution;
+    this.auditing_state = this.distribution.state;
+    this.project_id = this.distribution.project_id;
+    this.rule_id = this.distribution.rule_id;
+    this.operationType = this.$store.state.operationType;
+    if (this.project_id) {
       this.getProjectDetail();
       this.getType();
     } else {
@@ -194,13 +196,7 @@ export default {
   methods: {
     seeShow() {
       this.$router.push({
-        name: "ruleOfMaid",
-        params: {
-          rule_id: this.rule_id,
-          project_id: this.project_id,
-          operationType: this.operationType,
-          backUrl: this.$route.params.backUrl,
-        }
+        name: "ruleOfMaid"
       });
     },
     remove(row) {
@@ -292,6 +288,7 @@ export default {
           this.submitForm.property_tags = arr;
         }
       }
+      this.$store.commit("distributionDetail", { ...this.submitForm });
     },
     async search() {
       let res = await this.api.changeProjectList({
@@ -316,10 +313,9 @@ export default {
               type: "success",
               message: "提交成功!"
             });
-            let rule_id = res.data;
+            this.distribution.rule_id = res.data;
             this.$router.push({
-              name: "ruleOfMaid",
-              params: { project_id: this.project_id, rule_id: rule_id }
+              name: "ruleOfMaid"
             });
           }
         })
@@ -331,7 +327,7 @@ export default {
         });
     },
     cancel() {
-      if (this.$route.params.operationType != undefined) {
+      if (this.operationType != undefined) {
         this.$router.push({ name: "distribution" });
       } else {
         this.$router.push({ name: "startApply" });
