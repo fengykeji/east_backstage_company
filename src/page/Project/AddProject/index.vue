@@ -757,6 +757,15 @@ export default {
         });
         return;
       }
+      let size = fileObj.size / 1024 / 1024;
+      if (size > 5) {
+        this.$message({
+          type: "error",
+          message:
+            "文件大于5m，请重新上传"
+        });
+        return;
+      }
       let file = this.fileObject.raw;
       console.log(file);
       let formData = new FormData();
