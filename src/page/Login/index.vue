@@ -1,18 +1,29 @@
 <style lang="less" scoped src="./index.less" ></style>
+<style lang="less">
+.login {
+  .el-button.is-round {
+    border-radius: 8px;
+  }
+}
+</style>
+
 <template>
-  <div class='title'>
-    <div>欢迎使用！</div>
-    <div class='input-row'>
-      <el-input v-model="submitForm.account" class='input' placeholder="请输入账号"></el-input>
-    </div>
-    <div class='input-row'>
-      <el-input v-model="submitForm.password" class='input' type='password' placeholder="请输入密码"></el-input>
-    </div>
-    <el-button class='button' type="primary" round @click='login'>登陆</el-button>
-    <div class='bottom-text'>
-      <span class='text'>忘记密码</span>
-      <img class='img' src='../../assets/images/u16.png' />
-      <span class='text'>注册</span>
+  <div class='login'>
+    <div class='title'>
+      <div class='input-row'>
+        <img src='../../assets/images/logo@3x.png' class='input-img'/>
+      </div>
+      <div class='input-row'>
+        <el-input v-model="submitForm.account" class='input' placeholder="请输入账号"></el-input>
+      </div>
+      <div class='input-row'>
+        <el-input v-model="submitForm.password" class='input' type='password' placeholder="请输入密码"></el-input>
+      </div>
+      <el-button class='button' type="primary" round @click='login'>登陆</el-button>
+      <div class='bottom-text'>
+        <span class='text1'>忘记密码?注册</span>
+        <span class='text2'>用户手册</span>
+      </div>
     </div>
   </div>
 </template>
@@ -29,11 +40,11 @@ export default {
   },
 
   mounted() {
-    window.onkeydown = (e)=>{
-      if(e.keyCode == '13') {
-          this.login();  
+    window.onkeydown = e => {
+      if (e.keyCode == "13") {
+        this.login();
       }
-    }
+    };
   },
   methods: {
     async login() {

@@ -64,11 +64,11 @@ body {
       <el-table-column prop="project_name" label="申请项目" align='center' width="140px"></el-table-column>
       <el-table-column prop="department" label="所属部门" align='center' width="140px"></el-table-column>
       <!-- <el-table-column prop="position" label="职位" align='center'></el-table-column> -->
-      <el-table-column prop="city_name" label="城市" align='center' ></el-table-column>
-      <el-table-column prop="district_name" label="区域" align='center' ></el-table-column>
+      <el-table-column prop="city_name" label="城市" align='center'></el-table-column>
+      <el-table-column prop="district_name" label="区域" align='center'></el-table-column>
       <el-table-column prop="entry_time" label="入职时间" align='center' width="140px"></el-table-column>
       <el-table-column label="操作" align='center' width="140px">
-        <template slot-scope="scope" >
+        <template slot-scope="scope">
           <el-button type="text" @click='showQuit(scope.row)'>离职</el-button>
           <el-button type="text" @click='showSee(scope.row)'>查看</el-button>
         </template>

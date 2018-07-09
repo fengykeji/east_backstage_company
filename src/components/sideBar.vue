@@ -66,10 +66,8 @@
   font-size: 15px;
 }
 .tou {
-  height: 63px;
-  width: 120px;
-  padding-left: 25px;
-  padding-top: 9px;
+  padding-top: 12px;
+  padding-left: 11px;
   display: inline-block;
   vertical-align: middle;
 }
