@@ -162,9 +162,11 @@ let api = {
   //佣金规则 - 修改跳点规则
   updateJumpRule: doPost('company/distribution/updateJumpRule'),
   //佣金规则 - 删除跳点规则
-  deleteJumpRule : doGet('company/distribution/deleteJumpRule'),
+  deleteJumpRule: doGet('company/distribution/deleteJumpRule'),
   //佣金规则 - 查看合同信息
   getCompanyRuleInfo: doGet('/company/distribution/getCompanyRuleInfo'),
+  //佣金规则 - 修改结佣规则 - 获取
+  getUpdateBrokeRule: doGet('company/distribution/updateBrokeRule'),
 
   //经纪人管理   第三板块
   //审核经纪人

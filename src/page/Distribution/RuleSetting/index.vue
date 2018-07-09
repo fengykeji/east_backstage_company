@@ -17,21 +17,21 @@ body {
             <div v-if="broker_type == 1">
                 <div class='infoform'>
                     <div class='text'>规则设置</div>
-                    <el-form :model="form" :disabled="operationState==3">
+                    <el-form :model="form" :disabled="operationState==3" :rules="rules" ref="form">
                         <el-form-item prop="property_type">
                             <el-checkbox v-model="form.property_type" v-for="item in typeOptions" :key="item.param_id" :label="item.param">{{item.param}}</el-checkbox>
                         </el-form-item>
-                        <el-form-item label="提成方式" class='input'>
+                        <el-form-item label="提成方式" class='input' prop="commission_way">
                             <el-select clearable placeholder="请选择提成方式" v-model="form.commission_way">
                                 <el-option v-for="item in commissionWayOption" :key="item.param_id" :label="item.param" :value="item.param_id"></el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item label="单位" class='input'>
+                        <el-form-item label="单位" class='input' prop="money_type">
                             <el-select clearable placeholder="请选择币种" v-model="form.money_type">
                                 <el-option v-for="item in moneyTypeOption" :key="item.param_id" :label="item.param" :value="item.param_id"></el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item label="参数" class='input'>
+                        <el-form-item label="参数" class='input' prop="param">
                             <el-input v-model="form.param"></el-input>
                         </el-form-item>
                         <el-form-item label="跳点提成累积" class='input'>
@@ -63,7 +63,9 @@ body {
                         <el-table-column property="end" label="截止数" align='center'></el-table-column>
                         <!-- <el-table-column property="" label="提成公式" align='center'></el-table-column> -->
                         <el-table-column property="value" label="固定金额" align='center'></el-table-column>
-                        <el-table-column property="is_include" label="是否累积" align='center'></el-table-column>
+                        <el-table-column label="是否累积" align='center'>
+                            <template slot-scope="scope">{{ scope.row.is_include == 1 ? '是 ' : '否' }}</template>
+                        </el-table-column>
                         <el-table-column property="reward" label="奖励金额（元/套）" align='center'></el-table-column>
                         <el-table-column label="操作" align='center' v-if="operationState!=3">
                             <template slot-scope="scope">
@@ -75,23 +77,23 @@ body {
                     </el-table>
                     <el-dialog title="跳点规则" :visible.sync="addJumpRuleDialog" @close="addJumpRuleDialog=false">
                         <el-form :model="addJumpRuleForm" :disabled="jumpRuleIsDisabled">
-                            <el-form-item label="起始数">
+                            <el-form-item label="起始数" class='input'>
                                 <el-input v-model="addJumpRuleForm.start" />
                             </el-form-item>
-                            <el-form-item label="截止数">
+                            <el-form-item label="截止数" class='input'>
                                 <el-input v-model="addJumpRuleForm.end" />
                             </el-form-item>
-                            <el-form-item label="固定金额">
+                            <el-form-item label="固定金额" class='input'>
                                 <el-input v-model="addJumpRuleForm.value" />
                             </el-form-item>
-                            <el-form-item label="是否累积">
+                            <el-form-item label="奖励金额（元/套）" class='input'>
+                                <el-input v-model="addJumpRuleForm.reward" />
+                            </el-form-item>
+                            <el-form-item label="是否累积" class='input'>
                                 <el-radio-group v-model="addJumpRuleForm.is_include">
                                     <el-radio :label="1">是</el-radio>
                                     <el-radio :label="0">否</el-radio>
                                 </el-radio-group>
-                            </el-form-item>
-                            <el-form-item label="奖励金额（元/套）">
-                                <el-input v-model="addJumpRuleForm.reward" />
                             </el-form-item>
                         </el-form>
                         <div slot="footer" class="dialog-footer" v-if="!jumpRuleIsDisabled">
@@ -105,13 +107,13 @@ body {
             <div v-if="broker_type != 1">
                 <div class='infoform'>
                     <div class='text'>规则设置</div>
-                    <el-form :model="form" :disabled="operationState==3">
-                        <el-form-item label="单位" class='input'>
+                    <el-form :model="form" :disabled="operationState==3" :rules="rules" ref="form">
+                        <el-form-item label="单位" class='input' prop="money_type">
                             <el-select clearable placeholder="请选择币种" v-model="form.money_type">
                                 <el-option v-for="item in moneyTypeOption" :key="item.param_id" :label="item.param" :value="item.param_id"></el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item label="参数" class='input'>
+                        <el-form-item label="参数" class='input' prop="param">
                             <el-input v-model="form.param"></el-input>
                         </el-form-item>
                     </el-form>
@@ -125,6 +127,40 @@ body {
 export default {
   data() {
     return {
+      rules: {
+        property_type: [
+          {
+            type: "array",
+            required: true,
+            message: "请选择物业类型",
+            change: "change"
+          }
+        ],
+        commission_way: [
+          {
+            type: "number",
+            required: true,
+            message: "请选择提成方式",
+            change: "change"
+          }
+        ],
+        money_type: [
+          {
+            type: "number",
+            required: true,
+            message: "请选择货币单位",
+            change: "change"
+          }
+        ],
+        param: [
+          {
+            required: true,
+            message: "请输入参数，必须位整数",
+            change: "change",
+            pattern: /^[0-9]+(.[0-9]{0})?$/
+          }
+        ]
+      },
       refund: [],
       form: {
         rule_id: "",
@@ -176,8 +212,17 @@ export default {
     this.getType();
     this.getMoneyType();
     this.getCommissionWay();
+    this.getUpdateBrokeRule();
   },
   methods: {
+    async getUpdateBrokeRule() {
+      let res = await this.api.getUpdateBrokeRule({
+        rule_id: this.form.rule_id
+      });
+      if (res.code == 200) {
+        this.form = res.data;
+      }
+    },
     getIndex(row) {
       let index = row.$index + 1;
       return index;
@@ -186,35 +231,42 @@ export default {
     getRuleInfo() {},
 
     //提交
-    async submit() {
-      //如果是另外两种规则 则使用这一种提交
-      if (this.broker_type != 1) {
-        this.submitOtherRule();
-        return;
-      }
-      let temp = {};
-      temp.property_type = this.form.property_type.join(",");
-      temp.company_rule_id = this.distribution.rule_id;
-      temp.broker_type = this.broker_type;
-      temp.is_jump = this.form.is_jump;
-      temp.is_total = this.form.is_total;
-      temp.money_type = this.form.money_type;
-      temp.commission_way = this.form.commission_way;
-      temp.param = this.form.param;
-      if (!this.form.rule_id) {
-        let res = await this.api.addBrokeRule(temp);
-        if (res.code == 200) {
-          this.$message({ type: "success", message: "新增成功" });
-          this.form.rule_id = res.data;
+    submit() {
+      this.$refs["form"].validate(async valid => {
+        if (valid) {
+          //如果是另外两种规则 则使用这一种提交
+          if (this.broker_type != 1) {
+            this.submitOtherRule();
+            return;
+          }
+          let temp = {};
+          temp.property_type = this.form.property_type.join(",");
+          temp.company_rule_id = this.distribution.rule_id;
+          temp.broker_type = this.broker_type;
+          temp.is_jump = this.form.is_jump;
+          temp.is_total = this.form.is_total;
+          temp.money_type = this.form.money_type;
+          temp.commission_way = this.form.commission_way;
+          temp.param = this.form.param;
+          if (!this.form.rule_id) {
+            let res = await this.api.addBrokeRule(temp);
+            if (res.code == 200) {
+              this.$message({ type: "success", message: "新增成功" });
+              this.form.rule_id = res.data;
+            }
+          } else {
+            temp.rule_id = this.form.rule_id;
+            let res = await this.api.updateBrokeRule(temp);
+            if (res.code == 200) {
+              this.$message({ type: "success", message: "修改成功" });
+            }
+          }
+        } else {
+          return false;
         }
-      } else {
-        temp.rule_id = this.form.rule_id;
-        let res = await this.api.updateBrokeRule(temp);
-        if (res.code == 200) {
-          this.$message({ type: "success", message: "修改成功" });
-        }
-      }
+      });
     },
+
     async submitOtherRule() {
       let temp = {};
       temp.company_rule_id = this.distribution.rule_id;
@@ -234,6 +286,7 @@ export default {
           this.$message({ type: "success", message: "修改成功" });
         }
       }
+      this.$router.push({ name: "ruleOfMaid" });
     },
     async getJumpRuleList() {
       let res = await this.api.getJumpRuleList({
@@ -241,7 +294,6 @@ export default {
       });
       if (res.code == 200) {
         this.refund = res.data;
-        console.log(this.refund);
       }
     },
     async getCommissionWay() {

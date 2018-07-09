@@ -761,8 +761,7 @@ export default {
       if (size > 5) {
         this.$message({
           type: "error",
-          message:
-            "文件大于5m，请重新上传"
+          message: "文件大于5m，请重新上传"
         });
         return;
       }

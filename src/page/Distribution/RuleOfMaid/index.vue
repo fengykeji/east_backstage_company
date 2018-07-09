@@ -83,11 +83,11 @@ body {
           </el-table-column>
           <el-table-column property="uploader" label="上传人员" align='center'></el-table-column>
           <el-table-column property="update_time" label="上传时间" align='center'></el-table-column>
-          <el-table-column label="操作" align='center'>
+          <!-- <el-table-column label="操作" align='center'>
             <template slot-scope="scope">
               <el-button type='text' @click='remove(scope.row)'>删除</el-button>
             </template>
-          </el-table-column>
+          </el-table-column> -->
         </el-table>
       </div>
       <div class='info'>
@@ -315,8 +315,7 @@ export default {
       if (size > 5) {
         this.$message({
           type: "error",
-          message:
-            "文件大于5m，请重新上传"
+          message: "文件大于5m，请重新上传"
         });
         return;
       }
@@ -354,9 +353,9 @@ export default {
         this.refund = res.data;
       }
     },
-    remove(index) {
-      this.refund.splice(index, 1);
-    },
+    // remove(index) {
+    //   this.refund.splice(index, 1);
+    // },
     sumbit() {
       this.$refs["sumbitForm"].validate(async valid => {
         if (valid) {
