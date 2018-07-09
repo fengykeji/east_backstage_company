@@ -39,7 +39,7 @@ import QuitPeople from '@/page/Agent/QuitPeople'
 Vue.use(Router);
 
 export default new Router({
-  base: '/admin/company',
+  base: '/admin/company/',
   routes: [
     {
       path: '/',
@@ -117,7 +117,7 @@ export default new Router({
           name: 'peopleRuleOfMaid',
           component: PeopleRuleOfMaid,
         },
-        
+
       ]
     },
     {

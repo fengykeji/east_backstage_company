@@ -70,7 +70,7 @@ body {
           <div class='text'>公司证明资料</div>
           <span class='btn'>
             <el-upload :auto-upload="false" action="" :on-change="fileUpload">
-              <el-button ref="uploadBtn" type="primary" :show-file-list="false">点击上传</el-button>
+              <el-button ref="uploadBtn" type="primary" :show-file-list="false" v-if="distribution.state==2">点击上传</el-button>
             </el-upload>
           </span>
         </div>
@@ -94,7 +94,7 @@ body {
         <div class='title'>
           <div class='text'>成交佣金（推荐的客户在该项目购置房源后产生的佣金）</div>
           <span class='btn'>
-            <el-button type="primary" @click='showAdd(1,1)'>新增</el-button>
+            <el-button type="primary" @click='showAdd(1,1)' v-if="distribution.state==2">新增</el-button>
           </span>
         </div>
         <el-table :data="ruleForm.deal" border>
@@ -121,7 +121,7 @@ body {
         <div class='title'>
           <div class='text'>到访佣金（客户到访后且售楼处确认后产生的佣金</div>
           <span class='btn'>
-            <el-button type="primary" @click="showAdd(2 , 1)">新增</el-button>
+            <el-button type="primary" @click="showAdd(2 , 1)" v-if="distribution.state==2">新增</el-button>
           </span>
         </div>
         <el-table :data="ruleForm.visit" border>
@@ -142,7 +142,7 @@ body {
         <div class='title'>
           <div class='text'>推荐佣金（经纪人将客户推荐给项目后的佣金）</div>
           <span class='btn'>
-            <el-button type="primary" @click="showAdd(3 , 1)">新增</el-button>
+            <el-button type="primary" @click="showAdd(3 , 1)" v-if="distribution.state==2">新增</el-button>
           </span>
         </div>
         <el-table :data="ruleForm.recommend" border>

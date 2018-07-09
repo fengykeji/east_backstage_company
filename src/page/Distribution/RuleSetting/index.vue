@@ -6,121 +6,121 @@ body {
 }
 </style>
 <template>
-    <div class='ruleSetting'>
-        <div class='ruleSetting-box'>
-            <div class='title'>
-                <span class='btn'>
-                    <el-button type="primary" v-if="operationState!=3" @click='submit'>提交</el-button>
-                    <el-button type="primary" @click='cancel'>关闭</el-button>
-                </span>
-            </div>
-            <div v-if="broker_type == 1">
-                <div class='infoform'>
-                    <div class='text'>规则设置</div>
-                    <el-form :model="form" :disabled="operationState==3" :rules="rules" ref="form">
-                        <el-form-item prop="property_type">
-                            <el-checkbox v-model="form.property_type" v-for="item in typeOptions" :key="item.param_id" :label="item.param">{{item.param}}</el-checkbox>
-                        </el-form-item>
-                        <el-form-item label="提成方式" class='input' prop="commission_way">
-                            <el-select clearable placeholder="请选择提成方式" v-model="form.commission_way">
-                                <el-option v-for="item in commissionWayOption" :key="item.param_id" :label="item.param" :value="item.param_id"></el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="单位" class='input' prop="money_type">
-                            <el-select clearable placeholder="请选择币种" v-model="form.money_type">
-                                <el-option v-for="item in moneyTypeOption" :key="item.param_id" :label="item.param" :value="item.param_id"></el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="参数" class='input' prop="param">
-                            <el-input v-model="form.param"></el-input>
-                        </el-form-item>
-                        <el-form-item label="跳点提成累积" class='input'>
-                            <el-radio-group v-model="form.is_total">
-                                <el-radio :label="1">是</el-radio>
-                                <el-radio :label="0">否</el-radio>
-                            </el-radio-group>
-                        </el-form-item>
-                        <el-form-item label="跳点" class='input2'>
-                            <el-radio-group v-model="form.is_jump">
-                                <el-radio :label="1">是</el-radio>
-                                <el-radio :label="0">否</el-radio>
-                            </el-radio-group>
-                        </el-form-item>
-                    </el-form>
-                </div>
-                <div class='info' v-if="form.rule_id && form.is_jump == 1">
-                    <div class='title'>
-                        <div class='text'>跳点规则</div>
-                        <span class='btn'>
-                            <el-button type="primary" v-if="operationState!=3" @click="showAddJumpRule()">新增</el-button>
-                        </span>
-                    </div>
-                    <el-table :data="refund" border>
-                        <el-table-column label="序号" align='center' width="70px">
-                            <template slot-scope="scope">{{getIndex(scope)}}</template>
-                        </el-table-column>
-                        <el-table-column property="start" label="起始数" align='center'></el-table-column>
-                        <el-table-column property="end" label="截止数" align='center'></el-table-column>
-                        <!-- <el-table-column property="" label="提成公式" align='center'></el-table-column> -->
-                        <el-table-column property="value" label="固定金额" align='center'></el-table-column>
-                        <el-table-column label="是否累积" align='center'>
-                            <template slot-scope="scope">{{ scope.row.is_include == 1 ? '是 ' : '否' }}</template>
-                        </el-table-column>
-                        <el-table-column property="reward" label="奖励金额（元/套）" align='center'></el-table-column>
-                        <el-table-column label="操作" align='center' v-if="operationState!=3">
-                            <template slot-scope="scope">
-                                <el-button type="text" @click="showAddJumpRule(scope.row , true)">查看</el-button>
-                                <el-button type="text" @click="showAddJumpRule(scope.row)">修改</el-button>
-                                <el-button type="text" @click="removeJumpRule(scope.row)">删除</el-button>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                    <el-dialog title="跳点规则" :visible.sync="addJumpRuleDialog" @close="addJumpRuleDialog=false">
-                        <el-form :model="addJumpRuleForm" :disabled="jumpRuleIsDisabled" :rules="rules" ref="addJumpRuleForm">
-                            <el-form-item label="起始数" class='input11' prop="start">
-                                <el-input v-model="addJumpRuleForm.start" />
-                            </el-form-item>
-                            <el-form-item label="截止数" class='input11' prop="end">
-                                <el-input v-model="addJumpRuleForm.end" />
-                            </el-form-item>
-                            <el-form-item label="固定金额" class='input11' prop="value">
-                                <el-input v-model="addJumpRuleForm.value" />
-                            </el-form-item>
-                            <el-form-item label="奖励金额（元/套）" class='input' prop="reward">
-                                <el-input v-model="addJumpRuleForm.reward" />
-                            </el-form-item>
-                            <el-form-item label="是否累积" class='input11'>
-                                <el-radio-group v-model="addJumpRuleForm.is_include">
-                                    <el-radio :label="1">是</el-radio>
-                                    <el-radio :label="0">否</el-radio>
-                                </el-radio-group>
-                            </el-form-item>
-                        </el-form>
-                        <div slot="footer" class="dialog-footer" v-if="!jumpRuleIsDisabled">
-                            <el-button @click="addJumpRuleDialog=false">取 消</el-button>
-                            <el-button type="primary" @click="addJumpRuleSubmit">确 定</el-button>
-                        </div>
-                    </el-dialog>
-                </div>
-            </div>
-            <!--  其他两种规则  -->
-            <div v-if="broker_type != 1">
-                <div class='infoform'>
-                    <div class='text'>规则设置</div>
-                    <el-form :model="form" :disabled="operationState==3" :rules="rules" ref="form">
-                        <el-form-item label="单位" class='input' prop="money_type">
-                            <el-select clearable placeholder="请选择币种" v-model="form.money_type">
-                                <el-option v-for="item in moneyTypeOption" :key="item.param_id" :label="item.param" :value="item.param_id"></el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="参数" class='input' prop="param">
-                            <el-input v-model="form.param"></el-input>
-                        </el-form-item>
-                    </el-form>
-                </div>
-            </div>
+  <div class='ruleSetting'>
+    <div class='ruleSetting-box'>
+      <div class='title'>
+        <span class='btn'>
+          <el-button type="primary" v-if="operationState!=3" @click='submit'>提交</el-button>
+          <el-button type="primary" @click='cancel'>关闭</el-button>
+        </span>
+      </div>
+      <div v-if="broker_type == 1">
+        <div class='infoform'>
+          <div class='text'>规则设置</div>
+          <el-form :model="form" :disabled="operationState==3" :rules="rules" ref="form">
+            <el-form-item prop="property_type">
+              <el-checkbox v-model="form.property_type" v-for="item in typeOptions" :key="item.param_id" :label="item.param">{{item.param}}</el-checkbox>
+            </el-form-item>
+            <el-form-item label="提成方式" class='input' prop="commission_way">
+              <el-select clearable placeholder="请选择提成方式" v-model="form.commission_way">
+                <el-option v-for="item in commissionWayOption" :key="item.param_id" :label="item.param" :value="item.param_id"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="单位" class='input' prop="money_type">
+              <el-select clearable placeholder="请选择币种" v-model="form.money_type">
+                <el-option v-for="item in moneyTypeOption" :key="item.param_id" :label="item.param" :value="item.param_id"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="参数" class='input' prop="param">
+              <el-input v-model="form.param"></el-input>
+            </el-form-item>
+            <el-form-item label="跳点提成累积" class='input'>
+              <el-radio-group v-model="form.is_total">
+                <el-radio :label="1">是</el-radio>
+                <el-radio :label="0">否</el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item label="跳点" class='input2'>
+              <el-radio-group v-model="form.is_jump">
+                <el-radio :label="1">是</el-radio>
+                <el-radio :label="0">否</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-form>
         </div>
+        <div class='info' v-if="form.rule_id && form.is_jump == 1">
+          <div class='title'>
+            <div class='text'>跳点规则</div>
+            <span class='btn'>
+              <el-button type="primary" v-if="operationState!=3" @click="showAddJumpRule()">新增</el-button>
+            </span>
+          </div>
+          <el-table :data="refund" border>
+            <el-table-column label="序号" align='center' width="70px">
+              <template slot-scope="scope">{{getIndex(scope)}}</template>
+            </el-table-column>
+            <el-table-column property="start" label="起始数" align='center'></el-table-column>
+            <el-table-column property="end" label="截止数" align='center'></el-table-column>
+            <!-- <el-table-column property="" label="提成公式" align='center'></el-table-column> -->
+            <el-table-column property="value" label="固定金额" align='center'></el-table-column>
+            <el-table-column label="是否累积" align='center'>
+              <template slot-scope="scope">{{ scope.row.is_include == 1 ? '是 ' : '否' }}</template>
+            </el-table-column>
+            <el-table-column property="reward" label="奖励金额（元/套）" align='center'></el-table-column>
+            <el-table-column label="操作" align='center' v-if="operationState!=3">
+              <template slot-scope="scope">
+                <el-button type="text" @click="showAddJumpRule(scope.row , true)">查看</el-button>
+                <el-button type="text" @click="showAddJumpRule(scope.row)">修改</el-button>
+                <el-button type="text" @click="removeJumpRule(scope.row)">删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-dialog title="跳点规则" :visible.sync="addJumpRuleDialog" @close="addJumpRuleDialog=false">
+            <el-form :model="addJumpRuleForm" :disabled="jumpRuleIsDisabled" :rules="rules" ref="addJumpRuleForm">
+              <el-form-item label="起始数" class='input11' prop="start">
+                <el-input v-model="addJumpRuleForm.start" />
+              </el-form-item>
+              <el-form-item label="截止数" class='input11' prop="end">
+                <el-input v-model="addJumpRuleForm.end" />
+              </el-form-item>
+              <el-form-item label="固定金额" class='input11' prop="value">
+                <el-input v-model="addJumpRuleForm.value" />
+              </el-form-item>
+              <el-form-item label="奖励金额（元/套）" class='input' prop="reward">
+                <el-input v-model="addJumpRuleForm.reward" />
+              </el-form-item>
+              <el-form-item label="是否累积" class='input11'>
+                <el-radio-group v-model="addJumpRuleForm.is_include">
+                  <el-radio :label="1">是</el-radio>
+                  <el-radio :label="0">否</el-radio>
+                </el-radio-group>
+              </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer" v-if="!jumpRuleIsDisabled">
+              <el-button @click="addJumpRuleDialog=false">取 消</el-button>
+              <el-button type="primary" @click="addJumpRuleSubmit">确 定</el-button>
+            </div>
+          </el-dialog>
+        </div>
+      </div>
+      <!--  其他两种规则  -->
+      <div v-if="broker_type != 1">
+        <div class='infoform'>
+          <div class='text'>规则设置</div>
+          <el-form :model="form" :disabled="operationState==3" :rules="rules" ref="form">
+            <el-form-item label="单位" class='input' prop="money_type">
+              <el-select clearable placeholder="请选择币种" v-model="form.money_type">
+                <el-option v-for="item in moneyTypeOption" :key="item.param_id" :label="item.param" :value="item.param_id"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="参数" class='input' prop="param">
+              <el-input v-model="form.param"></el-input>
+            </el-form-item>
+          </el-form>
+        </div>
+      </div>
     </div>
+  </div>
 
 </template>
 <script>
@@ -242,9 +242,9 @@ export default {
       //获取佣金规则跳点规则列表
       this.getJumpRuleList();
     }
-    this.getType();
     this.getMoneyType();
     this.getCommissionWay();
+    this.getType();
   },
   methods: {
     getIndex(row) {
@@ -258,11 +258,11 @@ export default {
       });
       if (res.code == 200) {
         let temp = res.data;
+        console.log(temp);
         temp.property_type = temp.property_type.split(",");
         Object.assign(this.form, temp);
       }
     },
-
     //提交
     submit() {
       this.$refs["form"].validate(async valid => {
@@ -341,10 +341,22 @@ export default {
       }
     },
     async getType() {
+      if (this.broker_type != 1) {
+        return;
+      }
       let res = await this.api.getTags();
       if (res.code == 200) {
         let tempArr = res.data;
-        for (let temp of tempArr) {
+        let totalTypes = [];
+        for (let tag of this.distributionDetail.property_tags) {
+          let text = "";
+          for (let temp of tempArr) {
+            if (temp.param_id == tag) {
+              totalTypes.push(temp);
+            }
+          }
+        }
+        for (let temp of totalTypes) {
           if (
             this.distribution.property_type &&
             this.distribution.property_type.includes(temp.param)
@@ -353,29 +365,18 @@ export default {
             this.typeOptions.push(temp);
           }
         }
-        //如果不是新增 而是修改和查看
-        if (this.operationState != 1) return;
-        for (let tag of this.distributionDetail.property_tags) {
-          let text = "";
-          for (let temp of tempArr) {
-            if (temp.param_id == tag) {
-              text = temp.param;
-            }
-          }
-          if (
-            this.distribution.property_type &&
-            this.distribution.property_type.includes(text)
-          ) {
-          } else {
-            this.form.property_type.push(text);
-          }
+        if (this.typeOptions.length == 0) {
+          this.$message({
+            type: "error",
+            message: "物业类型已使用完，不可新增"
+          });
+          this.$router.push({
+            name: "ruleOfMaid"
+          });
         }
       }
     },
     cancel() {
-      //   this.$router.push({
-      //     name: "ruleOfMaid"
-      //   });
       this.$router.back();
     },
     showAddJumpRule(item, isDiabled) {
@@ -413,7 +414,6 @@ export default {
         }
       });
     },
-
     removeJumpRule(item) {
       this.$confirm("此操作将删除成功, 是否继续?", "提示", {
         confirmButtonText: "确定",
