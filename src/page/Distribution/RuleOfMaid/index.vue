@@ -82,7 +82,7 @@ body {
             </template>
           </el-table-column>
           <el-table-column property="uploader" label="上传人员" align='center'></el-table-column>
-          <el-table-column property="create_time" label="上传时间" align='center'></el-table-column>
+          <el-table-column property="update_time" label="上传时间" align='center'></el-table-column>
           <!-- <el-table-column label="操作" align='center'>
             <template slot-scope="scope">
               <el-button type='text' @click='remove(scope.row)'>删除</el-button>
@@ -368,9 +368,6 @@ export default {
             this.$message({
               type: "success",
               message: "提交成功!"
-            });
-            this.$router.push({
-              name: "distribution"
             });
           }
         } else {
