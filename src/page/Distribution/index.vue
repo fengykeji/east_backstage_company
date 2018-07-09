@@ -109,7 +109,7 @@ body {
       <el-table-column prop="operation" label="操作" align='center' width="170px">
         <template slot-scope="scope">
           <el-button type="text" @click='showProject(scope.row,0)'>查看</el-button>
-          <el-button type="text" @click='fastDistribution(scope.row)' v-if='!scope.row.state==1&&scope.row.end_state==0'>分配到访确认人</el-button>
+          <el-button type="text" @click='fastDistribution(scope.row)' v-if='scope.row.state==1&&scope.row.end_state=="执行中"'>分配到访确认人</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -198,10 +198,10 @@ export default {
         //     backUrl: "projectInfo"
         //   }
         // });
-        this.$store.commit("distribution" , row);
-        this.$store.commit("operationType" , type);
+        this.$store.commit("distribution", row);
+        this.$store.commit("operationType", type);
         this.$router.push({
-          name: 'projectInfo'
+          name: "projectInfo"
         });
       }
     },
