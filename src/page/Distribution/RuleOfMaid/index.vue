@@ -328,7 +328,7 @@ export default {
         let temp = {};
         temp.uploader = res.data.uploader;
         temp.url = res.data.img_url;
-        temp.create_time = res.data.create_time;
+        temp.update_time = res.data.update_time;
         temp.file_name = fileObj.name;
         this.refund = [];
         this.refund.push(temp);
