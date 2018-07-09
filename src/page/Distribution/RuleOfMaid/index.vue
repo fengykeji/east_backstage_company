@@ -82,7 +82,7 @@ body {
             </template>
           </el-table-column>
           <el-table-column property="uploader" label="上传人员" align='center'></el-table-column>
-          <el-table-column property="update_time" label="上传时间" align='center'></el-table-column>
+          <el-table-column property="create_time" label="上传时间" align='center'></el-table-column>
           <!-- <el-table-column label="操作" align='center'>
             <template slot-scope="scope">
               <el-button type='text' @click='remove(scope.row)'>删除</el-button>
@@ -111,7 +111,7 @@ body {
           <el-table-column label="操作" align='center'>
             <template slot-scope="scope">
               <el-button type="text" @click="showAdd(1, 3 , scope.row )">查看</el-button>
-              <el-button type="text" @click="showAdd(1, 2 , scope.row )">编辑</el-button>
+              <el-button type="text" v-if="distribution.state==2" @click="showAdd(1, 2 , scope.row )">编辑</el-button>
               <el-button v-if="distribution.state==2" type="text" @click="removeRule(scope.row)">删除</el-button>
             </template>
           </el-table-column>
@@ -130,7 +130,7 @@ body {
           </el-table-column>
           <el-table-column property="money_type" label="单位" align='center'></el-table-column>
           <el-table-column property="param" label="奖励金额（元/套）" align='center'></el-table-column>
-          <el-table-column label="操作" align='center'>
+          <el-table-column label="操作" align='center' v-if="distribution.state==2">
             <template slot-scope="scope">
               <el-button type="text" @click="showAdd(2,2,scope.row)">编辑</el-button>
               <el-button type="text" @click="removeRule(scope.row)">删除</el-button>
@@ -151,7 +151,7 @@ body {
           </el-table-column>
           <el-table-column property="money_type" label="单位" align='center'></el-table-column>
           <el-table-column property="param" label="奖励金额（元/套）" align='center'></el-table-column>
-          <el-table-column label="操作" align='center'>
+          <el-table-column label="操作" align='center' v-if="distribution.state==2">
             <template slot-scope="scope">
               <el-button type="text" @click="showAdd(3, 2 , scope.row)">编辑</el-button>
               <el-button type="text" @click="removeRule(scope.row)">删除</el-button>
@@ -265,6 +265,7 @@ export default {
     },
     async getCompanyRuleInfo() {
       if (!this.company_rule_id) return;
+      if (this.operationType == -1) return;
       let result = await this.api.getCompanyRuleInfo({
         company_rule_id: this.company_rule_id
       });
@@ -384,6 +385,7 @@ export default {
         let arr = [];
         for (let detail of dealList) {
           let property_type = detail.property_type;
+          if (item && item.rule_id == detail.rule_id) continue;
           if (property_type.length <= 0) continue;
           else {
             let tempArr = property_type.split(",");

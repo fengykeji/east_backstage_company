@@ -76,20 +76,20 @@ body {
                         </el-table-column>
                     </el-table>
                     <el-dialog title="跳点规则" :visible.sync="addJumpRuleDialog" @close="addJumpRuleDialog=false">
-                        <el-form :model="addJumpRuleForm" :disabled="jumpRuleIsDisabled">
-                            <el-form-item label="起始数" class='input'>
+                        <el-form :model="addJumpRuleForm" :disabled="jumpRuleIsDisabled" :rules="rules" ref="addJumpRuleForm">
+                            <el-form-item label="起始数" class='input11' prop="start">
                                 <el-input v-model="addJumpRuleForm.start" />
                             </el-form-item>
-                            <el-form-item label="截止数" class='input'>
+                            <el-form-item label="截止数" class='input11' prop="end">
                                 <el-input v-model="addJumpRuleForm.end" />
                             </el-form-item>
-                            <el-form-item label="固定金额" class='input'>
+                            <el-form-item label="固定金额" class='input11' prop="value">
                                 <el-input v-model="addJumpRuleForm.value" />
                             </el-form-item>
-                            <el-form-item label="奖励金额（元/套）" class='input'>
+                            <el-form-item label="奖励金额（元/套）" class='input' prop="reward">
                                 <el-input v-model="addJumpRuleForm.reward" />
                             </el-form-item>
-                            <el-form-item label="是否累积" class='input'>
+                            <el-form-item label="是否累积" class='input11'>
                                 <el-radio-group v-model="addJumpRuleForm.is_include">
                                     <el-radio :label="1">是</el-radio>
                                     <el-radio :label="0">否</el-radio>
@@ -128,6 +128,39 @@ export default {
   data() {
     return {
       rules: {
+        start: [
+          {
+            required: true,
+            message: "请输入起始数",
+            change: "change",
+            pattern: /^[0-9]+(.[0-9]{0})?$/
+          }
+        ],
+        end: [
+          {
+            required: true,
+            message: "请输入截至数",
+            change: "change",
+            pattern: /^[0-9]+(.[0-9]{0})?$/
+          }
+        ],
+        value: [
+          {
+            required: true,
+            message: "请输入固定金额，最多可有2位小数",
+            change: "change",
+            pattern: /^[0-9]+(.[0-9]{1,2})?$/
+          }
+        ],
+        reward: [
+          {
+            required: true,
+            message: "请输入奖励金额（元/套）",
+            change: "change",
+            pattern: /^[0-9]+(.[0-9]{1,2})?$/
+          }
+        ],
+
         property_type: [
           {
             type: "array",
@@ -212,23 +245,23 @@ export default {
     this.getType();
     this.getMoneyType();
     this.getCommissionWay();
-    this.getUpdateBrokeRule();
   },
   methods: {
-    async getUpdateBrokeRule() {
-      let res = await this.api.getUpdateBrokeRule({
-        rule_id: this.form.rule_id
-      });
-      if (res.code == 200) {
-        this.form = res.data;
-      }
-    },
     getIndex(row) {
       let index = row.$index + 1;
       return index;
     },
     //获取佣金规则详情
-    getRuleInfo() {},
+    async getRuleInfo() {
+      let res = await this.api.getUpdateBrokeRule({
+        rule_id: this.form.rule_id
+      });
+      if (res.code == 200) {
+        let temp = res.data;
+        temp.property_type = temp.property_type.split(",");
+        Object.assign(this.form, temp);
+      }
+    },
 
     //提交
     submit() {
@@ -266,7 +299,6 @@ export default {
         }
       });
     },
-
     async submitOtherRule() {
       let temp = {};
       temp.company_rule_id = this.distribution.rule_id;
@@ -321,6 +353,8 @@ export default {
             this.typeOptions.push(temp);
           }
         }
+        //如果不是新增 而是修改和查看
+        if (this.operationState != 1) return;
         for (let tag of this.distributionDetail.property_tags) {
           let text = "";
           for (let temp of tempArr) {
@@ -358,20 +392,28 @@ export default {
       }
       this.addJumpRuleDialog = true;
     },
-    async addJumpRuleSubmit() {
-      this.addJumpRuleForm.rule_id = this.form.rule_id;
-      let result = {};
-      if (this.isAddJumpRule) {
-        result = await this.api.addJumpRule(this.addJumpRuleForm);
-      } else {
-        result = await this.api.updateJumpRule(this.addJumpRuleForm);
-      }
-      if (result.code == 200) {
-        this.$message({ type: "success", message: "提交成功" });
-      }
-      this.addJumpRuleDialog = false;
-      this.getJumpRuleList();
+
+    addJumpRuleSubmit() {
+      this.$refs["addJumpRuleForm"].validate(async valid => {
+        if (valid) {
+          this.addJumpRuleForm.rule_id = this.form.rule_id;
+          let result = {};
+          if (this.isAddJumpRule) {
+            result = await this.api.addJumpRule(this.addJumpRuleForm);
+          } else {
+            result = await this.api.updateJumpRule(this.addJumpRuleForm);
+          }
+          if (result.code == 200) {
+            this.$message({ type: "success", message: "提交成功" });
+          }
+          this.addJumpRuleDialog = false;
+          this.getJumpRuleList();
+        } else {
+          return false;
+        }
+      });
     },
+
     removeJumpRule(item) {
       this.$confirm("此操作将删除成功, 是否继续?", "提示", {
         confirmButtonText: "确定",

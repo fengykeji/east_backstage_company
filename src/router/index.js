@@ -9,8 +9,6 @@ import PeopleAddPerson from '@/page/peopleProject/PeopleAddPerson'
 import PeopleChoicePeople from '@/page/peopleProject/PeopleChoicePeople'
 import PeopleProjectInfo from '@/page/peopleProject/PeopleProjectInfo'
 import PeopleRuleOfMaid from '@/page/peopleProject/PeopleRuleOfMaid'
-
-
 import AddProject from '@/page/Project/AddProject'
 import ReCreateProject from '@/page/Project/AddProject/reCreate'
 import RequestRefund from '@/page/Project/RequestRefund'
