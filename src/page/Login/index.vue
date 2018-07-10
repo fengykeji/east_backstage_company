@@ -11,7 +11,7 @@
   <div class='login'>
     <div class='title'>
       <div class='input-row'>
-        <img src='../../assets/images/logo@3x.png' class='input-img'/>
+        <img src='../../assets/images/logo@3x.png' class='input-img' />
       </div>
       <div class='input-row'>
         <el-input v-model="submitForm.account" class='input' placeholder="请输入账号"></el-input>
@@ -24,6 +24,7 @@
         <span class='text1'>忘记密码?注册</span>
         <span class='text2'>用户手册</span>
       </div>
+      <div class='bottom-info'>技术支持由云算科技有限公司提供 www.ccsoft.com.cn 全国热线：400-0809-202</div>
     </div>
   </div>
 </template>
