@@ -44,7 +44,7 @@
     margin-top: 25px;
   }
   .el-table th {
-    padding: 6px 0px;
+    padding: 3px 0px;
     font-size: 14px;
     color: #333;
   }

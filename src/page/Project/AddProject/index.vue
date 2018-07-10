@@ -152,7 +152,7 @@
           <el-table-column property="file_name" label="文件名称" align='center'></el-table-column>
           <el-table-column label="附件" align='center'>
             <template slot-scope='scope'>
-              <a target="_blank" :href="this.base + scope.row.url">查看附件</a>
+              <a target="_blank" :href="base+scope.row.url">查看附件</a>
             </template>
           </el-table-column>
           <el-table-column property="create_name" label="上传人员" align='center'></el-table-column>

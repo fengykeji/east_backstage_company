@@ -26,8 +26,9 @@ body {
     <div class='ruleOfMaid-box'>
       <div class='title'>
         <span class='btn'>
-          <el-button type="primary" @click='sumbit'>提交</el-button>
+
           <el-button type="primary" @click='cancel'>关闭</el-button>
+          <el-button type="primary" @click='sumbit' v-if="!distribution.state==2||!operationType==0">提交</el-button>
         </span>
       </div>
       <div class='infoform'>
@@ -70,7 +71,7 @@ body {
           <div class='text'>公司证明资料</div>
           <span class='btn'>
             <el-upload :auto-upload="false" action="" :on-change="fileUpload">
-              <el-button ref="uploadBtn" type="primary" :show-file-list="false" v-if="distribution.state==2">点击上传</el-button>
+              <el-button ref="uploadBtn" type="primary" :show-file-list="false" v-if="distribution.state==2||!operationType==0">点击上传</el-button>
             </el-upload>
           </span>
         </div>
@@ -78,7 +79,7 @@ body {
           <el-table-column label="文件名称" prop="file_name" align='center'></el-table-column>
           <el-table-column label="附件" align='center'>
             <template slot-scope='scope'>
-              <a target="_blank" :href="this.base + scope.row.url">查看附件</a>
+              <a target="_blank" :href="base + scope.row.url">查看附件</a>
             </template>
           </el-table-column>
           <el-table-column property="uploader" label="上传人员" align='center'></el-table-column>
@@ -94,7 +95,7 @@ body {
         <div class='title'>
           <div class='text'>成交佣金（推荐的客户在该项目购置房源后产生的佣金）</div>
           <span class='btn'>
-            <el-button type="primary" @click='showAdd(1,1)' v-if="distribution.state==2">新增</el-button>
+            <el-button type="primary" @click='showAdd(1,1)' v-if="distribution.state==2||!operationType==0">新增</el-button>
           </span>
         </div>
         <el-table :data="ruleForm.deal" border>
@@ -121,7 +122,7 @@ body {
         <div class='title'>
           <div class='text'>到访佣金（客户到访后且售楼处确认后产生的佣金</div>
           <span class='btn'>
-            <el-button type="primary" @click="showAdd(2 , 1)" v-if="distribution.state==2">新增</el-button>
+            <el-button type="primary" @click="showAdd(2 , 1)" v-if="distribution.state==2||!operationType==0">新增</el-button>
           </span>
         </div>
         <el-table :data="ruleForm.visit" border>
@@ -142,7 +143,7 @@ body {
         <div class='title'>
           <div class='text'>推荐佣金（经纪人将客户推荐给项目后的佣金）</div>
           <span class='btn'>
-            <el-button type="primary" @click="showAdd(3 , 1)" v-if="distribution.state==2">新增</el-button>
+            <el-button type="primary" @click="showAdd(3 , 1)" v-if="distribution.state==2||!operationType==0">新增</el-button>
           </span>
         </div>
         <el-table :data="ruleForm.recommend" border>

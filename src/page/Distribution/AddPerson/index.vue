@@ -181,8 +181,12 @@ export default {
       this.remark = "";
     },
     async sumbit() {
+      if (!this.agent_id) {this.$message({type: "warning",message: "请选择到访确认人!"});
+        return;
+      }
       this.submitForm.project_id = this.project_id;
       this.submitForm.agent_id = this.agent_id;
+
       let res = await this.api.agentAdd(this.submitForm);
       if (res.code == 200) {
         this.$message({
