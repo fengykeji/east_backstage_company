@@ -30,7 +30,9 @@ http.interceptors.response.use(function (res) {
   else if (res.data.code == 201) {
     Vue.prototype.$message({ type: 'error', message: '由于您长时间没有操作, 登录已过期, 请重新登录' });
     // location.href = 'http://120.78.69.178:2902';//正式服地址
+    
     location.href = 'http://120.27.21.136:2798/';  //测试服地址
+
   } else {
     Vue.prototype.$message({ type: 'error', message: res.data.msg });
   }
