@@ -687,16 +687,16 @@ export default {
       }
     },
     showState(row) {
-      if (row == 1) {
+      if (row == 0) {
         return "禁用";
-      } else if (row == 0) {
+      } else if (row == 1) {
         return "启用";
       }
     },
     StateBtn(row) {
-      if (row == 0) {
+      if (row == 1) {
         return "禁用";
-      } else if (row == 1) {
+      } else if (row == 0) {
         return "启用";
       }
     },
