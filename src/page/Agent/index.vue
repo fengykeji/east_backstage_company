@@ -274,6 +274,7 @@ export default {
       }
     },
     showQuit(row) {
+      console.log(row)
       this.form.id = row.id;
       this.form.agent_id = row.agent_id;
       this.dialogFormVisible = true;

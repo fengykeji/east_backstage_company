@@ -118,7 +118,7 @@
           <template slot-scope="scope">{{auditingState(scope.row.state)}}</template>
         </el-table-column>
         <!-- <el-table-column prop="remark" label="备注" align='center' width="160px"></el-table-column> -->
-        <el-table-column prop="entry_time" label="申请时间" align='center' width="140px" ></el-table-column>
+        <el-table-column prop="entry_time" label="申请时间" align='center' width="140px"></el-table-column>
         <el-table-column label="操作" align='center'>
           <template slot-scope="scope">
             <el-button type="text" @click='examine(scope.row)' v-if='scope.row.state==2'>审核</el-button>
@@ -192,19 +192,21 @@
             <div>通讯地址</div>
             <div class='border width'>{{examinePeople.city_name+examinePeople.district_name+examinePeople.absolute_address}}</div>
           </el-form-item>
-          <div class='num_set'>审核信息</div>
-          <el-form-item class='input1'>
-            <div>审核人员</div>
-            <div class='border'>{{examinePeople.auditing_name}}</div>
-          </el-form-item>
-          <el-form-item class='input1'>
-            <div>审核时间</div>
-            <div class='border'>{{examinePeople.auditing_time}}</div>
-          </el-form-item>
-          <el-form-item class='input1'>
-            <div>备注</div>
-            <div class='border height'>{{examinePeople.remark}}</div>
-          </el-form-item>
+          <div v-if="operationType==1">
+            <div class='num_set'>审核信息</div>
+            <el-form-item class='input1'>
+              <div>审核人员</div>
+              <div class='border'>{{examinePeople.auditing_name}}</div>
+            </el-form-item>
+            <el-form-item class='input1'>
+              <div>审核时间</div>
+              <div class='border'>{{examinePeople.auditing_time}}</div>
+            </el-form-item>
+            <el-form-item class='input1'>
+              <div>备注</div>
+              <div class='border height'>{{examinePeople.remark}}</div>
+            </el-form-item>
+          </div>
         </el-form>
       </el-dialog>
       <el-dialog title="拒绝" :visible.sync="refuseInfo" class='dialog' @close="cancelRefuseInfo">
@@ -344,9 +346,13 @@ export default {
       }
     },
     async showSee(row) {
+      console.log(row);
       this.operationType = 1;
       this.dialogFormVisible = true;
-      let res = await this.api.getRefuseInfo({ agent_id: row.agent_id });
+      let res = await this.api.getRefuseInfo({
+        agent_id: row.agent_id,
+        id: row.id
+      });
       if (res.code == 200) {
         Object.assign(this.examinePeople, res.data);
       }
