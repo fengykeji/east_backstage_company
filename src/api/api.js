@@ -31,7 +31,11 @@ http.interceptors.response.use(function (res) {
     Vue.prototype.$message({ type: 'error', message: '由于您长时间没有操作, 登录已过期, 请重新登录' });
     location.href = base;  
   } else {
-    Vue.prototype.$message({ type: 'error', message: res.data.msg });
+    if(res.data.msg) {
+      Vue.prototype.$message({ type: 'error', message: res.data.msg });
+    }else {
+      Vue.prototype.$message({ type: 'error', message: "服务器异常，请联系管理员" });
+    }
   }
   return res.data;
 });
