@@ -118,10 +118,10 @@ export default {
     this.project_id = this.$route.params.project_id;
     this.rule_id = this.$route.params.rule_id;
     if (this.$route.params.rule_id) {
+      this.getBrokerAgreement();
     } else {
       this.$router.push({ name: "peopleProject" });
     }
-    this.getBrokerAgreement();
   },
   methods: {
     async getRuleContract() {
@@ -190,8 +190,8 @@ export default {
     },
 
     async getBrokerAgreement() {
-          if (!this.company_rule_id) return;
-      let res = await this.api.getBrokerAgreement({ rule_id: this.rule_id });
+      // if (!this.company_rule_id) return;
+      let res = await this.api.getRuleContract({ rule_id: this.rule_id });
       if (res.code == 200) {
         this.refund = res.data;
       }
