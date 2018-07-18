@@ -188,7 +188,9 @@ export default {
         this.recCommission = res.data.recommend;
       }
     },
+
     async getBrokerAgreement() {
+          if (!this.company_rule_id) return;
       let res = await this.api.getBrokerAgreement({ rule_id: this.rule_id });
       if (res.code == 200) {
         this.refund = res.data;

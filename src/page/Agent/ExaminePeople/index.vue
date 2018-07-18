@@ -135,7 +135,7 @@
           <el-button type='primary' @click='cancel'>关闭</el-button>
         </div>
         <div class='num_set'>员工信息</div>
-        <el-form v-model="examinePeople">
+        <el-form :v-model="examinePeople">
           <el-form-item class='input1'>
             <div>姓名</div>
             <div class='border'>{{examinePeople.name}}</div>
