@@ -260,7 +260,7 @@ let api = {
   //获取规则信息
   getRuleContract: doGet('company/PeopleProject/getRuleInfo'),
   //获取附件信息
-  // getBrokerAgreement: doGet('company/PeopleProject/getBrokerAgreement'),  //暂时未用
+  getBrokerAgreement: doGet('company/PeopleProject/getBrokerAgreement'),  //暂时未用
   //全民规则详情
   getPeopleRuleInfo: doGet('company/PeopleProject/brokerInfo'),
 }

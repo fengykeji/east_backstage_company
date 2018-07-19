@@ -365,7 +365,7 @@ export default {
             this.typeOptions.push(temp);
           }
         }
-        if (this.typeOptions.length == 0) {
+        if (this.typeOptions.length==0&&this.operationState==1) {
           this.$message({
             type: "error",
             message: "物业类型已使用完，不可新增"

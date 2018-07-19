@@ -79,7 +79,7 @@ body {
           <el-table-column label="文件名称" prop="file_name" align='center'></el-table-column>
           <el-table-column label="附件" align='center'>
             <template slot-scope='scope'>
-              <a target="_blank" :href="base + scope.row.url">查看附件</a>
+              <a target="_blank" :href="base + scope.row.file_url">查看附件</a>
             </template>
           </el-table-column>
           <el-table-column property="uploader" label="上传人员" align='center'></el-table-column>
@@ -265,7 +265,10 @@ export default {
       return index;
     },
     async getCompanyRuleInfo() {
-      if (!this.company_rule_id) return;
+      if (!this.company_rule_id) {
+        this.$router.push({ name: "distribution" });
+        return;
+      }
       if (this.operationType == -1) return;
       let result = await this.api.getCompanyRuleInfo({
         company_rule_id: this.company_rule_id
@@ -328,7 +331,7 @@ export default {
       if (res.code == 200) {
         let temp = {};
         temp.uploader = res.data.uploader;
-        temp.url = res.data.img_url;
+        temp.file_url = res.data.img_url;
         temp.update_time = res.data.update_time;
         temp.file_name = fileObj.name;
         this.refund = [];
@@ -339,7 +342,7 @@ export default {
     async addBrokerAgreement() {
       let temp = {};
       temp.file_name = this.refund[0].file_name;
-      temp.file_url = this.refund[0].url;
+      temp.file_url = this.refund[0].file_url;
       temp.uploader = this.refund[0].uploader;
       temp.rule_id = this.company_rule_id;
       let res = await this.api.addBrokerAgreement(temp);
