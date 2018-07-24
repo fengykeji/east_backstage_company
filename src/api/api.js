@@ -7,8 +7,11 @@ import Vue from 'vue'
 // let base = 'http://120.78.69.178:2902/';
 // Vue.prototype.base = 'http://120.78.69.178:2902/';    //正式服地址
 
-let base = 'http://120.27.21.136:2798/';
-Vue.prototype.base = 'http://120.27.21.136:2798/';  //测试服地址
+// let base = 'http://120.27.21.136:2798/';
+// Vue.prototype.base = 'http://120.27.21.136:2798/';  //测试服地址
+
+let base = 'http://47.106.39.169:2797/';
+Vue.prototype.base = 'http://47.106.39.169:2797/';  //演示服地址
 
 const doPost = function (url) {
   return function (params) {
