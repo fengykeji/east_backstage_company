@@ -235,13 +235,6 @@ export default {
     seeIdCard() {
       this.showIdCard = true;
     },
-    getRole(row) {
-      if (row == 1) {
-        return "经纪人";
-      } else if (row == 2) {
-        return "对接人";
-      }
-    },
     async sumbit() {
       let res = await this.api.quitPeople(this.form);
       if (res.code == 200) {
@@ -255,6 +248,13 @@ export default {
       let res = await this.api.getPayrollInfo({ agent_id: row.agent_id });
       if (res.code == 200) {
         Object.assign(this.examinePeople, res.data);
+      }
+    },
+     getRole(row) {
+      if (row == 1) {
+        return "经纪人";
+      } else if (row == 2) {
+        return "对接人";
       }
     },
     role(row) {

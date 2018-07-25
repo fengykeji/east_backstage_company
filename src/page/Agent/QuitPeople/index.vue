@@ -227,7 +227,7 @@ export default {
     },
     async showSee(row) {
       this.dialogFormVisible = true;
-      let res = await this.api.getQuitInfo({ agent_id: row.agent_id });
+      let res = await this.api.getQuitInfo({ agent_id: row.agent_id,id:row.id });
       if (res.code == 200) {
         Object.assign(this.examinePeople, res.data);
       }
