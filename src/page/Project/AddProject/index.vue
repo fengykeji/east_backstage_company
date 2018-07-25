@@ -510,7 +510,8 @@ export default {
         params: {
           operationType: this.$route.params.operationType,
           project_id: this.$route.params.project_id,
-          allow: this.authentication_info.allow
+          allow: this.authentication_info.allow,
+          info_id: this.form.info_id,
         }
       });
     },
@@ -570,6 +571,7 @@ export default {
           if (this.operationType == 1) {
             let temp = {};
             temp.project_id = this.form.project_id;
+            temp.info_id = this.form.info_id;
             temp.property_type = this.form.property_type;
             temp.developer_name = this.form.developer_name;
             temp.company_relation = this.form.company_relation;
@@ -766,7 +768,6 @@ export default {
         return;
       }
       let file = this.fileObject.raw;
-      console.log(file);
       let formData = new FormData();
       formData.append("url", file);
       let res = await this.api.uploadProjectAgreement(formData);

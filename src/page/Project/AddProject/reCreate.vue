@@ -544,6 +544,7 @@ export default {
           if (this.operationType == 3) {
             let temp = {};
             temp.project_id = this.form.project_id;
+            temp.info_id = this.form.info_id;
             temp.project_name = this.form.project_name;
             temp.province = this.form.province;
             temp.city = this.form.city;
@@ -715,8 +716,7 @@ export default {
       if (size > 5) {
         this.$message({
           type: "error",
-          message:
-            "文件大于5m，请重新上传"
+          message: "文件大于5m，请重新上传"
         });
         return;
       }
