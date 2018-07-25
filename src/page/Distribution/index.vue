@@ -38,7 +38,6 @@ body {
           <el-button icon="el-icon-search" circle @click="getList"></el-button>
         </div>
         <div class='btn'>
-          <!-- <el-button type="primary" @click="getList">高级查询</el-button> -->
           <el-button type="primary" @click='startApply'>发起申请</el-button>
         </div>
       </div>
@@ -48,44 +47,8 @@ body {
         <el-button class='tip' :class="tipActiveIndex==2?'active':''" type="text" @click="clickTip(2)">已通过</el-button>
         <el-button class='tip' :class="tipActiveIndex==3?'active':''" type="text" @click="clickTip(3)">已终止</el-button>
       </div>
-      <!-- <el-input v-model="searchObj.tag_search" class='query'></el-input> -->
-
     </div>
     <div class='search'>
-      <!-- <div>
-              <span class='block'>
-                  <div>
-                      <span class='row'>项目编号：</span>
-                      <el-input v-model="searchObj.project_code" class='input'></el-input>
-                  </div>
-                  <div>
-                      <span class='row'>开发商名：</span>
-                      <el-input v-model="searchObj.developer_name" class='input'></el-input>
-                  </div>
-              </span>
-              <span class='block'>
-                 <div>
-                      <span class='row'>项目名称：</span>
-                      <el-input v-model="searchObj.project_name" class='input'></el-input>
-                  </div>
-                  <div>
-                       <span class='row'>来源：</span>
-                       <el-select v-model="searchObj.source" placeholder="请选择">
-                         <el-option label="自行申请" value="1"></el-option>
-                         <el-option label="项目方选择" value="2"></el-option>
-                       </el-select>
-                  </div>
-              </span>
-              <span class='block'>
-                 <div>
-                      <span class='row'>区域：</span>
-                      <el-select v-model="x" placeholder="请选择">
-                         <el-option v-for="item in options"  :key="item.value"  :label="item.label"  :value="item.value"></el-option>
-                      </el-select>
-                  </div>
-                
-              </span>
-          </div> -->
     </div>
     <el-table :data="tableData" border style="width: 100%" class="mt-30">
       <el-table-column prop="" label="序号" align='center' width="70px">
@@ -93,7 +56,6 @@ body {
       </el-table-column>
       <el-table-column prop="project_code" label="项目编号" align='center' width="90px"></el-table-column>
       <el-table-column prop="project_name" label="项目名称" align='center'></el-table-column>
-      <el-table-column prop="end_state" label="执行状态" align='center' width="90px"></el-table-column>
       <el-table-column prop="city" label="区域" align='center'></el-table-column>
       <!-- <el-table-column prop="absolute_address" label="地址" align='center' width="184px"></el-table-column> -->
       <el-table-column prop="subordinate_company" label="项目所属单位" align='center' width="150px"></el-table-column>
@@ -105,6 +67,7 @@ body {
       <el-table-column prop="state" label="审核状态" align='center' width="80px">
         <template slot-scope="scope">{{auditingState(scope.row.state)}}</template>
       </el-table-column>
+      <el-table-column prop="end_state" label="执行状态" align='center' width="90px"></el-table-column>
       <el-table-column prop="is_distribution" label="分配状态" align='center' width="80px"></el-table-column>
       <el-table-column prop="operation" label="操作" align='center' width="170px">
         <template slot-scope="scope">
@@ -212,6 +175,7 @@ export default {
         return "项目方选择";
       }
     },
+
     auditingState(row) {
       if (row == 0) {
         return "已拒绝";
@@ -219,7 +183,10 @@ export default {
         return "通过";
       } else if (row == 2) {
         return "待审核";
+      } else if (row != 1) {
+        this.tableData.end_state = "为执行";
       }
+      console.l;
     }
   }
 };
