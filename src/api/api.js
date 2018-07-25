@@ -35,9 +35,9 @@ http.interceptors.response.use(function (res) {
     location.href = base;
 
   } else {
-    if(res.data.msg) {
+    if (res.data.msg) {
       Vue.prototype.$message({ type: 'error', message: res.data.msg });
-    }else {
+    } else {
       Vue.prototype.$message({ type: 'error', message: "服务器异常，请联系管理员" });
     }
   }
