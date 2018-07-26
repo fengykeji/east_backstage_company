@@ -261,6 +261,16 @@ export default {
         console.log(temp);
         temp.property_type = temp.property_type.split(",");
         Object.assign(this.form, temp);
+
+        let index = 0;
+        if (this.operationState == 3) {
+          for (let type of this.form.property_type) {
+            let temp = {};
+            temp.param = type;
+            temp.id = index++;
+            this.typeOptions.push(temp);
+          }
+        }
       }
     },
     //提交
@@ -341,13 +351,15 @@ export default {
       }
     },
     async getType() {
-      if (this.broker_type != 1) {
+      if (this.broker_type != 1 || this.operationState == 3) {
         return;
       }
       let res = await this.api.getTags();
       if (res.code == 200) {
+        //总物业类型
         let tempArr = res.data;
         let totalTypes = [];
+        //当前项目拥有的物业类型 由于只能得到 id 这里把他转为 中文
         for (let tag of this.distributionDetail.property_tags) {
           let text = "";
           for (let temp of tempArr) {
@@ -356,15 +368,20 @@ export default {
             }
           }
         }
-        for (let temp of totalTypes) {
-          if (
-            this.distribution.property_type &&
-            this.distribution.property_type.includes(temp.param)
-          ) {
-          } else {
-            this.typeOptions.push(temp);
+
+        //新增和修改
+        if (this.operationState != 3) {
+          for (let temp of totalTypes) {
+            if (
+              this.distribution.property_type &&
+              this.distribution.property_type.includes(temp.param)
+            ) {
+            } else {
+              this.typeOptions.push(temp);
+            }
           }
         }
+
         if (this.typeOptions.length == 0 && this.operationState == 1) {
           this.$message({
             type: "error",
