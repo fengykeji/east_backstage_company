@@ -54,7 +54,7 @@ body {
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination background class='page' layout="prev, pager, next" :page-size="limit" :current-page="searchObj.page" :total="total" @current-change="pageChange">
+    <el-pagination background class='page' layout="prev, pager, next" :page-size="pageSize" :current-page="searchObj.page" :total="total" @current-change="pageChange">
     </el-pagination>
   </div>
 </template>

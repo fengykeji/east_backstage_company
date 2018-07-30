@@ -165,6 +165,12 @@ export default {
               temp.rule_id = this.rule_id;
               temp.state = state;
               let res = await this.api.brokerApply(temp);
+              if (!this.broker_id) {
+                this.$message({
+                  type: "error",
+                  message: "请在申请结佣列表选择佣金"
+                });
+              }
               if (res.code == 200) {
                 this.$message({ type: "success", message: "提交成功!" });
                 this.$router.push({ name: "maidInfo" });
