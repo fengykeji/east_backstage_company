@@ -107,7 +107,7 @@
         <el-table-column prop="project_hold_phone" label="联系电话" align='center' width="110px"></el-table-column>
         <el-table-column prop="begin_time" label="开始执行时间" align='center' width="110px"></el-table-column>
         <el-table-column prop="end_time" label="截至执行时间" align='center' width="110px"></el-table-column>
-          <el-table-column prop="absolute_address" label="公司地址" align='center' width="220px"></el-table-column>
+        <el-table-column prop="absolute_address" label="公司地址" align='center' width="220px"></el-table-column>
         <el-table-column prop="price" label="未结金额" align='center' v-if='companyType==2'></el-table-column>
         <el-table-column property="operation" label="操作" align='center'>
           <template slot-scope="scope">

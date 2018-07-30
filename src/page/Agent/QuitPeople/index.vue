@@ -279,7 +279,7 @@ export default {
     },
     async getQuitList() {
       let res = await this.api.getQuitList(this.searchObj);
-      if ((res.code = 200)) {
+      if (res.code == 200) {
         this.tableData = res.data.data;
         this.total = res.data.total;
         this.pageSize = res.data.per_page;

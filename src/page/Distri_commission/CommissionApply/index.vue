@@ -136,6 +136,7 @@ export default {
     };
   },
   mounted() {
+    this.rule_id=this.$route.params.rule_id;
     this.broker_id = this.$route.params.broker_id;
     this.project_id = this.$route.params.project_id;
     this.operationType = this.$route.params.operationType;
@@ -161,6 +162,7 @@ export default {
             .then(async () => {
               let temp = Object.assign({}, this.sumbitForm);
               temp.project_id = this.project_id;
+               temp.rule_id = this.rule_id;
               temp.state = state;
               let res = await this.api.brokerApply(temp);
               if (res.code == 200) {

@@ -58,8 +58,8 @@ body {
       <el-table-column prop="account" label="云算号" align='center' width="100px"></el-table-column>
       <el-table-column prop="name" label="经纪人姓名" align='center' width="140px"></el-table-column>
       <el-table-column prop="tel" label="联系方式" align='center' width="140px"></el-table-column>
-      <el-table-column prop="role" label="角色" align='center' width="110px">
-        <template slot-scope="scope">{{getRole(scope.row.role)}}</template>
+      <el-table-column  label="角色" align='center' width="110px">
+        <template slot-scope="scope">{{getRole(scope.row.butter_project)}}</template>
       </el-table-column>
       <el-table-column prop="project_name" label="申请项目" align='center' width="140px"></el-table-column>
       <el-table-column prop="department" label="所属部门" align='center' width="140px"></el-table-column>
@@ -250,10 +250,10 @@ export default {
         Object.assign(this.examinePeople, res.data);
       }
     },
-     getRole(row) {
-      if (row == 1) {
+    getRole(row) {
+      if (row == 0) {
         return "经纪人";
-      } else if (row == 2) {
+      } else {
         return "对接人";
       }
     },
@@ -274,7 +274,7 @@ export default {
       }
     },
     showQuit(row) {
-      console.log(row)
+      console.log(row);
       this.form.id = row.id;
       this.form.agent_id = row.agent_id;
       this.dialogFormVisible = true;

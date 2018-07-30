@@ -174,16 +174,11 @@ export default {
         });
       }
     },
-    search() {
-      this.searchObj.page = 1;
-      this.getProjectCommissionList();
-    },
     getIndex(row) {
       let index = row.$index + 1 + (this.searchObj.page - 1) * this.pageSize;
       return index;
     },
     pageChange(page) {
-      console.log(page);
       this.searchObj.page = page;
       this.getProjectCommissionList();
     },
@@ -192,7 +187,7 @@ export default {
       if (res.code == 200) {
         this.tableData = res.data.data;
         this.total = res.data.total;
-        this.pageSize = res.data.per_page;
+       this.pageSize = res.data.per_page;
       }
     }
   }
