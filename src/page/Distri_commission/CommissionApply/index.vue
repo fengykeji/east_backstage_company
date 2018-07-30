@@ -174,7 +174,8 @@ export default {
               if (res.code == 200) {
                 this.$message({ type: "success", message: "提交成功!" });
                 this.$router.push({ name: "maidInfo" });
-              }
+              } 
+              
             })
             .catch(() => {
               this.$message({
