@@ -68,7 +68,7 @@ export default {
         serach: "",
         page: 1
       },
-      limit: 10,
+      pageSize: 0,
       total: 0
     };
   },
@@ -77,7 +77,7 @@ export default {
   },
   methods: {
     getIndex(row) {
-      let index = row.$index + 1 + (this.searchObj.page - 1) * 10;
+      let index = row.$index + 1 + (this.searchObj.page - 1) * this.pageSize;
       return index;
     },
     see(row) {
@@ -105,10 +105,6 @@ export default {
       });
     },
 
-    search() {
-      this.searchObj.page = 1;
-      this.getDistributionList();
-    },
     pageChange(page) {
       this.searchObj.page = page;
       this.getDistributionList();
@@ -119,6 +115,7 @@ export default {
       if (res.code == 200) {
         this.tableData = res.data.data;
         this.total = res.data.total;
+        this.pageSize = res.data.per_page;
       }
     },
     state(row) {
