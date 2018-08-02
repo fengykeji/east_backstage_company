@@ -9,11 +9,17 @@ import store from '../store/store.js';
 
 Vue.use(ElementUI);
 
+import MapTool from '@/components/MapTool';
+import MapSearchInput from '@/components/MapTool/mapSearchInput';
 import '../theme/index.css'
 
 Vue.config.productionTip = false
 
 Vue.prototype.api = api;
+
+//注册组件
+Vue.component("map-tool" , MapTool);
+Vue.component("map-search-input" , MapSearchInput);
 
 // Vue.prototype.ajax=function(method,url,onload,param){
 //   let xhr=new XMLHttpRequest();

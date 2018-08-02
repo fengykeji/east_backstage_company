@@ -23,14 +23,14 @@ export default {
   computed: {
     province_id() {
       this.getCityList();
-      return this.province;
+      return this.province + "";
     },
     city_id() {
       this.getdistrictList();
-      return this.city;
+      return this.city   +  "" ;
     },
     district_id() {
-      return this.district;
+      return this.district   + "";
     }
   },
   data() {
@@ -79,8 +79,10 @@ export default {
       this.$emit("update:city", value);
       this.$emit("update:district", "");
     },
-    changedistrict(value) {
-      this.$emit("update:district", value);
+    changedistrict(value , isUpdate = true) {
+      if(isUpdate) {
+        this.$emit("update:district", value);
+      }
       let province = "";
       let city = "";
       let district = "";

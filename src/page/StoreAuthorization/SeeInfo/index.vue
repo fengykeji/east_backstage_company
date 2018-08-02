@@ -66,74 +66,74 @@
 }
 </style>
 <template>
-    <div class="SeeInfo">
-        <div class="AddPorject-wrapper">
-            <div class="AddPorject-wrapper-inner">
-                <div class='title-top'>
-                    <span>新增门店</span>
-                    <span class="title-btn">
-                        <el-button type="primary" @click='submitForm'>提交</el-button>
-                        <el-button @click="cancel">关闭</el-button>
-                    </span>
-                </div>
-                <el-form :model="form" ref="ruleForm" class='form'>
-                    <el-form-item label="门店编号" class='input'>
-                        <el-input v-model="form.store_code" auto-complete="off" placeholder="请输入门店编号"></el-input>
-                    </el-form-item>
-                    <el-form-item label="门店名称" class='input1'>
-                        <el-input v-model="form.store_name" auto-complete="off" placeholder="请输入门店名称" :disabled="operationType===2"></el-input>
-                    </el-form-item>
-                    <el-form-item label="门店店长" class='input1'>
-                        <el-input v-model="form.contact" auto-complete="off" placeholder="请输入门店店长姓名" :disabled="operationType===2"></el-input>
-                    </el-form-item>
-                    <el-form-item label="联系电话" class='input'>
-                        <el-input v-model="form.contact_tel" auto-complete="off" placeholder="请输入联系电话"></el-input>
-                    </el-form-item>
-                    <el-form-item label="门店地址">
-                        <!-- 下拉组建 -->
-                        <city-selector :province.sync="form.province" :city.sync="form.city" :district.sync="form.district" @changeDistrict="changeDistrict" />
-                    </el-form-item>
-                    <el-form-item class='input'>
-                        <el-input id="suggestId" v-model="form.address" auto-complete="off" class='input-1' placeholder="请输入具体地址"></el-input>
-                        <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
-                    </el-form-item>
-                    <!-- 地图 -->
-                    <div id="map" class='map'></div>
-                </el-form>
-            </div>
-            <!-- 用户显示 -->
-            <el-table :data="project_user" border>
-                <el-table-column property="account" label="帐号" align='center'></el-table-column>
-                <el-table-column property="name" label="管理员" align='center'></el-table-column>
-                <el-table-column property="operation" v-if="operationType == 0 || operationType == 1" label="操作" align='center'>
-                    <template slot-scope="scope">
-                        <el-button type="text" @click='editUser(scope.row , scope.$index)'>修改</el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-
-            <el-dialog title="添加账号" :visible.sync="dialogFormVisibleAccounts" class='tableUser' @close="cancelUser">
-                <el-form :model="projectUserForm" ref="projectUserForm">
-                    <el-form-item label="设定帐号" prop="account" class='input'>
-                        <el-input v-model="projectUserForm.account" auto-complete="off" placeholder="请输入手机号码"></el-input>
-                    </el-form-item>
-                    <el-form-item v-show="isAccountValid" label="设定密码" prop="password" class='input'>
-                        <el-input v-model="projectUserForm.password" auto-complete="off" type='password' placeholder="请输入密码"></el-input>
-                    </el-form-item>
-                    <el-form-item v-show="!isAccountValid" label="设定密码" class='input'>
-                        <el-input v-model="projectUserForm.password" auto-complete="off" type='password' placeholder="不设置为之前密码"></el-input>
-                    </el-form-item>
-                    <el-form-item label="管理员姓名" prop="name" class='input'>
-                        <el-input v-model="projectUserForm.name" auto-complete="off" placeholder="请输入管理员姓名"></el-input>
-                    </el-form-item>
-                </el-form>
-                <div slot="footer" class="dialog-footer">
-                    <el-button @click='cancelUser'>关 闭</el-button>
-                    <el-button type="primary" @click='submitUser'>确 定</el-button>
-                </div>
-            </el-dialog>
+  <div class="SeeInfo">
+    <div class="AddPorject-wrapper">
+      <div class="AddPorject-wrapper-inner">
+        <div class='title-top'>
+          <span>新增门店</span>
+          <span class="title-btn">
+            <el-button type="primary" @click='submitForm'>提交</el-button>
+            <el-button @click="cancel">关闭</el-button>
+          </span>
         </div>
+        <el-form :model="form" ref="ruleForm" class='form'>
+          <el-form-item label="门店编号" class='input'>
+            <el-input v-model="form.store_code" auto-complete="off" placeholder="请输入门店编号"></el-input>
+          </el-form-item>
+          <el-form-item label="门店名称" class='input1'>
+            <el-input v-model="form.store_name" auto-complete="off" placeholder="请输入门店名称"></el-input>
+          </el-form-item>
+          <el-form-item label="门店店长" class='input1'>
+            <el-input v-model="form.contact" auto-complete="off" placeholder="请输入门店店长姓名"></el-input>
+          </el-form-item>
+          <el-form-item label="联系电话" class='input'>
+            <el-input v-model="form.contact_tel" auto-complete="off" placeholder="请输入联系电话"></el-input>
+          </el-form-item>
+          <el-form-item label="门店地址">
+            <!-- 下拉组建 -->
+            <city-selector :province.sync="form.province" :city.sync="form.city" :district.sync="form.district" @changeDistrict="changeDistrict" />
+          </el-form-item>
+          <el-form-item class='input'>
+            <el-input id="suggestId" v-model="form.address" auto-complete="off" class='input-1' placeholder="请输入具体地址"></el-input>
+            <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
+          </el-form-item>
+          <!-- 地图 -->
+          <div id="map" class='map'></div>
+        </el-form>
+      </div>
+      <!-- 用户显示 -->
+      <el-table :data="project_user" border>
+        <el-table-column property="account" label="帐号" align='center'></el-table-column>
+        <el-table-column property="name" label="管理员" align='center'></el-table-column>
+        <el-table-column property="operation" v-if="operationType == 0 || operationType == 1" label="操作" align='center'>
+          <template slot-scope="scope">
+            <el-button type="text" @click='editUser(scope.row , scope.$index)'>修改</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <el-dialog title="添加账号" :visible.sync="dialogFormVisibleAccounts" class='tableUser' @close="cancelUser">
+        <el-form :model="projectUserForm" ref="projectUserForm">
+          <el-form-item label="设定帐号" prop="account" class='input'>
+            <el-input v-model="projectUserForm.account" auto-complete="off" placeholder="请输入手机号码"></el-input>
+          </el-form-item>
+          <el-form-item v-show="isAccountValid" label="设定密码" prop="password" class='input'>
+            <el-input v-model="projectUserForm.password" auto-complete="off" type='password' placeholder="请输入密码"></el-input>
+          </el-form-item>
+          <el-form-item v-show="!isAccountValid" label="设定密码" class='input'>
+            <el-input v-model="projectUserForm.password" auto-complete="off" type='password' placeholder="不设置为之前密码"></el-input>
+          </el-form-item>
+          <el-form-item label="管理员姓名" prop="name" class='input'>
+            <el-input v-model="projectUserForm.name" auto-complete="off" placeholder="请输入管理员姓名"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click='cancelUser'>关 闭</el-button>
+          <el-button type="primary" @click='submitUser'>确 定</el-button>
+        </div>
+      </el-dialog>
     </div>
+  </div>
 
 </template>
 
@@ -156,7 +156,7 @@ export default {
         contact: "",
         store_id: ""
       },
-        project_user: [],
+      project_user: [],
       projectUserForm: {
         name: "",
         account: "",
@@ -168,7 +168,7 @@ export default {
       map: null,
       dialogFormVisibleAccounts: false,
       showMap: false,
-      operationType: 0 //0 新增  1 修改  2 查看
+      operationType: 0 //0查看   1 修改  3新增
     };
   },
   computed: {
@@ -219,7 +219,7 @@ export default {
           if (this.isUserEdit) {
             this.projectUserForm.id = this.form.store_id;
             let temp = Object.assign({}, this.projectUserForm);
-            console.log(temp)
+            console.log(temp);
             let res = await this.api.updateStoreAdmin(temp);
             if (res.code != 200) {
               return;
@@ -268,21 +268,46 @@ export default {
       return true;
     },
     async submitForm() {
-      let res = await this.api.addStore(this.form);
-      console.log(this.form);
-      if (res.code == 200) {
-        this.$message({
-          type: "success",
-          message: "新增门店成功!"
+      if (this.operationType == 3) {
+        let res = await this.api.addStore(this.form);
+        if (res.code == 200) {
+          this.$message({
+            type: "success",
+            message: "新增门店成功!"
+          });
+          this.form.store_id = res.data;
+          setTimeout(() => {
+            this.dialogFormVisibleAccounts = true;
+          }, 1200);
+        }
+        this.$nextTick(() => {
+          this.initMap();
         });
-        this.form.store_id = res.data;
-        setTimeout(() => {
-          this.dialogFormVisibleAccounts = true;
-        }, 1200);
       }
-      this.$nextTick(() => {
-        this.initMap();
-      });
+      if (this.operationType == 1) {
+        let temp = {};
+        temp.store_name = this.form.store_name;
+        temp.address = this.form.address;
+        temp.contact_tel = this.form.contact_tel;
+        temp.contact = this.form.contact;
+        temp.province = this.form.province;
+        temp.city = this.form.city;
+        temp.district = this.form.district;
+        temp.store_id = this.form.store_id;
+        temp.latitude=this.form.latitude;
+        temp.longitude=this.form.longitude;
+        let res = await this.api.updateStore(temp);
+        if (res.code == 200) {
+          this.$message({
+            type: "success",
+            message: "修改门店成功!"
+          });
+        }
+        this.cancel();
+        this.$nextTick(() => {
+          this.initMap();
+        });
+      }
     },
     cancelUser() {
       this.dialogFormVisibleAccounts = false;
