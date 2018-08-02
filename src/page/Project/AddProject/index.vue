@@ -511,7 +511,7 @@ export default {
           operationType: this.$route.params.operationType,
           project_id: this.$route.params.project_id,
           allow: this.authentication_info.allow,
-          info_id: this.form.info_id,
+          info_id: this.form.info_id
         }
       });
     },

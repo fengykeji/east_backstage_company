@@ -8,7 +8,7 @@
   height: 100%;
   z-index: 100;
   width: 200px;
-  margin-top: 81px;
+  margin-top: 60px;
   text-align: left;
 }
 .text {
@@ -34,7 +34,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 80px;
+  height: 60px;
   background: #fff;
   z-index: 110;
   text-align: left;
@@ -66,7 +66,7 @@
   font-size: 15px;
 }
 .tou {
-  padding-top: 12px;
+  padding-top: 4px;
   padding-left: 11px;
   display: inline-block;
   vertical-align: middle;
@@ -114,6 +114,8 @@
         <el-menu-item index="examinePeople" class='people' @click="handleSelect('examinePeople')">审核经纪人</el-menu-item>
         <el-menu-item index="quitPeople" class='people' @click="handleSelect('quitPeople')">离职经纪人</el-menu-item>
       </el-submenu>
+      <el-menu-item index="storeAuthorization" class='text' @click="handleSelect('storeAuthorization')">
+        <i class="icon-distri_commission"></i>门店授权管理</el-menu-item>
     </el-menu>
   </div>
 </template>

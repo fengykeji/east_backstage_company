@@ -36,6 +36,11 @@ import ExaminePeople from '@/page/Agent/ExaminePeople'
 import QuitPeople from '@/page/Agent/QuitPeople'
 
 
+import StoreAuthorization from '@/page/StoreAuthorization'
+import SeeInfo from '@/page/StoreAuthorization/SeeInfo'
+
+
+
 Vue.use(Router);
 
 export default new Router({
@@ -244,6 +249,26 @@ export default new Router({
         }
 
       ]
+    },
+    {
+      path: '/storeAuthorization',
+      component: Container,
+      children: [
+        {
+          path: '',
+          name: 'storeAuthorization',
+          component: StoreAuthorization,
+        },
+
+        {
+          path: 'seeInfo',
+          name: 'seeInfo',
+          component: SeeInfo,
+        },
+
+
+
+      ],
     },
   ]
 })

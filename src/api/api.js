@@ -55,6 +55,21 @@ http.interceptors.request.use(function (req) {
 });
 
 let api = {
+  //获取门店列表
+  getStoreList: doGet('company/Store/getList'),
+  //新增门店
+  addStore: doPost('company/Store/addStore'),
+  //新增门店帐号
+  addStoreAdmin: doPost('company/Store/addStoreAdmin'),
+  //修改门店帐号
+  updateStoreAdmin: doPost('company/Store/updateStoreAdmin'),
+  //获取门店详情
+  storeInfo: doGet('company/Store/storeInfo'),
+  //修改门店信息
+  updateStore: doPost('company/Store/updateStore'),
+
+
+
   // 登陆
   gitCode: doPost('company/user/login'),
 
