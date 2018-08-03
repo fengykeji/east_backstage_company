@@ -107,7 +107,7 @@ export default {
     showAdd(type) {
       this.$router.push({ name: "seeInfo",
       query:{
-        operation:type
+        operationType:type
       } });
     },
     getIndex(row) {

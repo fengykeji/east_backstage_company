@@ -69,9 +69,17 @@ export default {
 
       let res = await this.api.gitCode(this.submitForm);
       if (res.code == 200) {
-        this.$router.push({
-          name: "project"
-        });
+        console.log(res);
+        if (res.data.store_id == 0) {
+          this.$router.push({
+            name: "project"
+          });
+        } else {
+          this.$router.push({
+            name: "twoHouse"
+          });
+        }
+        localStorage.setItem("store_id", res.data.store_id);
         localStorage.setItem("name", res.data.name);
         localStorage.setItem("company_name", res.data.company_name);
         localStorage.setItem("token", res.data.token);

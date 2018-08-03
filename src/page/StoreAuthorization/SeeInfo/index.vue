@@ -30,9 +30,8 @@
   .el-table--group {
     margin-top: 20px;
   }
-
   .el-form-item {
-    display: inline-table;
+    display: inline-block;
     margin-right: 35px;
   }
   .property_type {
@@ -76,25 +75,25 @@
             <el-button @click="cancel">关闭</el-button>
           </span>
         </div>
-        <el-form :model="form" ref="ruleForm" class='form'>
-          <el-form-item label="门店编号" class='input'>
+        <el-form :model="form" ref="ruleForm" :rules="rules" class='form'>
+          <el-form-item label="门店编号" prop="store_code">
             <el-input v-model="form.store_code" auto-complete="off" placeholder="请输入门店编号"></el-input>
           </el-form-item>
-          <el-form-item label="门店名称" class='input1'>
+          <el-form-item label="门店名称" prop="store_name">
             <el-input v-model="form.store_name" auto-complete="off" placeholder="请输入门店名称"></el-input>
           </el-form-item>
-          <el-form-item label="门店店长" class='input1'>
+          <el-form-item label="门店店长" prop="contact">
             <el-input v-model="form.contact" auto-complete="off" placeholder="请输入门店店长姓名"></el-input>
           </el-form-item>
-          <el-form-item label="联系电话" class='input'>
+          <el-form-item label="联系电话" prop="contact_tel">
             <el-input v-model="form.contact_tel" auto-complete="off" placeholder="请输入联系电话"></el-input>
           </el-form-item>
-          <el-form-item label="门店地址">
+          <el-form-item label="门店地址" prop="province">
             <!-- 下拉组建 -->
             <city-selector :province.sync="form.province" :city.sync="form.city" :district.sync="form.district" @changeDistrict="changeDistrict" />
           </el-form-item>
-          <el-form-item class='input'>
-            <el-input id="suggestId" v-model="form.address" auto-complete="off" class='input-1' placeholder="请输入具体地址"></el-input>
+          <el-form-item prop="address">
+            <el-input id="suggestId" v-model="form.address" auto-complete="off" placeholder="请输入具体地址"></el-input>
             <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
           </el-form-item>
           <!-- 地图 -->
@@ -105,7 +104,7 @@
       <el-table :data="project_user" border>
         <el-table-column property="account" label="帐号" align='center'></el-table-column>
         <el-table-column property="name" label="管理员" align='center'></el-table-column>
-        <el-table-column property="operation" v-if="operationType == 0 || operationType == 1" label="操作" align='center'>
+        <el-table-column property="operation" label="操作" align='center'>
           <template slot-scope="scope">
             <el-button type="text" @click='editUser(scope.row , scope.$index)'>修改</el-button>
           </template>
@@ -113,7 +112,7 @@
       </el-table>
 
       <el-dialog title="添加账号" :visible.sync="dialogFormVisibleAccounts" class='tableUser' @close="cancelUser">
-        <el-form :model="projectUserForm" ref="projectUserForm">
+        <el-form :model="projectUserForm" :rules="userFormRules" ref="projectUserForm">
           <el-form-item label="设定帐号" prop="account" class='input'>
             <el-input v-model="projectUserForm.account" auto-complete="off" placeholder="请输入手机号码"></el-input>
           </el-form-item>
@@ -143,6 +142,74 @@ import CitySelector from "../../../components/CitySelector";
 export default {
   data() {
     return {
+      userFormRules: {
+        name: [
+          {
+            pattern: /[\u4E00-\u9FA5]{2,5}(?:·[\u4E00-\u9FA5]{2,5})*/,
+            required: true,
+            message: "请输入管理员姓名，长度为2-5个字符，必须是中文",
+            change: "change"
+          }
+        ],
+        account: [
+          {
+            pattern: /^1[34578]\d{9}$/,
+            required: true,
+            message: "请输入账号，由手机号码构成",
+            change: "change"
+          }
+        ],
+        password: [
+          {
+            required: true,
+            message: "请输入密码，长度在 6-16 个字符",
+            change: "change",
+            min: 6,
+            max: 16
+          }
+        ]
+      },
+      rules: {
+        store_code: [
+          {
+            required: true,
+            message: "请输入门店编号,长度为1-12个字符",
+            change: "change",
+            max: 12,
+            min: 1
+          }
+        ],
+        store_name: [
+          {
+            required: true,
+            message: "请输入门店名称,长度为1-12个字符",
+            change: "change",
+            max: 12,
+            min: 1
+          }
+        ],
+        contact: [
+          {
+            required: true,
+            message: "请输入店长姓名,长度为2-5个字符，必须是中文",
+            change: "change",
+            pattern: /[\u4E00-\u9FA5]{2,5}(?:·[\u4E00-\u9FA5]{2,5})*/
+          }
+        ],
+        contact_tel: [
+          {
+            required: true,
+            message: "请输入正确的电话号码格式",
+            change: "change",
+            pattern: /^1[34578]\d{9}$/
+          }
+        ],
+        province: [{ required: true, message: "请选择城市", change: "change" }],
+        city: [{ required: true, message: "请选择区域", change: "change" }],
+        address: [
+          { required: true, message: "请输入具体地址", change: "change" }
+        ]
+      },
       dialogFormVisibleAccounts: false,
       form: {
         district: "",
@@ -164,7 +231,6 @@ export default {
         store_id: "",
         id: ""
       },
-      isAccountValid: false,
       map: null,
       dialogFormVisibleAccounts: false,
       showMap: false,
@@ -178,12 +244,12 @@ export default {
         this.operationType == 1 &&
         this.isUserEdit == true
       ) {
-        let temp = Object.assign({}, this.userFormRulesOrigin);
+        let temp = Object.assign({}, this.userFormRules);
         this.isAccountValid = false;
         temp.password = undefined;
         return temp;
       } else if (this.isUserEdit == true || this.isUserEdit == false) {
-        let temp = Object.assign({}, this.userFormRulesOrigin);
+        let temp = Object.assign({}, this.userFormRules);
         this.isAccountValid = true;
         return temp;
       }
@@ -193,7 +259,9 @@ export default {
     this.initMap();
     this.operationType = this.$route.query.operationType;
     this.store_id = this.$route.query.store_id;
-    this.getSeeInfo();
+    if (this.store_id) {
+      this.getSeeInfo();
+    }
   },
   methods: {
     async getSeeInfo() {
@@ -216,25 +284,25 @@ export default {
     async submitUser() {
       this.$refs["projectUserForm"].validate(async valid => {
         if (valid) {
-          if (this.isUserEdit) {
-            this.projectUserForm.id = this.form.store_id;
-            let temp = Object.assign({}, this.projectUserForm);
-            console.log(temp);
-            let res = await this.api.updateStoreAdmin(temp);
-            if (res.code != 200) {
-              return;
-            }
-          } else {
-            this.projectUserForm.store_id = this.form.store_id;
-            let temp = Object.assign({}, this.projectUserForm);
-            console.log(temp);
-            let res = await this.api.addStoreAdmin(temp);
+          if (this.operationType == 1) {
+            if (this.isUserEdit) {
+              this.projectUserForm.id = this.form.store_id;
+              let temp = Object.assign({}, this.projectUserForm);
+              let res = await this.api.updateStoreAdmin(temp);
+              if (res.code != 200) {
+                return;
+              }
+            } else {
+              this.projectUserForm.store_id = this.form.store_id;
+              let temp = Object.assign({}, this.projectUserForm);
+              console.log(temp);
+              let res = await this.api.addStoreAdmin(temp);
 
-            if (res.code != 200) {
-              return;
+              if (res.code != 200) {
+                return;
+              }
             }
           }
-
           let temp = Object.assign({}, this.projectUserForm);
           if (!this.checkUserAccout(temp)) return;
           if (this.isUserEdit) {
@@ -268,46 +336,51 @@ export default {
       return true;
     },
     async submitForm() {
-      if (this.operationType == 3) {
-        let res = await this.api.addStore(this.form);
-        if (res.code == 200) {
-          this.$message({
-            type: "success",
-            message: "新增门店成功!"
-          });
-          this.form.store_id = res.data;
-          setTimeout(() => {
-            this.dialogFormVisibleAccounts = true;
-          }, 1200);
+      this.$refs["ruleForm"].validate(async valid => {
+        if (valid) {
+          if (this.operationType == 3) {
+            let res = await this.api.addStore(this.form);
+            if (res.code == 200) {
+              this.$message({
+                type: "success",
+                message: "新增门店成功!"
+              });
+              this.form.store_id = res.data;
+              setTimeout(() => {
+                this.dialogFormVisibleAccounts = true;
+              }, 1200);
+            }
+            this.$nextTick(() => {
+              this.initMap();
+            });
+          } else if (this.operationType == 1) {
+            let temp = {};
+            temp.store_name = this.form.store_name;
+            temp.address = this.form.address;
+            temp.contact_tel = this.form.contact_tel;
+            temp.contact = this.form.contact;
+            temp.province = this.form.province;
+            temp.city = this.form.city;
+            temp.district = this.form.district;
+            temp.store_id = this.form.store_id;
+            temp.latitude = this.form.latitude;
+            temp.longitude = this.form.longitude;
+            let res = await this.api.updateStore(temp);
+            if (res.code == 200) {
+              this.$message({
+                type: "success",
+                message: "修改门店成功!"
+              });
+            }
+            this.cancel();
+            this.$nextTick(() => {
+              this.initMap();
+            });
+          }
+        } else {
+          return false;
         }
-        this.$nextTick(() => {
-          this.initMap();
-        });
-      }
-      if (this.operationType == 1) {
-        let temp = {};
-        temp.store_name = this.form.store_name;
-        temp.address = this.form.address;
-        temp.contact_tel = this.form.contact_tel;
-        temp.contact = this.form.contact;
-        temp.province = this.form.province;
-        temp.city = this.form.city;
-        temp.district = this.form.district;
-        temp.store_id = this.form.store_id;
-        temp.latitude=this.form.latitude;
-        temp.longitude=this.form.longitude;
-        let res = await this.api.updateStore(temp);
-        if (res.code == 200) {
-          this.$message({
-            type: "success",
-            message: "修改门店成功!"
-          });
-        }
-        this.cancel();
-        this.$nextTick(() => {
-          this.initMap();
-        });
-      }
+      });
     },
     cancelUser() {
       this.dialogFormVisibleAccounts = false;

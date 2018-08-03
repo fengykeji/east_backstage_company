@@ -95,15 +95,21 @@
       </span>
     </div>
     <el-menu :default-active="activeIndex" class="sidebar-menu" @open="menuOpen" @close="menuOpen">
-      <el-menu-item index="project" class='text' @click="handleSelect('project')">
-        <i class="icon-project"></i>项目管理</el-menu-item>
-      <el-menu-item index="distribution" class='text' @click="handleSelect('distribution')">
+      <el-submenu index=''>
+        <template slot="title">
+          <span class='delent'>
+            <i class="icon-project"></i>项目管理</span>
+        </template>
+        <el-menu-item index="project" class='people' @click="handleSelect('project')" v-if='this.store_id==0'>新房</el-menu-item>
+        <el-menu-item index="twoHouse" class='people' @click="handleSelect('twoHouse')">二手房</el-menu-item>
+      </el-submenu>
+      <el-menu-item index="distribution" class='text' @click="handleSelect('distribution')" v-if='this.store_id==0'>
         <i class="icon-distribution"></i>分销管理</el-menu-item>
-      <el-menu-item index="peopleProject" class='text' @click="handleSelect('peopleProject')">
+      <el-menu-item index="peopleProject" class='text' @click="handleSelect('peopleProject')" v-if='this.store_id==0'>
         <i class="icon-peopleProject"></i>全民项目管理</el-menu-item>
-      <el-menu-item index="commission" class='text' @click="handleSelect('commission')">
+      <el-menu-item index="commission" class='text' @click="handleSelect('commission')" v-if='this.store_id==0'>
         <i class="icon-commission"></i>项目佣金管理</el-menu-item>
-      <el-menu-item index="distri_commission" class='text' @click="handleSelect('distri_commission')">
+      <el-menu-item index="distri_commission" class='text' @click="handleSelect('distri_commission')" v-if='this.store_id==0'>
         <i class="icon-distri_commission"></i>分销佣金管理</el-menu-item>
       <el-submenu index=''>
         <template slot="title">
@@ -114,8 +120,8 @@
         <el-menu-item index="examinePeople" class='people' @click="handleSelect('examinePeople')">审核经纪人</el-menu-item>
         <el-menu-item index="quitPeople" class='people' @click="handleSelect('quitPeople')">离职经纪人</el-menu-item>
       </el-submenu>
-      <el-menu-item index="storeAuthorization" class='text' @click="handleSelect('storeAuthorization')">
-        <i class="icon-distri_commission"></i>门店授权管理</el-menu-item>
+      <el-menu-item index="storeAuthorization" class='text' @click="handleSelect('storeAuthorization')" v-if='this.store_id==0'>
+        <i class="icon-distri_commission"></i>门店管理</el-menu-item>
     </el-menu>
   </div>
 </template>
@@ -125,7 +131,8 @@ export default {
     return {
       activeIndex: "",
       company_name: "",
-      name: ""
+      name: "",
+      store_id: ""
     };
   },
   created() {
@@ -134,6 +141,8 @@ export default {
   mounted() {
     this.name = localStorage.getItem("name");
     this.company_name = localStorage.getItem("company_name");
+    this.store_id = localStorage.getItem("store_id");
+    console.log(this.store_id);
   },
   methods: {
     cancel() {

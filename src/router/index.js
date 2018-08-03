@@ -14,6 +14,10 @@ import ReCreateProject from '@/page/Project/AddProject/reCreate'
 import RequestRefund from '@/page/Project/RequestRefund'
 import PayRecord from '@/page/Project/PayRecord'
 import RefundInfo from '@/page/Project/RefundInfo'
+import TwoHouse from '@/page/Project/TwoHouse'
+
+
+
 import Agent from '@/page/Agent'
 import Commission from '@/page/Commission'
 import CompanyPrice from '@/page/Commission/CompanyPrice'
@@ -84,7 +88,16 @@ export default new Router({
           path: '/refundInfo',
           name: 'refundInfo',
           component: RefundInfo
+        },
+        {
+          path: '/twoHouse',
+          name: 'twoHouse',
+          component: TwoHouse
         }
+
+
+
+        
       ]
     },
     {
