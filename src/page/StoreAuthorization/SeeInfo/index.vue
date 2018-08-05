@@ -90,14 +90,13 @@
           </el-form-item>
           <el-form-item label="门店地址" prop="province">
             <!-- 下拉组建 -->
-            <city-selector :province.sync="form.province" :city.sync="form.city" :district.sync="form.district" @changeDistrict="changeDistrict" />
+            <city-selector ref="citySelector" :province.sync="form.province" :city.sync="form.city" :district.sync="form.district" @changeDistrict="areaChange" />
           </el-form-item>
           <el-form-item prop="address">
-            <el-input id="suggestId" v-model="form.address" auto-complete="off" placeholder="请输入具体地址"></el-input>
-            <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
+             <map-tool-input  v-model="form.address" :area="area" ref="mapToolInput" @change="addressChange" />
           </el-form-item>
           <!-- 地图 -->
-          <div id="map" class='map'></div>
+           <map-tool  class="map-tool" ref="mapTool" @load="mapLoad" :longitude.sync="form.longitude" :latitude.sync="form.latitude" />
         </el-form>
       </div>
       <!-- 用户显示 -->
@@ -234,7 +233,8 @@ export default {
       map: null,
       dialogFormVisibleAccounts: false,
       showMap: false,
-      operationType: 0 //0查看   1 修改  3新增
+      operationType: 0 ,  //0查看   1 修改  3新增
+      area : ""
     };
   },
   computed: {
@@ -256,7 +256,6 @@ export default {
     }
   },
   mounted() {
-    this.initMap();
     this.operationType = this.$route.query.operationType;
     this.store_id = this.$route.query.store_id;
     if (this.store_id) {
@@ -269,6 +268,15 @@ export default {
       if (res.code == 200) {
         this.project_user = res.data.admin;
         this.form = res.data.store;
+        // this.$nextTick(() => {
+        //   if (temp.province.indexOf("市") > -1) {
+        //     this.area = temp.province_name + temp.district_name;
+        //   } else {
+        //     this.area =
+        //       temp.province_name + temp.city_name + temp.district_name;
+        //   }
+        //   this.addressChange(temp.absolute_address);
+        // });
       }
     },
     getIndex(row) {
@@ -351,7 +359,7 @@ export default {
               }, 1200);
             }
             this.$nextTick(() => {
-              this.initMap();
+              // this.initMap();
             });
           } else if (this.operationType == 1) {
             let temp = {};
@@ -374,7 +382,7 @@ export default {
             }
             this.cancel();
             this.$nextTick(() => {
-              this.initMap();
+              // this.initMap();
             });
           }
         } else {
@@ -484,14 +492,21 @@ export default {
         );
       });
     },
-
-    changeDistrict(address) {
-      var myGeo = new BMap.Geocoder();
-      myGeo.getPoint(address, point => {
-        if (point) {
-          this.map.centerAndZoom(point, 16);
-        }
-      });
+    mapLoad(map) {
+      this.$refs["mapToolInput"].init(map);
+    },
+    areaChange(area) {
+      this.area = area;
+      this.$refs["mapTool"].focusArea(area);
+    },
+    addressChange(address) {
+      this.form.address = address;
+      let addStr = this.area + address;
+      if (address) {
+        this.$refs["mapTool"].focusAddress(addStr);
+      } else {
+        this.$refs["mapTool"].focusArea(this.area);
+      }
     }
   },
   components: {

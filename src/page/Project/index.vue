@@ -81,7 +81,7 @@ body {
           <template slot-scope="scope">
             <el-button type="text" @click='showAdd(2, scope.row)'>查看</el-button>
             <el-button type="text" @click='showAdd(1, scope.row)' v-if="scope.row.check_state==1||scope.row.check_state==2">修改</el-button>
-            <el-button type="text" @click='showAdd(3, scope.row)' v-if="scope.row.check_state==0">重新申请</el-button>
+            <el-button type="text" @click='showAdd(3, scope.row)' >重新申请</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -186,7 +186,6 @@ export default {
           params: { operationType: type, project_id: row.project_id }
         });
       } else if (type == 2) {
-        console.log(row);
         this.$router.push({
           name: "addProject",
           params: { operationType: type, project_id: row.project_id }

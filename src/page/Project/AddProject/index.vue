@@ -77,16 +77,15 @@
           </el-form-item>
           <el-form-item label="项目地址" prop="province">
             <!-- 下拉组建 -->
-            <city-selector :disabled="isDisable()" :province.sync="form.province" :city.sync="form.city" :district.sync="form.district" @changeDistrict="changeDistrict" />
+            <city-selector ref="citySelector" :disabled="isDisable()" :province.sync="form.province" :city.sync="form.city" :district.sync="form.district" @changeDistrict="areaChange" />
           </el-form-item>
           <el-form-item class='input' prop="absolute_address">
-            <el-input id="suggestId" v-model="form.absolute_address" auto-complete="off" class='input-1' :disabled="isDisable()" placeholder="请输入具体地址"></el-input>
-            <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
+            <!-- <el-input id="suggestId" v-model="form.absolute_address" auto-complete="off" class='input-1' :disabled="isDisable()" placeholder="请输入具体地址"></el-input> -->
+            <map-tool-input  v-model="form.absolute_address" :area="area" ref="mapToolInput" @change="addressChange" :disabled="isDisable()"  />
           </el-form-item>
           <!-- 地图 -->
-          <!-- <el-button type="text" @click='showMapDetails' :disabled="isDisable()">关闭地图</el-button> -->
-          <div id="map" class='map'></div>
-
+          <map-tool  class="map-tool" ref="mapTool" @load="mapLoad" :longitude.sync="form.longitude" :latitude.sync="form.latitude" />
+          
           <!-- 物业类型 -->
           <div class="property_type">物业类型</div>
           <el-form-item prop="property_type">
@@ -462,7 +461,8 @@ export default {
         create_name: "",
         create_time: ""
       },
-      userIndex: 0
+      userIndex: 0,
+      area : ""
     };
   },
   computed: {
@@ -492,10 +492,6 @@ export default {
     this.form.project_id = this.$route.params.project_id;
     if (this.form.project_id) {
       this.getProjectInfo();
-    } else {
-      this.$nextTick(() => {
-        this.initMap();
-      });
     }
     this.getType();
   },
@@ -561,7 +557,12 @@ export default {
         }
         Object.assign(this.form, temp);
         this.$nextTick(() => {
-          this.initMap(temp);
+          if(temp.province.indexOf("市")>-1) {
+            this.area = temp.province_name + temp.district_name;
+          }else {
+            this.area = temp.province_name + temp.city_name + temp.district_name;
+          }
+          this.addressChange(temp.absolute_address);
         });
       }
     },
@@ -788,122 +789,6 @@ export default {
     },
 
     auditStatus() {},
-    initMap(row) {
-      if (!this.map) {
-        this.map = new BMap.Map("map");
-      }
-      this.map.addControl(new BMap.NavigationControl());
-      this.map.enableScrollWheelZoom(true);
-      if (row) {
-        var point = new BMap.Point(row.longitude, row.latitude);
-        this.map.centerAndZoom(point, 15);
-        this.map.clearOverlays();
-        this.map.addOverlay(new BMap.Marker(point));
-      } else {
-        var point = new BMap.Point(116.404, 39.915);
-        this.map.centerAndZoom(point, 15);
-      }
-
-      // this.map.addEventListener("click", e => {
-      //   //移除旧坐标
-      //   this.map.clearOverlays();
-      //   //获得新坐标
-      //   let lng = e.point.lng; //经度
-      //   let lat = e.point.lat; //纬度
-      //   this.form.longitude = lng;
-      //   this.form.latitude = lat;
-      //   var myGeo = new BMap.Geocoder();
-      //   myGeo.getLocation(new BMap.Point(lng, lat), result => {
-      //     if (result) {
-      //       this.form.absolute_address = result.address;
-      //       this.map.addOverlay(new BMap.Marker(new BMap.Point(lng, lat)));
-      //     }
-      //   });
-      // });
-      if (this.operationType == 1 || this.operationType == 2) {
-        return;
-      }
-
-      let ac = new BMap.Autocomplete({
-        input: "suggestId",
-        location: this.map
-      });
-
-      function G(id) {
-        return document.getElementById(id);
-      }
-
-      ac.addEventListener("onhighlight", function(e) {
-        var str = "";
-        var _value = e.fromitem.value;
-        var value = "";
-        if (e.fromitem.index > -1) {
-          value =
-            _value.province +
-            _value.city +
-            _value.district +
-            _value.street +
-            _value.business;
-        }
-        str =
-          "FromItem<br />index = " +
-          e.fromitem.index +
-          "<br />value = " +
-          value;
-
-        value = "";
-        if (e.toitem.index > -1) {
-          _value = e.toitem.value;
-          value =
-            _value.province +
-            _value.city +
-            _value.district +
-            _value.street +
-            _value.business;
-        }
-        str +=
-          "<br />ToItem<br />index = " +
-          e.toitem.index +
-          "<br />value = " +
-          value;
-        G("searchResultPanel").innerHTML = str;
-      });
-
-      var myValue;
-
-      ac.addEventListener("onconfirm", e => {
-        //鼠标点击下拉列表后的事件
-        console.log(e, e.item.value);
-        let address = e.item.value;
-        let addressStr = address.city + address.district + address.business;
-        this.form.absolute_address = addressStr;
-        var myGeo = new BMap.Geocoder();
-        myGeo.getPoint(
-          addressStr,
-          point => {
-            if (point) {
-              let lng = point.lng; //经度
-              let lat = point.lat; //纬度
-              this.form.longitude = lng;
-              this.form.latitude = lat;
-              this.map.centerAndZoom(point, 16);
-              this.map.addOverlay(new BMap.Marker(point));
-            } else {
-              alert("您选择地址没有解析到结果!");
-            }
-          },
-          address.city
-        );
-      });
-    },
-    changeDistrict(address) {
-      var myGeo = new BMap.Geocoder();
-      myGeo.getPoint(address, point => {
-        if (point) {
-          this.map.centerAndZoom(point, 16);
-        }
-      });
-    },
     sumbitRefund() {
       this.refundShow = true;
     },
@@ -915,6 +800,22 @@ export default {
       let res = await this.api.getTags();
       if (res.code == 200) {
         this.typeOptions = res.data;
+      }
+    },
+    mapLoad(map) {
+      this.$refs["mapToolInput"].init(map);
+    },
+    areaChange(area) {
+      this.area = area;
+      this.$refs["mapTool"].focusArea(area);
+    },
+    addressChange(address) {
+      this.form.absolute_address = address;
+      let addStr = this.area + address;
+      if (address) {
+        this.$refs["mapTool"].focusAddress(addStr);
+      } else {
+        this.$refs["mapTool"].focusArea(this.area);
       }
     }
   },

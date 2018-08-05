@@ -7,6 +7,7 @@
 </template>
 <script>
 export default {
+  props: ["longitude","latitude"],
   data() {
     return {
       area: "",
@@ -55,11 +56,13 @@ export default {
           if (point) {
             let lng = point.lng; //经度
             let lat = point.lat; //纬度
+            this.$emit("update:longitude" , lng);
+            this.$emit("update:latitude" , lat);
             this.map.centerAndZoom(point, 16);
             this.map.clearOverlays();
             this.map.addOverlay(new BMap.Marker(point));
           } else {
-              console.log("描点失败");
+            this.map.clearOverlays();
           }
         },
         area

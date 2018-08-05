@@ -9,8 +9,9 @@ import store from '../store/store.js';
 
 Vue.use(ElementUI);
 
+import CitySelector from '@/components/CitySelector';
 import MapTool from '@/components/MapTool';
-import MapSearchInput from '@/components/MapTool/mapSearchInput';
+import MapToolInput from '@/components/MapTool/mapToolInput';
 import '../theme/index.css'
 
 Vue.config.productionTip = false
@@ -19,7 +20,8 @@ Vue.prototype.api = api;
 
 //注册组件
 Vue.component("map-tool" , MapTool);
-Vue.component("map-search-input" , MapSearchInput);
+Vue.component("map-tool-input" , MapToolInput);
+Vue.component("city-selector" , CitySelector);
 
 // Vue.prototype.ajax=function(method,url,onload,param){
 //   let xhr=new XMLHttpRequest();

@@ -42,6 +42,7 @@ import QuitPeople from '@/page/Agent/QuitPeople'
 
 import StoreAuthorization from '@/page/StoreAuthorization'
 import SeeInfo from '@/page/StoreAuthorization/SeeInfo'
+import Test from '@/page/Test'
 
 
 
@@ -54,6 +55,11 @@ export default new Router({
       path: '/',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: Test
     },
     {
       path: '/project',
