@@ -93,10 +93,10 @@
             <city-selector ref="citySelector" :province.sync="form.province" :city.sync="form.city" :district.sync="form.district" @changeDistrict="areaChange" />
           </el-form-item>
           <el-form-item prop="address">
-             <map-tool-input  v-model="form.address" :area="area" ref="mapToolInput" @change="addressChange" />
+            <map-tool-input v-model="form.address" :area="area" ref="mapToolInput" @change="addressChange" />
           </el-form-item>
           <!-- 地图 -->
-           <map-tool  class="map-tool" ref="mapTool" @load="mapLoad" :longitude.sync="form.longitude" :latitude.sync="form.latitude" />
+          <map-tool class="map-tool" ref="mapTool" @load="mapLoad" :longitude.sync="form.longitude" :latitude.sync="form.latitude" />
         </el-form>
       </div>
       <!-- 用户显示 -->
@@ -141,7 +141,7 @@ import CitySelector from "../../../components/CitySelector";
 export default {
   data() {
     return {
-      userFormRules: {
+      userFormRulesOrigin: {
         name: [
           {
             pattern: /[\u4E00-\u9FA5]{2,5}(?:·[\u4E00-\u9FA5]{2,5})*/,
@@ -233,8 +233,9 @@ export default {
       map: null,
       dialogFormVisibleAccounts: false,
       showMap: false,
-      operationType: 0 ,  //0查看   1 修改  3新增
-      area : ""
+      operationType: 0, //0查看   1 修改  3新增
+      area: "",
+      isUserEdit: false
     };
   },
   computed: {
@@ -244,12 +245,12 @@ export default {
         this.operationType == 1 &&
         this.isUserEdit == true
       ) {
-        let temp = Object.assign({}, this.userFormRules);
+        let temp = Object.assign({}, this.userFormRulesOrigin);
         this.isAccountValid = false;
         temp.password = undefined;
         return temp;
       } else if (this.isUserEdit == true || this.isUserEdit == false) {
-        let temp = Object.assign({}, this.userFormRules);
+        let temp = Object.assign({}, this.userFormRulesOrigin);
         this.isAccountValid = true;
         return temp;
       }
@@ -268,6 +269,9 @@ export default {
       if (res.code == 200) {
         this.project_user = res.data.admin;
         this.form = res.data.store;
+        this.form.province += "";
+        this.form.city += "";
+        this.form.district += "";
         // this.$nextTick(() => {
         //   if (temp.province.indexOf("市") > -1) {
         //     this.area = temp.province_name + temp.district_name;
