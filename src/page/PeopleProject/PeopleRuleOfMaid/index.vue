@@ -166,7 +166,6 @@ export default {
         temp.file_name = fileObj.name;
         this.refund = [];
         this.refund.push(temp);
-        console.log(temp);
         this.addBrokerAgreement();
       }
     },

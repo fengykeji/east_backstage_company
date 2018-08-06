@@ -69,6 +69,27 @@ let api = {
   updateStore: doPost('company/Store/updateStore'),
 
 
+  //获取可申请二手房列表
+  getApplyHouse: doGet('company/house/getApplyHouse'),
+  //申请二手房
+  applyHouse: doPost('company/house/applyHouse'),
+  //新增二手房
+  addHouse: doPost('company/house/addHouse'),
+  //二手房列表
+  getTwoHouseList: doGet('company/house/getList'),
+  //申请授权
+  applyAuth: doGet('company/Store/applyAuth'),
+  // 新增管理员
+  addAdminAccout: doPost('company/house/addProjectAdmin'),
+  // 禁用/启用管理员
+  adminState: doPost('company/house/updateAdminState'),
+  //修改管理员 - 获取信息
+  getUpdateInfo: doGet('company/house/updateProjectAdmin'),
+  //修改管理员 - 提交
+  updateAdminAccout: doPost('company/house/updateProjectAdmin'),
+  //获取管理员列表
+  getAdminList: doGet('company/house/getAdminList'),
+
 
   // 登陆
   gitCode: doPost('company/user/login'),

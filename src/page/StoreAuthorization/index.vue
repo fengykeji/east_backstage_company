@@ -52,9 +52,9 @@ body {
         <el-table-column prop="gave_code" label="授权编号" align='center'></el-table-column>
         <el-table-column prop="store_name" label="门店名称" align='center'></el-table-column>
         <el-table-column prop="contact" label="门店店长" align='center'></el-table-column>
-        <el-table-column prop="contact_tel" label="联系方式" align='center' width="100px"></el-table-column>
+        <el-table-column prop="contact_tel" label="联系方式" align='center' width="110px"></el-table-column>
         <el-table-column prop="developer_name" label="门店地址" align='center' width="230px"></el-table-column>
-        <el-table-column label="授权状态" align='center' width="80px">
+        <el-table-column label="授权状态" align='center' width="100px">
           <template slot-scope="scope">{{state (scope.row.ex_state)}}</template>
         </el-table-column>
         <el-table-column prop="is_distribution" label="帐号分配" align='center' width="80px"></el-table-column>
@@ -64,7 +64,7 @@ body {
           <template slot-scope="scope">
             <el-button type="text" @click='edit(scope.row,0)'>查看</el-button>
             <el-button type="text" @click='edit(scope.row,1)'>修改</el-button>
-            <el-button type="text">申请授权</el-button>
+            <el-button type="text" @click='authorization(scope.row)'>申请授权</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -88,13 +88,37 @@ export default {
       pageSize: 0,
       total: 0,
       tableData: [],
-      operationType: 0 //0 查看  1 修改
+      operationType: 0, //0 查看  1 修改
+      store_id: ""
     };
   },
   mounted() {
     this.getStoreList();
   },
   methods: {
+    async authorization(row) {
+      this.$confirm("此操作将授权成功, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(async () => {
+          let res = await this.api.applyAuth({ store_id: row.store_id });
+          if (res.code == 200) {
+            this.$message({
+              type: "success",
+              message: "授权成功!"
+            });
+          }
+          this.getStoreList();
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消授权"
+          });
+        });
+    },
     async edit(row, type) {
       this.$router.push({
         name: "seeInfo",
@@ -105,10 +129,12 @@ export default {
       });
     },
     showAdd(type) {
-      this.$router.push({ name: "seeInfo",
-      query:{
-        operationType:type
-      } });
+      this.$router.push({
+        name: "seeInfo",
+        query: {
+          operationType: type
+        }
+      });
     },
     getIndex(row) {
       let index = row.$index + 1 + (this.searchObj.page - 1) * this.pageSize;

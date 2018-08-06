@@ -69,7 +69,6 @@ export default {
 
       let res = await this.api.gitCode(this.submitForm);
       if (res.code == 200) {
-        console.log(res);
         if (res.data.store_id == 0) {
           this.$router.push({
             name: "project"

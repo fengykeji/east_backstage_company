@@ -160,7 +160,6 @@ export default {
     },
 
     async getPriceApply() {
-      console.log(this.state);
       let res = await this.api.getPriceApply({
         batch_id: this.batch_id,
         state: this.state

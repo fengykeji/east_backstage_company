@@ -258,7 +258,6 @@ export default {
       });
       if (res.code == 200) {
         let temp = res.data;
-        console.log(temp);
         temp.property_type = temp.property_type.split(",");
         Object.assign(this.form, temp);
 

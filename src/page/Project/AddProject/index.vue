@@ -81,11 +81,11 @@
           </el-form-item>
           <el-form-item class='input' prop="absolute_address">
             <!-- <el-input id="suggestId" v-model="form.absolute_address" auto-complete="off" class='input-1' :disabled="isDisable()" placeholder="请输入具体地址"></el-input> -->
-            <map-tool-input  v-model="form.absolute_address" :area="area" ref="mapToolInput" @change="addressChange" :disabled="isDisable()"  />
+            <map-tool-input v-model="form.absolute_address" :area="area" ref="mapToolInput" @change="addressChange" :disabled="isDisable()" />
           </el-form-item>
           <!-- 地图 -->
-          <map-tool  class="map-tool" ref="mapTool" @load="mapLoad" :longitude.sync="form.longitude" :latitude.sync="form.latitude" />
-          
+          <map-tool class="map-tool" ref="mapTool" @load="mapLoad" :longitude.sync="form.longitude" :latitude.sync="form.latitude" />
+
           <!-- 物业类型 -->
           <div class="property_type">物业类型</div>
           <el-form-item prop="property_type">
@@ -462,7 +462,7 @@ export default {
         create_time: ""
       },
       userIndex: 0,
-      area : ""
+      area: ""
     };
   },
   computed: {
@@ -557,10 +557,11 @@ export default {
         }
         Object.assign(this.form, temp);
         this.$nextTick(() => {
-          if(temp.province.indexOf("市")>-1) {
+          if (temp.province.indexOf("市") > -1) {
             this.area = temp.province_name + temp.district_name;
-          }else {
-            this.area = temp.province_name + temp.city_name + temp.district_name;
+          } else {
+            this.area =
+              temp.province_name + temp.city_name + temp.district_name;
           }
           this.addressChange(temp.absolute_address);
         });
@@ -783,10 +784,10 @@ export default {
       }
     },
 
-    showMapDetails() {
-      let row = document.querySelector(".map");
-      row.classList.toggle("");
-    },
+    // showMapDetails() {
+    //   let row = document.querySelector(".map");
+    //   row.classList.toggle("");
+    // },
 
     auditStatus() {},
     sumbitRefund() {

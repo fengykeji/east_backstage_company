@@ -346,7 +346,6 @@ export default {
       }
     },
     async showSee(row) {
-      console.log(row);
       this.operationType = 1;
       this.dialogFormVisible = true;
       let res = await this.api.getRefuseInfo({

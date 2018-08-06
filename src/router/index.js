@@ -15,7 +15,9 @@ import RequestRefund from '@/page/Project/RequestRefund'
 import PayRecord from '@/page/Project/PayRecord'
 import RefundInfo from '@/page/Project/RefundInfo'
 import TwoHouse from '@/page/Project/TwoHouse'
-
+import Apply from '@/page/Project/Apply'
+import AddApply from '@/page/Project/AddApply'
+import AccountAdmin from '@/page/Project/AccountAdmin'
 
 
 import Agent from '@/page/Agent'
@@ -99,7 +101,23 @@ export default new Router({
           path: '/twoHouse',
           name: 'twoHouse',
           component: TwoHouse
+        },
+        {
+          path: '/apply',
+          name: 'apply',
+          component: Apply
+        },
+        {
+          path: '/addApply',
+          name: 'addApply',
+          component: AddApply
+        },
+        {
+          path: '/accountAdmin',
+          name: 'accountAdmin',
+          component: AccountAdmin
         }
+
 
 
 

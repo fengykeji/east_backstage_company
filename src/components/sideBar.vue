@@ -142,7 +142,6 @@ export default {
     this.name = localStorage.getItem("name");
     this.company_name = localStorage.getItem("company_name");
     this.store_id = localStorage.getItem("store_id");
-    console.log(this.store_id);
   },
   methods: {
     cancel() {

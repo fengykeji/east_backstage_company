@@ -173,7 +173,6 @@ export default {
         for (let type of property_tags) {
           arr.push(type.property_tag_id);
         }
-        console.log(this.submitForm.property_tags);
         this.submitForm.property_tags = arr;
         this.gridData.push(res.data.broker);
         this.peopleInfo = res.data.agent;

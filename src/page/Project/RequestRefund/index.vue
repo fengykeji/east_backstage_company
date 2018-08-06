@@ -141,7 +141,6 @@ export default {
     Object.assign(this.requestRefund, params.project_id);
     this.requestRefund.project_id = params.project_id;
     this.requestRefund.info_id = params.info_id;
-    console.log(this.requestRefund.info_id);
     this.allow = params.allow;
   },
   methods: {
@@ -152,7 +151,6 @@ export default {
       this.$refs["requestRefund"].validate(async valid => {
         if (valid) {
           let res = await this.api.getRefund(this.requestRefund);
-          console.log(this.requestRefund);
           if (res.code == 200) {
             this.$router.push({
               name: "addProject",

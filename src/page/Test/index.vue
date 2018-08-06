@@ -31,7 +31,6 @@ export default {
             this.$refs["mapToolInput"].init(map);
         },
         areaChange(area) {
-            console.log(area);
             this.area = area;
             this.$refs["mapTool"].focusArea(area);
         },

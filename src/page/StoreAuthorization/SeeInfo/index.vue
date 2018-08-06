@@ -100,6 +100,9 @@
         </el-form>
       </div>
       <!-- 用户显示 -->
+      <div class='tableIn-btn'>
+        <el-button type="primary" v-if="operationType==1" @click='showAccoutAdd'>新增账号</el-button>
+      </div>
       <el-table :data="project_user" border>
         <el-table-column property="account" label="帐号" align='center'></el-table-column>
         <el-table-column property="name" label="管理员" align='center'></el-table-column>
@@ -264,6 +267,9 @@ export default {
     }
   },
   methods: {
+    showAccoutAdd() {
+      this.dialogFormVisibleAccounts = true;
+    },
     async getSeeInfo() {
       let res = await this.api.storeInfo({ store_id: this.store_id });
       if (res.code == 200) {
@@ -272,21 +278,24 @@ export default {
         this.form.province += "";
         this.form.city += "";
         this.form.district += "";
-        // this.$nextTick(() => {
-        //   if (temp.province.indexOf("市") > -1) {
-        //     this.area = temp.province_name + temp.district_name;
-        //   } else {
-        //     this.area =
-        //       temp.province_name + temp.city_name + temp.district_name;
-        //   }
-        //   this.addressChange(temp.absolute_address);
-        // });
+        this.$nextTick(() => {
+          if (this.form.province.indexOf("市") > -1) {
+            this.area = this.form.province_name + this.form.district_name;
+          } else {
+            this.area =
+              this.form.province_name +
+              this.form.city_name +
+              this.form.district_name;
+          }
+          this.addressChange(this.form.address);
+        });
       }
     },
     getIndex(row) {
       let index = row.$index + 1;
       return index;
     },
+
     editUser(row, index) {
       this.isUserEdit = true;
       this.dialogFormVisibleAccounts = true;
@@ -307,7 +316,6 @@ export default {
             } else {
               this.projectUserForm.store_id = this.form.store_id;
               let temp = Object.assign({}, this.projectUserForm);
-              console.log(temp);
               let res = await this.api.addStoreAdmin(temp);
 
               if (res.code != 200) {
@@ -404,98 +412,97 @@ export default {
       this.$router.push({ name: "storeAuthorization" });
     },
 
-    initMap(row) {
-      if (!this.map) {
-        this.map = new BMap.Map("map");
-      }
-      this.map.addControl(new BMap.NavigationControl());
-      this.map.enableScrollWheelZoom(true);
-      if (row) {
-        var point = new BMap.Point(row.longitude, row.latitude);
-        this.map.centerAndZoom(point, 15);
-        this.map.clearOverlays();
-        this.map.addOverlay(new BMap.Marker(point));
-      } else {
-        var point = new BMap.Point(116.404, 39.915);
-        this.map.centerAndZoom(point, 15);
-      }
+    // initMap(row) {
+    //   if (!this.map) {
+    //     this.map = new BMap.Map("map");
+    //   }
+    //   this.map.addControl(new BMap.NavigationControl());
+    //   this.map.enableScrollWheelZoom(true);
+    //   if (row) {
+    //     var point = new BMap.Point(row.longitude, row.latitude);
+    //     this.map.centerAndZoom(point, 15);
+    //     this.map.clearOverlays();
+    //     this.map.addOverlay(new BMap.Marker(point));
+    //   } else {
+    //     var point = new BMap.Point(116.404, 39.915);
+    //     this.map.centerAndZoom(point, 15);
+    //   }
 
-      if (this.operationType == 1 || this.operationType == 2) {
-        return;
-      }
+    //   if (this.operationType == 1 || this.operationType == 2) {
+    //     return;
+    //   }
 
-      let ac = new BMap.Autocomplete({
-        input: "suggestId",
-        location: this.map
-      });
+    //   let ac = new BMap.Autocomplete({
+    //     input: "suggestId",
+    //     location: this.map
+    //   });
 
-      function G(id) {
-        return document.getElementById(id);
-      }
+    //   function G(id) {
+    //     return document.getElementById(id);
+    //   }
 
-      ac.addEventListener("onhighlight", function(e) {
-        var str = "";
-        var _value = e.fromitem.value;
-        var value = "";
-        if (e.fromitem.index > -1) {
-          value =
-            _value.province +
-            _value.city +
-            _value.district +
-            _value.street +
-            _value.business;
-        }
-        str =
-          "FromItem<br />index = " +
-          e.fromitem.index +
-          "<br />value = " +
-          value;
+    //   ac.addEventListener("onhighlight", function(e) {
+    //     var str = "";
+    //     var _value = e.fromitem.value;
+    //     var value = "";
+    //     if (e.fromitem.index > -1) {
+    //       value =
+    //         _value.province +
+    //         _value.city +
+    //         _value.district +
+    //         _value.street +
+    //         _value.business;
+    //     }
+    //     str =
+    //       "FromItem<br />index = " +
+    //       e.fromitem.index +
+    //       "<br />value = " +
+    //       value;
 
-        value = "";
-        if (e.toitem.index > -1) {
-          _value = e.toitem.value;
-          value =
-            _value.province +
-            _value.city +
-            _value.district +
-            _value.street +
-            _value.business;
-        }
-        str +=
-          "<br />ToItem<br />index = " +
-          e.toitem.index +
-          "<br />value = " +
-          value;
-        G("searchResultPanel").innerHTML = str;
-      });
+    //     value = "";
+    //     if (e.toitem.index > -1) {
+    //       _value = e.toitem.value;
+    //       value =
+    //         _value.province +
+    //         _value.city +
+    //         _value.district +
+    //         _value.street +
+    //         _value.business;
+    //     }
+    //     str +=
+    //       "<br />ToItem<br />index = " +
+    //       e.toitem.index +
+    //       "<br />value = " +
+    //       value;
+    //     G("searchResultPanel").innerHTML = str;
+    //   });
 
-      var myValue;
+    //   var myValue;
 
-      ac.addEventListener("onconfirm", e => {
-        //鼠标点击下拉列表后的事件
-        console.log(e, e.item.value);
-        let address = e.item.value;
-        let addressStr = address.city + address.district + address.business;
-        this.form.address = addressStr;
-        var myGeo = new BMap.Geocoder();
-        myGeo.getPoint(
-          addressStr,
-          point => {
-            if (point) {
-              let lng = point.lng; //经度
-              let lat = point.lat; //纬度
-              this.form.longitude = lng;
-              this.form.latitude = lat;
-              this.map.centerAndZoom(point, 16);
-              this.map.addOverlay(new BMap.Marker(point));
-            } else {
-              alert("您选择地址没有解析到结果!");
-            }
-          },
-          address.city
-        );
-      });
-    },
+    //   ac.addEventListener("onconfirm", e => {
+    //     //鼠标点击下拉列表后的事件
+    //     let address = e.item.value;
+    //     let addressStr = address.city + address.district + address.business;
+    //     this.form.address = addressStr;
+    //     var myGeo = new BMap.Geocoder();
+    //     myGeo.getPoint(
+    //       addressStr,
+    //       point => {
+    //         if (point) {
+    //           let lng = point.lng; //经度
+    //           let lat = point.lat; //纬度
+    //           this.form.longitude = lng;
+    //           this.form.latitude = lat;
+    //           this.map.centerAndZoom(point, 16);
+    //           this.map.addOverlay(new BMap.Marker(point));
+    //         } else {
+    //           alert("您选择地址没有解析到结果!");
+    //         }
+    //       },
+    //       address.city
+    //     );
+    //   });
+    // },
     mapLoad(map) {
       this.$refs["mapToolInput"].init(map);
     },
