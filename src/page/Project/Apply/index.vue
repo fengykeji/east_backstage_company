@@ -8,6 +8,7 @@
   .el-input__inner {
     height: 31px;
     line-height: 31px;
+   pointer-events: none;
   }
   .el-form-item__content {
     line-height: 0;
@@ -62,20 +63,20 @@
             <el-button @click="cancel">取消</el-button>
           </span>
         </div>
-        <el-form :model="form" class='form'>
+        <el-form :model="form" class='form' >
           <el-form-item label="项目名称" class='input chioces' prop="project_name">
             <el-input v-model="form.project_name" auto-complete="off" placeholder="请选择项目名称"></el-input>
             <el-button type="primary" class='chioce' @click='chioce'>选择</el-button>
           </el-form-item><br>
 
           <el-form-item label="负责人" class='input' prop="project_hold_name">
-            <el-input v-model="form.project_hold_name" auto-complete="off" placeholder="请输入负责人姓名"></el-input>
+            <el-input v-model="form.project_hold_name" auto-complete="off" placeholder="请选择负责人姓名"></el-input>
           </el-form-item>
           <el-form-item label="联系电话" class='input' prop="project_hold_phone">
-            <el-input v-model="form.project_hold_phone" auto-complete="off" placeholder="请输入负责人电话"></el-input>
+            <el-input v-model="form.project_hold_phone" auto-complete="off" placeholder="请选择负责人电话"></el-input>
           </el-form-item>
           <el-form-item class='input-address' prop="absolute_address" label="项目地址">
-            <el-input v-model="form.absolute_address" auto-complete="off" placeholder="请输入详细地址"></el-input>
+            <el-input v-model="form.absolute_address" auto-complete="off" placeholder="请选择详细地址"></el-input>
           </el-form-item>
         </el-form>
       </div>
@@ -85,9 +86,9 @@
         <div>
           <div class='content'>
             <div class="search-block">
-              <div class='div-wh'>{{form.city_name}}</div>
-              <el-select clearable :value="city" placeholder="请选择区/县" class='select-1' @change="changedistrict">
-                <el-option v-for="item in districtOptions" :key="item.code" :label="item.name" :value="item.code"></el-option>
+              <!-- <div class='div-wh'>{{form.city_name}}</div> -->
+              <el-select clearable :value="form.district" placeholder="请选择区/县" class='select-1' @change="changedistrict">
+                <el-option v-for="item in districtOptions" :key="item.code" :label="item.name" :value="item.name"></el-option>
               </el-select>
               <!-- <city-selector class="city-selector" :province.sync="form.province" :city.sync="form.city" :district.sync="form.district" @changeDistrict="changeDistrict" /> -->
               <div class='search-btn'>
@@ -118,15 +119,12 @@ export default {
   data() {
     return {
       form: {
-        province: "",
-        city: "",
         district: "",
         city_name: "",
         info_id: "",
         city: ""
       },
-
-      districtOptions: "",
+      districtOptions: [],
       area: "",
       dialogFormVisible: false,
       searchObj: {
@@ -137,20 +135,14 @@ export default {
       applyHouse: []
     };
   },
-  computed: {
-    district_id() {
-      return this.district + "";
-    }
-  },
   mounted() {
     this.operationType = this.$route.query.operationType;
-    this.getdistrictList();
   },
   methods: {
     async submit() {
       let res = await this.api.applyHouse({ info_id: this.form.info_id });
       if (res.code == 200) {
-        this.$message({ type: "success", message: "新增成功!" });
+        this.$message({ type: "success", message: "申请成功!" });
       }
       this.cancel();
     },
@@ -162,19 +154,22 @@ export default {
 
     async getdistrictList() {
       let res = await this.api.getDistrictList({ cityCode: this.form.city });
-      console.log(this.form);
       if (res.code == 200) {
         this.districtOptions = res.data;
       }
     },
-    changedistrict() {},
+    changedistrict(value) {
+      this.form.district = value;
+    },
     async getApplyHouse() {
       let res = await this.api.getApplyHouse(this.searchObj);
       if (res.code == 200) {
         this.applyHouse = res.data.project;
         this.form.city_name = res.data.city_name;
+        this.form.city = res.data.city;
         this.total = res.data.total;
         this.pageSize = res.data.per_page;
+        this.getdistrictList();
       }
     },
     getIndex(row) {

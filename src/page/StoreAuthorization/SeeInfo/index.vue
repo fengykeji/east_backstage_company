@@ -14,6 +14,7 @@
   }
   .el-input__inner {
     line-height: 0px;
+    // pointer-events: none;
   }
   .el-form-item__label {
     float: none;
@@ -77,23 +78,23 @@
         </div>
         <el-form :model="form" ref="ruleForm" :rules="rules" class='form'>
           <el-form-item label="门店编号" prop="store_code">
-            <el-input v-model="form.store_code" auto-complete="off" placeholder="请输入门店编号"></el-input>
+            <el-input v-model="form.store_code" auto-complete="off" placeholder="请输入门店编号" :disabled="operationType!=3"></el-input>
           </el-form-item>
           <el-form-item label="门店名称" prop="store_name">
-            <el-input v-model="form.store_name" auto-complete="off" placeholder="请输入门店名称"></el-input>
+            <el-input v-model="form.store_name" auto-complete="off" placeholder="请输入门店名称" :disabled="operationType==0"></el-input>
           </el-form-item>
           <el-form-item label="门店店长" prop="contact">
-            <el-input v-model="form.contact" auto-complete="off" placeholder="请输入门店店长姓名"></el-input>
+            <el-input v-model="form.contact" auto-complete="off" placeholder="请输入门店店长姓名" :disabled="operationType==0"></el-input>
           </el-form-item>
           <el-form-item label="联系电话" prop="contact_tel">
-            <el-input v-model="form.contact_tel" auto-complete="off" placeholder="请输入联系电话"></el-input>
+            <el-input v-model="form.contact_tel" auto-complete="off" placeholder="请输入联系电话" :disabled="operationType==0"></el-input>
           </el-form-item>
           <el-form-item label="门店地址" prop="province">
             <!-- 下拉组建 -->
-            <city-selector ref="citySelector" :province.sync="form.province" :city.sync="form.city" :district.sync="form.district" @changeDistrict="areaChange" />
+            <city-selector :disabled="operationType==0" ref="citySelector" :province.sync="form.province" :city.sync="form.city" :district.sync="form.district" @changeDistrict="areaChange" />
           </el-form-item>
           <el-form-item prop="address">
-            <map-tool-input v-model="form.address" :area="area" ref="mapToolInput" @change="addressChange" />
+            <map-tool-input v-model="form.address" :area="area" ref="mapToolInput" @change="addressChange" :disabled="operationType==0" />
           </el-form-item>
           <!-- 地图 -->
           <map-tool class="map-tool" ref="mapTool" @load="mapLoad" :longitude.sync="form.longitude" :latitude.sync="form.latitude" />
@@ -106,7 +107,7 @@
       <el-table :data="project_user" border>
         <el-table-column property="account" label="帐号" align='center'></el-table-column>
         <el-table-column property="name" label="管理员" align='center'></el-table-column>
-        <el-table-column property="operation" label="操作" align='center'>
+        <el-table-column property="operation" label="操作" align='center' v-if="operationType!=0">
           <template slot-scope="scope">
             <el-button type="text" @click='editUser(scope.row , scope.$index)'>修改</el-button>
           </template>

@@ -111,7 +111,7 @@
         <i class="icon-commission"></i>项目佣金管理</el-menu-item>
       <el-menu-item index="distri_commission" class='text' @click="handleSelect('distri_commission')" v-if='this.store_id==0'>
         <i class="icon-distri_commission"></i>分销佣金管理</el-menu-item>
-      <el-submenu index=''>
+      <el-submenu index='agent'>
         <template slot="title">
           <span class='delent'>
             <i class="icon-agent"></i>经纪人管理</span>
@@ -122,6 +122,15 @@
       </el-submenu>
       <el-menu-item index="storeAuthorization" class='text' @click="handleSelect('storeAuthorization')" v-if='this.store_id==0'>
         <i class="icon-distri_commission"></i>门店管理</el-menu-item>
+      <el-submenu index='houseTwoHouse'>
+        <template slot="title">
+          <i class="icon-house"></i>
+          <span class='delent'>
+            房源管理</span>
+        </template>
+        <el-menu-item index="houseTwoHouse" class='people' @click="handleSelect('houseTwoHouse')">二手房</el-menu-item>
+        <el-menu-item index="rentHouse" class='people' @click="handleSelect('rentHouse')">租房</el-menu-item>
+      </el-submenu>
     </el-menu>
   </div>
 </template>

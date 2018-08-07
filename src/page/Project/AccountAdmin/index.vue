@@ -10,6 +10,9 @@
     padding: 4px 0;
     color: #333;
   }
+  .el-dialog__body{
+    margin: 0 auto;
+  }
 }
 </style>
 
@@ -39,18 +42,18 @@
     </el-table>
 
     <!-- 帐号添加 -->
-    <el-dialog title="新建账号" :visible.sync="dialogFormVisibleAccounts" class='tableUser' @close="cancelUser">
+    <el-dialog title="新建账号" :visible.sync="dialogFormVisibleAccounts" @close="cancelUser" class='accoutDialog'>
       <el-form :model="projectUserForm" :rules="userFormRules" ref="projectUserForm">
-        <el-form-item label="设定帐号" prop="account" class='input'>
+        <el-form-item label="设定帐号" prop="account" class='dialog_input'>
           <el-input v-model="projectUserForm.account" auto-complete="off" placeholder="请输入手机号码"></el-input>
         </el-form-item>
-        <el-form-item v-show="isAccountValid" label="设定密码" prop="password" class='input'>
+        <el-form-item v-show="isAccountValid" label="设定密码" prop="password" class='dialog_input'>
           <el-input v-model="projectUserForm.password" auto-complete="off" type='password' placeholder="请输入密码"></el-input>
         </el-form-item>
-        <el-form-item v-show="!isAccountValid" label="设定密码" class='input'>
+        <el-form-item v-show="!isAccountValid" label="设定密码" class='dialog_input'>
           <el-input v-model="projectUserForm.password" auto-complete="off" type='password' placeholder="不设置为之前密码"></el-input>
         </el-form-item>
-        <el-form-item label="管理员姓名" prop="name" class='input'>
+        <el-form-item label="管理员姓名" prop="name" class='dialog_input'>
           <el-input v-model="projectUserForm.name" auto-complete="off" placeholder="请输入管理员姓名"></el-input>
         </el-form-item>
         <!-- <el-form-item label="联系电话" prop="phone" class='input'>
@@ -73,7 +76,11 @@ export default {
         project_user: []
       },
       dialogFormVisibleAccounts: false,
-      projectUserForm: {},
+      projectUserForm: {
+        account:'',
+        password:'',
+        name:''
+        },
       isUserEdit: false,
       project_id: "",
       userFormRulesOrigin: {
@@ -81,7 +88,7 @@ export default {
           {
             pattern: /[\u4E00-\u9FA5]{2,5}(?:·[\u4E00-\u9FA5]{2,5})*/,
             required: true,
-            message: "请输入管理员姓名，长度为2-5个字符，必须是中文",
+            message: "长度为2-5个字符，必须是中文",
             change: "change"
           }
         ],
@@ -96,7 +103,7 @@ export default {
         password: [
           {
             required: true,
-            message: "请输入密码，长度在 6-16 个字符",
+            message: "长度在 6-16 个字符",
             change: "change",
             min: 6,
             max: 16

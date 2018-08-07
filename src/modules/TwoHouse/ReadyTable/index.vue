@@ -7,7 +7,7 @@
                 <template slot-scope="scope">{{getIndex(scope)}}</template>
             </el-table-column>
             <el-table-column prop="project_name" label="项目名称" align='center'></el-table-column>
-            <el-table-column prop="absolute_address" label="地址" align='center' width="250px"></el-table-column>
+            <el-table-column prop="absolute_address" label="地址" align='center' width="300px"></el-table-column>
             <el-table-column prop="project_hold_name" label="项目负责人" align='center'></el-table-column>
             <el-table-column prop="project_hold_phone" label="联系电话" align='center'></el-table-column>
             <el-table-column prop="create_time" label="申请时间" align='center'></el-table-column>

@@ -34,7 +34,7 @@ body {
     <div class='title'>
       <div class='left'>
         <div class="tab-block">
-          <div class='text1'>当前位置：项目管理 → 二手房</div>
+          <div class='text1'>当前位置：项目管理 ➟ 二手房</div>
           <div class="tab-block-inner">
             <el-input v-model="searchObj.search" class='query' placeholder="可按项目编号/项目名称进行查询"></el-input>
             <el-button @click="search" icon="el-icon-search" circle></el-button>

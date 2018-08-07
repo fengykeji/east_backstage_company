@@ -19,6 +19,10 @@ import Apply from '@/page/Project/Apply'
 import AddApply from '@/page/Project/AddApply'
 import AccountAdmin from '@/page/Project/AccountAdmin'
 
+import HouseTwoHouse from '@/page/House/HouseTwoHouse'
+import RentHouse from '@/page/House/RentHouse'
+import SeeHouseInfo from '@/page/House/SeeHouseInfo'
+import SeeRentHouseInfo from '@/page/House/SeeRentHouseInfo'
 
 import Agent from '@/page/Agent'
 import Commission from '@/page/Commission'
@@ -62,6 +66,34 @@ export default new Router({
       path: '/test',
       name: 'test',
       component: Test
+    },
+    {
+      path: '/house',
+      component: Container,
+      children: [
+        {
+          path: 'houseTwoHouse',
+          name: 'houseTwoHouse',
+          component: HouseTwoHouse,
+        },
+        {
+          path: 'rentHouse',
+          name: 'rentHouse',
+          component: RentHouse,
+        },
+
+        {
+          path: 'seeHouseInfo',
+          name: 'seeHouseInfo',
+          component: SeeHouseInfo,
+        },
+        {
+          path: 'seeRentHouseInfo',
+          name: 'seeRentHouseInfo',
+          component: SeeRentHouseInfo,
+        },
+
+      ]
     },
     {
       path: '/project',
@@ -117,11 +149,6 @@ export default new Router({
           name: 'accountAdmin',
           component: AccountAdmin
         }
-
-
-
-
-        
       ]
     },
     {
