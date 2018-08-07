@@ -68,14 +68,14 @@
             <el-button type="primary" class='chioce' @click='chioce'>选择</el-button>
           </el-form-item><br>
 
-          <el-form-item label="负责人" class='input' prop="project_name">
-            <el-input v-model="form.project_name" auto-complete="off" placeholder="请输入负责人姓名"></el-input>
+          <el-form-item label="负责人" class='input' prop="project_hold_name">
+            <el-input v-model="form.project_hold_name" auto-complete="off" placeholder="请输入负责人姓名"></el-input>
           </el-form-item>
-          <el-form-item label="联系电话" class='input' prop="project_name">
-            <el-input v-model="form.project_name" auto-complete="off" placeholder="请输入负责人电话"></el-input>
+          <el-form-item label="联系电话" class='input' prop="project_hold_phone">
+            <el-input v-model="form.project_hold_phone" auto-complete="off" placeholder="请输入负责人电话"></el-input>
           </el-form-item>
-          <el-form-item class='input' prop="absolute_address" label="项目地址">
-            <el-input v-model="form.project_name" auto-complete="off" placeholder="请输入详细地址"></el-input>
+          <el-form-item class='input-address' prop="absolute_address" label="项目地址">
+            <el-input v-model="form.absolute_address" auto-complete="off" placeholder="请输入详细地址"></el-input>
           </el-form-item>
         </el-form>
       </div>
@@ -85,21 +85,22 @@
         <div>
           <div class='content'>
             <div class="search-block">
-              <city-selector class="city-selector" :province.sync="form.province" :city.sync="form.city" :district.sync="form.district" @changeDistrict="changeDistrict" />
+              <div class='div-wh'>{{form.city_name}}</div>
+              <el-select clearable :value="city" placeholder="请选择区/县" class='select-1' @change="changedistrict">
+                <el-option v-for="item in districtOptions" :key="item.code" :label="item.name" :value="item.code"></el-option>
+              </el-select>
+              <!-- <city-selector class="city-selector" :province.sync="form.province" :city.sync="form.city" :district.sync="form.district" @changeDistrict="changeDistrict" /> -->
               <div class='search-btn'>
                 <el-input v-model="searchObj.search" class='query' placeholder="可按公司名称/公司编号"></el-input>
                 <el-button type="primary" class='search'>查询</el-button>
               </div>
             </div>
             <el-table class="mt-15" :data="applyHouse" border>
-              <el-table-column prop="" label="序号" align='center' width="70px">
-                <template slot-scope="scope">{{getIndex(scope)}}</template>
-              </el-table-column>
-              <el-table-column prop="name" label="项目编号" align='center'></el-table-column>
+              <el-table-column prop="project_code" label="项目编号" align='center'></el-table-column>
               <el-table-column prop="project_name" label="项目名称" align='center'></el-table-column>
-              <el-table-column prop="city" label="项目负责人" align='center'></el-table-column>
-              <el-table-column prop="quyu" label="联系方式" align='center'></el-table-column>
-              <el-table-column prop="tel" label="地址" align='center' width="200px"></el-table-column>
+              <el-table-column prop="project_hold_name" label="项目负责人" align='center'></el-table-column>
+              <el-table-column prop="project_hold_phone" label="联系方式" align='center'></el-table-column>
+              <el-table-column prop="absolute_address" label="地址" align='center' width="300px"></el-table-column>
               <el-table-column label="操作" align='center'>
                 <template slot-scope="scope">
                   <el-button type="text" @click="choise(scope.row)">选择</el-button>
@@ -113,15 +114,19 @@
   </div>
 </template>
 <script>
-import CitySelector from "@/components/CitySelector";
 export default {
   data() {
     return {
       form: {
         province: "",
         city: "",
-        district: ""
+        district: "",
+        city_name: "",
+        info_id: "",
+        city: ""
       },
+
+      districtOptions: "",
       area: "",
       dialogFormVisible: false,
       searchObj: {
@@ -132,15 +137,42 @@ export default {
       applyHouse: []
     };
   },
+  computed: {
+    district_id() {
+      return this.district + "";
+    }
+  },
   mounted() {
     this.operationType = this.$route.query.operationType;
+    this.getdistrictList();
   },
   methods: {
-    submit() {},
+    async submit() {
+      let res = await this.api.applyHouse({ info_id: this.form.info_id });
+      if (res.code == 200) {
+        this.$message({ type: "success", message: "新增成功!" });
+      }
+      this.cancel();
+    },
+    choise(row) {
+      this.dialogFormVisible = false;
+      this.form = row;
+      this.form.info_id = row.info_id;
+    },
+
+    async getdistrictList() {
+      let res = await this.api.getDistrictList({ cityCode: this.form.city });
+      console.log(this.form);
+      if (res.code == 200) {
+        this.districtOptions = res.data;
+      }
+    },
+    changedistrict() {},
     async getApplyHouse() {
       let res = await this.api.getApplyHouse(this.searchObj);
       if (res.code == 200) {
-        this.applyHouse = res.data;
+        this.applyHouse = res.data.project;
+        this.form.city_name = res.data.city_name;
         this.total = res.data.total;
         this.pageSize = res.data.per_page;
       }
@@ -160,9 +192,6 @@ export default {
     cancel() {
       this.$router.push({ name: "twoHouse" });
     }
-  },
-  components: {
-    CitySelector: CitySelector
   }
 };
 </script>

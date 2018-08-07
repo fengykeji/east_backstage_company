@@ -73,11 +73,7 @@ export default {
         project_user: []
       },
       dialogFormVisibleAccounts: false,
-      projectUserForm: {
-        account:"",
-        password:"",
-        name:""
-      },
+      projectUserForm: {},
       isUserEdit: false,
       project_id: "",
       userFormRulesOrigin: {
