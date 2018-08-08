@@ -44,7 +44,7 @@ body {
   <div class='agent'>
     <div class='title'>
       <div class='left'>
-        <div class='text1'>当前位置：在职经纪人</div>
+        <div class='text1'>当前位置：经纪人管理 ➟ 在职经纪人</div>
         <div class="search-block">
           <el-input v-model="searchObj.search" class='query' placeholder="可查询云算号/经纪人姓名"></el-input>
           <el-button @click="search()" icon="el-icon-search" circle></el-button>

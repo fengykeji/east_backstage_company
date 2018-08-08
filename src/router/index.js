@@ -48,6 +48,19 @@ import QuitPeople from '@/page/Agent/QuitPeople'
 
 import StoreAuthorization from '@/page/StoreAuthorization'
 import SeeInfo from '@/page/StoreAuthorization/SeeInfo'
+
+import DealAdministration from '@/page/DealAdministration'
+import DealNewHouse from '@/page/DealAdministration/DealNewHouse'
+import DealRenting from '@/page/DealAdministration/DealRenting'
+import DealTwoHouse from '@/page/DealAdministration/DealTwoHouse'
+import DealNewHouseSeeInfo from '@/page/DealAdministration/DealNewHouseSeeInfo'
+import DealRentingSeeInfo from '@/page/DealAdministration/DealRentingSeeInfo'
+import DealTwoHouseSeeInfo from '@/page/DealAdministration/DealTwoHouseSeeInfo'
+import ContractDealNewTwo from '@/page/DealAdministration/ContractDealNewTwo'
+import ContractDealRenting from '@/page/DealAdministration/ContractDealRenting'
+
+
+
 import Test from '@/page/Test'
 
 
@@ -67,6 +80,62 @@ export default new Router({
       name: 'test',
       component: Test
     },
+    {
+      path: '/dealAdministration',
+      component: Container,
+      children: [
+        {
+          path: 'dealAdministration',
+          name: 'dealAdministration',
+          component: DealAdministration,
+        },
+        {
+          path: 'dealNewHouse',
+          name: 'dealNewHouse',
+          component: DealNewHouse,
+        },
+        {
+          path: 'dealRenting',
+          name: 'dealRenting',
+          component: DealRenting,
+        },
+        {
+          path: 'dealTwoHouse',
+          name: 'dealTwoHouse',
+          component: DealTwoHouse,
+        },
+        {
+          path: 'dealNewHouseSeeInfo',
+          name: 'dealNewHouseSeeInfo',
+          component: DealNewHouseSeeInfo,
+        },
+        {
+          path: 'dealTwoHouseSeeInfo',
+          name: 'dealTwoHouseSeeInfo',
+          component: DealTwoHouseSeeInfo,
+        },
+        {
+          path: 'dealRentingSeeInfo',
+          name: 'dealRentingSeeInfo',
+          component: DealRentingSeeInfo,
+        },
+        {
+          path: 'contractDealRenting',
+          name: 'contractDealRenting',
+          component: ContractDealRenting,
+        },
+        {
+          path: 'contractDealNewTwo',
+          name: 'contractDealNewTwo',
+          component: ContractDealNewTwo,
+        },
+
+
+        
+
+      ]
+    },
+
     {
       path: '/house',
       component: Container,

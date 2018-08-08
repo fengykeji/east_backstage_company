@@ -86,7 +86,7 @@
   <div class='examinePeople'>
     <div class='title'>
       <div class='left'>
-        <div class='text1'>当前位置：审核经纪人</div>
+        <div class='text1'>当前位置：经纪人管理 ➟ 审核经纪人</div>
         <div class="left">
           <el-button class='tip' :class="tipActiveIndex==1?'active':''" type="text" @click="clickTip(1)">全部</el-button>
           <el-button class='tip' :class="tipActiveIndex==2?'active':''" type="text" @click="clickTip(2)">待审核</el-button>

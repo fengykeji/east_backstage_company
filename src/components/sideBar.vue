@@ -121,7 +121,7 @@
         <el-menu-item index="quitPeople" class='people' @click="handleSelect('quitPeople')">离职经纪人</el-menu-item>
       </el-submenu>
       <el-menu-item index="storeAuthorization" class='text' @click="handleSelect('storeAuthorization')" v-if='this.store_id==0'>
-        <i class="icon-distri_commission"></i>门店管理</el-menu-item>
+        <i class="icon-store"></i>门店管理</el-menu-item>
       <el-submenu index='houseTwoHouse'>
         <template slot="title">
           <i class="icon-house"></i>
@@ -130,6 +130,16 @@
         </template>
         <el-menu-item index="houseTwoHouse" class='people' @click="handleSelect('houseTwoHouse')">二手房</el-menu-item>
         <el-menu-item index="rentHouse" class='people' @click="handleSelect('rentHouse')">租房</el-menu-item>
+      </el-submenu>
+      <el-submenu index='dealNewHouse'>
+        <template slot="title">
+          <i class="icon-transaction"></i>
+          <span class='delent'>
+            交易管理</span>
+        </template>
+        <el-menu-item index="dealNewHouse" class='people' @click="handleSelect('dealNewHouse')">新房</el-menu-item>
+        <el-menu-item index="dealTwoHouse" class='people' @click="handleSelect('dealTwoHouse')">二手房</el-menu-item>
+        <el-menu-item index="dealRenting" class='people' @click="handleSelect('dealRenting')">租房</el-menu-item>
       </el-submenu>
     </el-menu>
   </div>

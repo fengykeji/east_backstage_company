@@ -22,7 +22,7 @@
   <div class='quitPeople'>
     <div class='title'>
       <div class='left'>
-        <div class='text1'>当前位置：离职经纪人</div>
+        <div class='text1'>当前位置：经纪人管理 ➟ 离职经纪人</div>
         <div class="search-block">
           <el-input class='query' v-model="searchObj.search" placeholder="可查询云算号/经纪人姓名"></el-input>
           <el-button @click="getQuitList" icon="el-icon-search" circle></el-button>
