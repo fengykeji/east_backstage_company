@@ -59,7 +59,11 @@ import DealTwoHouseSeeInfo from '@/page/DealAdministration/DealTwoHouseSeeInfo'
 import ContractDealNewTwo from '@/page/DealAdministration/ContractDealNewTwo'
 import ContractDealRenting from '@/page/DealAdministration/ContractDealRenting'
 
-
+import StoreHouse from '@/page/StoreHouse'
+import StoreHouseTwoHouse from '@/page/StoreHouse/StoreHouseTwoHouse'
+import StoreRentHouse from '@/page/StoreHouse/StoreRentHouse'
+import StoreHouseSeeInfo from '@/page/StoreHouse/StoreHouseSeeInfo'
+import StoreRentingHouseSeeInfo from '@/page/StoreHouse/StoreRentingHouseSeeInfo'
 
 import Test from '@/page/Test'
 
@@ -80,6 +84,44 @@ export default new Router({
       name: 'test',
       component: Test
     },
+
+    {
+      path: '/storeHouse',
+      component: Container,
+      children: [
+        {
+          path: 'storeHouse',
+          name: 'storeHouse',
+          component: StoreHouse,
+        },
+        {
+          path: 'storeRentHouse',
+          name: 'storeRentHouse',
+          component: StoreRentHouse,
+        },
+        {
+          path: 'storeHouseTwoHouse',
+          name: 'storeHouseTwoHouse',
+          component: StoreHouseTwoHouse,
+        },
+        {
+          path: 'storeHouseSeeInfo',
+          name: 'storeHouseSeeInfo',
+          component: StoreHouseSeeInfo,
+        },
+        {
+          path: 'storeRentingHouseSeeInfo',
+          name: 'storeRentingHouseSeeInfo',
+          component: StoreRentingHouseSeeInfo,
+        },
+
+        
+      ]
+    },
+
+
+
+
     {
       path: '/dealAdministration',
       component: Container,
@@ -131,7 +173,7 @@ export default new Router({
         },
 
 
-        
+
 
       ]
     },

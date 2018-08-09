@@ -12,9 +12,6 @@
       <el-table-column prop="project_hold_name" label="项目负责人" align='center'></el-table-column>
       <el-table-column prop="project_hold_phone" label="联系电话" align='center'></el-table-column>
       <el-table-column prop="is_distribution" label="账号分配" align='center'></el-table-column>
-      <el-table-column prop="source" label="来源" align='center' width="80px">
-        <template slot-scope="scope">{{scopeState (scope.row.source)}}</template>
-      </el-table-column>
       <el-table-column label="操作" align='center' width="270px">
         <template slot-scope="scope">
           <el-button type="text" @click='showAdd(2, scope.row)'>查看</el-button>
@@ -33,13 +30,6 @@ export default {
     getIndex(row) {
       let index = row.$index + 1;
       return index;
-    },
-    scopeState(row) {
-      if (row == 1) {
-        return "内部申请";
-      } else if (row == 2) {
-        return "外部申请";
-      }
     },
     accountAdmin(row) {
       this.$emit("accountAdmin", row);

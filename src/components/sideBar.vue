@@ -122,7 +122,7 @@
       </el-submenu>
       <el-menu-item index="storeAuthorization" class='text' @click="handleSelect('storeAuthorization')" v-if='this.store_id==0'>
         <i class="icon-store"></i>门店管理</el-menu-item>
-      <el-submenu index='houseTwoHouse'>
+      <el-submenu index='houseTwoHouse' v-if='this.store_id==0'>
         <template slot="title">
           <i class="icon-house"></i>
           <span class='delent'>
@@ -131,7 +131,26 @@
         <el-menu-item index="houseTwoHouse" class='people' @click="handleSelect('houseTwoHouse')">二手房</el-menu-item>
         <el-menu-item index="rentHouse" class='people' @click="handleSelect('rentHouse')">租房</el-menu-item>
       </el-submenu>
-      <el-submenu index='dealNewHouse'>
+      <el-submenu index='storeHouseTwoHouse'>
+        <template slot="title">
+          <i class="icon-house"></i>
+          <span class='delent'>
+            房源管理(门店)</span>
+        </template>
+        <el-menu-item index="storeHouseTwoHouse" class='people' @click="handleSelect('storeHouseTwoHouse')">二手房</el-menu-item>
+        <el-menu-item index="storeRentHouse" class='people' @click="handleSelect('storeRentHouse')">租房</el-menu-item>
+      </el-submenu>
+        <el-submenu index=''>
+        <template slot="title">
+          <i class="icon-house"></i>
+          <span class='delent'>
+            客户管理(门店)</span>
+        </template>
+        <el-menu-item index="storeHouseTwoHouse" class='people' @click="handleSelect('storeHouseTwoHouse')">新房</el-menu-item>
+          <el-menu-item index="storeHouseTwoHouse" class='people' @click="handleSelect('storeHouseTwoHouse')">二手房</el-menu-item>
+        <el-menu-item index="storeRentHouse" class='people' @click="handleSelect('storeRentHouse')">租房</el-menu-item>
+      </el-submenu>
+      <el-submenu index='dealNewHouse' v-if='this.store_id==0'>
         <template slot="title">
           <i class="icon-transaction"></i>
           <span class='delent'>

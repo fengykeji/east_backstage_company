@@ -53,15 +53,15 @@ body {
                 <el-table-column prop="contact_tel" label="联系电话" align='center' width="110px"></el-table-column>
                 <el-table-column prop="developer_name" label="所属门店" align='center'></el-table-column>
                 <el-table-column prop="is_distribution" label="房号" align='center'></el-table-column>
-                 <el-table-column prop="is_distribution" label="推荐经纪人" align='center'></el-table-column>
+                <el-table-column prop="is_distribution" label="推荐经纪人" align='center'></el-table-column>
                 <el-table-column prop="start_time" label="带看经纪人" align='center'></el-table-column>
                 <el-table-column prop="start_time" label="合同总价" align='center'></el-table-column>
                 <el-table-column prop="end_time" label="月租金" align='center'></el-table-column>
-                 <el-table-column prop="end_time" label="成交时间" align='center'></el-table-column>
+                <el-table-column prop="end_time" label="成交时间" align='center'></el-table-column>
                 <el-table-column prop="operation" label="操作" align='center' width="170px">
                     <template slot-scope="scope">
                         <el-button type="text" @click='see(scope.row)'>查看</el-button>
-                          <el-button type="text" >删除</el-button>
+                        <el-button type="text">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -88,10 +88,10 @@ export default {
     };
   },
   mounted() {
-      this.getStoreList();
+    this.getStoreList();
   },
   methods: {
-   see(row) {
+    see(row) {
       this.$router.push({ name: "dealRentingSeeInfo" });
     },
     getIndex(row) {

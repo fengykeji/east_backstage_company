@@ -136,7 +136,7 @@
                         </el-form>
                     </div>
                 </div>
-              <div>
+                <div>
                     <div class='content'>
                         <div class='content_title'>房源信息</div>
                         <el-form :model="sumbitForm" class='form'>
