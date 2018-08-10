@@ -140,15 +140,15 @@
         <el-menu-item index="storeHouseTwoHouse" class='people' @click="handleSelect('storeHouseTwoHouse')">二手房</el-menu-item>
         <el-menu-item index="storeRentHouse" class='people' @click="handleSelect('storeRentHouse')">租房</el-menu-item>
       </el-submenu>
-        <el-submenu index=''>
+        <el-submenu index='customerNewHouse'>
         <template slot="title">
           <i class="icon-house"></i>
           <span class='delent'>
             客户管理(门店)</span>
         </template>
-        <el-menu-item index="storeHouseTwoHouse" class='people' @click="handleSelect('storeHouseTwoHouse')">新房</el-menu-item>
-          <el-menu-item index="storeHouseTwoHouse" class='people' @click="handleSelect('storeHouseTwoHouse')">二手房</el-menu-item>
-        <el-menu-item index="storeRentHouse" class='people' @click="handleSelect('storeRentHouse')">租房</el-menu-item>
+        <el-menu-item index="customerNewHouse" class='people' @click="handleSelect('customerNewHouse')">新房</el-menu-item>
+          <el-menu-item index="customerHouseTwoHouse" class='people' @click="handleSelect('customerHouseTwoHouse')">二手房</el-menu-item>
+        <el-menu-item index="customerRentHouse" class='people' @click="handleSelect('customerRentHouse')">租房</el-menu-item>
       </el-submenu>
       <el-submenu index='dealNewHouse' v-if='this.store_id==0'>
         <template slot="title">

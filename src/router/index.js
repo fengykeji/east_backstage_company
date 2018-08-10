@@ -65,6 +65,18 @@ import StoreRentHouse from '@/page/StoreHouse/StoreRentHouse'
 import StoreHouseSeeInfo from '@/page/StoreHouse/StoreHouseSeeInfo'
 import StoreRentingHouseSeeInfo from '@/page/StoreHouse/StoreRentingHouseSeeInfo'
 
+import CustomerManagement from '@/page/CustomerManagement'
+import CustomerHouseTwoHouse from '@/page/CustomerManagement/CustomerHouseTwoHouse'
+import CustomerNewHouse from '@/page/CustomerManagement/CustomerNewHouse'
+import CustomerRentHouse from '@/page/CustomerManagement/CustomerRentHouse'
+import CustomerNewHouseSeeInfo from '@/page/CustomerManagement/CustomerNewHouseSeeInfo'
+import ContractNewHouseInfo from '@/page/CustomerManagement/ContractNewHouseInfo'
+import CustomerTwoHouseSeeInfo from '@/page/CustomerManagement/CustomerTwoHouseSeeInfo'
+import SeeRecord from '@/page/CustomerManagement/SeeRecord'
+
+
+
+
 import Test from '@/page/Test'
 
 
@@ -84,6 +96,61 @@ export default new Router({
       name: 'test',
       component: Test
     },
+
+    {
+      path: '/customerManagement',
+      component: Container,
+      children: [
+        {
+          path: 'customerManagement',
+          name: 'customerManagement',
+          component: CustomerManagement,
+        },
+        {
+          path: 'customerHouseTwoHouse',
+          name: 'customerHouseTwoHouse',
+          component: CustomerHouseTwoHouse,
+        },
+        {
+          path: 'customerNewHouse',
+          name: 'customerNewHouse',
+          component: CustomerNewHouse,
+        },
+        {
+          path: 'customerRentHouse',
+          name: 'customerRentHouse',
+          component: CustomerRentHouse,
+        },
+        {
+          path: 'customerNewHouseSeeInfo',
+          name: 'customerNewHouseSeeInfo',
+          component: CustomerNewHouseSeeInfo,
+        },
+        {
+          path: 'contractNewHouseInfo',
+          name: 'contractNewHouseInfo',
+          component: ContractNewHouseInfo,
+        },
+        {
+          path: 'customerTwoHouseSeeInfo',
+          name: 'customerTwoHouseSeeInfo',
+          component: CustomerTwoHouseSeeInfo,
+        },
+        {
+          path: 'seeRecord',
+          name: 'seeRecord',
+          component: SeeRecord,
+        },
+
+
+        
+        
+        
+      ]
+    },
+
+
+
 
     {
       path: '/storeHouse',
