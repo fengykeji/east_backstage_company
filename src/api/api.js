@@ -90,6 +90,13 @@ let api = {
   //获取管理员列表
   getAdminList: doGet('company/house/getAdminList'),
 
+  //门店 - 房源管理二手房列表
+  storeHousegetList: doGet('company/Room/getList'),
+
+
+
+
+
 
   // 登陆
   gitCode: doPost('company/user/login'),
