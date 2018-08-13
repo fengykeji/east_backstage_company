@@ -93,6 +93,8 @@ let api = {
   //门店 - 房源管理二手房列表
   storeHousegetList: doGet('company/Room/getList'),
 
+  //门店 - 房源管理查看详情
+  getStoreHouseInfo: doGet('company/Room/getInfo'),
 
 
 

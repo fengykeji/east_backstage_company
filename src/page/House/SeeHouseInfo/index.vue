@@ -307,8 +307,16 @@ export default {
       sumbitForm: {}
     };
   },
-  mounted() {},
+  mounted() {
+      this.getStoreHouseInfo();
+  },
   methods: {
+      async getStoreHouseInfo(){
+          let res=await this.api.getStoreHouseInfo();
+          if(res.code==200){
+              this.sumbitForm=res.data;
+          }
+      },
     cancel() {
       this.$router.go(-1);
     }

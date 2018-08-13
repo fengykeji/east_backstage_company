@@ -31,13 +31,13 @@
                                 <div class='block-info'>
                                     <div class='input-title'>挂牌标题：</div>
                                     <el-form-item class='input'>
-                                        {{"云算科技"}}
+                                        {{}}
                                     </el-form-item>
                                 </div>
                                 <div class='block-info'>
                                     <div class='input-title'>看房方式：</div>
                                     <el-form-item class='input'>
-                                        {{"云算科技"}}
+                                        {{}}
                                     </el-form-item>
                                 </div>
                                 <div class='block-info'>
@@ -93,13 +93,13 @@
                                 <div class='block-info'>
                                     <div class='input-title'>姓名：</div>
                                     <el-form-item class='input'>
-                                        {{"张三"}}
+                                        {{}}
                                     </el-form-item>
                                 </div>
                                 <div class='block-info'>
                                     <div class='input-title'>证件类型：</div>
                                     <el-form-item class='input'>
-                                        {{"身份证"}}
+                                        {{}}
                                     </el-form-item>
                                 </div><br>
                                 <div class='block-info'>
@@ -144,7 +144,7 @@
                                 <div class='block-info'>
                                     <div class='input-title'>产权编号：</div>
                                     <el-form-item class='input'>
-                                        {{"001"}}
+                                        {{}}
                                     </el-form-item>
                                 </div>
                                 <div class='block-info'>
@@ -186,7 +186,7 @@
                                 <div class='block-info'>
                                     <div class='input-title'>产权面积：</div>
                                     <el-form-item class='input'>
-                                        {{"120/㎡"}}
+                                        {{}}
                                     </el-form-item>
                                 </div>
 
@@ -208,7 +208,7 @@
                                 <div class='block-info'>
                                     <div class='input-title'>项目地址：</div>
                                     <el-form-item class='input-width'>
-                                        {{"四川省成都市犀浦"}}
+                                        {{}}
                                     </el-form-item>
                                 </div>
                             </el-form>
@@ -239,32 +239,32 @@
                             <div class='block-info'>
                                 <div class='input-title'>项目名称：</div>
                                 <el-form-item class='input'>
-                                    {{"天鹅湖项目 - 17栋 - 2单元 - 103"}}
+                                    {{}}
                                 </el-form-item>
                             </div>
                             <div class='block-info'>
                                 <div class='input-title'>报备经纪人：</div>
                                 <el-form-item class='input'>
-                                    {{"阿斯顿"}}
+                                    {{}}
                                 </el-form-item>
                             </div>
                             <div class='block-info'>
                                 <div class='input-title'>房源编号：</div>
                                 <el-form-item class='input'>
-                                    {{"CD - TEH - 20170810 - 1（F）"}}
+                                    {{}}
                                 </el-form-item>
                             </div>
                             <div class='block-info'>
                                 <div class='input-title'>报备人电话：</div>
                                 <el-form-item class='input'>
-                                    {{"13666666666"}}
+                                    {{}}
                                 </el-form-item>
                             </div>
                             <div class='block-info'>
 
                                 <div class='input-title'>报备时间：</div>
                                 <el-form-item class='input'>
-                                    {{"2018-9-9"}}
+                                    {{}}
                                 </el-form-item>
                             </div>
                         </el-form>
@@ -277,13 +277,13 @@
                             <div class='block-info'>
                                 <div class='input-title pd-r-28px'>抢单时间：</div>
                                 <el-form-item class='input-1'>
-                                    {{"2018-8-8"}}
+                                    {{}}
                                 </el-form-item>
                             </div>
                             <div class='block-info'>
                                 <div class='input-title pd-r-28px'>勘察经纪人：</div>
                                 <el-form-item class='input-1'>
-                                    {{"阿斯顿"}}
+                                    {{}}
                                 </el-form-item>
                             </div>
                             <div class='block-info'>
@@ -306,17 +306,17 @@
                             <div class='block-info'>
                                 <div class='input-title'>失效时间：</div>
                                 <el-form-item class='input'>
-                                    {{"2018-6-6"}}
+                                    {{}}
                                 </el-form-item>
                             </div>
                             <div class='block-info'>
                                 <div class='input-title'>失效类型：</div>
-                                <el-form-item class='input'>{{'N小时内未判断房源真实性'}}
+                                <el-form-item class='input'>{{}}
                                 </el-form-item>
                             </div>
                             <div class='block-info'>
                                 <div class='input-title'>失效描述：</div>
-                                <el-form-item class='input-width-height'>{{'24小时内未判断房源真实性，失效！'}}
+                                <el-form-item class='input-width-height'>{{}}
                                 </el-form-item>
                             </div>
                         </el-form>
@@ -330,11 +330,28 @@
 export default {
   data() {
     return {
-      sumbitForm: {}
+      sumbitForm: {},
+      record_id: "",
+      current_state: ""
     };
   },
-  mounted() {},
+
+  mounted() {
+    this.getStoreHouseInfo();
+    this.record_id = this.$route.query.record_id;
+    this.current_state = this.$route.query.current_state;
+    console.log(this.current_state);
+  },
   methods: {
+    async getStoreHouseInfo() {
+      let res = await this.api.getStoreHouseInfo({
+        record_id: this.record_id,
+        current_state: this.current_state
+      });
+      if (res.code == 200) {
+        this.sumbitForm = res.data;
+      }
+    },
     lookMore() {
       this.$router.push({ name: "contractDealNewTwo" });
     },

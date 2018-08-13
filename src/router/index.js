@@ -76,6 +76,10 @@ import SeeRecord from '@/page/CustomerManagement/SeeRecord'
 
 
 
+import PurchaseContract from '@/page/PurchaseContract'
+import AddPurchaseContract from '@/page/PurchaseContract/AddPurchaseContract'
+import PreviewInfo from '@/page/PurchaseContract/PreviewInfo'
+
 
 import Test from '@/page/Test'
 
@@ -96,7 +100,27 @@ export default new Router({
       name: 'test',
       component: Test
     },
-
+    {
+      path: '/purchaseContract',
+      component: Container,
+      children: [
+        {
+          path: 'purchaseContract',
+          name: 'purchaseContract',
+          component: PurchaseContract,
+        },
+        {
+          path: 'addPurchaseContract',
+          name: 'addPurchaseContract',
+          component: AddPurchaseContract,
+        },
+        {
+          path: 'previewInfo',
+          name: 'previewInfo',
+          component: PreviewInfo,
+        },
+      ]
+    },
     {
       path: '/customerManagement',
       component: Container,
@@ -143,9 +167,9 @@ export default new Router({
         },
 
 
-        
-        
-        
+
+
+
       ]
     },
 
@@ -182,7 +206,7 @@ export default new Router({
           component: StoreRentingHouseSeeInfo,
         },
 
-        
+
       ]
     },
 

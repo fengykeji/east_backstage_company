@@ -160,6 +160,8 @@
         <el-menu-item index="dealTwoHouse" class='people' @click="handleSelect('dealTwoHouse')">二手房</el-menu-item>
         <el-menu-item index="dealRenting" class='people' @click="handleSelect('dealRenting')">租房</el-menu-item>
       </el-submenu>
+         <el-menu-item index="purchaseContract" class='text' @click="handleSelect('purchaseContract')">
+        <i class="icon-store"></i>代购合同管理</el-menu-item>
     </el-menu>
   </div>
 </template>
