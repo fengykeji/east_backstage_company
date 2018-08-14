@@ -229,20 +229,26 @@
                     <div>
                         <div class='content'>
                             <div class='content_title'>图片信息</div>
-                            <el-form :model="house_img" class='form'>
-                                <div class='block-info'>
-                                    <div class='input-title'>户型图片</div>
-                                    <el-form-item class='img'>
-                                        {{house_img.img_url}}
-                                    </el-form-item>
-                                </div><br>
-                                <div class='block-info'>
-                                    <div class='input-title'>房源图片</div>
-                                    <el-form-item class='img'>
-                                        <img/>
-                                    </el-form-item>
-                                </div><br>
-                            </el-form>
+                            <div class='block-info'>
+                                <div class='input-title'>户型图片</div>
+                                <!-- 请换掉以下的东西 使用 element-ui -->
+                                <!-- <mt-swipe :auto="0">
+                                    <mt-swipe-item v-for="(img,index) in house_imgs" :key="index">
+                                        <span class="img">
+                                            <img :src="base + img.img_url" />
+                                        </span>
+                                    </mt-swipe-item>
+                                    <mt-swipe-item v-for="(img,index) in house_imgs">
+                                        <span class="img">
+                                            <img :src="base + img.img_url" />
+                                        </span>
+                                    </mt-swipe-item>
+                                </mt-swipe> -->
+                            </div><br>
+                            <div class='block-info'>
+                                <div class='input-title'>房源图片</div>
+                                <img/>
+                            </div><br>
                         </div>
                     </div>
                     <div class='content'>
@@ -343,7 +349,7 @@ export default {
       sumbitForm: {},
       record: {},
       survey: {},
-      house_img: [],
+      house_imgs: [],
       house_info: {},
       house_disabled: {},
       survey_disabled: {},
@@ -371,7 +377,7 @@ export default {
         this.sumbitForm = res.data.record;
         this.record = res.data.record;
         this.survey = res.data.survey;
-        this.house_img = res.data.house_img;
+        this.house_imgs = res.data.house_img;
         this.house_info = res.data.house_info;
         // this.house_disabled = res.data.house_disabled;
         // this.survey_disabled = res.data.survey_disabled;
