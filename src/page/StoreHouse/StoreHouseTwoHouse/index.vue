@@ -197,7 +197,8 @@ export default {
         name: "storeHouseSeeInfo",
         query: {
           record_id: row.record_id,
-          current_state:row.current_state
+          current_state:row.current_state,
+          state:row.state
         }
       });
     },
