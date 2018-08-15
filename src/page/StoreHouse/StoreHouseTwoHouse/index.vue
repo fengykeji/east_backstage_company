@@ -190,7 +190,7 @@ export default {
         return "已下架";
       } else if (row == 1) {
         return "已上架";
-      } else {
+      } else if (row == null) {
         return "";
       }
     },

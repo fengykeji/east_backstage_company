@@ -27,7 +27,7 @@
                     <div class='title'>
                         <el-button type="primary" class='title-btn' @click='cancel'>关闭</el-button>
                     </div>
-                    <div v-if='this.current_state==3||this.state==0'>
+                    <div v-if='this.current_state==3'>
                         <div class='content'>
                             <div class='content_title'>挂牌信息</div>
                             <el-form :model="wear" class='form'>
@@ -90,7 +90,7 @@
                             </el-form>
                         </div>
                     </div>
-                    <div v-if='this.state==0'>
+                    <div v-if='this.state==null'>
                         <div class='content'>
                             <div class='content_title'>下架信息</div>
                             <el-form :model="house_disabled" class='form'>
@@ -115,7 +115,7 @@
                             </el-form>
                         </div>
                     </div>
-                    <div v-if='this.current_state==3||this.state==0'>
+                    <div v-if='this.current_state==3'>
                         <div class='content'>
                             <div class='content_title'>联系人信息</div>
                             <el-form :model="user" class='form'>
@@ -166,7 +166,7 @@
                             </el-form>
                         </div>
                     </div>
-                    <div v-if='this.current_state==3||this.state==0'>
+                    <div v-if='this.current_state==3'>
                         <div class='content'>
                             <div class='content_title'>房源信息</div>
                             <el-form :model="house_info" class='form'>
@@ -234,7 +234,7 @@
                             </el-form>
                         </div>
                     </div>
-                    <div v-if='this.current_state==3||this.state==0'>
+                    <div v-if='this.current_state==3'>
                         <div class='content'>
                             <div class='content_title'>图片信息</div>
                             <div class='block-info'>
@@ -250,7 +250,7 @@
                             </div><br>
                         </div>
                     </div>
-                    <div class='content' v-if='this.current_state==1||this.current_state==2||this.current_state==0||this.current_state==3||this.state==0'>
+                    <div class='content' v-if='this.current_state==2||this.current_state==1||this.current_state==0||this.current_state==3'>
                         <div class='content_title'>报备信息</div>
                         <el-form :model="record" class='form'>
                             <div class='block-info'>
@@ -281,32 +281,32 @@
                         </el-form>
                     </div>
                 </div>
-                <div v-if='this.current_state==2||this.current_state==0||this.current_state==3||this.state==0'>
-                    <div class='content'>
+                <div>
+                    <div class='content' v-if='this.current_state==2||this.current_state==0||this.current_state==3'>
                         <div class='content_title'>勘察信息</div>
                         <el-form :model="survey" class='form'>
                             <div class='block-info'>
                                 <div class='input-title pd-r-28px'>抢单时间：</div>
                                 <el-form-item class='input-1'>
-                                    {{survey.create_time}}
+                                    <!-- {{survey.create_time}} -->
                                 </el-form-item>
                             </div>
                             <div class='block-info'>
                                 <div class='input-title pd-r-28px'>勘察经纪人：</div>
                                 <el-form-item class='input-1'>
-                                    {{survey.agent_name}}
+                                    <!-- {{survey.agent_name}} -->
                                 </el-form-item>
                             </div>
                             <div class='block-info'>
                                 <div class='input-title'>预约勘察时间：</div>
                                 <el-form-item class='input-1'>
-                                    {{survey.reserve_time}}
+                                    <!-- {{survey.reserve_time}} -->
                                 </el-form-item>
                             </div>
                             <div class='block-info'>
                                 <div class='input-title'>勘察经纪人电话：</div>
                                 <el-form-item class='input-1'>
-                                    {{survey.agent_tel}}
+                                    <!-- {{survey.agent_tel}} -->
                                 </el-form-item>
                             </div>
                         </el-form>
@@ -319,19 +319,19 @@
                             <div class='block-info'>
                                 <div class='input-title'>失效时间：</div>
                                 <el-form-item class='input'>
-                                    {{survey_disabled.update_time}}
+                                    <!-- {{survey_disabled.update_time}} -->
                                 </el-form-item>
                             </div>
                             <div class='block-info'>
                                 <div class='input-title'>失效类型：</div>
                                 <el-form-item class='input'>
-                                    {{survey_disabled.disabled_type}}
+                                    <!-- {{survey_disabled.disabled_type}} -->
                                 </el-form-item>
                             </div>
                             <div class='block-info'>
                                 <div class='input-title'>失效描述：</div>
                                 <el-form-item class='input-width-height'>
-                                    {{survey_disabled.disabled_reason}}
+                                    <!-- {{survey_disabled.disabled_reason}} -->
                                 </el-form-item>
                             </div>
                         </el-form>
@@ -376,6 +376,9 @@ export default {
       });
     },
     async getStoreHouseInfo() {
+      if (this.state == null) {
+        this.state = "";
+      }
       let res = await this.api.getStoreHouseInfo({
         record_id: this.record_id,
         current_state: this.current_state,
