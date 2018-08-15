@@ -10,6 +10,9 @@
     line-height: 25px;
     height: 25px;
   }
+  .el-carousel__container {
+    height: 170px;
+  }
 }
 </style>
 
@@ -24,7 +27,7 @@
                     <div class='title'>
                         <el-button type="primary" class='title-btn' @click='cancel'>关闭</el-button>
                     </div>
-                    <div>
+                    <div v-if='this.current_state==3||this.state==0'>
                         <div class='content'>
                             <div class='content_title'>挂牌信息</div>
                             <el-form :model="wear" class='form'>
@@ -87,78 +90,83 @@
                             </el-form>
                         </div>
                     </div>
-                    <div>
+                    <div v-if='this.state==0'>
                         <div class='content'>
                             <div class='content_title'>下架信息</div>
                             <el-form :model="house_disabled" class='form'>
                                 <div class='block-info'>
                                     <div class='input-title'>下架时间：</div>
                                     <el-form-item class='input'>
-                                        <!-- {{house_disabled.update_time}} -->
+                                        {{house_disabled.update_time}}
                                     </el-form-item>
                                 </div>
                                 <div class='block-info'>
                                     <div class='input-title'>下架类型：</div>
                                     <el-form-item class='input'>
-                                        <!-- {{house_disabled.disabled_type}} -->
+                                        {{house_disabled.disabled_type}}
                                     </el-form-item>
                                 </div>
                                 <div class='block-info'>
                                     <div class='input-title'>下架描述：</div>
                                     <el-form-item class='input-width-height'>
-                                        <!-- {{house_disabled.disabled_reason}} -->
+                                        {{house_disabled.disabled_reason}}
                                     </el-form-item>
                                 </div>
                             </el-form>
                         </div>
                     </div>
-                    <div>
+                    <div v-if='this.current_state==3||this.state==0'>
                         <div class='content'>
                             <div class='content_title'>联系人信息</div>
-                            <el-form :model="sumbitForm" class='form'>
+                            <el-form :model="user" class='form'>
                                 <div class='block-info'>
                                     <div class='input-title'>姓名：</div>
                                     <el-form-item class='input'>
-                                        {{}}
+                                        {{user.name}}
                                     </el-form-item>
                                 </div>
                                 <div class='block-info'>
                                     <div class='input-title'>证件类型：</div>
                                     <el-form-item class='input'>
-                                        {{}}
+                                        {{user.card_type}}
                                     </el-form-item>
                                 </div><br>
                                 <div class='block-info'>
                                     <div class='input-title'>性别：</div>
                                     <el-form-item class='input'>
+                                        {{user.sex}}
                                     </el-form-item>
                                 </div>
                                 <div class='block-info'>
 
                                     <div class='input-title'>证件号码：</div>
                                     <el-form-item class='input'>
+                                        {{user.card_id}}
                                     </el-form-item>
                                 </div><br>
                                 <div class='block-info'>
                                     <div class='input-title'>类型：</div>
                                     <el-form-item class='input'>
+                                        {{user.reporter_type}}
                                     </el-form-item>
                                 </div>
                                 <div class='block-info'>
                                     <div class='input-title'>联系电话：</div>
                                     <el-form-item class='input'>
+                                        {{user.tel}}
                                     </el-form-item>
                                 </div>
                                 <div class='block-info'>
                                     <div class='input-title'>通讯地址：</div>
                                     <el-form-item class='input-width'>
+                                        {{user.address}}
                                     </el-form-item>
                                 </div>
 
                             </el-form>
                         </div>
                     </div>
-                    <div>
+                    <div v-if='this.current_state==3||this.state==0'>
                         <div class='content'>
                             <div class='content_title'>房源信息</div>
                             <el-form :model="house_info" class='form'>
@@ -226,32 +234,23 @@
                             </el-form>
                         </div>
                     </div>
-                    <div>
+                    <div v-if='this.current_state==3||this.state==0'>
                         <div class='content'>
                             <div class='content_title'>图片信息</div>
                             <div class='block-info'>
-                                <div class='input-title'>户型图片</div>
-                                <!-- 请换掉以下的东西 使用 element-ui -->
-                                <!-- <mt-swipe :auto="0">
-                                    <mt-swipe-item v-for="(img,index) in house_imgs" :key="index">
-                                        <span class="img">
-                                            <img :src="base + img.img_url" />
-                                        </span>
-                                    </mt-swipe-item>
-                                    <mt-swipe-item v-for="(img,index) in house_imgs">
-                                        <span class="img">
-                                            <img :src="base + img.img_url" />
-                                        </span>
-                                    </mt-swipe-item>
-                                </mt-swipe> -->
-                            </div><br>
-                            <div class='block-info'>
-                                <div class='input-title'>房源图片</div>
-                                <img/>
+
+                                <div class="swiper-container">
+                                    <div class="swiper-wrapper">
+                                        <div v-for="(img,index) in house_imgs" :key="index">
+                                            <img :src="base + img.img_url" class='img' /><br>
+                                            <div class='swiper-slide-text'>{{img.name}}</div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div><br>
                         </div>
                     </div>
-                    <div class='content'>
+                    <div class='content' v-if='this.current_state==1||this.current_state==2||this.current_state==0||this.current_state==3||this.state==0'>
                         <div class='content_title'>报备信息</div>
                         <el-form :model="record" class='form'>
                             <div class='block-info'>
@@ -282,7 +281,7 @@
                         </el-form>
                     </div>
                 </div>
-                <div>
+                <div v-if='this.current_state==2||this.current_state==0||this.current_state==3||this.state==0'>
                     <div class='content'>
                         <div class='content_title'>勘察信息</div>
                         <el-form :model="survey" class='form'>
@@ -313,26 +312,26 @@
                         </el-form>
                     </div>
                 </div>
-                <div>
+                <div v-if='this.current_state==0'>
                     <div class='content'>
                         <div class='content_title'>失效信息</div>
                         <el-form :model="survey_disabled" class='form'>
                             <div class='block-info'>
                                 <div class='input-title'>失效时间：</div>
                                 <el-form-item class='input'>
-                                    <!-- {{survey_disabled.update_time}} -->
+                                    {{survey_disabled.update_time}}
                                 </el-form-item>
                             </div>
                             <div class='block-info'>
                                 <div class='input-title'>失效类型：</div>
                                 <el-form-item class='input'>
-                                    <!-- {{survey_disabled.disabled_type}} -->
+                                    {{survey_disabled.disabled_type}}
                                 </el-form-item>
                             </div>
                             <div class='block-info'>
                                 <div class='input-title'>失效描述：</div>
                                 <el-form-item class='input-width-height'>
-                                    <!-- {{survey_disabled.disabled_reason}} -->
+                                    {{survey_disabled.disabled_reason}}
                                 </el-form-item>
                             </div>
                         </el-form>
@@ -343,6 +342,8 @@
     </div>
 </template>
 <script>
+import Swiper from "swiper";
+import "swiper/dist/css/swiper.css";
 export default {
   data() {
     return {
@@ -354,6 +355,7 @@ export default {
       house_disabled: {},
       survey_disabled: {},
       wear: {},
+      user: {},
       record_id: "",
       current_state: "",
       state: ""
@@ -367,6 +369,12 @@ export default {
     this.getStoreHouseInfo();
   },
   methods: {
+    swiperLoad() {
+      this.swiper = new Swiper(".swiper-container", {
+        loop: true,
+        slidesPerView: "auto"
+      });
+    },
     async getStoreHouseInfo() {
       let res = await this.api.getStoreHouseInfo({
         record_id: this.record_id,
@@ -377,12 +385,16 @@ export default {
         this.sumbitForm = res.data.record;
         this.record = res.data.record;
         this.survey = res.data.survey;
+        this.user = res.data.user;
         this.house_imgs = res.data.house_img;
         this.house_info = res.data.house_info;
-        // this.house_disabled = res.data.house_disabled;
-        // this.survey_disabled = res.data.survey_disabled;
+        this.house_disabled = res.data.house_disabled;
+        this.survey_disabled = res.data.survey_disabled;
         this.wear = res.data.wear;
       }
+      this.$nextTick(() => {
+        this.swiperLoad();
+      });
     },
     lookMore() {
       this.$router.push({ name: "contractDealNewTwo" });

@@ -190,15 +190,18 @@ export default {
         return "已下架";
       } else if (row == 1) {
         return "已上架";
+      } else {
+        return "";
       }
     },
     see(row) {
+      console.log(row);
       this.$router.push({
         name: "storeHouseSeeInfo",
         query: {
           record_id: row.record_id,
-          current_state:row.current_state,
-          state:row.state
+          current_state: row.current_state,
+          state: row.state
         }
       });
     },
