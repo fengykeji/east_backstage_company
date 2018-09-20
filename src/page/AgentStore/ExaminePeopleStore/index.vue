@@ -266,13 +266,21 @@ export default {
       this.showImgUrl = true;
     },
     getStore_type(store_type) {
-      console.log(store_type);
       let temp = [];
-      for (let i = 0; i < store_type.length; i++) {
-        let item = store_type[i];
-        console.log(item);
-        examinePeople.store_type.push(item);
+      //如果是对象 用以下
+      let keys = Object.keys(store_type);
+      for(let key of keys) {
+        let value = store_type[key];
+        temp.push(value);
       }
+
+      return temp.join(",");
+
+      //如果是数组 用以下
+      // for (let i = 0; i < store_type.length; i++) {
+      //   let item = store_type[i];
+      //   temp.push(item);
+      // }
     },
     async check(type) {
       this.submitForm.type = type;
