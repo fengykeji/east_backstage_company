@@ -111,7 +111,7 @@
         <i class="icon-commission"></i>项目佣金管理</el-menu-item>
       <el-menu-item index="distri_commission" class='text' @click="handleSelect('distri_commission')" v-if='this.store_id==0'>
         <i class="icon-distri_commission"></i>分销佣金管理</el-menu-item>
-      <el-submenu index='agent'>
+      <el-submenu index='agent' v-if='this.store_id==0'>
         <template slot="title">
           <span class='delent'>
             <i class="icon-agent"></i>经纪人管理</span>
@@ -120,8 +120,20 @@
         <el-menu-item index="examinePeople" class='people' @click="handleSelect('examinePeople')">审核经纪人</el-menu-item>
         <el-menu-item index="quitPeople" class='people' @click="handleSelect('quitPeople')">离职经纪人</el-menu-item>
       </el-submenu>
+
+      <el-submenu index='agentStore' v-if='this.store_id!=0'>
+        <template slot="title">
+          <span class='delent'>
+            <i class="icon-agent"></i>经纪人审核</span>
+        </template>
+        <el-menu-item index="agentStore" class='people' @click="handleSelect('agentStore')">在职经纪人</el-menu-item>
+        <el-menu-item index="examinePeopleStore" class='people' @click="handleSelect('examinePeopleStore')">审核经纪人</el-menu-item>
+        <el-menu-item index="quitPeopleStore" class='people' @click="handleSelect('quitPeopleStore')">离职经纪人</el-menu-item>
+      </el-submenu>
+
       <el-menu-item index="storeAuthorization" class='text' @click="handleSelect('storeAuthorization')" v-if='this.store_id==0'>
         <i class="icon-store"></i>门店管理</el-menu-item>
+
       <el-submenu index='houseTwoHouse' v-if='this.store_id==0'>
         <template slot="title">
           <i class="icon-house"></i>
@@ -131,7 +143,7 @@
         <el-menu-item index="houseTwoHouse" class='people' @click="handleSelect('houseTwoHouse')">二手房</el-menu-item>
         <el-menu-item index="rentHouse" class='people' @click="handleSelect('rentHouse')">租房</el-menu-item>
       </el-submenu>
-      <el-submenu index='storeHouseTwoHouse'>
+      <el-submenu index='storeHouseTwoHouse' v-if='this.store_id!=0'>
         <template slot="title">
           <i class="icon-house"></i>
           <span class='delent'>
@@ -140,14 +152,14 @@
         <el-menu-item index="storeHouseTwoHouse" class='people' @click="handleSelect('storeHouseTwoHouse')">二手房</el-menu-item>
         <el-menu-item index="storeRentHouse" class='people' @click="handleSelect('storeRentHouse')">租房</el-menu-item>
       </el-submenu>
-        <el-submenu index='customerNewHouse'>
+      <el-submenu index='customerNewHouse' v-if='this.store_id!=0'>
         <template slot="title">
           <i class="icon-house"></i>
           <span class='delent'>
             客户管理(门店)</span>
         </template>
         <el-menu-item index="customerNewHouse" class='people' @click="handleSelect('customerNewHouse')">新房</el-menu-item>
-          <el-menu-item index="customerHouseTwoHouse" class='people' @click="handleSelect('customerHouseTwoHouse')">二手房</el-menu-item>
+        <el-menu-item index="customerHouseTwoHouse" class='people' @click="handleSelect('customerHouseTwoHouse')">二手房</el-menu-item>
         <el-menu-item index="customerRentHouse" class='people' @click="handleSelect('customerRentHouse')">租房</el-menu-item>
       </el-submenu>
       <el-submenu index='dealNewHouse' v-if='this.store_id==0'>
@@ -160,7 +172,7 @@
         <el-menu-item index="dealTwoHouse" class='people' @click="handleSelect('dealTwoHouse')">二手房</el-menu-item>
         <el-menu-item index="dealRenting" class='people' @click="handleSelect('dealRenting')">租房</el-menu-item>
       </el-submenu>
-         <el-menu-item index="purchaseContract" class='text' @click="handleSelect('purchaseContract')">
+      <el-menu-item index="purchaseContract" class='text' @click="handleSelect('purchaseContract')">
         <i class="icon-store"></i>代购合同管理</el-menu-item>
     </el-menu>
   </div>
@@ -182,6 +194,7 @@ export default {
     this.name = localStorage.getItem("name");
     this.company_name = localStorage.getItem("company_name");
     this.store_id = localStorage.getItem("store_id");
+    console.log(this.store_id);
   },
   methods: {
     cancel() {

@@ -25,6 +25,10 @@ import SeeHouseInfo from '@/page/House/SeeHouseInfo'
 import SeeRentHouseInfo from '@/page/House/SeeRentHouseInfo'
 
 import Agent from '@/page/Agent'
+import AgentStore from '@/page/AgentStore'
+import ExaminePeopleStore from '@/page/AgentStore/ExaminePeopleStore'
+import QuitPeopleStore from '@/page/AgentStore/QuitPeopleStore'
+
 import Commission from '@/page/Commission'
 import CompanyPrice from '@/page/Commission/CompanyPrice'
 import PersonPrice from '@/page/Commission/PersonPrice'
@@ -210,6 +214,29 @@ export default new Router({
       ]
     },
 
+    {
+      path: '/agentStore',
+      component: Container,
+      children: [
+        {
+          path: 'agentStore',
+          name: 'agentStore',
+          component: AgentStore,
+        },
+        {
+          path: 'examinePeopleStore',
+          name: 'examinePeopleStore',
+          component: ExaminePeopleStore,
+        },
+        {
+          path: 'quitPeopleStore',
+          name: 'quitPeopleStore',
+          component: QuitPeopleStore,
+        },
+       
+
+      ]
+    },
 
 
 

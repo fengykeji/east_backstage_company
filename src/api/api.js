@@ -311,6 +311,26 @@ let api = {
   // getBrokerAgreement: doGet('company/PeopleProject/getBrokerAgreement'),    //暂未用
   //全民规则详情
   getPeopleRuleInfo: doGet('company/PeopleProject/brokerInfo'),
+
+  //  门店进来  经纪人审核
+  // 经纪人审核 - 审核经纪人列表
+  getAgentStoreList: doGet('company/StoreAgent/getExList'),
+  // 经纪人审核 - 维护列表
+  getAgentStorePassList: doGet('company/StoreAgent/getList'),
+  //经纪人审核 - 审核经纪人详情
+  getAgentStoreInfo: doGet('company/StoreAgent/ex'),
+  //经纪人审核 - 审核
+  exAgentStore: doPost('company/StoreAgent/ex'),
+  //经纪人审核 - 离职
+  quitAgentStore: doPost('company/StoreAgent/quit'),
+
+
+
 }
+
+
+
+
+
 
 export default api; 
