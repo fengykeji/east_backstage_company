@@ -84,6 +84,12 @@ import PurchaseContract from '@/page/PurchaseContract'
 import AddPurchaseContract from '@/page/PurchaseContract/AddPurchaseContract'
 import PreviewInfo from '@/page/PurchaseContract/PreviewInfo'
 
+import CompanyCustomerManagement from '@/page/CompanyCustomerManagement'
+import ArriveOnVisit from '@/page/CompanyCustomerManagement/ArriveOnVisit'
+import Deal from '@/page/CompanyCustomerManagement/Deal'
+import Recommend from '@/page/CompanyCustomerManagement/Recommend'
+
+
 
 import Test from '@/page/Test'
 
@@ -104,6 +110,35 @@ export default new Router({
       name: 'test',
       component: Test
     },
+
+    {
+      path: '/companyCustomerManagement',
+      component: Container,
+      children: [
+        {
+          path: 'companyCustomerManagement',
+          name: 'companyCustomerManagement',
+          component: CompanyCustomerManagement,
+        },
+        {
+          path: 'arriveOnVisit',
+          name: 'arriveOnVisit',
+          component: ArriveOnVisit,
+        },
+        {
+          path: 'deal',
+          name: 'deal',
+          component: Deal,
+        },
+        {
+          path: 'recommend',
+          name: 'recommend',
+          component: Recommend,
+        },
+      ]
+    },
+
+
     {
       path: '/purchaseContract',
       component: Container,
@@ -233,7 +268,7 @@ export default new Router({
           name: 'quitPeopleStore',
           component: QuitPeopleStore,
         },
-       
+
 
       ]
     },

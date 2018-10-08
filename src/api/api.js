@@ -325,6 +325,13 @@ let api = {
   quitAgentStore: doPost('company/StoreAgent/quit'),
 
 
+  //客户管理（公司）
+  //推荐客户列表
+  getRecommendList: doGet('company/NewUser/getRecommendList'),
+  //到访客户列表
+  getVisitList: doGet('company/NewUser/getVisitList'),
+  //成交客户列表
+  getDealList: doGet('company/NewUser/getDealList'),
 
 }
 

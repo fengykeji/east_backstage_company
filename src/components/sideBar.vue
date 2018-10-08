@@ -120,6 +120,17 @@
         <el-menu-item index="examinePeople" class='people' @click="handleSelect('examinePeople')">审核经纪人</el-menu-item>
         <el-menu-item index="quitPeople" class='people' @click="handleSelect('quitPeople')">离职经纪人</el-menu-item>
       </el-submenu>
+      <!-- 客户管理（公司）-->
+      <el-submenu index='recommend' v-if='this.store_id==0'>
+        <template slot="title">
+          <i class="icon-customer"></i>
+          <span class='delent'>
+            客户管理</span>
+        </template>
+        <el-menu-item index="recommend" class='people' @click="handleSelect('recommend')">推荐客户</el-menu-item>
+        <el-menu-item index="arriveOnVisit" class='people' @click="handleSelect('arriveOnVisit')">到访客户</el-menu-item>
+        <el-menu-item index="deal" class='people' @click="handleSelect('deal')">成交客户</el-menu-item>
+      </el-submenu>
 
       <el-submenu index='agentStore' v-if='this.store_id!=0'>
         <template slot="title">
@@ -140,8 +151,8 @@
           <span class='delent'>
             房源管理</span>
         </template>
-        <el-menu-item index="houseTwoHouse" class='people' @click="handleSelect('houseTwoHouse')">二手房</el-menu-item>
-        <el-menu-item index="rentHouse" class='people' @click="handleSelect('rentHouse')">租房</el-menu-item>
+        <!-- <el-menu-item index="houseTwoHouse" class='people' @click="handleSelect('houseTwoHouse')">二手房</el-menu-item>
+        <el-menu-item index="rentHouse" class='people' @click="handleSelect('rentHouse')">租房</el-menu-item> -->
       </el-submenu>
       <el-submenu index='storeHouseTwoHouse' v-if='this.store_id!=0'>
         <template slot="title">
@@ -168,11 +179,11 @@
           <span class='delent'>
             交易管理</span>
         </template>
-        <el-menu-item index="dealNewHouse" class='people' @click="handleSelect('dealNewHouse')">新房</el-menu-item>
+        <!-- <el-menu-item index="dealNewHouse" class='people' @click="handleSelect('dealNewHouse')">新房</el-menu-item>
         <el-menu-item index="dealTwoHouse" class='people' @click="handleSelect('dealTwoHouse')">二手房</el-menu-item>
-        <el-menu-item index="dealRenting" class='people' @click="handleSelect('dealRenting')">租房</el-menu-item>
+        <el-menu-item index="dealRenting" class='people' @click="handleSelect('dealRenting')">租房</el-menu-item> -->
       </el-submenu>
-      <el-menu-item index="purchaseContract" class='text' @click="handleSelect('purchaseContract')">
+      <el-menu-item v-if='this.store_id!=0' index="purchaseContract" class='text' @click="handleSelect('purchaseContract')">
         <i class="icon-store"></i>代购合同管理</el-menu-item>
     </el-menu>
   </div>

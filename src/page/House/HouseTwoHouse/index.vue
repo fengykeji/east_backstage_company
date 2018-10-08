@@ -24,7 +24,13 @@
 </style>
 
 <template>
-  <div class='houseTwoHouse'>
+  <div class='houseTwoHouseDevelopment'>
+    <div>
+      <div class='title' ></div>
+      <div class='text'> 开发中...</div>
+    </div>
+  </div>
+  <!-- <div class='houseTwoHouse'>
     <div class='title'>
       <div class='block-title'>
         <div class='block-textAdd-query'>
@@ -71,12 +77,14 @@
       <el-pagination v-if="tableData.length > 0" background class='page' layout="prev, pager, next" :page-size="pageSize" :current-page="searchObj.page" :total="total" @current-change="pageChange">
       </el-pagination>
     </div>
-  </div>
+  </div> -->
+
 </template>
 <script>
 export default {
   data() {
     return {
+      visible: false,
       value: "",
       remark: "",
       searchObj: {

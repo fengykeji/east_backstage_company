@@ -30,7 +30,13 @@ body {
 }
 </style>
 <template>
-    <div class='dealNewHouse project'>
+  <div class='houseTwoHouseDevelopment'>
+    <div>
+      <div class='title'></div>
+      <div class='text'> 开发中...</div>
+    </div>
+  </div>
+  <!-- <div class='dealNewHouse project'>
         <div class='title'>
             <div class='left'>
                 <div class="tab-block">
@@ -66,7 +72,7 @@ body {
             </el-pagination>
         </div>
 
-    </div>
+    </div> -->
 </template>
 
 <script>
