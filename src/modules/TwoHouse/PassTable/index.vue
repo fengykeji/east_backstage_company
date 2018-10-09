@@ -34,8 +34,8 @@ export default {
     accountAdmin(row) {
       this.$emit("accountAdmin", row);
     },
-    examine(row, type) {
-      this.$emit("examine", row, type);
+    showAdd(row, type) {
+      this.$emit("showAdd", row, type);
     }
   }
 };

@@ -57,7 +57,7 @@
     <div class="apply-wrapper">
       <div class="apply-wrapper-inner">
         <div class='title-top'>
-          <span>发起申请</span>
+          <span>详情</span>
           <span class="title-btn">
             <el-button type="primary" @click="submit">提交</el-button>
             <el-button @click="cancel">取消</el-button>
