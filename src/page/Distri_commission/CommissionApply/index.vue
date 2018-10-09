@@ -216,7 +216,7 @@ export default {
       let arr = [];
       let count = 0;
       for (let v of val) {
-        count += v.broker_num;
+        count += Number(v.broker_num);
         arr.push(v.broker_id);
       }
       this.sumbitForm.broker_id = arr.join(",");
