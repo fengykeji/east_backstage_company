@@ -22,7 +22,7 @@ body {
     color: #333;
   }
   .el-table td {
-    padding: 0;
+     padding: 6px 0;
     color: #333;
   }
 }
@@ -35,12 +35,15 @@ body {
         <div class='text1'>当前位置：客户管理 → 成交客户</div>
         <div class="search-block">
           <div class="time_block">
-            <el-date-picker v-model="searchObj.start_time" type="date" placeholder="选择日期"  class='date'> </el-date-picker> 
-             <span class='date_text'>至</span>
-            <el-date-picker v-model="searchObj.end_time" type="date" placeholder="选择日期"  class='date'> </el-date-picker>
+            <el-date-picker v-model="searchObj.start_time" type="date" placeholder="选择日期" class='date'> </el-date-picker>
+            <span class='date_text'>至</span>
+            <el-date-picker v-model="searchObj.end_time" type="date" placeholder="选择日期" class='date'> </el-date-picker>
           </div>
           <el-input class='query' placeholder="可按客户电话/客户姓名/置业顾问姓名进行查询" v-model="searchObj.search"></el-input>
           <el-button icon="el-icon-search" circle @click="getDealList"></el-button>
+        </div>
+        <div class='btn'>
+          <a download="" :href="exportExcel()" target="_black" class='export'>导出</a>
         </div>
       </div>
       <div>
@@ -66,11 +69,11 @@ body {
       <el-table-column label="状态" align='center' width="140px">
         <template slot-scope="scope">{{state(scope.row.current_state)}} / {{disabledState(scope.row.disabled_state)}}</template>
       </el-table-column>
-      <el-table-column prop="operation" label="操作" align='center' width="100px">
+      <!-- <el-table-column prop="operation" label="操作" align='center' width="100px">
         <template slot-scope="scope">
           <el-button type="text" @click='showProject(scope.row)'>查看</el-button>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
     <el-pagination background class='page' layout="prev, pager, next" :page-size="pageSize" :current-page="searchObj.page" :total="total" @current-change="pageChange">
     </el-pagination>
@@ -80,7 +83,7 @@ body {
 export default {
   data() {
     return {
-     searchObj: {
+      searchObj: {
         tag_search: 0,
         start_time: "",
         end_time: "",
@@ -102,6 +105,15 @@ export default {
     this.getDealList();
   },
   methods: {
+    exportExcel() {
+      let url =
+        this.api.exportExcel +
+        "/?type=" +
+        3 +
+        "&tag_search=" +
+        this.searchObj.tag_search;
+      return url;
+    },
     clickTip(index) {
       this.tipActiveIndex = index;
       this.searchObj.tag_search = index;
@@ -111,10 +123,10 @@ export default {
       this.getDealList();
     },
     async getDealList() {
-       if (this.searchObj.start_time && !this.searchObj.end_time) {
+      if (this.searchObj.start_time && !this.searchObj.end_time) {
         this.$message({
           type: "error",
-           message: `请选择查询的结束时间！`
+          message: `请选择查询的结束时间！`
         });
       }
       let res = await this.api.getDealList(this.searchObj);

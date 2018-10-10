@@ -323,6 +323,9 @@ let api = {
   exAgentStore: doPost('company/StoreAgent/ex'),
   //经纪人审核 - 离职
   quitAgentStore: doPost('company/StoreAgent/quit'),
+  //离职列表
+  getAgentStoreQuitList: doGet('company/StoreAgent/getQuitList'),
+
 
 
   //客户管理（公司）
@@ -332,6 +335,9 @@ let api = {
   getVisitList: doGet('company/NewUser/getVisitList'),
   //成交客户列表
   getDealList: doGet('company/NewUser/getDealList'),
+  //客户管理 excel导出
+  exportExcel: base + "company/NewUser/exportExcel",
+
 
 }
 

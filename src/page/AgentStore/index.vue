@@ -55,20 +55,19 @@ body {
       <el-table-column prop="" label="序号" align='center' width="70px">
         <template slot-scope="scope">{{getIndex(scope)}}</template>
       </el-table-column>
-       <el-table-column prop="account" label="云算号" align='center' width="100px"></el-table-column>
-      <el-table-column prop="account" label="名称" align='center' width="100px"></el-table-column>
-      <el-table-column label="性别" align='center' width="70px">
+      <el-table-column prop="account" label="云算号" align='center' width="100px"></el-table-column>
+      <el-table-column prop="name" label="名称" align='center'></el-table-column>
+      <el-table-column label="性别" align='center'>
         <template slot-scope="scope">{{getSex(scope.row.sex)}}</template>
       </el-table-column>
-      <el-table-column prop="name" label="年龄" align='center' width="70px"></el-table-column>
-      <el-table-column prop="tel" label="联系方式" align='center' width="140px"></el-table-column>
-
-      <el-table-column prop="project_name" label="申请职称" align='center' width="130px"></el-table-column>
-      <el-table-column prop="department" label="曾任职" align='center' width="140px"></el-table-column>
-      <el-table-column prop="city_name" label="是否有专业证书" align='center' width="140px"></el-table-column>
+      <!-- <el-table-column prop="x" label="年龄" align='center' width="70px"></el-table-column> -->
+      <el-table-column prop="tel" label="联系方式" align='center'></el-table-column>
+      <el-table-column prop="store_type" label="角色" align='center'></el-table-column>
+      <!-- <el-table-column prop="department" label="曾任职" align='center' width="140px"></el-table-column> -->
+      <!-- <el-table-column prop="city_name" label="是否有专业证书" align='center' width="140px"></el-table-column> -->
       <el-table-column prop="is_staff" label="是否为员工" align='center'></el-table-column>
-      <el-table-column prop="entry_time" label="申请时间" align='center' width="140px"></el-table-column>
-      <el-table-column prop="entry_time" label="审核次数" align='center' width="90px"></el-table-column>
+      <el-table-column prop="entry_time" label="申请时间" align='center'></el-table-column>
+      <!-- <el-table-column prop="entry_time" label="审核次数" align='center' width="90px"></el-table-column> -->
       <el-table-column label="操作" align='center' width="140px">
         <template slot-scope="scope">
           <el-button type="text" @click='showQuit(scope.row)'>离职</el-button>
@@ -248,7 +247,10 @@ export default {
     },
     async showSee(row) {
       this.showInfo = true;
-      let res = await this.api.getAgentStoreInfo({ agent_id: row.agent_id });
+      let res = await this.api.getAgentStoreInfo({
+        agent_id: row.agent_id,
+        id: row.id
+      });
       if (res.code == 200) {
         Object.assign(this.examinePeople, res.data);
       }

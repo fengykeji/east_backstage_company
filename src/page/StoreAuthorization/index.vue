@@ -53,11 +53,11 @@ body {
         <el-table-column prop="store_name" label="门店名称" align='center'></el-table-column>
         <el-table-column prop="contact" label="门店店长" align='center'></el-table-column>
         <el-table-column prop="contact_tel" label="联系方式" align='center' width="110px"></el-table-column>
-        <el-table-column prop="developer_name" label="门店地址" align='center' width="230px"></el-table-column>
-        <el-table-column label="授权状态" align='center' width="100px">
-          <template slot-scope="scope">{{state (scope.row.ex_state)}}</template>
-        </el-table-column>
+        <el-table-column prop="address" label="门店地址" align='center' width="230px"></el-table-column>
         <el-table-column prop="is_distribution" label="帐号分配" align='center' width="80px"></el-table-column>
+        <el-table-column label="授权状态" align='center'>
+          <template slot-scope="scope">{{ex_state (scope.row.ex_state)}}</template>
+        </el-table-column>
         <el-table-column prop="start_time" label="授权开始时间" align='center'></el-table-column>
         <el-table-column prop="end_time" label="授权结束时间" align='center'></el-table-column>
         <el-table-column prop="operation" label="操作" align='center' width="170px">
@@ -107,7 +107,7 @@ export default {
           if (res.code == 200) {
             this.$message({
               type: "success",
-              message: "授权成功!"
+              message: "授权申请成功!"
             });
           }
           this.getStoreList();
@@ -149,15 +149,6 @@ export default {
       this.searchObj.page = 1;
       this.getStoreList();
     },
-    state(row) {
-      if (row == 0) {
-        return "未授权";
-      } else if (row == 1) {
-        return "已授权 ";
-      } else if (row == 2) {
-        return "授权申请中 ";
-      }
-    },
     async getStoreList() {
       let res = await this.api.getStoreList(this.searchObj);
       if (res.code == 200) {
@@ -171,6 +162,15 @@ export default {
     pageChange(page) {
       this.searchObj.page = page;
       this.getStoreList();
+    },
+    ex_state(row) {
+      if (row == 1) {
+        return "已授权";
+      } else if (row == 2) {
+        return "申请中";
+      } else {
+        return "未授权";
+      }
     }
   }
 };

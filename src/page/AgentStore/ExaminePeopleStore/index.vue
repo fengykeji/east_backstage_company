@@ -104,18 +104,18 @@
           <template slot-scope="scope">{{getIndex(scope)}}</template>
         </el-table-column>
         <el-table-column prop="account" label="云算号" align='center' width="100px"></el-table-column>
-        <el-table-column prop="name" label="名称" align='center' width="100px"></el-table-column>
-        <el-table-column label="性别" align='center' width="70px">
+        <el-table-column prop="name" label="名称" align='center'></el-table-column>
+        <el-table-column label="性别" align='center'>
           <template slot-scope="scope">{{getSex(scope.row.sex)}}</template>
         </el-table-column>
-        <el-table-column prop="x" label="年龄" align='center' width="70px"></el-table-column>
-        <el-table-column prop="tel" label="联系方式" align='center' width="140px"></el-table-column>
-        <el-table-column prop="role" label="申请职称" align='center' width="130px"></el-table-column>
-        <el-table-column prop="department" label="曾任职" align='center' width="140px"></el-table-column>
-        <el-table-column prop="city_name" label="是否有专业证书" align='center' width="140px"></el-table-column>
+        <!-- <el-table-column prop="x" label="年龄" align='center' width="70px"></el-table-column> -->
+        <el-table-column prop="tel" label="联系方式" align='center'></el-table-column>
+        <el-table-column prop="role" label="角色" align='center'></el-table-column>
+        <!-- <el-table-column prop="department" label="曾任职" align='center' width="140px"></el-table-column> -->
+        <!-- <el-table-column prop="city_name" label="是否有专业证书" align='center' width="140px"></el-table-column> -->
         <el-table-column prop="is_staff" label="是否为员工" align='center'></el-table-column>
-        <el-table-column prop="entry_time" label="申请时间" align='center' width="140px"></el-table-column>
-        <el-table-column prop="entry_time" label="审核次数" align='center' width="90px"></el-table-column>
+        <el-table-column prop="entry_time" label="申请时间" align='center'></el-table-column>
+        <!-- <el-table-column prop="entry_time" label="审核次数" align='center' width="90px"></el-table-column> -->
         <el-table-column label="操作" align='center'>
           <template slot-scope="scope">
             <el-button type="text" @click='examine(scope.row)' v-if='scope.row.state==2'>审核</el-button>
@@ -140,7 +140,7 @@
           <el-form-item class='input1'>
             <div>角色</div>
             <div class='border'>
-              {{role(examinePeople.role)}}
+              {{getStore_type(examinePeople.store_type)}}
             </div>
           </el-form-item>
           <el-form-item class='input1'>
@@ -169,12 +169,6 @@
           <el-form-item class='input1'>
             <div>电话号码</div>
             <div class='border'>{{examinePeople.tel}}</div>
-          </el-form-item>
-          <el-form-item class='input1'>
-            <div>所有权限</div>
-            <div class='border'>
-              {{getStore_type(examinePeople.store_type)}}
-            </div>
           </el-form-item>
           <div v-if="operationType==1">
             <div class='num_set'>审核信息</div>
@@ -269,7 +263,7 @@ export default {
       let temp = [];
       //如果是对象 用以下
       let keys = Object.keys(store_type);
-      for(let key of keys) {
+      for (let key of keys) {
         let value = store_type[key];
         temp.push(value);
       }
@@ -377,13 +371,13 @@ export default {
         return "待审核";
       }
     },
-    role(row) {
-      if (row == 1) {
-        return "新房经纪人";
-      } else if (row == 2) {
-        return "项目对接人";
-      }
-    },
+    // role(row) {
+    //   if (row == 1) {
+    //     return "新房经纪人";
+    //   } else if (row == 2) {
+    //     return "项目对接人";
+    //   }
+    // },
     sex(row) {
       if (row == 1) {
         return "男";

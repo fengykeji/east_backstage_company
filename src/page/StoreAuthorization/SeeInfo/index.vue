@@ -72,7 +72,7 @@
         <div class='title-top'>
           <span>新增门店</span>
           <span class="title-btn">
-            <el-button type="primary" @click='submitForm'>提交</el-button>
+            <el-button type="primary" @click='submitForm' v-if='this.operationType!=0'>提交</el-button>
             <el-button @click="cancel">关闭</el-button>
           </span>
         </div>
@@ -407,7 +407,9 @@ export default {
       this.dialogFormVisibleAccounts = false;
       let originAccountsForm = this.$options.data()["projectUserForm"];
       Object.assign(this.projectUserForm, originAccountsForm);
-      this.$router.push({ name: "storeAuthorization" });
+      if (this.operationType == 3) {
+        this.$router.push({ name: "storeAuthorization" });
+      }
     },
     cancel() {
       this.$router.push({ name: "storeAuthorization" });
