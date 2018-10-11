@@ -94,8 +94,8 @@
                             <el-input v-model="form.total_price" auto-complete="off"></el-input>
                         </el-form-item>
                         <el-form-item label="付款方式" class='input'>
-                            <el-select v-model="form.pay_way_name" placeholder="请选择付款方式" @change="getOptions">
-                                <el-option v-for="item in pay_wayOptions" :key="item.id" :label="item.param" :value="item.param"></el-option>
+                            <el-select v-model="form.pay_way_name" placeholder="请选择付款方式">
+                                <el-option v-for="item in pay_wayOptions" :key="item.id" :label="item.param" :value="item.id"></el-option>
                             </el-select>
                         </el-form-item>
                         <el-form-item label="诚意金" class='input'>
@@ -136,33 +136,27 @@ export default {
     this.operationType = this.$route.query.operationType;
     this.sub_id = this.$route.query.sub_id;
     this.getContractExInfo();
-    this.getOptions();
   },
   methods: {
     async examine() {
-      let temp = "";
-      temp.sub_id = this.form.sub_id;
+      let temp = {};
+      temp.sub_id = this.sub_id;
       temp.total_price = this.form.total_price;
       temp.earnest_money = this.form.earnest_money;
       temp.break_money = this.form.break_money;
       temp.broker_num = this.form.broker_num;
       temp.appoint_construct_time = this.form.appoint_construct_time;
-      temp.pay_way = this.form.pay_way;
+      temp.pay_way = this.form.pay_way_name;
 
       let res = await this.api.contractExSubmit(temp);
       if (res.code == 200) {
-      }
-    },
-    async getOptions() {
-      let res = await this.api.getContractExInfo({ sub_id: this.sub_id });
-      if (res.code == 200) {
-        this.pay_wayOptions = res.data.pay_way;
       }
     },
     async getContractExInfo() {
       let res = await this.api.getContractExInfo({ sub_id: this.sub_id });
       if (res.code == 200) {
         this.form = res.data;
+        this.pay_wayOptions = res.data.pay_way;
       }
     },
     cancel() {
