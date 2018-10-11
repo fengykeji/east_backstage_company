@@ -66,7 +66,7 @@ body {
       <!-- <el-table-column prop="department" label="曾任职" align='center' width="140px"></el-table-column> -->
       <!-- <el-table-column prop="city_name" label="是否有专业证书" align='center' width="140px"></el-table-column> -->
       <el-table-column prop="is_staff" label="是否为员工" align='center'></el-table-column>
-      <el-table-column prop="entry_time" label="申请时间" align='center'></el-table-column>
+      <!-- <el-table-column prop="entry_time" label="申请时间" align='center'></el-table-column> -->
       <!-- <el-table-column prop="entry_time" label="审核次数" align='center' width="90px"></el-table-column> -->
       <el-table-column label="操作" align='center' width="140px">
         <template slot-scope="scope">

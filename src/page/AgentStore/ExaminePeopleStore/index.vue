@@ -132,7 +132,7 @@
           <el-button type='primary' @click='cancel'>关闭</el-button>
         </div>
         <div class='num_set'>员工信息</div>
-        <el-form :v-model="examinePeople">
+        <el-form v-model="examinePeople">
           <el-form-item class='input1'>
             <div>姓名</div>
             <div class='border'>{{examinePeople.name}}</div>
@@ -140,24 +140,31 @@
           <el-form-item class='input1'>
             <div>角色</div>
             <div class='border'>
-              {{getStore_type(examinePeople.store_type)}}
+              {{examinePeople.role}}
             </div>
           </el-form-item>
           <el-form-item class='input1'>
             <div>云算号</div>
             <div class='border'>{{examinePeople.account}}</div>
           </el-form-item>
-          <!-- <el-form-item class='input1'>
-            <div>所属公司</div>
-            <div class='border'>{{examinePeople.department}}</div>
-          </el-form-item> -->
           <el-form-item class='input1'>
-            <div>申请时间</div>
+            <div>所属部门</div>
+            <div class='border'>{{examinePeople.department}}</div>
+          </el-form-item>
+          <el-form-item class='input1'>
+            <div>职位</div>
+            <div class='border'>{{examinePeople.position}}</div>
+          </el-form-item>
+          <el-form-item class='input1'>
+            <div>入职时间</div>
             <div class='border'>{{examinePeople.entry_time}}</div>
           </el-form-item>
           <el-form-item class='input1'>
-            <div>是否为员工</div>
-            <div class='border'>{{examinePeople.is_staff}}</div>
+            <div>工牌照片</div>
+            <div class='border  img'>
+              <span>(工牌照片)</span>
+              <el-button type='text' @click='seeimgUrl'>点击查看</el-button>
+            </div>
           </el-form-item>
           <div class='num_set'>基础信息</div>
           <el-form-item class='input1'>
@@ -170,21 +177,37 @@
             <div>电话号码</div>
             <div class='border'>{{examinePeople.tel}}</div>
           </el-form-item>
-          <div v-if="operationType==1">
-            <div class='num_set'>审核信息</div>
-            <el-form-item class='input1'>
-              <div>审核人员</div>
-              <div class='border'>{{examinePeople.auditing_name}}</div>
-            </el-form-item>
-            <el-form-item class='input1'>
-              <div>审核时间</div>
-              <div class='border'>{{examinePeople.auditing_time}}</div>
-            </el-form-item>
-            <el-form-item class='input1'>
-              <div>备注</div>
-              <div class='border height'>{{examinePeople.remark}}</div>
-            </el-form-item>
-          </div>
+          <el-form-item class='input1'>
+            <div>出生年月</div>
+            <div class='border'>{{examinePeople.birth}}</div>
+          </el-form-item>
+          <el-form-item class='input1'>
+            <div>通讯地址</div>
+            <div class='border1'>{{examinePeople.city_name+examinePeople.district_name+examinePeople.absolute_address}}</div>
+          </el-form-item>
+          <el-form-item class='input1'>
+            <div>身份证号码</div>
+            <div class='border'>{{examinePeople.id_card}}</div>
+          </el-form-item>
+          <el-form-item class='input1'>
+            <div>绑定银行</div>
+            <div class='border'>{{examinePeople.bank_name}}</div>
+          </el-form-item>
+          <el-form-item class='input1'>
+            <div>银行卡号</div>
+            <div class='border'>{{examinePeople.bank_card}}</div>
+          </el-form-item>
+          <el-form-item class='input1'>
+            <div>证件照片</div>
+            <div class='border  img'>
+              <span>(证件照片为正反两面)</span>
+              <el-button type='text' @click='seeIdCard'>点击查看</el-button>
+            </div>
+          </el-form-item>
+          <el-form-item class='input2'>
+            <div>个人介绍</div>
+            <div class='border height'>{{examinePeople.slef_desc}}</div>
+          </el-form-item>
         </el-form>
       </el-dialog>
       <el-dialog title="拒绝" :visible.sync="refuseInfo" class='dialog' @close="cancelRefuseInfo">
@@ -199,6 +222,16 @@
         </div>
       </el-dialog>
     </template>
+    <el-dialog title="工牌照照片" :visible.sync="showImgUrl">
+      <img class='heightWidth' v-if='examinePeople.img_url' :src="this.base + examinePeople.img_url" />
+      <!-- <img class='heightWidth' v-else src="../../assets/images/head.png" /> -->
+    </el-dialog>
+    <el-dialog title="证件照照片" :visible.sync="showIdCard" class='showIdCard'>
+      <img class='heightWidth' v-if='examinePeople.card_front' :src="this.base + examinePeople.card_front" />
+      <!-- <img class='heightWidth' v-else src="../../assets/images/idCard.png" /> -->
+      <img class='heightWidth' v-if='examinePeople.card_back' :src=" + examinePeople.card_back" />
+      <!-- <img class='heightWidth' v-else src="../../assets/images/Document_2@2x.png" /> -->
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -243,6 +276,8 @@ export default {
         agent_id: "",
         id: ""
       },
+      showImgUrl: false,
+      showIdCard: false,
       remark: "",
       operationType: 0 //0审核  1 查看
     };
@@ -253,6 +288,9 @@ export default {
     this.getAgentStoreList();
   },
   methods: {
+    seeIdCard() {
+      this.showIdCard = true;
+    },
     showCheck(type) {
       this.refuseInfo = true;
     },
@@ -281,8 +319,7 @@ export default {
       let temp = Object.assign({}, this.submitForm);
       temp.store_id = this.store_id;
       temp.remark = this.remark;
-      temp.store_type = JSON.stringify(this.examinePeople.store_type);
-
+      temp.store_type = this.examinePeople.role_type;
       if (type == 0) {
         this.$confirm("此操作将审核不通过, 是否继续?", "提示", {
           confirmButtonText: "确定",
@@ -334,6 +371,7 @@ export default {
       }
     },
     async examine(row) {
+      console.log(row);
       this.operationType = 0;
       this.dialogFormVisible = true;
       this.submitForm.project_id = row.project_id;
@@ -360,6 +398,8 @@ export default {
         return "男";
       } else if (row == 2) {
         return "女";
+      } else {
+        return "未设置";
       }
     },
     auditingState(row) {
@@ -371,13 +411,6 @@ export default {
         return "待审核";
       }
     },
-    // role(row) {
-    //   if (row == 1) {
-    //     return "新房经纪人";
-    //   } else if (row == 2) {
-    //     return "项目对接人";
-    //   }
-    // },
     sex(row) {
       if (row == 1) {
         return "男";

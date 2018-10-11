@@ -41,7 +41,7 @@
         <el-table-column label="性别" align='center'>
           <template slot-scope="scope">{{sex(scope.row.sex)}}</template>
         </el-table-column>
-        <el-table-column  prop="role" label="角色" align='center'> </el-table-column>
+        <el-table-column prop="role" label="角色" align='center'> </el-table-column>
         <el-table-column prop="entry_time" label="入职时间" align='center'></el-table-column>
         <el-table-column prop="quit_time" label="离职时间" align='center'></el-table-column>
         <el-table-column prop="remark" label="离职原因" align='center' width="320px"></el-table-column>

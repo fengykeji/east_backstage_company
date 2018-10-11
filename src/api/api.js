@@ -339,6 +339,17 @@ let api = {
   exportExcel: base + "company/NewUser/exportExcel",
 
 
+  //代购合同管理
+  // 待审核列表
+  getContractExList: doGet('company/Contract/getExList'),
+  // 维护列表
+  getContractList: doGet('company/Contract/getList'),
+  // 审核详情
+  getContractExInfo: doGet('company/Contract/ex'),
+  //审核提交
+  contractExSubmit: doPost('company/Contract/ex'),
+  //合同查看
+  getContractInfo: doGet('company/Contract/getInfo'),
 }
 
 

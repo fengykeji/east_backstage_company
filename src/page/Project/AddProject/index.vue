@@ -77,7 +77,6 @@
           </el-form-item>
           <el-form-item label="项目地址" prop="province">
             <!-- 下拉组建 -->
-            <city-selector ref="citySelector" :disabled="isDisable()" :province.sync="form.province" :city.sync="form.city" :district.sync="form.district" @changeDistrict="areaChange" />
           </el-form-item>
           <el-form-item class='input' prop="absolute_address">
             <!-- <el-input id="suggestId" v-model="form.absolute_address" auto-complete="off" class='input-1' :disabled="isDisable()" placeholder="请输入具体地址"></el-input> -->

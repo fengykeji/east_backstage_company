@@ -52,7 +52,7 @@ body {
     <div>
 
       <ready-table v-if="searchObj.tag_search == 2" :tableData="tableData" />
-      <pass-table v-if="searchObj.tag_search == 1" :tableData="tableData" @accountAdmin='accountAdmin' @showAdd='showAdd'/>
+      <pass-table v-if="searchObj.tag_search == 1" :tableData="tableData" @accountAdmin='accountAdmin' @showAdd='showAdd' />
       <no-pass-table v-if="searchObj.tag_search == 0" :tableData="tableData" />
       <el-pagination background class='page' layout="prev, pager, next" :page-size="pageSize" :current-page="searchObj.page" :total="total" @current-change="pageChange">
       </el-pagination>
