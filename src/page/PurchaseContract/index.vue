@@ -5,13 +5,13 @@ body {
 }
 .contract {
   text-align: left;
-font-size: 15px;
-  .title{
+  font-size: 15px;
+  .title {
     text-align: center;
-  font-size: 24px;
+    font-size: 24px;
   }
-  .row{
-      text-indent: 35px;
+  .row {
+    text-indent: 35px;
   }
 }
 
@@ -40,6 +40,12 @@ font-size: 15px;
     color: #333;
   }
 }
+
+.contract {
+  .underline {
+    text-decoration: underline;
+  }
+}
 </style>
 <template>
   <div class='purchaseContract project'>
@@ -66,6 +72,13 @@ font-size: 15px;
       </el-pagination>
     </div>
 
+    <div class="printExcel">
+      <div class='contract'>
+        <div class='title'>房屋代购协议书</div>
+        <div>代购房屋面积约为<span class="underline">{{test.name}}</span></div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -85,7 +98,10 @@ export default {
       total: 0,
       tableData: [],
       operationType: 0, //0 新增 1打印 2查看 3 挞定 4审核
-      store_id: ""
+      store_id: "",
+      test: {
+        name: ""
+      }
     };
   },
   created() {
@@ -172,8 +188,24 @@ export default {
     },
     //打印
     printing(row, type) {
-      //保存以前页面
-      let old = document.body.innerHTML;
+      console.log(row);
+      this.test.name = 123;
+
+      this.$nextTick(() => {
+        //保存以前页面
+        let old = document.body.innerHTML;
+
+        let htmlTest = document.querySelector(".printExcel");
+        let content = htmlTest.innerHTML;
+
+        //替换整个页面
+        document.body.innerHTML = content;
+        window.print();
+        //页面回到之前
+        document.body.innerHTML = old;
+      });
+
+      return;
       let html = "";
       html += "<div class='contract'>";
       html += "<div class='title'>房屋代购协议书</div>";
