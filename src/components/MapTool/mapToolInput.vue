@@ -3,22 +3,21 @@
   position: relative;
 
   &:hover .mapToolInput-list {
-     display: inline-block;
+    display: inline-block;
   }
 }
 .mapToolInput-list {
-  display: none ; 
+  display: none;
   position: absolute;
   top: 100%;
-  left: 0 ;
+  left: 0;
   list-style: none;
-  border: 1px solid #ebeef5 ;
+  border: 1px solid #ebeef5;
   padding: 0;
   margin: 0;
   background: #fff;
   z-index: 20;
   border-radius: 8px;
-
 
   li {
     font-size: 14px;
@@ -42,16 +41,16 @@
 }
 </style>
 <template>
-  <div class="mapToolInput"  >
-      <ul class="mapToolInput-list" :class="visible?'show':''">
-        <li @click.stop="selectOption(item)" v-for="item in addOptions">{{item.label}}</li>
-      </ul>
-      <el-input :disabled="disabled"  :value="value" @input="input" @change="change" placeholder="请输入详细地址" />
+  <div class="mapToolInput">
+    <ul class="mapToolInput-list" :class="visible?'show':''">
+      <li @click.stop="selectOption(item)" v-for="item in addOptions">{{item.label}}</li>
+    </ul>
+    <el-input :disabled="disabled" :value="value" @input="input" @change="change" placeholder="请输入详细地址" />
   </div>
 </template>
 <script>
 export default {
-  props: ["value", "area" , "disabled"],
+  props: ["value", "area", "disabled"],
   data() {
     return {
       local: null,
@@ -64,14 +63,14 @@ export default {
   },
   methods: {
     selectOption(item) {
-      this.$emit("change" , item.label);
+      this.$emit("change", item.label);
     },
     input(value) {
       this.autoComplete(this.area + value);
-      this.$emit("input" , value) ; 
+      this.$emit("input", value);
     },
     change(value) {
-      this.$emit("change" , value);
+      this.$emit("change", value);
     },
     autoComplete(v) {
       if (!this.local) {

@@ -350,6 +350,13 @@ let api = {
   contractExSubmit: doPost('company/Contract/ex'),
   //合同查看
   getContractInfo: doGet('company/Contract/getInfo'),
+  //挞定
+  break: doPost('company/Contract/break'),
+  //获取挞定类型
+  getBreakType: doGet('company/Contract/break'),
+
+
+
 }
 
 

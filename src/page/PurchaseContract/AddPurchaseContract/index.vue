@@ -29,25 +29,25 @@
                     </span>
                 </div>
                 <div class='table_box'>
-                    <el-form :model="form" class='form'>
+                    <el-form :model="form" class='form' v-for="item in itemList" key="">
                         <div class='title-text'>客户信息（甲方）</div>
                         <el-form-item label="代购合同编号" class='input'>
-                            <el-input v-model="form.agent_name" auto-complete="off"></el-input>
+                            <el-input v-model="form.sub_code" auto-complete="off"></el-input>
                         </el-form-item>
                         <el-form-item label="证件类型" class='input'>
-                            <el-input v-model="form.agent_name" auto-complete="off"></el-input>
+                            <el-input v-model="item.card_type" auto-complete="off"></el-input>
                         </el-form-item>
                         <el-form-item label="客户姓名" class='input'>
-                            <el-input v-model="form.agent_name" auto-complete="off"></el-input>
+                            <el-input v-model="item.name" auto-complete="off"></el-input>
                         </el-form-item>
                         <el-form-item label="证件编号" class='input'>
-                            <el-input v-model="form.agent_name" auto-complete="off"></el-input>
+                            <el-input v-model="item.card_id" auto-complete="off"></el-input>
                         </el-form-item>
-                        <el-form-item label="联系电话1" class='input'>
-                            <el-input v-model="form.agent_name" auto-complete="off"></el-input>
+                        <el-form-item label="联系电话" class='input_adr'>
+                            <el-input v-model="item.tel" auto-complete="off"></el-input>
                         </el-form-item>
                         <el-form-item label="通讯地址" class='input_adr'>
-                            <el-input v-model="form.agent_name" auto-complete="off"></el-input>
+                            <el-input v-model="item.address" auto-complete="off"></el-input>
                         </el-form-item>
                     </el-form>
                     <el-form :model="form" class='form'>
@@ -128,6 +128,7 @@ export default {
     return {
       form: {},
       pay_wayOptions: [],
+      itemList: [],
       sub_id: "",
       operationType: "" //0 新增 1打印 2查看 3 挞定 4审核
     };
@@ -150,6 +151,11 @@ export default {
 
       let res = await this.api.contractExSubmit(temp);
       if (res.code == 200) {
+        this.$message({
+          type: "success",
+          message: "审核成功!"
+        });
+        this.cancel();
       }
     },
     async getContractExInfo() {
@@ -157,6 +163,7 @@ export default {
       if (res.code == 200) {
         this.form = res.data;
         this.pay_wayOptions = res.data.pay_way;
+        this.itemList = res.data.user;
       }
     },
     cancel() {
