@@ -212,7 +212,10 @@ body {
             <el-option v-for="item in tartOptions" :key="item.id" :label="item.param" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item>
+         <el-form-item label="违约金" class='select_mon'>
+          <el-input v-model="break_num_true" />
+        </el-form-item>
+        <el-form-item label="挞定原因" class='select-left'>
           <el-input v-model="break_desc" class='textarea' type="textarea" />
         </el-form-item>
       </el-form>
@@ -248,6 +251,7 @@ export default {
       },
       disabled_state: "", //挞定类型
       break_desc: "",
+      break_num_true:"",//挞定金额
       sub_id: "",
       tartOptions: []
     };
@@ -284,6 +288,7 @@ export default {
       temp.break_desc = this.break_desc;
       temp.sub_id = this.sub_id;
       temp.disabled_state = this.disabled_state;
+      temp.break_num_true=this.break_num_true;
       let res = await this.api.break(temp);
       if (res.code == 200) {
         this.$message({
@@ -297,6 +302,7 @@ export default {
     cancelTartInfo() {
       this.disabled_state = '';
       this.break_desc = "";
+      this.break_num_true='';
       this.tartInfo = false;
     },
     //审核  //查看
