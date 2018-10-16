@@ -140,7 +140,7 @@ body {
           <span class="underline"> {{printList.build_area}} </span>㎡ 最终建筑面积以产权登记面积为准；</div>
         <div>2.3代购房屋的单价为人民币
           <span class="underline"> {{printList.price}} </span>元/平方米， 总价款为人民币
-          <span class="underline"> {{printList.total_price}} </span>元， （￥）
+          <span class="underline"> {{printList.total_price_china}} </span>， （￥）
           <span class="underline"> {{printList.total_price}} </span>元。</div>
         <div>2.4乙方所代购的房屋所有权归甲方所有，甲方享有该房屋占有、使用、收益及处分的权利，乙方对受甲方委托购买的房屋无权行使甲方享有的前述权利，亦不得对受甲方委托购买的房屋进行侵占、破坏、转卖、出租、抵押及赠与等。</div>
         <div>二、房屋价款的支付方式：</div>
@@ -317,7 +317,7 @@ export default {
       if (res.code == 200) {
         this.$message({
           type: "success",
-          message: "将挞定成功!"
+          message: "挞定成功!"
         });
       }
       this.cancelTartInfo();
