@@ -9,6 +9,10 @@
     padding: 0;
     color: #333;
   }
+  .input_address {
+    width: 413px;
+    margin-top: 5px;
+  }
   .el-form-item.is-error {
     padding-bottom: 20px;
   }
@@ -77,8 +81,9 @@
           </el-form-item>
           <el-form-item label="项目地址" prop="province">
             <!-- 下拉组建 -->
+            <city-selector :disabled="isDisable()" :province.sync="form.province" :city.sync="form.city" :district.sync="form.district" @changeDistrict="areaChange" />
           </el-form-item>
-          <el-form-item class='input' prop="absolute_address">
+          <el-form-item class='input_address' prop="absolute_address">
             <!-- <el-input id="suggestId" v-model="form.absolute_address" auto-complete="off" class='input-1' :disabled="isDisable()" placeholder="请输入具体地址"></el-input> -->
             <map-tool-input v-model="form.absolute_address" :area="area" ref="mapToolInput" @change="addressChange" :disabled="isDisable()" />
           </el-form-item>

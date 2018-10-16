@@ -354,7 +354,8 @@ let api = {
   break: doPost('company/Contract/break'),
   //获取挞定类型
   getBreakType: doGet('company/Contract/break'),
-
+  //打印
+  print: doGet('company/Contract/print'),
 
 
 }
