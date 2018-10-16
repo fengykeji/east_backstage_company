@@ -274,6 +274,7 @@ export default {
       break_desc: "",
       break_num_true: "", //挞定金额
       sub_id: "",
+      house_id:'',
       tartOptions: []
     };
   },
@@ -295,6 +296,7 @@ export default {
     async tart(row, type) {
       this.tartInfo = true;
       this.sub_id = row.sub_id;
+      this.house_id = row.house_id;
       this.getBreakType();
     },
     //  获取挞定类型
@@ -308,6 +310,7 @@ export default {
       let temp = {};
       temp.break_desc = this.break_desc;
       temp.sub_id = this.sub_id;
+      temp.house_id=this.house_id;
       temp.disabled_state = this.disabled_state;
       temp.break_num_true = this.break_num_true;
       let res = await this.api.break(temp);
