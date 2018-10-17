@@ -4,11 +4,11 @@ import Vue from 'vue'
 //请求带上cookie
 // http.defaults.withCredentials = true;
 
-// let base = 'http://120.78.69.178:2902/';
-// Vue.prototype.base = 'http://120.78.69.178:2902/';    //正式服地址
+let base = 'http://120.78.69.178:2902/';
+Vue.prototype.base = 'http://120.78.69.178:2902/';    //正式服地址
 
-let base = 'http://120.27.21.136:2798/';
-Vue.prototype.base = 'http://120.27.21.136:2798/';  //测试服地址
+// let base = 'http://120.27.21.136:2798/';
+// Vue.prototype.base = 'http://120.27.21.136:2798/';  //测试服地址
 
 // let base = 'http://47.106.39.169:2797/';
 // Vue.prototype.base = 'http://47.106.39.169:2797/';  //演示服地址
@@ -336,7 +336,7 @@ let api = {
   //成交客户列表
   getDealList: doGet('company/NewUser/getDealList'),
   //客户管理 excel导出
-  exportExcel: base + "company/NewUser/exportExcel",
+  exportExcel: base + "user/project/exportExcel",
 
 
   //代购合同管理
